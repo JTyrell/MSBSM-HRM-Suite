@@ -381,9 +381,12 @@ export function AnnouncementsView() {
                     {announcement.content}
                   </p>
                   {isLong && (
-                    <button
+                    <span
+                      role="button"
+                      tabIndex={0}
                       onClick={() => toggleExpand(announcement.id)}
-                      className="flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium mt-1.5 transition-colors"
+                      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") toggleExpand(announcement.id); }}
+                      className="flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium mt-1.5 transition-colors cursor-pointer"
                     >
                       {isExpanded ? (
                         <>
@@ -396,7 +399,7 @@ export function AnnouncementsView() {
                           Read more
                         </>
                       )}
-                    </button>
+                    </span>
                   )}
                 </div>
 

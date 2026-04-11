@@ -557,7 +557,7 @@ export function BenefitsView() {
                   return (
                     <Card
                       key={benefit.id}
-                      className="border-emerald-100 dark:border-emerald-900/30 hover:shadow-md transition-all duration-200 cursor-pointer group"
+                      className="border-emerald-100 dark:border-emerald-900/30 hover:shadow-md transition-all duration-200 cursor-pointer group card-glow"
                       onClick={() => setDetailView(benefit)}
                     >
                       <CardHeader className="pb-3">
@@ -576,7 +576,7 @@ export function BenefitsView() {
                           <Badge
                             className={
                               benefit.status === "enrolled"
-                                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800 text-[10px]"
+                                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800 text-[10px] badge-glow-emerald"
                                 : "bg-gray-50 text-gray-500 dark:bg-gray-800/30 dark:text-gray-400 border-gray-200 dark:border-gray-700 text-[10px]"
                             }
                             variant="outline"
@@ -608,7 +608,7 @@ export function BenefitsView() {
                   return (
                     <Card
                       key={benefit.id}
-                      className="border-teal-100 dark:border-teal-900/30 hover:shadow-md transition-all duration-200 cursor-pointer group"
+                      className="border-teal-100 dark:border-teal-900/30 hover:shadow-md transition-all duration-200 cursor-pointer group card-glow"
                       onClick={() => setDetailView(benefit)}
                     >
                       <CardHeader className="pb-3">
@@ -697,7 +697,7 @@ export function BenefitsView() {
                     return (
                       <Card
                         key={benefit.id}
-                        className="border-cyan-100 dark:border-cyan-900/30 hover:shadow-md transition-all duration-200 cursor-pointer group"
+                        className="border-cyan-100 dark:border-cyan-900/30 hover:shadow-md transition-all duration-200 cursor-pointer group card-glow"
                         onClick={() => setDetailView(benefit)}
                       >
                         <CardHeader className="pb-3">
@@ -751,7 +751,7 @@ export function BenefitsView() {
                   return (
                     <Card
                       key={benefit.id}
-                      className="border-amber-100 dark:border-amber-900/30 hover:shadow-md transition-all duration-200 cursor-pointer group"
+                      className="border-amber-100 dark:border-amber-900/30 hover:shadow-md transition-all duration-200 cursor-pointer group card-glow"
                       onClick={() => setDetailView(benefit)}
                     >
                       <CardHeader className="pb-3">

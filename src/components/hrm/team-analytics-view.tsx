@@ -533,7 +533,7 @@ export function TeamAnalyticsView() {
       {/* ═══════════════════════════════════════════════════════ */}
       {/* WORKFORCE OVERVIEW CARDS (6-card grid)                */}
       {/* ═══════════════════════════════════════════════════════ */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 card-pattern rounded-xl p-4 border border-border/50">
         {/* Total Headcount */}
         <Card className="border-emerald-100 dark:border-emerald-900/30 overflow-hidden hover:shadow-md transition-shadow">
           <CardContent className="p-4">
@@ -931,8 +931,9 @@ export function TeamAnalyticsView() {
                     .map((emp, idx) => (
                       <div
                         key={emp.id}
-                        className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors"
+                        className="timeline-item flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors"
                       >
+                        <div className="timeline-dot timeline-dot-emerald" />
                         <span className={`inline-flex items-center justify-center h-7 w-7 rounded-full text-xs font-bold shrink-0 ${
                           idx === 0
                             ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"

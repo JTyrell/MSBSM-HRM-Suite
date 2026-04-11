@@ -13,6 +13,7 @@ export async function POST() {
     await db.pTOBalance.deleteMany();
     await db.pTORequest.deleteMany();
     await db.attendance.deleteMany();
+    await db.performanceReview.deleteMany();
     await db.employee.deleteMany();
     await db.shift.deleteMany();
     await db.announcement.deleteMany();
@@ -426,6 +427,137 @@ export async function POST() {
       });
     }
 
+    // Create performance reviews
+    const performanceReviews = [
+      // Completed reviews
+      {
+        employeeId: employees[3].id,  // Priya Patel
+        reviewerId: employees[2].id,  // Marcus Williams (manager)
+        cycleName: "Q4 2025 Review",
+        status: "completed",
+        rating: 4.5,
+        strengths: "Exceptional problem-solving skills and ability to lead complex technical initiatives. Priya consistently delivers high-quality code ahead of deadlines and has been instrumental in optimizing our database queries, reducing response times by 40%. She actively mentors junior developers and contributes valuable ideas in sprint planning.",
+        improvements: "Could benefit from more experience in stakeholder communication and presenting technical concepts to non-technical audiences. Sometimes takes on too much work individually instead of delegating to team members.",
+        goals: "Lead the upcoming API migration project, complete AWS Solutions Architect certification, and present at least one technical talk at a company all-hands meeting.",
+        overallComment: "Priya is one of our top performers in the Engineering department. Her technical depth and dedication to code quality make her an invaluable asset. She is well on track for a senior promotion in the next cycle.",
+        reviewedAt: new Date("2025-12-15"),
+      },
+      {
+        employeeId: employees[4].id,  // James O'Brien
+        reviewerId: employees[2].id,  // Marcus Williams
+        cycleName: "Q4 2025 Review",
+        status: "completed",
+        rating: 4.0,
+        strengths: "Strong frontend development skills with an eye for UI/UX design. James rebuilt the customer dashboard component, resulting in a 25% increase in user engagement. He is collaborative, always willing to help teammates debug issues, and maintains excellent documentation.",
+        improvements: "Needs to improve test coverage — current project tests are at 60% versus the team target of 80%. Also should work on reducing context-switching by better estimating task complexity upfront.",
+        goals: "Achieve 80% test coverage on the customer dashboard project, learn TypeScript advanced patterns, and contribute to the design system component library.",
+        overallComment: "James is a solid contributor who brings both technical skill and creative vision to the team. With improved testing practices, he has the potential to take on more architectural responsibilities.",
+        reviewedAt: new Date("2025-12-18"),
+      },
+      {
+        employeeId: employees[7].id,  // Emma Thompson
+        reviewerId: employees[6].id,  // David Kim (manager)
+        cycleName: "Q4 2025 Review",
+        status: "completed",
+        rating: 4.8,
+        strengths: "Outstanding creativity and marketing instincts. Emma's social media campaign for the Q4 product launch generated 3x more engagement than any previous campaign. She is data-driven, continuously A/B testing creative approaches, and has built strong relationships with our design and content teams.",
+        improvements: "While her creative work is top-notch, Emma could improve her project management skills for multi-campaign timelines. Learning to use project management tools more effectively would help her coordinate better across teams.",
+        goals: "Lead the brand refresh initiative for 2026, complete Google Analytics certification, and develop a comprehensive content calendar system for the marketing team.",
+        overallComment: "Emma is an exceptional marketer who consistently exceeds expectations. Her ability to blend creativity with analytics is rare and highly valuable. She is a strong candidate for promotion to Senior Marketing Specialist.",
+        reviewedAt: new Date("2025-12-20"),
+      },
+      {
+        employeeId: employees[5].id,  // Maria Garcia
+        reviewerId: employees[0].id,  // Alex Rivera (admin)
+        cycleName: "Q4 2025 Review",
+        status: "completed",
+        rating: 3.5,
+        strengths: "Reliable and detail-oriented in all financial reporting tasks. Maria has maintained 100% accuracy in monthly close reports for the past 6 months. She is proactive in identifying discrepancies and works well under tight deadlines during audit periods.",
+        improvements: "Needs to develop stronger skills in financial forecasting and budget planning. Currently relies heavily on templates and would benefit from learning advanced Excel modeling and financial analysis techniques.",
+        goals: "Complete the CFA Level 1 exam, take lead on the annual budget preparation process, and shadow the Senior Financial Analyst for strategic planning sessions.",
+        overallComment: "Maria is a dependable team member who takes pride in accuracy and compliance. To advance, she needs to broaden her skill set beyond operational reporting into strategic financial analysis.",
+        reviewedAt: new Date("2025-12-22"),
+      },
+      {
+        employeeId: employees[12].id, // Noah Martinez
+        reviewerId: employees[2].id,  // Marcus Williams
+        cycleName: "Q4 2025 Review",
+        status: "completed",
+        rating: 3.8,
+        strengths: "Noah has grown significantly as a backend developer this quarter. He successfully implemented the new caching layer that reduced API response times by 35%. His code reviews are thorough and constructive, and he has become a go-to person for debugging complex issues.",
+        improvements: "Should work on being more proactive in architectural discussions. Sometimes waits for direction rather than proposing solutions independently. Public speaking and presentation skills could also use development.",
+        goals: "Design and implement the microservices communication layer, present a tech talk at the engineering team meeting, and mentor one junior developer.",
+        overallComment: "Noah has shown impressive growth this quarter and is becoming a key technical contributor. With more confidence in proposing architectural solutions, he will be ready for senior-level responsibilities.",
+        reviewedAt: new Date("2025-12-28"),
+      },
+      // In-progress reviews
+      {
+        employeeId: employees[9].id,  // Aisha Johnson
+        reviewerId: employees[6].id,  // David Kim
+        cycleName: "Q1 2026 Review",
+        status: "in_progress",
+        rating: null,
+        strengths: null,
+        improvements: null,
+        goals: null,
+        overallComment: null,
+        reviewedAt: null,
+      },
+      {
+        employeeId: employees[8].id,  // Carlos Rodriguez
+        reviewerId: employees[6].id,  // David Kim
+        cycleName: "Q1 2026 Review",
+        status: "in_progress",
+        rating: 4.2,
+        strengths: "Carlos has exceeded his sales quota by 15% this quarter. His relationship-building skills with key accounts have been exceptional, securing two major enterprise deals worth over $500K combined.",
+        improvements: null,
+        goals: null,
+        overallComment: null,
+        reviewedAt: null,
+      },
+      {
+        employeeId: employees[10].id, // Liam Turner
+        reviewerId: employees[0].id,  // Alex Rivera
+        cycleName: "Q1 2026 Review",
+        status: "in_progress",
+        rating: null,
+        strengths: null,
+        improvements: null,
+        goals: null,
+        overallComment: null,
+        reviewedAt: null,
+      },
+      // Pending reviews
+      {
+        employeeId: employees[11].id, // Sophia Lee
+        reviewerId: employees[0].id,  // Alex Rivera
+        cycleName: "Q1 2026 Review",
+        status: "pending",
+        rating: null,
+        strengths: null,
+        improvements: null,
+        goals: null,
+        overallComment: null,
+        reviewedAt: null,
+      },
+      {
+        employeeId: employees[13].id, // Olivia Brown (HR manager)
+        reviewerId: employees[0].id,  // Alex Rivera
+        cycleName: "Q1 2026 Review",
+        status: "pending",
+        rating: null,
+        strengths: null,
+        improvements: null,
+        goals: null,
+        overallComment: null,
+        reviewedAt: null,
+      },
+    ];
+
+    for (const review of performanceReviews) {
+      await db.performanceReview.create({ data: review });
+    }
+
     return NextResponse.json({
       success: true,
       message: "Database seeded successfully",
@@ -439,6 +571,7 @@ export async function POST() {
         announcements: announcementData.length,
         ptoRequests: ptoData.length,
         payrollRecords: employees.length,
+        performanceReviews: performanceReviews.length,
         totalGrossPay: Math.round(totalGrossPay * 100) / 100,
         totalNetPay: Math.round(totalNetPay * 100) / 100,
       },

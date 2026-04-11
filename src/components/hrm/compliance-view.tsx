@@ -186,7 +186,7 @@ const PRIORITY_COLORS: Record<string, { badge: string; dot: string; bg: string; 
     text: "text-red-600 dark:text-red-400",
   },
   MEDIUM: {
-    badge: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300",
+    badge: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300 badge-glow-amber",
     dot: "bg-amber-500",
     bg: "bg-amber-50 dark:bg-amber-950/40",
     text: "text-amber-600 dark:text-amber-400",

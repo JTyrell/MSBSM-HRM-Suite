@@ -709,7 +709,7 @@ export function AIChatView() {
                   onKeyDown={handleKeyDown}
                   placeholder={`Message ${activeAgent.name}...`}
                   disabled={isTyping}
-                  className="pr-4 rounded-xl border-emerald-200 dark:border-emerald-800 focus-visible:ring-emerald-400 dark:focus-visible:ring-emerald-600 h-11 bg-muted/30"
+                  className="pr-4 rounded-xl border-emerald-200 dark:border-emerald-800 focus-visible:ring-emerald-400 dark:focus-visible:ring-emerald-600 h-11 bg-muted/30 focus-ring-emerald"
                 />
               </div>
               <Button

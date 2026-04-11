@@ -12,6 +12,8 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   BarChart,
   Bar,
@@ -29,16 +31,12 @@ import {
   Clock,
   CalendarDays,
   DollarSign,
-  TrendingUp,
-  TrendingDown,
   ArrowUpRight,
   ArrowDownRight,
   PlayCircle,
   BarChart3,
   UserPlus,
   MapPin,
-  LogIn,
-  LogOut,
   Activity,
   Timer,
   Sun,
@@ -46,10 +44,17 @@ import {
   PlaneTakeoff,
   Award,
   Briefcase,
+  Megaphone,
+  Shield,
+  CalendarHeart,
+  PartyPopper,
+  Building2,
+  RefreshCw,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAppStore } from "@/store/app";
 import { formatCurrency } from "@/lib/payroll";
+import { formatDistanceToNow } from "date-fns";
 import type {
   AttendanceRecord,
   PTORequest,
@@ -121,6 +126,56 @@ function formatTime(dateStr: string): string {
     hour12: true,
   });
 }
+
+// ─── Activity Feed Types ──────────────────────────────────────────
+interface ActivityItem {
+  id: string;
+  type: "attendance" | "pto" | "announcement" | "system";
+  title: string;
+  description: string;
+  timestamp: string;
+  department: string;
+  icon: "clock" | "calendar" | "megaphone" | "shield";
+}
+
+interface WhosOutItem {
+  id: string;
+  firstName: string;
+  lastName: string;
+  type: string;
+  department: string;
+}
+
+// ─── Upcoming Events Mock Data ────────────────────────────────────
+const UPCOMING_EVENTS = [
+  {
+    id: "evt-1",
+    title: "Company Picnic",
+    date: "Jul 15",
+    type: "social" as const,
+    icon: PartyPopper,
+    colorClass: "text-emerald-600 dark:text-emerald-400",
+    bgColorClass: "bg-emerald-50 dark:bg-emerald-950/40",
+  },
+  {
+    id: "evt-2",
+    title: "Q3 All Hands",
+    date: "Jul 20",
+    type: "meeting" as const,
+    icon: Building2,
+    colorClass: "text-teal-600 dark:text-teal-400",
+    bgColorClass: "bg-teal-50 dark:bg-teal-950/40",
+  },
+  {
+    id: "evt-3",
+    title: "Summer Shutdown",
+    date: "Aug 1–5",
+    type: "holiday" as const,
+    icon: CalendarHeart,
+    colorClass: "text-amber-600 dark:text-amber-400",
+    bgColorClass: "bg-amber-50 dark:bg-amber-950/40",
+  },
+];
 
 // ─── World Clock Types ────────────────────────────────────────────
 interface TimezoneClock {
@@ -244,6 +299,9 @@ export function DashboardView() {
   const [departmentData, setDepartmentData] = useState<
     { name: string; value: number }[]
   >([]);
+  const [activityFeed, setActivityFeed] = useState<ActivityItem[]>([]);
+  const [whosOutToday, setWhosOutToday] = useState<WhosOutItem[]>([]);
+  const [isActivityLoading, setIsActivityLoading] = useState(true);
 
   // ─── Fetch all dashboard data on mount ──────────────────────────
   useEffect(() => {
@@ -286,6 +344,32 @@ export function DashboardView() {
     }
     fetchDashboardData();
   }, [setAttendance, setPtoRequests, setEmployees, setDepartments, setPayrollPeriods]);
+
+  // ─── Fetch activity feed data (with auto-refresh) ──────────────
+  useEffect(() => {
+    let intervalId: ReturnType<typeof setInterval>;
+
+    async function fetchActivityFeed() {
+      setIsActivityLoading(true);
+      try {
+        const res = await fetch("/api/activity-feed").catch(() => null);
+        if (res?.ok) {
+          const data = await res.json();
+          setActivityFeed(data.activities || []);
+          setWhosOutToday(data.whosOut || []);
+        }
+      } catch (err) {
+        console.error("Activity feed fetch error:", err);
+      } finally {
+        setIsActivityLoading(false);
+      }
+    }
+
+    fetchActivityFeed();
+    intervalId = setInterval(fetchActivityFeed, 30000);
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   // ─── Process department data for pie chart ──────────────────────
   useEffect(() => {
@@ -381,7 +465,7 @@ export function DashboardView() {
       trend: {
         value: "+12%",
         direction: "up",
-        label: "vs last month",
+        label: "from last month",
       },
       colorClass: "text-emerald-600 dark:text-emerald-400",
       bgColorClass: "bg-emerald-50 dark:bg-emerald-950/40",
@@ -406,7 +490,7 @@ export function DashboardView() {
       icon: CalendarDays,
       trend: pendingPTOCount > 3
         ? { value: `${pendingPTOCount} new`, direction: "up", label: "needs review" }
-        : undefined,
+        : { value: "-3%", direction: "down", label: "from last week" },
       colorClass: "text-amber-600 dark:text-amber-400",
       bgColorClass: "bg-amber-50 dark:bg-amber-950/40",
       borderColorClass: "border-amber-200/60 dark:border-amber-800/40",
@@ -585,45 +669,48 @@ export function DashboardView() {
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <Card
-              key={stat.label}
-              className={`stagger-${index + 1} card-glow hover-scale group transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 border ${stat.borderColorClass}`}
-            >
-              <CardContent className="pt-0">
-                <div className="flex items-center gap-4">
-                  <div
-                    className={`flex items-center justify-center h-12 w-12 rounded-xl ${stat.bgColorClass} transition-transform duration-300 group-hover:scale-110`}
-                  >
-                    <Icon className={`h-6 w-6 ${stat.colorClass}`} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-muted-foreground truncate">
-                      {stat.label}
-                    </p>
-                    <p className="metric-large text-2xl font-bold tracking-tight">{stat.value}</p>
-                  </div>
-                </div>
-                {stat.trend && (
-                  <div className="mt-3 flex items-center gap-1.5 text-xs">
-                    {stat.trend.direction === "up" ? (
-                      <ArrowUpRight className="h-3.5 w-3.5 text-emerald-500" />
-                    ) : (
-                      <ArrowDownRight className="h-3.5 w-3.5 text-rose-500" />
-                    )}
-                    <span
-                      className={`font-medium ${
-                        stat.trend.direction === "up"
-                          ? "text-emerald-600 dark:text-emerald-400"
-                          : "text-rose-600 dark:text-rose-400"
-                      }`}
+            <div key={stat.label} className="relative rounded-xl p-[2px] bg-gradient-to-br from-transparent via-muted-foreground/10 to-transparent animate-gradient-border">
+              <Card
+                className={`stagger-${index + 1} hover-scale group transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 border ${stat.borderColorClass} bg-background rounded-xl ${
+                  index === 0 ? 'stat-card-emerald' : index === 1 ? 'stat-card-rose' : index === 2 ? 'stat-card-violet' : 'stat-card-amber'
+                }`}
+              >
+                <CardContent className="pt-0">
+                  <div className="flex items-center gap-4">
+                    <div
+                      className={`flex items-center justify-center h-12 w-12 rounded-xl ${stat.bgColorClass} transition-transform duration-300 group-hover:scale-110`}
                     >
-                      {stat.trend.value}
-                    </span>
-                    <span className="text-muted-foreground">{stat.trend.label}</span>
+                      <Icon className={`h-6 w-6 ${stat.colorClass}`} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-muted-foreground truncate">
+                        {stat.label}
+                      </p>
+                      <p className="metric-large text-2xl font-bold tracking-tight animate-count-up">{stat.value}</p>
+                    </div>
                   </div>
-                )}
-              </CardContent>
-            </Card>
+                  {stat.trend && (
+                    <div className="mt-3 flex items-center gap-1.5 text-xs">
+                      {stat.trend.direction === "up" ? (
+                        <ArrowUpRight className="h-3.5 w-3.5 text-emerald-500" />
+                      ) : (
+                        <ArrowDownRight className="h-3.5 w-3.5 text-rose-500" />
+                      )}
+                      <span
+                        className={`font-medium ${
+                          stat.trend.direction === "up"
+                            ? "text-emerald-600 dark:text-emerald-400"
+                            : "text-rose-600 dark:text-rose-400"
+                        }`}
+                      >
+                        {stat.trend.value}
+                      </span>
+                      <span className="text-muted-foreground">{stat.trend.label}</span>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
           );
         })}
       </div>
@@ -800,112 +887,257 @@ export function DashboardView() {
         </Card>
       </div>
 
-      {/* ─── Activity + Quick Actions + PTO Row ──────────────────── */}
+      {/* ─── Enhanced Activity Feed + Who's Out + Events Row ────── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Recent Activity Feed */}
+        {/* Real-Time Activity Feed */}
         <Card className="lg:col-span-2 transition-all duration-300 hover:shadow-md">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-base font-semibold">
+                <CardTitle className="text-base font-semibold flex items-center gap-2">
+                  <Activity className="h-4 w-4 text-emerald-500" />
                   Recent Activity
                 </CardTitle>
-                <CardDescription>Latest clock-in and clock-out events</CardDescription>
+                <CardDescription>Unified feed across all modules</CardDescription>
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="text-xs text-muted-foreground"
-                onClick={() => setCurrentView("attendance")}
-              >
-                View all
-              </Button>
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <RefreshCw className={`h-3 w-3 ${isActivityLoading ? "animate-spin" : ""}`} />
+                  <span>Live</span>
+                </div>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="text-xs text-muted-foreground"
+                  onClick={() => setCurrentView("attendance")}
+                >
+                  View all
+                </Button>
+              </div>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="space-y-0 divide-y divide-border">
-              {recentActivity.length === 0 ? (
-                <div className="py-8 text-center text-sm text-muted-foreground">
-                  No recent activity recorded
-                </div>
-              ) : (
-                recentActivity.map((record) => {
-                  const isClockIn = !record.clockOut;
-                  return (
-                    <div
-                      key={record.id}
-                      className="flex items-center gap-3 py-3 first:pt-0 last:pb-0"
-                    >
-                      {/* Icon */}
-                      <div
-                        className={`flex items-center justify-center h-9 w-9 rounded-full shrink-0 ${
-                          isClockIn
-                            ? "bg-emerald-50 dark:bg-emerald-950/40"
-                            : "bg-slate-100 dark:bg-slate-800/40"
-                        }`}
-                      >
-                        {isClockIn ? (
-                          <LogIn className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                        ) : (
-                          <LogOut className="h-4 w-4 text-slate-500 dark:text-slate-400" />
-                        )}
-                      </div>
-
-                      {/* Employee Info */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-medium truncate">
-                            {record.employee
-                              ? `${record.employee.firstName} ${record.employee.lastName}`
-                              : "Unknown Employee"}
-                          </span>
-                          <Badge
-                            variant={isClockIn ? "default" : "secondary"}
-                            className={`text-[10px] px-1.5 py-0 ${
-                              isClockIn
-                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300"
-                                : ""
-                            }`}
-                          >
-                            {isClockIn ? "Clocked In" : "Clocked Out"}
-                          </Badge>
-                        </div>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground mt-0.5">
-                          <span>{formatTime(record.clockIn)}</span>
-                          {record.geofence?.name && (
-                            <>
-                              <span className="inline-block h-1 w-1 rounded-full bg-muted-foreground/40" />
-                              <span className="flex items-center gap-0.5">
-                                <MapPin className="h-3 w-3" />
-                                {record.geofence.name}
-                              </span>
-                            </>
-                          )}
-                          <span className="inline-block h-1 w-1 rounded-full bg-muted-foreground/40" />
-                          <span>{formatRelativeTime(record.clockIn)}</span>
-                        </div>
-                      </div>
-
-                      {/* Hours (if clocked out) */}
-                      {record.totalHours != null && record.totalHours > 0 && (
-                        <div className="text-right shrink-0">
-                          <p className="text-sm font-semibold text-foreground">
-                            {record.totalHours.toFixed(1)}h
-                          </p>
-                          <p className="text-[10px] text-muted-foreground">total</p>
-                        </div>
-                      )}
+            {isActivityLoading ? (
+              <div className="space-y-4">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <Skeleton className="h-9 w-9 rounded-full shrink-0" />
+                    <div className="flex-1 space-y-2">
+                      <Skeleton className="h-4 w-48" />
+                      <Skeleton className="h-3 w-32" />
                     </div>
-                  );
-                })
-              )}
-            </div>
+                    <Skeleton className="h-3 w-16" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <ScrollArea className="max-h-[420px]">
+                <div className="space-y-1">
+                  {activityFeed.length === 0 ? (
+                    <div className="py-8 text-center text-sm text-muted-foreground">
+                      No recent activity recorded
+                    </div>
+                  ) : (
+                    activityFeed.slice(0, 8).map((item) => {
+                      const typeConfig = {
+                        attendance: {
+                          borderColor: "border-l-emerald-500",
+                          bgColor: "bg-emerald-50 dark:bg-emerald-950/40",
+                          iconColor: "text-emerald-600 dark:text-emerald-400",
+                          icon: Clock,
+                        },
+                        pto: {
+                          borderColor: "border-l-amber-500",
+                          bgColor: "bg-amber-50 dark:bg-amber-950/40",
+                          iconColor: "text-amber-600 dark:text-amber-400",
+                          icon: CalendarDays,
+                        },
+                        announcement: {
+                          borderColor: "border-l-violet-500",
+                          bgColor: "bg-violet-50 dark:bg-violet-950/40",
+                          iconColor: "text-violet-600 dark:text-violet-400",
+                          icon: Megaphone,
+                        },
+                        system: {
+                          borderColor: "border-l-muted-foreground/30",
+                          bgColor: "bg-muted",
+                          iconColor: "text-muted-foreground",
+                          icon: Shield,
+                        },
+                      };
+                      const cfg = typeConfig[item.type];
+                      const TypeIcon = cfg.icon;
+
+                      return (
+                        <div
+                          key={item.id}
+                          className={`flex items-start gap-3 py-2.5 px-3 rounded-lg border-l-[3px] ${cfg.borderColor} hover:bg-muted/30 transition-colors animate-fade-in-up`}
+                        >
+                          <div
+                            className={`flex items-center justify-center h-8 w-8 rounded-full shrink-0 ${cfg.bgColor}`}
+                          >
+                            <TypeIcon className={`h-4 w-4 ${cfg.iconColor}`} />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="text-sm font-medium truncate">
+                                {item.title}
+                              </span>
+                              {item.department && (
+                                <Badge
+                                  variant="outline"
+                                  className="text-[10px] px-1.5 py-0 text-muted-foreground"
+                                >
+                                  {item.department}
+                                </Badge>
+                              )}
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-0.5 truncate">
+                              {item.description}
+                            </p>
+                          </div>
+                          <span className="text-[11px] text-muted-foreground whitespace-nowrap shrink-0 mt-0.5">
+                            {formatDistanceToNow(new Date(item.timestamp), { addSuffix: true })}
+                          </span>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </ScrollArea>
+            )}
           </CardContent>
         </Card>
 
-        {/* Quick Actions + Upcoming PTO */}
+        {/* Right Column: Who's Out + Upcoming Events */}
         <div className="space-y-4">
-          {/* Quick Actions Panel */}
+          {/* Who's Out Today */}
+          <Card className="transition-all duration-300 hover:shadow-md">
+            <CardHeader className="pb-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-base font-semibold flex items-center gap-2">
+                    <PlaneTakeoff className="h-4 w-4 text-amber-500" />
+                    Who&apos;s Out Today
+                  </CardTitle>
+                  <CardDescription>Employees on approved PTO</CardDescription>
+                </div>
+                {whosOutToday.length > 0 && (
+                  <Badge
+                    variant="secondary"
+                    className="bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300 text-xs"
+                  >
+                    {whosOutToday.length}
+                  </Badge>
+                )}
+              </div>
+            </CardHeader>
+            <CardContent>
+              {isActivityLoading ? (
+                <div className="space-y-3">
+                  {Array.from({ length: 3 }).map((_, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <Skeleton className="h-9 w-9 rounded-full shrink-0" />
+                      <div className="flex-1 space-y-1.5">
+                        <Skeleton className="h-4 w-32" />
+                        <Skeleton className="h-3 w-20" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : whosOutToday.length === 0 ? (
+                <div className="py-4 text-center text-sm text-muted-foreground">
+                  <p className="flex items-center justify-center gap-1.5">
+                    <Sun className="h-4 w-4 text-emerald-500" />
+                    Everyone is in today
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-2.5">
+                  {whosOutToday.slice(0, 5).map((person) => (
+                    <div
+                      key={person.id}
+                      className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors"
+                    >
+                      <Avatar className="h-9 w-9">
+                        <AvatarFallback className="bg-gradient-to-br from-amber-400 to-orange-500 text-white text-xs font-semibold">
+                          {getInitials(person.firstName, person.lastName)}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">
+                          {person.firstName} {person.lastName}
+                        </p>
+                        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                          <Badge
+                            variant="outline"
+                            className="text-[10px] px-1.5 py-0 capitalize"
+                          >
+                            {person.type}
+                          </Badge>
+                          {person.department && (
+                            <span className="truncate">{person.department}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {whosOutToday.length > 5 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full text-xs text-muted-foreground mt-1"
+                      onClick={() => setCurrentView("pto")}
+                    >
+                      +{whosOutToday.length - 5} more
+                    </Button>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Upcoming Events */}
+          <Card className="transition-all duration-300 hover:shadow-md">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-semibold flex items-center gap-2">
+                <CalendarHeart className="h-4 w-4 text-teal-500" />
+                Upcoming Events
+              </CardTitle>
+              <CardDescription>Holidays and company events</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2.5">
+                {UPCOMING_EVENTS.map((event) => {
+                  const EventIcon = event.icon;
+                  return (
+                    <div
+                      key={event.id}
+                      className={`flex items-center gap-3 p-3 rounded-xl ${event.bgColorClass} border border-border/30 transition-transform duration-200 hover:scale-[1.02]`}
+                    >
+                      <div
+                        className={`flex items-center justify-center h-10 w-10 rounded-lg ${event.bgColorClass}`}
+                      >
+                        <EventIcon className={`h-5 w-5 ${event.colorClass}`} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium truncate">{event.title}</p>
+                        <p className="text-xs text-muted-foreground">{event.date}</p>
+                      </div>
+                      <Badge
+                        variant="outline"
+                        className="text-[10px] px-1.5 py-0 capitalize text-muted-foreground"
+                      >
+                        {event.type}
+                      </Badge>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Quick Actions */}
           <Card className="transition-all duration-300 hover:shadow-md">
             <CardHeader>
               <CardTitle className="text-base font-semibold">
@@ -942,9 +1174,9 @@ export function DashboardView() {
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle className="text-base font-semibold">
-                    Upcoming PTO
+                    Pending PTO
                   </CardTitle>
-                  <CardDescription>Pending time-off requests</CardDescription>
+                  <CardDescription>Time-off requests awaiting review</CardDescription>
                 </div>
                 {pendingPTOCount > 0 && (
                   <Badge

@@ -97,8 +97,10 @@ model Employee {
   attendance      Attendance[]
   ptoRequests     PTORequest[]
   ptoBalances     PTOBalance[]
-  payrollRecords  PayrollRecord[]
-  notifications   Notification[]
+  payrollRecords    PayrollRecord[]
+  notifications     Notification[]
+  reviewsReceived   PerformanceReview[]
+  reviewsGiven      PerformanceReview[] @relation("Reviewer")
 
   @@index([departmentId])
   @@index([companyId])
@@ -302,6 +304,32 @@ model ChatMessage {
 
   @@index([sessionId])
   @@index([userId])
+}
+
+// ============ PERFORMANCE REVIEWS ============
+
+model PerformanceReview {
+  id              String    @id @default(uuid())
+  employeeId      String
+  reviewerId      String
+  cycleName       String
+  status          String    @default("pending")  // pending, in_progress, completed
+  rating          Float?    // 1.0 - 5.0
+  strengths       String?
+  improvements    String?
+  goals           String?
+  overallComment  String?
+  reviewedAt      DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  employee        Employee  @relation(fields: [employeeId], references: [id])
+  reviewer        Employee  @relation("Reviewer", fields: [reviewerId], references: [id])
+
+  @@index([employeeId])
+  @@index([reviewerId])
+  @@index([status])
+  @@map("performance_reviews")
 }
 
 // ============ AUDIT LOG ============

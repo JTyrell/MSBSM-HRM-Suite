@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Card,
   CardContent,
@@ -522,9 +522,8 @@ function PayrollPeriodsTable({
                 const isExpanded = expandedId === period.id;
 
                 return (
-                  <>
+                  <React.Fragment key={period.id}>
                     <TableRow
-                      key={period.id}
                       className={`cursor-pointer transition-colors ${
                         selectedPeriodId === period.id
                           ? "bg-emerald-50/60 hover:bg-emerald-50/80"
@@ -643,7 +642,7 @@ function PayrollPeriodsTable({
                         </TableCell>
                       </TableRow>
                     )}
-                  </>
+                  </React.Fragment>
                 );
               })}
             </TableBody>

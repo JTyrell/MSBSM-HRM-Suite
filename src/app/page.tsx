@@ -29,6 +29,7 @@ import {
   CalendarClock,
   UserPlus,
   Heart,
+  Star,
   Megaphone,
   UsersRound,
 } from "lucide-react";
@@ -66,6 +67,7 @@ import { ComplianceView } from "@/components/hrm/compliance-view";
 import { ShiftsView } from "@/components/hrm/shifts-view";
 import { AnnouncementsView } from "@/components/hrm/announcements-view";
 import { BenefitsView } from "@/components/hrm/benefits-view";
+import { PerformanceReviewsView } from "@/components/hrm/performance-reviews-view";
 import { TeamAnalyticsView } from "@/components/hrm/team-analytics-view";
 
 const NAV_ITEMS = [
@@ -75,6 +77,7 @@ const NAV_ITEMS = [
   { id: "employees", label: "Employees", icon: Users },
   { id: "payroll", label: "Payroll", icon: DollarSign },
   { id: "pto", label: "Time Off", icon: CalendarDays },
+  { id: "performance", label: "Reviews", icon: Star },
   { id: "benefits", label: "Benefits", icon: Heart },
   { id: "geofences", label: "Geofences", icon: MapPin },
   { id: "onboarding", label: "Onboarding", icon: ClipboardCheck },
@@ -474,6 +477,7 @@ export default function HomePage() {
           {currentView === "shifts" && <ShiftsView />}
           {currentView === "benefits" && <BenefitsView />}
           {currentView === "team-analytics" && <TeamAnalyticsView />}
+          {currentView === "performance" && <PerformanceReviewsView />}
         </div>
 
         {/* Footer */}
@@ -483,7 +487,7 @@ export default function HomePage() {
               <div className="w-5 h-5 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
                 <Shield className="w-3 h-3 text-white" />
               </div>
-              <span className="font-medium">MSBM-HR Suite v4.0</span>
+              <span className="font-medium">MSBM-HR Suite v6.0</span>
             </div>
             <div className="flex items-center gap-3">
               <span>AI-Powered Human Resource Management</span>
@@ -535,7 +539,7 @@ function SidebarContent({
           </div>
           <div className="text-center">
             <h1 className="text-base font-bold text-white tracking-tight">MSBM-HR</h1>
-            <p className="text-[10px] text-emerald-100 font-medium uppercase tracking-[0.2em]">AI Suite v4.0</p>
+            <p className="text-[10px] text-emerald-100 font-medium uppercase tracking-[0.2em]">AI Suite v6.0</p>
           </div>
         </div>
         {/* Mobile close button overlay */}

@@ -1,0 +1,271 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============ ORGANIZATION ============
+
+model Company {
+  id        String   @id @default(cuid())
+  name      String
+  logo      String?
+  address   String?
+  timezone  String   @default("America/New_York")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  departments Department[]
+  employees   Employee[]
+  geofences   Geofence[]
+  payrollPeriods PayrollPeriod[]
+}
+
+model Department {
+  id          String   @id @default(cuid())
+  name        String
+  code        String   @unique
+  description String?
+  companyId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  company    Company   @relation(fields: [companyId], references: [id])
+  employees  Employee[]
+  geofences  Geofence[]
+}
+
+// ============ EMPLOYEES ============
+
+model Employee {
+  id                String    @id @default(cuid())
+  employeeId        String    @unique // e.g., EMP-001
+  firstName         String
+  lastName          String
+  email             String    @unique
+  phone             String?
+  avatar            String?
+  role              String    @default("employee") // admin, hr, manager, employee
+  status            String    @default("active") // active, inactive, on_leave, terminated
+  hireDate          DateTime
+  departmentId      String
+  companyId         String
+  payType           String    @default("hourly") // hourly, salary
+  payRate           Float     @default(0)
+  overtimeRate      Float     @default(1.5)
+  workLocationId    String?   // assigned geofence
+  address           String?
+  emergencyContact  String?
+  emergencyPhone    String?
+  bankAccount       String?   // bank account for direct deposit
+  taxFilingStatus   String?   // single, married, etc
+  taxAllowances     Int       @default(1)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  company         Company         @relation(fields: [companyId], references: [id])
+  department      Department      @relation(fields: [departmentId], references: [id])
+  workLocation    Geofence?       @relation(fields: [workLocationId], references: [id])
+  attendance      Attendance[]
+  ptoRequests     PTORequest[]
+  ptoBalances     PTOBalance[]
+  payrollRecords  PayrollRecord[]
+  notifications   Notification[]
+
+  @@index([departmentId])
+  @@index([companyId])
+  @@index([status])
+}
+
+// ============ GEOFENCES ============
+
+model Geofence {
+  id          String   @id @default(cuid())
+  name        String
+  address     String?
+  type        String   @default("office") // office, remote_site, field
+  isActive    Boolean  @default(true)
+  polygon     String   // JSON string of GeoJSON polygon coordinates
+  centerLat   Float
+  centerLng   Float
+  radius      Float    @default(200) // meters (fallback for circular geofence)
+  companyId   String
+  departmentId String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  company    Company      @relation(fields: [companyId], references: [id])
+  department Department?  @relation(fields: [departmentId], references: [id])
+  employees  Employee[]
+  attendance Attendance[]
+}
+
+// ============ ATTENDANCE ============
+
+model Attendance {
+  id          String    @id @default(cuid())
+  employeeId  String
+  geofenceId  String
+  clockIn     DateTime
+  clockOut    DateTime?
+  clockInLat  Float
+  clockInLng  Float
+  clockOutLat Float?
+  clockOutLng Float?
+  status      String    @default("active") // active, completed, flagged, approved
+  notes       String?
+  totalHours  Float?
+  overtimeHours Float?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  employee Employee @relation(fields: [employeeId], references: [id])
+  geofence Geofence @relation(fields: [geofenceId], references: [id])
+
+  @@index([employeeId])
+  @@index([clockIn])
+  @@index([status])
+}
+
+// ============ PTO ============
+
+model PTOBalance {
+  id          String  @id @default(cuid())
+  employeeId  String
+  year        Int
+  totalAllocated Float @default(0)
+  usedSick    Float   @default(0)
+  usedVacation Float  @default(0)
+  usedPersonal Float  @default(0)
+  usedOther   Float   @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  employee Employee @relation(fields: [employeeId], references: [id])
+
+  @@unique([employeeId, year])
+  @@index([employeeId])
+}
+
+model PTORequest {
+  id          String    @id @default(cuid())
+  employeeId  String
+  type        String    // sick, vacation, personal, other
+  startDate   DateTime
+  endDate     DateTime
+  daysCount   Float
+  reason      String?
+  status      String    @default("pending") // pending, approved, rejected, cancelled
+  approvedBy  String?
+  approvedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  employee   Employee @relation(fields: [employeeId], references: [id])
+  notifications Notification[]
+
+  @@index([employeeId])
+  @@index([status])
+}
+
+// ============ PAYROLL ============
+
+model PayrollPeriod {
+  id          String    @id @default(cuid())
+  name        String    // e.g., "January 2025"
+  startDate   DateTime
+  endDate     DateTime
+  status      String    @default("draft") // draft, processing, completed, paid
+  companyId   String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  company   Company        @relation(fields: [companyId], references: [id])
+  records   PayrollRecord[]
+
+  @@index([status])
+  @@index([companyId])
+}
+
+model PayrollRecord {
+  id                String   @id @default(cuid())
+  payrollPeriodId   String
+  employeeId        String
+  regularHours      Float    @default(0)
+  overtimeHours     Float    @default(0)
+  totalHours        Float    @default(0)
+  grossPay          Float    @default(0)
+  federalTax        Float    @default(0)
+  stateTax          Float    @default(0)
+  socialSecurity    Float    @default(0)
+  medicare          Float    @default(0)
+  healthInsurance   Float    @default(0)
+  retirement401k    Float    @default(0)
+  otherDeductions   Float    @default(0)
+  totalDeductions   Float    @default(0)
+  netPay            Float    @default(0)
+  status            String   @default("pending") // pending, approved, paid, flagged
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  payrollPeriod PayrollPeriod @relation(fields: [payrollPeriodId], references: [id])
+  employee      Employee      @relation(fields: [employeeId], references: [id])
+
+  @@index([payrollPeriodId])
+  @@index([employeeId])
+  @@index([status])
+}
+
+// ============ NOTIFICATIONS ============
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String   // employeeId
+  title     String
+  message   String
+  type      String   @default("info") // info, warning, alert, success
+  isRead    Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+
+  employee   Employee    @relation(fields: [userId], references: [id])
+  ptoRequest PTORequest? @relation(fields: [id], references: [id])
+
+  @@index([userId])
+  @@index([isRead])
+}
+
+// ============ AI CHAT ============
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  sessionId String
+  userId    String
+  role      String   // user, assistant
+  content   String
+  agentType String?  // hr_assistant, pto_fairy, payroll_detective, compliance_agent
+  createdAt DateTime @default(now())
+
+  @@index([sessionId])
+  @@index([userId])
+}
+
+// ============ AUDIT LOG ============
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  module    String   // attendance, payroll, pto, employee, geofence
+  details   String?  // JSON
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([module])
+  @@index([createdAt])
+}

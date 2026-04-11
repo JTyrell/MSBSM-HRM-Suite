@@ -653,9 +653,11 @@ export function DashboardView() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-sm text-muted-foreground">
-            Welcome back! Here&apos;s your HR overview for today.
-          </p>
+          <div className="callout-success">
+            <span className="text-sm">
+              Welcome back! Here&apos;s your HR overview for today.
+            </span>
+          </div>
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Activity className="h-4 w-4 text-emerald-500" />
@@ -692,15 +694,13 @@ export function DashboardView() {
                   {stat.trend && (
                     <div className="mt-3 flex items-center gap-1.5 text-xs">
                       {stat.trend.direction === "up" ? (
-                        <ArrowUpRight className="h-3.5 w-3.5 text-emerald-500" />
+                        <ArrowUpRight className="h-3.5 w-3.5" />
                       ) : (
-                        <ArrowDownRight className="h-3.5 w-3.5 text-rose-500" />
+                        <ArrowDownRight className="h-3.5 w-3.5" />
                       )}
                       <span
-                        className={`font-medium ${
-                          stat.trend.direction === "up"
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "text-rose-600 dark:text-rose-400"
+                        className={`stat-change-${
+                          stat.trend.direction === "up" ? "up" : stat.trend.direction === "down" ? "down" : "neutral"
                         }`}
                       >
                         {stat.trend.value}

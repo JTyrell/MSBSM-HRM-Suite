@@ -1832,3 +1832,1093 @@
     transition: none !important;
   }
 }
+
+/* ================================================
+   36. A — Advanced Data Table Styles
+   ================================================ */
+.data-table-hover tbody tr {
+  position: relative;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+.data-table-hover tbody tr:hover {
+  border-left: 3px solid #10b981;
+  background-color: rgba(16, 185, 129, 0.04);
+}
+.dark .data-table-hover tbody tr:hover {
+  border-left-color: #34d399;
+  background-color: rgba(16, 185, 129, 0.06);
+}
+
+.data-table-striped tbody tr:nth-child(even) {
+  background-color: rgba(16, 185, 129, 0.02);
+}
+.dark .data-table-striped tbody tr:nth-child(even) {
+  background-color: rgba(16, 185, 129, 0.03);
+}
+
+.data-table-header thead th {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.06), rgba(20, 184, 166, 0.04));
+  border-bottom: 2px solid rgba(16, 185, 129, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.dark .data-table-header thead th {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08), rgba(20, 184, 166, 0.05));
+  border-bottom-color: rgba(16, 185, 129, 0.2);
+}
+
+.data-table-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  min-height: 180px;
+  text-align: center;
+}
+.data-table-empty .data-table-empty-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 185, 129, 0.06);
+  margin-bottom: 0.75rem;
+  color: oklch(0.556 0 0);
+}
+.dark .data-table-empty .data-table-empty-icon {
+  background: rgba(16, 185, 129, 0.1);
+  color: oklch(0.708 0 0);
+}
+
+/* ================================================
+   37. B — Breadcrumb & Navigation Trail
+   ================================================ */
+.breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: oklch(0.556 0 0);
+  transition: color 0.15s ease;
+}
+.breadcrumb-item::after {
+  content: "›";
+  margin-left: 0.375rem;
+  color: rgba(0, 0, 0, 0.15);
+  font-size: 0.75rem;
+}
+.breadcrumb-item:last-child::after {
+  display: none;
+}
+.breadcrumb-item:hover {
+  color: #10b981;
+}
+.dark .breadcrumb-item {
+  color: oklch(0.708 0 0);
+}
+.dark .breadcrumb-item:hover {
+  color: #34d399;
+}
+
+.breadcrumb-active {
+  color: #059669;
+  font-weight: 600;
+}
+.dark .breadcrumb-active {
+  color: #34d399;
+}
+
+.nav-trail {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  mask-image: linear-gradient(to right, transparent, black 12px, black calc(100% - 12px), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 12px, black calc(100% - 12px), transparent);
+}
+.nav-trail::-webkit-scrollbar {
+  display: none;
+}
+
+/* ================================================
+   38. C — Info Banner / Callout Styles
+   ================================================ */
+.callout-info,
+.callout-warning,
+.callout-success,
+.callout-danger {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1rem;
+  border-radius: 0.625rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border: 1px solid;
+  border-left-width: 4px;
+}
+.callout-info {
+  background: rgba(13, 148, 136, 0.05);
+  border-left-color: #0d9488;
+  color: #115e59;
+}
+.dark .callout-info {
+  background: rgba(13, 148, 136, 0.08);
+  border-left-color: #2dd4bf;
+  color: #ccfbf1;
+}
+.callout-warning {
+  background: rgba(245, 158, 11, 0.05);
+  border-left-color: #f59e0b;
+  color: #78350f;
+}
+.dark .callout-warning {
+  background: rgba(245, 158, 11, 0.08);
+  border-left-color: #fbbf24;
+  color: #fef3c7;
+}
+.callout-success {
+  background: rgba(16, 185, 129, 0.05);
+  border-left-color: #10b981;
+  color: #065f46;
+}
+.dark .callout-success {
+  background: rgba(16, 185, 129, 0.08);
+  border-left-color: #34d399;
+  color: #d1fae5;
+}
+.callout-danger {
+  background: rgba(244, 63, 94, 0.05);
+  border-left-color: #f43f5e;
+  color: #881337;
+}
+.dark .callout-danger {
+  background: rgba(244, 63, 94, 0.08);
+  border-left-color: #fb7185;
+  color: #ffe4e6;
+}
+
+/* ================================================
+   39. D — Avatar Stack & User Presence
+   ================================================ */
+.avatar-stack {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.avatar-stack > * + * {
+  margin-left: -0.5rem;
+}
+.avatar-stack-item {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 9999px;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+.avatar-stack-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+  z-index: 10;
+}
+.dark .avatar-stack-item {
+  border-color: #1a1a1a;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+.dark .avatar-stack-item:hover {
+  box-shadow: 0 4px 8px rgba(52, 211, 153, 0.2);
+}
+
+.presence-online {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
+  background: #10b981;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+}
+.dark .presence-online {
+  border-color: #1a1a1a;
+  box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5);
+}
+.presence-away {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
+  background: #f59e0b;
+  border: 2px solid #ffffff;
+}
+.dark .presence-away {
+  border-color: #1a1a1a;
+}
+.presence-busy {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
+  background: #ef4444;
+  border: 2px solid #ffffff;
+}
+.dark .presence-busy {
+  border-color: #1a1a1a;
+}
+
+/* ================================================
+   40. E — Timeline Component
+   ================================================ */
+.timeline-container {
+  position: relative;
+  padding-left: 1.75rem;
+}
+.timeline-container::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.05));
+}
+.dark .timeline-container::before {
+  background: linear-gradient(180deg, rgba(52, 211, 153, 0.15), rgba(52, 211, 153, 0.03));
+}
+
+.timeline-line {
+  position: absolute;
+  left: 7px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(0, 0, 0, 0.06);
+}
+.dark .timeline-line {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.timeline-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 0.625rem;
+  padding: 0.875rem 1rem;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.timeline-card:hover {
+  border-color: rgba(16, 185, 129, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.dark .timeline-card {
+  background: rgba(30, 30, 30, 0.8);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+.dark .timeline-card:hover {
+  border-color: rgba(16, 185, 129, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ================================================
+   41. F — Stat Change Indicators
+   ================================================ */
+.stat-change-up {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #059669;
+}
+.stat-change-up::before {
+  content: "↑";
+  display: inline-block;
+  font-size: 1em;
+  line-height: 1;
+}
+.dark .stat-change-up {
+  color: #34d399;
+}
+
+.stat-change-down {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #dc2626;
+}
+.stat-change-down::before {
+  content: "↓";
+  display: inline-block;
+  font-size: 1em;
+  line-height: 1;
+}
+.dark .stat-change-down {
+  color: #f87171;
+}
+
+.stat-change-neutral {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #6b7280;
+}
+.stat-change-neutral::before {
+  content: "→";
+  display: inline-block;
+  font-size: 1em;
+  line-height: 1;
+}
+.dark .stat-change-neutral {
+  color: #9ca3af;
+}
+
+.stat-sparkline {
+  display: inline-block;
+  width: 4rem;
+  height: 1.25rem;
+  vertical-align: middle;
+}
+
+/* ================================================
+   42. G — Search Input Enhancement
+   ================================================ */
+.search-input-enhanced {
+  position: relative;
+}
+.search-input-enhanced input {
+  padding-left: 2.5rem;
+  padding-right: 2.25rem;
+  border-radius: 0.5rem;
+  border: 1px solid oklch(0.922 0 0);
+  background: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.search-input-enhanced input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  outline: none;
+}
+.dark .search-input-enhanced input {
+  background: rgba(30, 30, 30, 0.8);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.dark .search-input-enhanced input:focus {
+  border-color: #34d399;
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.15);
+}
+
+.search-results-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 0.625rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  max-height: 20rem;
+  overflow-y: auto;
+  margin-top: 0.25rem;
+}
+.dark .search-results-dropdown {
+  background: rgba(30, 30, 30, 0.95);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.search-highlight {
+  background: rgba(16, 185, 129, 0.15);
+  color: #065f46;
+  border-radius: 0.125rem;
+  padding: 0 0.125rem;
+  font-weight: 600;
+}
+.dark .search-highlight {
+  background: rgba(16, 185, 129, 0.25);
+  color: #a7f3d0;
+}
+
+/* ================================================
+   43. H — Skeleton Loading Patterns
+   ================================================ */
+.skeleton-card {
+  border-radius: 0.75rem;
+  background: linear-gradient(
+    90deg,
+    rgba(16, 185, 129, 0.03) 25%,
+    rgba(16, 185, 129, 0.08) 37%,
+    rgba(16, 185, 129, 0.03) 63%
+  );
+  background-size: 1200px 100%;
+  animation: skeletonShimmer 1.8s ease-in-out infinite;
+  height: 8rem;
+}
+.dark .skeleton-card {
+  background: linear-gradient(
+    90deg,
+    rgba(52, 211, 153, 0.03) 25%,
+    rgba(52, 211, 153, 0.07) 37%,
+    rgba(52, 211, 153, 0.03) 63%
+  );
+  background-size: 1200px 100%;
+}
+
+.skeleton-table {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+}
+.skeleton-table .skeleton-table-row {
+  display: flex;
+  gap: 0.75rem;
+  flex: 1;
+  height: 2.75rem;
+  border-radius: 0.375rem;
+  background: linear-gradient(
+    90deg,
+    rgba(16, 185, 129, 0.03) 25%,
+    rgba(16, 185, 129, 0.08) 37%,
+    rgba(16, 185, 129, 0.03) 63%
+  );
+  background-size: 1200px 100%;
+  animation: skeletonShimmer 1.8s ease-in-out infinite;
+}
+.dark .skeleton-table .skeleton-table-row {
+  background: linear-gradient(
+    90deg,
+    rgba(52, 211, 153, 0.03) 25%,
+    rgba(52, 211, 153, 0.07) 37%,
+    rgba(52, 211, 153, 0.03) 63%
+  );
+  background-size: 1200px 100%;
+}
+
+.skeleton-chart {
+  height: 12rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(
+    90deg,
+    rgba(16, 185, 129, 0.03) 25%,
+    rgba(16, 185, 129, 0.08) 37%,
+    rgba(16, 185, 129, 0.03) 63%
+  );
+  background-size: 1200px 100%;
+  animation: skeletonShimmer 1.8s ease-in-out infinite;
+}
+.dark .skeleton-chart {
+  background: linear-gradient(
+    90deg,
+    rgba(52, 211, 153, 0.03) 25%,
+    rgba(52, 211, 153, 0.07) 37%,
+    rgba(52, 211, 153, 0.03) 63%
+  );
+  background-size: 1200px 100%;
+}
+
+.skeleton-avatar {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  background: linear-gradient(
+    90deg,
+    rgba(16, 185, 129, 0.04) 25%,
+    rgba(16, 185, 129, 0.1) 37%,
+    rgba(16, 185, 129, 0.04) 63%
+  );
+  background-size: 1200px 100%;
+  animation: skeletonShimmer 1.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.dark .skeleton-avatar {
+  background: linear-gradient(
+    90deg,
+    rgba(52, 211, 153, 0.04) 25%,
+    rgba(52, 211, 153, 0.09) 37%,
+    rgba(52, 211, 153, 0.04) 63%
+  );
+  background-size: 1200px 100%;
+}
+
+/* ================================================
+   36. Data Table Utilities
+   ================================================ */
+.data-table-hover tbody tr {
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+.data-table-hover tbody tr:hover {
+  background-color: rgba(16, 185, 129, 0.06);
+  box-shadow: 0 1px 3px rgba(16, 185, 129, 0.08);
+}
+.dark .data-table-hover tbody tr:hover {
+  background-color: rgba(16, 185, 129, 0.08);
+  box-shadow: 0 1px 3px rgba(16, 185, 129, 0.12);
+}
+
+.data-table-striped tbody tr:nth-child(even) {
+  background-color: rgba(16, 185, 129, 0.03);
+}
+.dark .data-table-striped tbody tr:nth-child(even) {
+  background-color: rgba(16, 185, 129, 0.05);
+}
+.data-table-striped tbody tr:nth-child(even):hover {
+  background-color: rgba(16, 185, 129, 0.08);
+}
+.dark .data-table-striped tbody tr:nth-child(even):hover {
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.data-table-header thead th {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.04), rgba(20, 184, 166, 0.02));
+  border-bottom: 2px solid rgba(16, 185, 129, 0.15);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: oklch(0.4 0 0);
+  padding: 0.75rem 1rem;
+}
+.dark .data-table-header thead th {
+  background: rgba(16, 185, 129, 0.06);
+  border-bottom-color: rgba(16, 185, 129, 0.2);
+  color: oklch(0.8 0 0);
+}
+
+.data-table-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  color: oklch(0.556 0 0);
+  min-height: 200px;
+}
+.data-table-empty .data-table-empty-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 185, 129, 0.08);
+  margin-bottom: 0.75rem;
+  color: #10b981;
+}
+.dark .data-table-empty {
+  color: oklch(0.708 0 0);
+}
+
+/* ================================================
+   37. Breadcrumb Navigation
+   ================================================ */
+.breadcrumb-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  color: oklch(0.556 0 0);
+  transition: color 0.15s ease;
+}
+.breadcrumb-item:hover {
+  color: #10b981;
+}
+.dark .breadcrumb-item {
+  color: oklch(0.708 0 0);
+}
+.dark .breadcrumb-item:hover {
+  color: #34d399;
+}
+.breadcrumb-item + .breadcrumb-item::before {
+  content: "/";
+  margin-right: 0.25rem;
+  color: oklch(0.8 0 0);
+}
+
+.breadcrumb-active {
+  color: oklch(0.205 0 0);
+  font-weight: 500;
+  pointer-events: none;
+}
+.dark .breadcrumb-active {
+  color: oklch(0.985 0 0);
+}
+
+.nav-trail {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+}
+.nav-trail .nav-trail-separator {
+  color: oklch(0.8 0 0);
+  font-size: 0.75rem;
+}
+
+/* ================================================
+   38. Callout / Alert Boxes
+   ================================================ */
+.callout-info {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1rem 1rem 1.125rem;
+  border-radius: 0.625rem;
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  border-left: 4px solid #10b981;
+}
+.dark .callout-info {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+.callout-info .callout-icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #10b981;
+  margin-top: 0.125rem;
+}
+.dark .callout-info .callout-icon {
+  color: #34d399;
+}
+
+.callout-warning {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1rem 1rem 1.125rem;
+  border-radius: 0.625rem;
+  background: rgba(245, 158, 11, 0.05);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  border-left: 4px solid #f59e0b;
+}
+.dark .callout-warning {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.2);
+}
+.callout-warning .callout-icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #f59e0b;
+  margin-top: 0.125rem;
+}
+
+.callout-success {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1rem 1rem 1.125rem;
+  border-radius: 0.625rem;
+  background: rgba(5, 150, 105, 0.05);
+  border: 1px solid rgba(5, 150, 105, 0.15);
+  border-left: 4px solid #059669;
+}
+.dark .callout-success {
+  background: rgba(5, 150, 105, 0.08);
+  border-color: rgba(5, 150, 105, 0.2);
+}
+.callout-success .callout-icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #059669;
+  margin-top: 0.125rem;
+}
+.dark .callout-success .callout-icon {
+  color: #34d399;
+}
+
+.callout-danger {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1rem 1rem 1.125rem;
+  border-radius: 0.625rem;
+  background: rgba(220, 38, 38, 0.04);
+  border: 1px solid rgba(220, 38, 38, 0.12);
+  border-left: 4px solid #dc2626;
+}
+.dark .callout-danger {
+  background: rgba(220, 38, 38, 0.06);
+  border-color: rgba(220, 38, 38, 0.18);
+}
+.callout-danger .callout-icon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #dc2626;
+  margin-top: 0.125rem;
+}
+.dark .callout-danger .callout-icon {
+  color: #f87171;
+}
+
+/* ================================================
+   39. Avatar Stack & Presence Indicators
+   ================================================ */
+.avatar-stack {
+  display: flex;
+  align-items: center;
+}
+.avatar-stack .avatar-stack-item {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  border: 2px solid #ffffff;
+  margin-left: -0.5rem;
+  transition: transform 0.15s ease, z-index 0s;
+  position: relative;
+  object-fit: cover;
+}
+.avatar-stack .avatar-stack-item:first-child {
+  margin-left: 0;
+}
+.avatar-stack .avatar-stack-item:hover {
+  transform: scale(1.15);
+  z-index: 10;
+}
+.dark .avatar-stack .avatar-stack-item {
+  border-color: oklch(0.205 0 0);
+}
+
+.presence-online {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: #10b981;
+  border: 2px solid #ffffff;
+  z-index: 2;
+}
+.dark .presence-online {
+  border-color: oklch(0.205 0 0);
+}
+
+.presence-away {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: #f59e0b;
+  border: 2px solid #ffffff;
+  z-index: 2;
+}
+.dark .presence-away {
+  border-color: oklch(0.205 0 0);
+}
+
+.presence-busy {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: #ef4444;
+  border: 2px solid #ffffff;
+  z-index: 2;
+}
+.dark .presence-busy {
+  border-color: oklch(0.205 0 0);
+}
+
+/* ================================================
+   40. Enhanced Timeline Container & Card
+   ================================================ */
+.timeline-container {
+  position: relative;
+  padding-left: 0;
+}
+.timeline-container .timeline-line {
+  position: absolute;
+  left: 7px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.25), rgba(16, 185, 129, 0.05));
+}
+.dark .timeline-container .timeline-line {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.3), rgba(16, 185, 129, 0.08));
+}
+
+.timeline-card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 0.625rem;
+  padding: 1rem;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.timeline-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+.dark .timeline-card {
+  background: rgba(30, 30, 30, 0.7);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.dark .timeline-card:hover {
+  border-color: rgba(16, 185, 129, 0.25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ================================================
+   41. Stat Change Indicators (inline trend badges)
+   ================================================ */
+.stat-change-up {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #059669;
+  background: rgba(5, 150, 105, 0.08);
+  border: 1px solid rgba(5, 150, 105, 0.15);
+}
+.dark .stat-change-up {
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.1);
+  border-color: rgba(52, 211, 153, 0.2);
+}
+
+.stat-change-down {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.06);
+  border: 1px solid rgba(220, 38, 38, 0.12);
+}
+.dark .stat-change-down {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.1);
+  border-color: rgba(248, 113, 113, 0.2);
+}
+
+.stat-change-neutral {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: oklch(0.556 0 0);
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+.dark .stat-change-neutral {
+  color: oklch(0.708 0 0);
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ================================================
+   42. Enhanced Search Styles
+   ================================================ */
+.search-input-enhanced {
+  position: relative;
+}
+.search-input-enhanced input {
+  padding-left: 2.5rem;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.search-input-enhanced input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  outline: none;
+}
+.dark .search-input-enhanced input {
+  background: rgba(30, 30, 30, 0.7);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.dark .search-input-enhanced input:focus {
+  border-color: #34d399;
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.15);
+}
+.search-input-enhanced .search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: oklch(0.556 0 0);
+  pointer-events: none;
+}
+
+.search-results-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  margin-top: 0.25rem;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.625rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+  max-height: 20rem;
+  overflow-y: auto;
+}
+.dark .search-results-dropdown {
+  background: rgba(30, 30, 30, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.search-highlight {
+  background: rgba(16, 185, 129, 0.2);
+  color: #064e3b;
+  border-radius: 0.125rem;
+  padding: 0 0.0625rem;
+  font-weight: 600;
+}
+.dark .search-highlight {
+  background: rgba(52, 211, 153, 0.25);
+  color: #a7f3d0;
+}
+
+/* ================================================
+   43. Skeleton Shape Variants
+   ================================================ */
+.skeleton-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: #f1f5f9;
+  height: 10rem;
+}
+.dark .skeleton-card {
+  background: rgba(30, 30, 30, 0.7);
+}
+.skeleton-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 25%,
+    rgba(16, 185, 129, 0.06) 37%,
+    transparent 63%
+  );
+  background-size: 1200px 100%;
+  animation: skeletonShimmer 1.8s ease-in-out infinite;
+}
+
+.skeleton-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.skeleton-table tr {
+  height: 3rem;
+}
+.skeleton-table td {
+  padding: 0 1rem;
+}
+.skeleton-table td .skeleton-bar {
+  height: 0.75rem;
+  border-radius: 0.25rem;
+  background: linear-gradient(
+    90deg,
+    rgba(16, 185, 129, 0.04) 25%,
+    rgba(16, 185, 129, 0.12) 37%,
+    rgba(16, 185, 129, 0.04) 63%
+  );
+  background-size: 1200px 100%;
+  animation: skeletonShimmer 1.8s ease-in-out infinite;
+}
+.dark .skeleton-table td .skeleton-bar {
+  background: linear-gradient(
+    90deg,
+    rgba(52, 211, 153, 0.04) 25%,
+    rgba(52, 211, 153, 0.1) 37%,
+    rgba(52, 211, 153, 0.04) 63%
+  );
+  background-size: 1200px 100%;
+}
+
+.skeleton-chart {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background: #f1f5f9;
+  height: 16rem;
+}
+.dark .skeleton-chart {
+  background: rgba(30, 30, 30, 0.5);
+}
+.skeleton-chart::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 25%,
+    rgba(16, 185, 129, 0.06) 37%,
+    transparent 63%
+  );
+  background-size: 1200px 100%;
+  animation: skeletonShimmer 1.8s ease-in-out infinite;
+}
+
+.skeleton-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  position: relative;
+  overflow: hidden;
+  background: #e2e8f0;
+}
+.dark .skeleton-avatar {
+  background: rgba(255, 255, 255, 0.08);
+}
+.skeleton-avatar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 25%,
+    rgba(16, 185, 129, 0.08) 37%,
+    transparent 63%
+  );
+  background-size: 1200px 100%;
+  animation: skeletonShimmer 1.8s ease-in-out infinite;
+}

@@ -688,7 +688,7 @@ export function PerformanceReviewsView() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 data-table-hover">
               {filteredReviews.map((review, i) => (
                 <Card
                   key={review.id}

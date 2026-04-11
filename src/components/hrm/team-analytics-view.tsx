@@ -924,7 +924,7 @@ export function TeamAnalyticsView() {
                 <CardDescription>Highest paid employees</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="max-h-52 overflow-y-auto space-y-2">
+                <div className="max-h-52 overflow-y-auto space-y-2 data-table-striped">
                   {[...employees]
                     .sort((a, b) => b.payRate - a.payRate)
                     .slice(0, 6)
@@ -1397,7 +1397,7 @@ export function TeamAnalyticsView() {
                 <CardDescription>Latest leave requests</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="max-h-64 overflow-y-auto space-y-2">
+                <div className="max-h-64 overflow-y-auto space-y-2 data-table-striped">
                   {ptoRequests.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
                       <CalendarDays className="h-8 w-8 mb-2 opacity-30" />

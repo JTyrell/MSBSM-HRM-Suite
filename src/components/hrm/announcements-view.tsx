@@ -568,18 +568,16 @@ export function AnnouncementsView() {
               {pinnedAnnouncements.length}
             </Badge>
           </div>
-          <div className="space-y-3">
-            {pinnedAnnouncements.map((a) => renderAnnouncementCard(a, true))}
+          <div className="callout-info">
+            <div className="timeline-container space-y-0">
+              {pinnedAnnouncements.map((a) => renderAnnouncementCard(a, true))}
+            </div>
           </div>
         </div>
       )}
 
       {/* Category Filter Tabs */}
       <div>
-        <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-          <Megaphone className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-          All Announcements
-        </h2>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="mb-4">
             {CATEGORY_TABS.map((tab) => {
@@ -614,7 +612,7 @@ export function AnnouncementsView() {
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-3">
+          <div className="timeline-container space-y-0">
             {regularAnnouncements.map((a) => renderAnnouncementCard(a, false))}
           </div>
         )}

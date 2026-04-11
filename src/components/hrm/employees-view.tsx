@@ -363,16 +363,16 @@ function OrgChartView({
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="flex -space-x-1.5">
+                  <div className="avatar-stack">
                     {deptEmps.slice(0, 4).map((emp) => (
-                      <Avatar key={emp.id} className="h-6 w-6 border-2 border-white dark:border-gray-950">
+                      <Avatar key={emp.id} className="avatar-stack-item h-6 w-6 border-2 border-white dark:border-gray-950">
                         <AvatarFallback className={`${getAvatarColor(emp.id)} text-white text-[8px]`}>
                           {getInitials(emp.firstName, emp.lastName)}
                         </AvatarFallback>
                       </Avatar>
                     ))}
                     {deptEmps.length > 4 && (
-                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 text-[9px] font-medium text-gray-600 dark:text-gray-300 border-2 border-white dark:border-gray-950">
+                      <div className="avatar-stack-item flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 text-[9px] font-medium text-gray-600 dark:text-gray-300">
                         +{deptEmps.length - 4}
                       </div>
                     )}

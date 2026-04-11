@@ -18,6 +18,8 @@ import {
   Shield,
   Building2,
   ChevronRight,
+  BarChart3,
+  ClipboardCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -42,6 +44,9 @@ import { PayrollView } from "@/components/hrm/payroll-view";
 import { PTOView } from "@/components/hrm/pto-view";
 import { AIChatView } from "@/components/hrm/ai-chat-view";
 import { GeofenceView } from "@/components/hrm/geofence-view";
+import { ReportsView } from "@/components/hrm/reports-view";
+import { OnboardingView } from "@/components/hrm/onboarding-view";
+import { SettingsView } from "@/components/hrm/settings-view";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -50,7 +55,10 @@ const NAV_ITEMS = [
   { id: "payroll", label: "Payroll", icon: DollarSign },
   { id: "pto", label: "Time Off", icon: CalendarDays },
   { id: "geofences", label: "Geofences", icon: MapPin },
+  { id: "onboarding", label: "Onboarding", icon: ClipboardCheck },
+  { id: "reports", label: "Reports", icon: BarChart3 },
   { id: "ai-assistant", label: "AI Assistant", icon: Bot },
+  { id: "settings", label: "Settings", icon: Settings },
 ];
 
 const ROLE_LABELS: Record<string, string> = {
@@ -356,7 +364,10 @@ export default function HomePage() {
           {currentView === "payroll" && <PayrollView />}
           {currentView === "pto" && <PTOView />}
           {currentView === "geofences" && <GeofenceView />}
+          {currentView === "onboarding" && <OnboardingView />}
+          {currentView === "reports" && <ReportsView />}
           {currentView === "ai-assistant" && <AIChatView />}
+          {currentView === "settings" && <SettingsView />}
         </div>
 
         {/* Footer */}

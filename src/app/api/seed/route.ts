@@ -234,7 +234,7 @@ export async function POST() {
       });
     }
 
-    // Create a recent payroll period
+    // Create a recent payroll period with records
     const periodStart = new Date(now);
     periodStart.setDate(periodStart.getDate() - 30);
     const periodEnd = new Date(now);
@@ -250,6 +250,85 @@ export async function POST() {
       },
     });
 
+    // Create payroll records for each employee
+    let totalGrossPay = 0;
+    let totalNetPay = 0;
+    for (const emp of employees) {
+      // Calculate hours from attendance in this period
+      const empAttendance = attendanceRecords.filter(
+        (r) => r.employeeId === emp.id
+      );
+      let regularHours = 0;
+      let overtimeHours = 0;
+      for (const att of empAttendance) {
+        const hours = att.totalHours || 0;
+        const ot = att.overtimeHours || 0;
+        regularHours += hours - ot;
+        overtimeHours += ot;
+      }
+
+      // For salary employees, estimate bi-weekly hours
+      if (emp.payType === "salary" && regularHours < 40) {
+        regularHours = 80; // bi-weekly
+      }
+
+      const grossPay = (regularHours + overtimeHours * 1.5) * emp.payRate;
+      const federalTax = grossPay * 0.15;
+      const stateTax = grossPay * 0.05;
+      const socialSecurity = Math.min(grossPay, 168600) * 0.062;
+      const medicare = grossPay * 0.0145;
+      const healthInsurance = 150;
+      const totalDeductions = federalTax + stateTax + socialSecurity + medicare + healthInsurance;
+      const netPay = grossPay - totalDeductions;
+
+      totalGrossPay += grossPay;
+      totalNetPay += netPay;
+
+      await db.payrollRecord.create({
+        data: {
+          payrollPeriodId: payrollPeriod.id,
+          employeeId: emp.id,
+          regularHours: Math.round(regularHours * 100) / 100,
+          overtimeHours: Math.round(overtimeHours * 100) / 100,
+          totalHours: Math.round((regularHours + overtimeHours) * 100) / 100,
+          grossPay: Math.round(grossPay * 100) / 100,
+          federalTax: Math.round(federalTax * 100) / 100,
+          stateTax: Math.round(stateTax * 100) / 100,
+          socialSecurity: Math.round(socialSecurity * 100) / 100,
+          medicare: Math.round(medicare * 100) / 100,
+          healthInsurance,
+          retirement401k: 0,
+          otherDeductions: 0,
+          totalDeductions: Math.round(totalDeductions * 100) / 100,
+          netPay: Math.round(netPay * 100) / 100,
+          status: "paid",
+        },
+      });
+    }
+
+    // Create audit log entries
+    const auditActions = [
+      { userId: employees[0].id, action: "Payroll processed", module: "payroll", details: JSON.stringify({ periodId: payrollPeriod.id, totalEmployees: employees.length, totalGross: totalGrossPay }) },
+      { userId: employees[1].id, action: "PTO request approved", module: "pto", details: JSON.stringify({ requestType: "vacation", employeeId: employees[3].id }) },
+      { userId: employees[2].id, action: "Employee profile updated", module: "employee", details: JSON.stringify({ employeeId: employees[4].id }) },
+    ];
+    for (const audit of auditActions) {
+      await db.auditLog.create({ data: audit });
+    }
+
+    // Create notifications for employees
+    for (const emp of employees) {
+      await db.notification.create({
+        data: {
+          userId: emp.id,
+          title: "Payroll Processed",
+          message: `Your payroll for ${periodStart.toLocaleDateString("en-US", { month: "short" })} has been processed and paid.`,
+          type: "success",
+          link: "/payroll",
+        },
+      });
+    }
+
     return NextResponse.json({
       success: true,
       message: "Database seeded successfully",
@@ -260,6 +339,9 @@ export async function POST() {
         geofences: 3,
         attendanceRecords: attendanceRecords.length,
         ptoRequests: ptoData.length,
+        payrollRecords: employees.length,
+        totalGrossPay: Math.round(totalGrossPay * 100) / 100,
+        totalNetPay: Math.round(totalNetPay * 100) / 100,
       },
       employees: employees.map((e) => ({
         id: e.id,

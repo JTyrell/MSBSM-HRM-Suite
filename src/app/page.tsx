@@ -60,10 +60,12 @@ import { OnboardingView } from "@/components/hrm/onboarding-view";
 import { SettingsView } from "@/components/hrm/settings-view";
 import { DocumentsView } from "@/components/hrm/documents-view";
 import { ComplianceView } from "@/components/hrm/compliance-view";
+import { ShiftsView } from "@/components/hrm/shifts-view";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "attendance", label: "Attendance", icon: Clock, badge: "GPS" },
+  { id: "shifts", label: "Shifts", icon: CalendarClock },
   { id: "employees", label: "Employees", icon: Users },
   { id: "payroll", label: "Payroll", icon: DollarSign },
   { id: "pto", label: "Time Off", icon: CalendarDays },
@@ -458,6 +460,7 @@ export default function HomePage() {
           {currentView === "documents" && <DocumentsView />}
           {currentView === "compliance" && <ComplianceView />}
           {currentView === "settings" && <SettingsView />}
+          {currentView === "shifts" && <ShiftsView />}
         </div>
 
         {/* Footer */}
@@ -465,7 +468,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <Shield className="w-3 h-3" />
-              MSBM-HR Suite v2.0
+              MSBM-HR Suite v3.0
             </span>
             <span>AI-Powered Human Resource Management</span>
           </div>

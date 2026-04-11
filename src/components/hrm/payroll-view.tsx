@@ -56,8 +56,10 @@ import {
   BadgeCheck,
   Eye,
   Loader2,
+  Download,
 } from "lucide-react";
 import { format, parseISO } from "date-fns";
+import { exportPayrollToCSV } from "@/lib/export";
 
 // ======================== TYPES ========================
 
@@ -755,7 +757,18 @@ function PayrollDetailView({
               &middot; {records.length} employee{records.length !== 1 && "s"}
             </CardDescription>
           </div>
-          {getPeriodStatusBadge(period.status)}
+          <div className="flex items-center gap-2">
+            {getPeriodStatusBadge(period.status)}
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-1.5 text-emerald-700 border-emerald-300 hover:bg-emerald-50"
+              onClick={() => exportPayrollToCSV([period])}
+            >
+              <Download className="h-3.5 w-3.5" />
+              Export CSV
+            </Button>
+          </div>
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -1356,7 +1369,7 @@ export function PayrollView() {
   const fetchPeriods = useCallback(async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/api/payroll/periods");
+      const res = await fetch("/api/payroll");
       if (res.ok) {
         const data = await res.json();
         setPayrollPeriods(data);

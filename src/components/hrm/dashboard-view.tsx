@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useMemo, useCallback, useRef } from "react";
 import {
   Card,
   CardContent,
@@ -41,7 +41,13 @@ import {
   LogOut,
   Activity,
   Timer,
+  Sun,
+  Moon,
+  PlaneTakeoff,
+  Award,
+  Briefcase,
 } from "lucide-react";
+import { toast } from "sonner";
 import { useAppStore } from "@/store/app";
 import { formatCurrency } from "@/lib/payroll";
 import type {
@@ -114,6 +120,108 @@ function formatTime(dateStr: string): string {
     minute: "2-digit",
     hour12: true,
   });
+}
+
+// ─── World Clock Types ────────────────────────────────────────────
+interface TimezoneClock {
+  city: string;
+  timezone: string;
+  label: string;
+}
+
+const TIMEZONE_CLOCKS: TimezoneClock[] = [
+  { city: "New York", timezone: "America/New_York", label: "Company HQ" },
+  { city: "London", timezone: "Europe/London", label: "EMEA Office" },
+  { city: "Tokyo", timezone: "Asia/Tokyo", label: "APAC Office" },
+  { city: "Sydney", timezone: "Australia/Sydney", label: "ANZ Office" },
+];
+
+// ─── World Clock Component ──────────────────────────────────────────
+function WorldClockWidget() {
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <Card className="transition-all duration-300 hover:shadow-md">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="text-base font-semibold flex items-center gap-2">
+              <Clock className="h-4 w-4 text-emerald-500" />
+              World Clock
+            </CardTitle>
+            <CardDescription className="mt-1">Global office timezones</CardDescription>
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            Live
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="pt-0">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          {TIMEZONE_CLOCKS.map((tz) => {
+            const timeStr = now.toLocaleTimeString("en-US", {
+              timeZone: tz.timezone,
+              hour: "numeric",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true,
+            });
+            const dateStr = now.toLocaleDateString("en-US", {
+              timeZone: tz.timezone,
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+            });
+            const hour = parseInt(
+              now.toLocaleTimeString("en-US", {
+                timeZone: tz.timezone,
+                hour: "numeric",
+                hour12: false,
+              }),
+              10
+            );
+            const isDay = hour >= 6 && hour < 20;
+
+            return (
+              <div
+                key={tz.city}
+                className={`relative rounded-xl p-3 border transition-all duration-300 ${
+                  isDay
+                    ? "bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20 border-amber-200/60 dark:border-amber-800/40"
+                    : "bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800/40 dark:to-slate-900/40 border-slate-300/60 dark:border-slate-700/40"
+                }`}
+              >
+                {/* Day/Night indicator */}
+                <div className="absolute top-2.5 right-2.5">
+                  {isDay ? (
+                    <Sun className="h-4 w-4 text-amber-500" />
+                  ) : (
+                    <Moon className="h-4 w-4 text-slate-500" />
+                  )}
+                </div>
+                <p className="text-xs font-medium text-muted-foreground truncate pr-6">
+                  {tz.city}
+                </p>
+                <p className="text-lg font-bold tracking-tight tabular-nums mt-0.5">
+                  {timeStr}
+                </p>
+                <p className="text-[10px] text-muted-foreground mt-0.5">{dateStr}</p>
+                <span className="inline-block mt-1 text-[9px] px-1.5 py-0.5 rounded-full bg-white/60 dark:bg-black/20 font-medium text-muted-foreground">
+                  {tz.label}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </CardContent>
+    </Card>
+  );
 }
 
 // ─── Main Component ───────────────────────────────────────────────
@@ -324,13 +432,15 @@ export function DashboardView() {
       label: "Run Payroll",
       icon: PlayCircle,
       view: "payroll",
+      message: "Opening Payroll Module...",
       colorClass: "text-emerald-600 dark:text-emerald-400",
       bgColorClass: "bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60",
     },
     {
       label: "View Reports",
       icon: BarChart3,
-      view: "attendance",
+      view: "reports",
+      message: "Loading Reports...",
       colorClass: "text-teal-600 dark:text-teal-400",
       bgColorClass: "bg-teal-50 dark:bg-teal-950/40 hover:bg-teal-100 dark:hover:bg-teal-900/60",
     },
@@ -338,6 +448,7 @@ export function DashboardView() {
       label: "Add Employee",
       icon: UserPlus,
       view: "employees",
+      message: "Navigating to Employees...",
       colorClass: "text-amber-600 dark:text-amber-400",
       bgColorClass: "bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 dark:hover:bg-amber-900/60",
     },
@@ -345,14 +456,70 @@ export function DashboardView() {
       label: "Manage Geofences",
       icon: MapPin,
       view: "geofences",
+      message: "Opening Geofence Manager...",
       colorClass: "text-violet-600 dark:text-violet-400",
       bgColorClass: "bg-violet-50 dark:bg-violet-950/40 hover:bg-violet-100 dark:hover:bg-violet-900/60",
     },
   ];
 
+  // ─── Employee Quick Stats ────────────────────────────────────────
+  const now = useRef(new Date());
+  const onLeaveCount = employees.filter(
+    (e) => e.status === "on_leave"
+  ).length;
+  const newHiresThisMonth = employees.filter((e) => {
+    const hire = new Date(e.hireDate);
+    const current = new Date();
+    return (
+      hire.getMonth() === current.getMonth() &&
+      hire.getFullYear() === current.getFullYear()
+    );
+  }).length;
+  const anniversaryThisMonth = employees.filter((e) => {
+    const hire = new Date(e.hireDate);
+    const current = new Date();
+    return (
+      hire.getMonth() === current.getMonth() &&
+      hire.getFullYear() !== current.getFullYear() &&
+      hire.getFullYear() < current.getFullYear()
+    );
+  }).length;
+
+  const quickStats = [
+    {
+      label: "Total Active",
+      value: totalEmployees,
+      icon: Briefcase,
+      colorClass: "text-emerald-600 dark:text-emerald-400",
+      bgColorClass: "bg-emerald-50 dark:bg-emerald-950/40",
+    },
+    {
+      label: "On Leave",
+      value: onLeaveCount,
+      icon: CalendarDays,
+      colorClass: "text-amber-600 dark:text-amber-400",
+      bgColorClass: "bg-amber-50 dark:bg-amber-950/40",
+    },
+    {
+      label: "New Hires (Month)",
+      value: newHiresThisMonth,
+      icon: UserPlus,
+      colorClass: "text-teal-600 dark:text-teal-400",
+      bgColorClass: "bg-teal-50 dark:bg-teal-950/40",
+    },
+    {
+      label: "Anniversary (Month)",
+      value: anniversaryThisMonth,
+      icon: Award,
+      colorClass: "text-rose-600 dark:text-rose-400",
+      bgColorClass: "bg-rose-50 dark:bg-rose-950/40",
+    },
+  ];
+
   const handleQuickAction = useCallback(
-    (view: string) => {
-      setCurrentView(view);
+    (view: string, message: string) => {
+      toast.success(message);
+      setTimeout(() => setCurrentView(view), 300);
     },
     [setCurrentView]
   );
@@ -460,6 +627,43 @@ export function DashboardView() {
           );
         })}
       </div>
+
+      {/* ─── World Clock ──────────────────────────────────────────── */}
+      <WorldClockWidget />
+
+      {/* ─── Employee Quick Stats ───────────────────────────────────── */}
+      <Card className="transition-all duration-300 hover:shadow-md">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base font-semibold flex items-center gap-2">
+            <PlaneTakeoff className="h-4 w-4 text-teal-500" />
+            Employee Quick Stats
+          </CardTitle>
+          <CardDescription>Workforce snapshot for this month</CardDescription>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+            {quickStats.map((stat) => {
+              const Icon = stat.icon;
+              return (
+                <div
+                  key={stat.label}
+                  className={`flex items-center gap-3 p-3 rounded-xl ${stat.bgColorClass} border border-border/30 transition-transform duration-200 hover:scale-[1.02]`}
+                >
+                  <div
+                    className={`flex items-center justify-center h-10 w-10 rounded-lg ${stat.bgColorClass}`}
+                  >
+                    <Icon className={`h-5 w-5 ${stat.colorClass}`} />
+                  </div>
+                  <div>
+                    <p className="text-xl font-bold tracking-tight">{stat.value}</p>
+                    <p className="text-[11px] text-muted-foreground">{stat.label}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* ─── Charts Row ──────────────────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
@@ -716,7 +920,7 @@ export function DashboardView() {
                   return (
                     <button
                       key={action.label}
-                      onClick={() => handleQuickAction(action.view)}
+                      onClick={() => handleQuickAction(action.view, action.message)}
                       className={`flex flex-col items-center gap-2 p-4 rounded-xl border border-border/50 ${action.bgColorClass} transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] group`}
                     >
                       <Icon

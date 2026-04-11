@@ -64,6 +64,7 @@ import {
 } from "lucide-react";
 import { useAppStore } from "@/store/app";
 import { formatCurrency } from "@/lib/payroll";
+import { exportAttendanceToCSV, exportPayrollToCSV } from "@/lib/export";
 import { format, subMonths, startOfMonth, differenceInMonths } from "date-fns";
 
 // ─── Color Palette ─────────────────────────────────────────────────
@@ -440,6 +441,23 @@ export function ReportsView() {
         {/* TAB 1: ATTENDANCE ANALYTICS                            */}
         {/* ═══════════════════════════════════════════════════════ */}
         <TabsContent value="attendance" className="space-y-6">
+          {/* Attendance Tab Header with Export */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 className="text-lg font-semibold">Attendance Analytics</h3>
+              <p className="text-sm text-muted-foreground">Detailed attendance metrics and trends</p>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-1.5 text-emerald-700 border-emerald-300 hover:bg-emerald-50"
+              onClick={() => exportAttendanceToCSV(attendance)}
+            >
+              <Download className="h-3.5 w-3.5" />
+              Export CSV
+            </Button>
+          </div>
+
           {/* Stat Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <Card className="border-emerald-200/60 dark:border-emerald-800/40 hover:shadow-md transition-shadow">
@@ -664,6 +682,23 @@ export function ReportsView() {
         {/* TAB 2: PAYROLL ANALYTICS                              */}
         {/* ═══════════════════════════════════════════════════════ */}
         <TabsContent value="payroll" className="space-y-6">
+          {/* Payroll Tab Header with Export */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h3 className="text-lg font-semibold">Payroll Analytics</h3>
+              <p className="text-sm text-muted-foreground">Compensation insights and payroll trends</p>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-1.5 text-emerald-700 border-emerald-300 hover:bg-emerald-50"
+              onClick={() => exportPayrollToCSV(payrollPeriods)}
+            >
+              <Download className="h-3.5 w-3.5" />
+              Export CSV
+            </Button>
+          </div>
+
           {/* Compensation Summary Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <Card className="border-emerald-200/60 dark:border-emerald-800/40 hover:shadow-md transition-shadow">

@@ -14,6 +14,7 @@ export async function POST() {
     await db.pTORequest.deleteMany();
     await db.attendance.deleteMany();
     await db.employee.deleteMany();
+    await db.shift.deleteMany();
     await db.geofence.deleteMany();
     await db.department.deleteMany();
     await db.company.deleteMany();
@@ -92,6 +93,26 @@ export async function POST() {
         }),
       },
     });
+
+    // Create default shifts
+    const defaultShifts = [
+      { name: "Morning Shift", startTime: "06:00", endTime: "14:00", breakMinutes: 30, color: "#10b981", isActive: true, departmentId: departments[0].id },
+      { name: "Day Shift", startTime: "09:00", endTime: "17:00", breakMinutes: 60, color: "#14b8a6", isActive: true, departmentId: null },
+      { name: "Evening Shift", startTime: "14:00", endTime: "22:00", breakMinutes: 30, color: "#f59e0b", isActive: true, departmentId: departments[5].id },
+      { name: "Night Shift", startTime: "22:00", endTime: "06:00", breakMinutes: 45, color: "#8b5cf6", isActive: true, departmentId: departments[5].id },
+      { name: "Flex Shift", startTime: "10:00", endTime: "16:00", breakMinutes: 30, color: "#ec4899", isActive: true, departmentId: departments[3].id },
+    ];
+
+    const shifts = [];
+    for (const shiftData of defaultShifts) {
+      const shift = await db.shift.create({
+        data: {
+          ...shiftData,
+          companyId: company.id,
+        },
+      });
+      shifts.push(shift);
+    }
 
     // Create employees
     const now = new Date();
@@ -338,6 +359,7 @@ export async function POST() {
         employees: employees.length,
         geofences: 3,
         attendanceRecords: attendanceRecords.length,
+        shifts: shifts.length,
         ptoRequests: ptoData.length,
         payrollRecords: employees.length,
         totalGrossPay: Math.round(totalGrossPay * 100) / 100,

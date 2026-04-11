@@ -22,6 +22,7 @@ model Company {
   employees   Employee[]
   geofences   Geofence[]
   payrollPeriods PayrollPeriod[]
+  shifts      Shift[]
 }
 
 model Department {
@@ -36,6 +37,29 @@ model Department {
   company    Company   @relation(fields: [companyId], references: [id])
   employees  Employee[]
   geofences  Geofence[]
+  shifts     Shift[]
+}
+
+// ============ SHIFTS ============
+
+model Shift {
+  id            String   @id @default(cuid())
+  name          String
+  startTime     String
+  endTime       String
+  breakMinutes  Int      @default(30)
+  color         String   @default("#10b981")
+  isActive      Boolean  @default(true)
+  departmentId  String?
+  companyId     String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  company    Company      @relation(fields: [companyId], references: [id])
+  department Department?  @relation(fields: [departmentId], references: [id])
+
+  @@index([departmentId])
+  @@index([companyId])
 }
 
 // ============ EMPLOYEES ============

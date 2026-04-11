@@ -409,7 +409,7 @@ export function PerformanceReviewsView() {
             Manage employee evaluations, track review cycles, and monitor performance ratings.
           </p>
         </div>
-        <Button onClick={() => setCreateDialogOpen(true)} className="btn-gradient gap-2 self-start">
+        <Button onClick={() => setCreateDialogOpen(true)} className="btn-gradient gap-2 self-start border-gradient-emerald">
           <Plus className="w-4 h-4" />
           Create Review
         </Button>
@@ -417,7 +417,7 @@ export function PerformanceReviewsView() {
 
       {/* Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 stagger-grid">
-        <Card className="card-glow animate-fade-in-up card-stat">
+        <Card className="card-glow animate-fade-in-up card-stat card-elevated">
           <CardContent className="p-4 pt-5">
             <div className="flex items-center justify-between">
               <div>
@@ -432,7 +432,7 @@ export function PerformanceReviewsView() {
           </CardContent>
         </Card>
 
-        <Card className="card-glow animate-fade-in-up card-stat">
+        <Card className="card-glow animate-fade-in-up card-stat card-elevated">
           <CardContent className="p-4 pt-5">
             <div className="flex items-center justify-between">
               <div>
@@ -452,7 +452,7 @@ export function PerformanceReviewsView() {
           </CardContent>
         </Card>
 
-        <Card className="card-glow animate-fade-in-up card-stat">
+        <Card className="card-glow animate-fade-in-up card-stat card-elevated">
           <CardContent className="p-4 pt-5">
             <div className="flex items-center justify-between">
               <div>

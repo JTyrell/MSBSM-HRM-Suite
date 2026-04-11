@@ -25,6 +25,7 @@ model Company {
   shifts      Shift[]
   announcements Announcement[]
   jobListings JobListing[]
+  settings      CompanySettings?
 }
 
 model Department {
@@ -356,6 +357,50 @@ model JobListing {
   @@index([status])
   @@index([companyId])
   @@map("job_listings")
+}
+
+// ============ COMPANY SETTINGS ============
+
+model CompanySettings {
+  id                        String   @id @default(cuid())
+  companyId                 String
+  company                   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  // Company settings
+  companyName               String   @default("MSBM Group")
+  companyAddress            String   @default("")
+  companyPhone              String   @default("")
+  companyEmail              String   @default("")
+  companyWebsite            String   @default("")
+
+  // Attendance settings
+  attendanceGracePeriod     Int      @default(5)
+  autoClockOutHours         Int      @default(10)
+  requireGeofence           Boolean  @default(true)
+  overtimeThreshold         Int      @default(8)
+
+  // Payroll settings
+  payrollFrequency          String   @default("biweekly")
+  payPeriodStartDay         Int      @default(1)
+  taxFilingDefault          String   @default("single")
+  overtimeMultiplier        Float    @default(1.5)
+
+  // Notification settings
+  emailNotifications        Boolean  @default(true)
+  pushNotifications         Boolean  @default(true)
+  payrollAlerts             Boolean  @default(true)
+  ptoAlerts                 Boolean  @default(true)
+  complianceAlerts          Boolean  @default(true)
+
+  // Security settings
+  twoFactorAuth             Boolean  @default(false)
+  sessionTimeout            Int      @default(30)
+  passwordMinLength         Int      @default(8)
+
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+
+  @@unique([companyId])
 }
 
 // ============ AUDIT LOG ============

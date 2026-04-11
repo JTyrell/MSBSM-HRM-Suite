@@ -20,6 +20,7 @@ export async function POST() {
     await db.announcement.deleteMany();
     await db.geofence.deleteMany();
     await db.department.deleteMany();
+    await db.companySettings.deleteMany();
     await db.company.deleteMany();
 
     // Create company
@@ -29,6 +30,34 @@ export async function POST() {
         logo: "/logo.svg",
         address: "123 Business Ave, New York, NY 10001",
         timezone: "America/New_York",
+      },
+    });
+
+    // Create default company settings
+    await db.companySettings.create({
+      data: {
+        companyId: company.id,
+        companyName: "MSBM Technologies Inc.",
+        companyAddress: "1234 Innovation Drive, Suite 500, San Francisco, CA 94102",
+        companyPhone: "(555) 100-1000",
+        companyEmail: "info@msbm.com",
+        companyWebsite: "https://msbm.com",
+        attendanceGracePeriod: 5,
+        autoClockOutHours: 12,
+        requireGeofence: true,
+        overtimeThreshold: 40,
+        payrollFrequency: "biweekly",
+        payPeriodStartDay: 15,
+        taxFilingDefault: "single",
+        overtimeMultiplier: 1.5,
+        emailNotifications: true,
+        pushNotifications: true,
+        payrollAlerts: true,
+        ptoAlerts: true,
+        complianceAlerts: false,
+        twoFactorAuth: false,
+        sessionTimeout: 30,
+        passwordMinLength: 8,
       },
     });
 
@@ -106,8 +135,7 @@ export async function POST() {
       { name: "Flex Shift", startTime: "10:00", endTime: "16:00", breakMinutes: 30, color: "#ec4899", isActive: true, departmentId: departments[3].id },
     ];
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const shifts: any[] = [];
+    const shifts: Record<string, unknown>[] = [];
     for (const shiftData of defaultShifts) {
       const shift = await db.shift.create({
         data: {
@@ -120,8 +148,7 @@ export async function POST() {
 
     // Create employees
     const now = new Date();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const employees: any[] = [];
+    const employees: Record<string, unknown>[] = [];
 
     const employeeData = [
       { firstName: "Alex", lastName: "Rivera", email: "alex.rivera@msbm.com", role: "admin", dept: 0, pay: 55, type: "salary", hire: "2021-03-15", location: mainOffice.id },
@@ -168,8 +195,7 @@ export async function POST() {
     }
 
     // Create attendance records for the last 30 days
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const attendanceRecords: any[] = [];
+    const attendanceRecords: Record<string, unknown>[] = [];
     for (let day = 30; day >= 0; day--) {
       if (Math.random() > 0.15) continue; // Skip some days randomly
       const date = new Date(now);

@@ -557,7 +557,7 @@ export function BenefitsView() {
                   return (
                     <Card
                       key={benefit.id}
-                      className="border-emerald-100 dark:border-emerald-900/30 card-hover-lift hover:shadow-md transition-all duration-200 cursor-pointer group card-glow"
+                      className="border-emerald-100 dark:border-emerald-900/30 card-hover-lift hover:shadow-md transition-all duration-200 cursor-pointer group card-glow card-elevated card-spotlight"
                       onClick={() => setDetailView(benefit)}
                     >
                       <CardHeader className="pb-3">
@@ -608,7 +608,7 @@ export function BenefitsView() {
                   return (
                     <Card
                       key={benefit.id}
-                      className="border-teal-100 dark:border-teal-900/30 hover:shadow-md transition-all duration-200 cursor-pointer group card-glow"
+                      className="border-teal-100 dark:border-teal-900/30 hover:shadow-md transition-all duration-200 cursor-pointer group card-glow card-elevated card-spotlight"
                       onClick={() => setDetailView(benefit)}
                     >
                       <CardHeader className="pb-3">
@@ -697,7 +697,7 @@ export function BenefitsView() {
                     return (
                       <Card
                         key={benefit.id}
-                        className="border-cyan-100 dark:border-cyan-900/30 hover:shadow-md transition-all duration-200 cursor-pointer group card-glow"
+                        className="border-cyan-100 dark:border-cyan-900/30 hover:shadow-md transition-all duration-200 cursor-pointer group card-glow card-elevated card-spotlight"
                         onClick={() => setDetailView(benefit)}
                       >
                         <CardHeader className="pb-3">
@@ -751,7 +751,7 @@ export function BenefitsView() {
                   return (
                     <Card
                       key={benefit.id}
-                      className="border-amber-100 dark:border-amber-900/30 hover:shadow-md transition-all duration-200 cursor-pointer group card-glow"
+                      className="border-amber-100 dark:border-amber-900/30 hover:shadow-md transition-all duration-200 cursor-pointer group card-glow card-elevated card-spotlight"
                       onClick={() => setDetailView(benefit)}
                     >
                       <CardHeader className="pb-3">

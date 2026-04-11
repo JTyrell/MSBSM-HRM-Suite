@@ -8,6 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Switch } from "@/components/ui/switch";
 import { useAppStore, type ChatMessage } from "@/store/app";
 import {
   Bot,
@@ -20,6 +21,8 @@ import {
   MessageSquare,
   ChevronDown,
   Loader2,
+  BrainCircuit,
+  Zap,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { motion, AnimatePresence } from "framer-motion";
@@ -112,7 +115,7 @@ function formatTimestamp(dateStr: string): string {
 
 // ============ TYPING INDICATOR ============
 
-function TypingIndicator({ agent }: { agent: AIAgent }) {
+function TypingIndicator({ agent, isAI }: { agent: AIAgent; isAI: boolean }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
@@ -127,12 +130,20 @@ function TypingIndicator({ agent }: { agent: AIAgent }) {
           {agent.emoji}
         </AvatarFallback>
       </Avatar>
-      <div className="rounded-2xl rounded-tl-sm bg-muted px-4 py-3 shadow-sm">
-        <div className="flex items-center gap-1.5">
-          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:0ms]" />
-          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:150ms]" />
-          <span className="h-2 w-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:300ms]" />
+      <div className="space-y-1">
+        <div className="rounded-2xl rounded-tl-sm bg-muted px-4 py-3 shadow-sm">
+          <div className="flex items-center gap-1.5">
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:0ms]" />
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:150ms]" />
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:300ms]" />
+          </div>
         </div>
+        {isAI && (
+          <div className="flex items-center gap-1.5 px-1">
+            <BrainCircuit className="h-3 w-3 text-violet-500 animate-pulse" />
+            <span className="text-[10px] text-muted-foreground">AI is thinking...</span>
+          </div>
+        )}
       </div>
     </motion.div>
   );
@@ -145,11 +156,13 @@ function MessageBubble({
   agent,
   userName,
   userInitials,
+  isAIGenerated,
 }: {
   message: ChatMessage;
   agent: AIAgent;
   userName: string;
   userInitials: string;
+  isAIGenerated: boolean;
 }) {
   const isUser = message.role === "user";
 
@@ -177,11 +190,20 @@ function MessageBubble({
 
       {/* Bubble */}
       <div className={`max-w-[75%] sm:max-w-[65%] space-y-1 ${isUser ? "items-end" : "items-start"}`}>
-        {/* Name + time */}
+        {/* Name + time + AI badge */}
         <div className={`flex items-center gap-2 ${isUser ? "justify-end" : ""}`}>
           <span className="text-xs font-medium text-muted-foreground">
             {isUser ? userName : agent.name}
           </span>
+          {isAIGenerated && (
+            <Badge
+              variant="secondary"
+              className="h-4 px-1.5 py-0 text-[9px] font-bold bg-gradient-to-r from-violet-500 to-purple-600 text-white border-0 gap-0.5"
+            >
+              <Zap className="h-2.5 w-2.5" />
+              AI
+            </Badge>
+          )}
           <span className="text-[10px] text-muted-foreground/70">
             {formatTimestamp(message.createdAt)}
           </span>
@@ -198,7 +220,7 @@ function MessageBubble({
           {isUser ? (
             <p className="whitespace-pre-wrap">{message.content}</p>
           ) : (
-            <div className="prose prose-sm max-w-none prose-p:my-1 prose-li:my-0.5 prose-strong:text-emerald-700 dark:prose-strong:text-emerald-400 prose-ul:my-1 prose-ol:my-1 prose-headings:text-emerald-700 dark:prose-headings:text-emerald-400 [&_li]:marker:text-emerald-500">
+            <div className="prose prose-sm max-w-none prose-p:my-1 prose-li:my-0.5 prose-strong:text-emerald-700 dark:prose-strong:text-emerald-400 prose-ul:my-1 prose-ol:my-1 prose-headings:text-emerald-700 dark:prose-headings:text-emerald-400 [&_li]:marker:text-emerald-500 [&_table]:text-xs [&_th]:px-2 [&_th]:py-1 [&_td]:px-2 [&_td]:py-1 [&_blockquote]:border-l-emerald-500">
               <ReactMarkdown>{message.content}</ReactMarkdown>
             </div>
           )}
@@ -371,6 +393,35 @@ function AgentSelectorSidebar({
   );
 }
 
+// ============ AI POWER TOGGLE ============
+
+function AIPowerToggle({
+  enabled,
+  onToggle,
+}: {
+  enabled: boolean;
+  onToggle: (val: boolean) => void;
+}) {
+  return (
+    <div className="flex items-center gap-2.5 rounded-full border border-border bg-muted/30 px-3 py-1.5">
+      <span className={`text-xs font-medium transition-colors ${!enabled ? "text-muted-foreground" : "text-muted-foreground/60"}`}>
+        Rule-Based
+      </span>
+      <Switch
+        checked={enabled}
+        onCheckedChange={onToggle}
+        className="data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-violet-500 data-[state=checked]:to-purple-600"
+      />
+      <div className="flex items-center gap-1">
+        <BrainCircuit className={`h-3.5 w-3.5 transition-colors ${enabled ? "text-violet-500" : "text-muted-foreground/40"}`} />
+        <span className={`text-xs font-medium transition-colors ${enabled ? "text-violet-600 dark:text-violet-400" : "text-muted-foreground/60"}`}>
+          AI Powered
+        </span>
+      </div>
+    </div>
+  );
+}
+
 // ============ MAIN COMPONENT ============
 
 export function AIChatView() {
@@ -382,6 +433,8 @@ export function AIChatView() {
   const [isTyping, setIsTyping] = useState(false);
   const [sessionId, setSessionId] = useState<string>("");
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const [isAIPowered, setIsAIPowered] = useState(true);
+  const [aiMessageIds, setAiMessageIds] = useState<Set<string>>(new Set());
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -452,35 +505,111 @@ export function AIChatView() {
       setIsTyping(true);
 
       try {
-        const res = await fetch("/api/ai-chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userId,
-            message: messageText,
-            agentType: activeAgent.id,
-            sessionId: sid,
-          }),
-        });
+        if (isAIPowered) {
+          // === LLM-powered mode ===
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
 
-        if (!res.ok) throw new Error("Failed to send message");
+          try {
+            const res = await fetch("/api/ai-chat/llm", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                message: messageText,
+                agentType: activeAgent.id,
+                userId,
+              }),
+              signal: controller.signal,
+            });
 
-        const data = await res.json();
+            clearTimeout(timeoutId);
 
-        if (data.userMessage) {
-          // Replace local user message with server version
-          setChatMessages([
-            ...chatMessages.filter((m) => m.id !== userMsg.id),
-            data.userMessage,
-          ]);
-        }
+            if (!res.ok) throw new Error(`LLM API returned ${res.status}`);
 
-        if (data.assistantMessage) {
-          addChatMessage(data.assistantMessage);
+            const data = await res.json();
+
+            if (data.response) {
+              const aiMsg: ChatMessage = {
+                id: uuidv4(),
+                sessionId: sid,
+                userId,
+                role: "assistant",
+                content: data.response,
+                agentType: data.agentType || activeAgent.id,
+                createdAt: data.timestamp || new Date().toISOString(),
+              };
+              addChatMessage(aiMsg);
+              setAiMessageIds((prev) => new Set(prev).add(aiMsg.id));
+            } else {
+              throw new Error("Empty LLM response");
+            }
+          } catch (llmError) {
+            const isTimeout = llmError instanceof DOMException && llmError.name === "AbortError";
+            console.warn("LLM mode failed, falling back to rule-based:", llmError);
+
+            // Fall back to rule-based endpoint
+            const fallbackRes = await fetch("/api/ai-chat", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                userId,
+                message: messageText,
+                agentType: activeAgent.id,
+                sessionId: sid,
+              }),
+            });
+
+            if (fallbackRes.ok) {
+              const fallbackData = await fallbackRes.json();
+              if (fallbackData.assistantMessage) {
+                addChatMessage(fallbackData.assistantMessage);
+              }
+            } else {
+              // Both failed - add error message
+              const errorMsg = isTimeout
+                ? "The AI is taking too long to respond. Please try again or switch to Rule-Based mode."
+                : "I encountered an issue with the AI service. Falling back to basic responses. Please try again.";
+              addChatMessage({
+                id: uuidv4(),
+                sessionId: sid,
+                userId,
+                role: "assistant",
+                content: `**Service Notice**\n\n${errorMsg}`,
+                agentType: activeAgent.id,
+                createdAt: new Date().toISOString(),
+              });
+            }
+          }
+        } else {
+          // === Rule-based mode ===
+          const res = await fetch("/api/ai-chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userId,
+              message: messageText,
+              agentType: activeAgent.id,
+              sessionId: sid,
+            }),
+          });
+
+          if (!res.ok) throw new Error("Failed to send message");
+
+          const data = await res.json();
+
+          if (data.userMessage) {
+            setChatMessages([
+              ...chatMessages.filter((m) => m.id !== userMsg.id),
+              data.userMessage,
+            ]);
+          }
+
+          if (data.assistantMessage) {
+            addChatMessage(data.assistantMessage);
+          }
         }
       } catch (error) {
         console.error("Chat error:", error);
-        // Add error message
         addChatMessage({
           id: uuidv4(),
           sessionId: sid,
@@ -506,6 +635,7 @@ export function AIChatView() {
       chatMessages,
       addChatMessage,
       setChatMessages,
+      isAIPowered,
     ]
   );
 
@@ -530,16 +660,21 @@ export function AIChatView() {
   return (
     <div className="flex flex-col h-[calc(100vh-11rem)] gap-4">
       {/* Page header */}
-      <div className="flex items-center gap-3">
-        <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-          <MessageSquare className="h-5 w-5 text-white" />
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+            <MessageSquare className="h-5 w-5 text-white" />
+          </div>
+          <div>
+            <h2 className="text-xl font-bold tracking-tight">AI Chat</h2>
+            <p className="text-sm text-muted-foreground">
+              Chat with specialized AI agents for instant HR support
+            </p>
+          </div>
         </div>
-        <div>
-          <h2 className="text-xl font-bold tracking-tight">AI Chat</h2>
-          <p className="text-sm text-muted-foreground">
-            Chat with specialized AI agents for instant HR support
-          </p>
-        </div>
+
+        {/* AI Power Toggle */}
+        <AIPowerToggle enabled={isAIPowered} onToggle={setIsAIPowered} />
       </div>
 
       {/* Main layout */}
@@ -573,9 +708,19 @@ export function AIChatView() {
                   <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   Online
                 </Badge>
+                {isAIPowered && (
+                  <Badge
+                    variant="secondary"
+                    className="text-[10px] px-1.5 py-0 bg-gradient-to-r from-violet-100 to-purple-100 text-violet-700 dark:from-violet-900/40 dark:to-purple-900/40 dark:text-violet-400 border-0"
+                  >
+                    <Zap className="h-2.5 w-2.5 mr-0.5" />
+                    LLM
+                  </Badge>
+                )}
               </div>
               <p className="text-xs text-muted-foreground truncate">
                 {activeAgent.description}
+                {isAIPowered && " \u2022 AI-Powered responses"}
               </p>
             </div>
             <Button
@@ -586,6 +731,7 @@ export function AIChatView() {
                 setSessionId("");
                 setShowSuggestions(true);
                 setChatMessages([]);
+                setAiMessageIds(new Set());
               }}
             >
               <Sparkles className="h-3.5 w-3.5 mr-1" />
@@ -612,9 +758,21 @@ export function AIChatView() {
                       <span className="text-4xl">{activeAgent.emoji}</span>
                     </motion.div>
                     <h3 className="text-lg font-semibold mb-1">{activeAgent.name}</h3>
-                    <p className="text-sm text-muted-foreground max-w-sm mb-6">
+                    <p className="text-sm text-muted-foreground max-w-sm mb-2">
                       {activeAgent.description}. Ask me anything to get started!
                     </p>
+                    {isAIPowered && (
+                      <div className="flex items-center gap-1.5 mb-6">
+                        <Badge
+                          variant="secondary"
+                          className="text-[10px] px-2 py-0.5 bg-gradient-to-r from-violet-100 to-purple-100 text-violet-700 dark:from-violet-900/40 dark:to-purple-900/40 dark:text-violet-400 border-0"
+                        >
+                          <BrainCircuit className="h-3 w-3 mr-1" />
+                          AI Powered Mode Active
+                        </Badge>
+                      </div>
+                    )}
+                    {!isAIPowered && <div className="mb-6" />}
                     <div className="flex flex-wrap justify-center gap-2">
                       {QUICK_SUGGESTIONS.filter(
                         (s) => s.agent === activeAgent.id
@@ -646,13 +804,14 @@ export function AIChatView() {
                       agent={getAgentForMessage(message)}
                       userName={userName}
                       userInitials={userInitials}
+                      isAIGenerated={aiMessageIds.has(message.id)}
                     />
                   ))}
                 </AnimatePresence>
 
                 {/* Typing indicator */}
                 <AnimatePresence>
-                  {isTyping && <TypingIndicator agent={activeAgent} />}
+                  {isTyping && <TypingIndicator agent={activeAgent} isAI={isAIPowered} />}
                 </AnimatePresence>
 
                 {/* Scroll anchor */}
@@ -707,7 +866,11 @@ export function AIChatView() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder={`Message ${activeAgent.name}...`}
+                  placeholder={
+                    isAIPowered
+                      ? `Ask ${activeAgent.name} anything (AI Powered)...`
+                      : `Message ${activeAgent.name}...`
+                  }
                   disabled={isTyping}
                   className="pr-4 rounded-xl border-emerald-200 dark:border-emerald-800 focus-visible:ring-emerald-400 dark:focus-visible:ring-emerald-600 h-11 bg-muted/30 focus-ring-emerald"
                 />
@@ -716,7 +879,11 @@ export function AIChatView() {
                 type="submit"
                 size="icon"
                 disabled={!inputValue.trim() || isTyping}
-                className="btn-gradient h-11 w-11 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-md shadow-emerald-500/20 disabled:opacity-40 disabled:shadow-none shrink-0"
+                className={`h-11 w-11 rounded-xl shadow-md disabled:opacity-40 disabled:shadow-none shrink-0 ${
+                  isAIPowered
+                    ? "bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 shadow-violet-500/20"
+                    : "bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-emerald-500/20"
+                }`}
               >
                 {isTyping ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -726,7 +893,14 @@ export function AIChatView() {
               </Button>
             </form>
             <p className="text-[10px] text-muted-foreground mt-1.5 text-center">
-              Powered by MSBM-HR AI Engine &middot; Your data stays secure and private
+              {isAIPowered ? (
+                <span className="flex items-center justify-center gap-1">
+                  <BrainCircuit className="h-3 w-3 text-violet-500" />
+                  AI Powered by LLM &middot; Responses are generated by an AI model
+                </span>
+              ) : (
+                "Powered by MSBM-HR AI Engine &middot; Your data stays secure and private"
+              )}
             </p>
           </div>
         </div>

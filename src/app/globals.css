@@ -2922,3 +2922,239 @@
   background-size: 1200px 100%;
   animation: skeletonShimmer 1.8s ease-in-out infinite;
 }
+
+/* ================================================
+   36. Enhanced Card Styles
+   ================================================ */
+.card-elevated {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-elevated:hover {
+  box-shadow: 0 20px 40px -12px rgba(16, 185, 129, 0.1), 0 8px 16px -8px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+.dark .card-elevated {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.dark .card-elevated:hover {
+  box-shadow: 0 20px 40px -12px rgba(16, 185, 129, 0.15), 0 8px 16px -8px rgba(0, 0, 0, 0.2);
+}
+
+.card-spotlight {
+  position: relative;
+  overflow: hidden;
+}
+.card-spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(16, 185, 129, 0.06), transparent 40%);
+  pointer-events: none;
+  z-index: 1;
+}
+.card-spotlight:hover::before {
+  opacity: 1;
+}
+
+/* ================================================
+   37. Gradient Borders
+   ================================================ */
+.border-gradient-emerald {
+  position: relative;
+  border: none !important;
+}
+.border-gradient-emerald::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, #10b981, #14b8a6, #10b981);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ================================================
+   38. Text Gradient Utilities
+   ================================================ */
+.text-gradient-emerald {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-image: linear-gradient(135deg, #059669, #0d9488, #059669);
+}
+.text-gradient-warm {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-image: linear-gradient(135deg, #f59e0b, #ef4444, #f59e0b);
+}
+.text-gradient-gold {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-image: linear-gradient(135deg, #d97706, #b45309);
+}
+
+/* ================================================
+   39. Animated Underline Links
+   ================================================ */
+.link-animated {
+  position: relative;
+  display: inline-block;
+}
+.link-animated::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #10b981;
+  transition: all 0.3s ease;
+}
+.link-animated:hover::after {
+  width: 100%;
+}
+
+/* ================================================
+   40. Enhanced Badge Styles
+   ================================================ */
+.badge-notification-dot {
+  position: relative;
+}
+.badge-notification-dot::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background: #ef4444;
+  border-radius: 9999px;
+  animation: badge-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes badge-ping {
+  0% { transform: scale(1); opacity: 0.8; }
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+.badge-glass {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+}
+.dark .badge-glass {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ================================================
+   41. Shimmer & Skeleton Loading
+   ================================================ */
+.skeleton-card {
+  background: var(--muted);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  position: relative;
+  min-height: 120px;
+}
+.skeleton-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  animation: shimmer-slide 1.5s infinite;
+}
+@keyframes shimmer-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.skeleton-line {
+  background: var(--muted);
+  border-radius: 0.25rem;
+  height: 1rem;
+  width: 100%;
+}
+.skeleton-circle {
+  background: var(--muted);
+  border-radius: 9999px;
+}
+
+/* ================================================
+   42. Notification Toast Enhancements
+   ================================================ */
+.toast-success {
+  border-left: 4px solid #10b981;
+  background: #ecfdf5;
+}
+.dark .toast-success {
+  background: rgba(6, 78, 59, 0.2);
+}
+.toast-error {
+  border-left: 4px solid #ef4444;
+  background: #fef2f2;
+}
+.dark .toast-error {
+  background: rgba(127, 29, 29, 0.2);
+}
+.toast-warning {
+  border-left: 4px solid #f59e0b;
+  background: #fffbeb;
+}
+.dark .toast-warning {
+  background: rgba(120, 53, 15, 0.2);
+}
+.toast-info {
+  border-left: 4px solid #14b8a6;
+  background: #f0fdfa;
+}
+.dark .toast-info {
+  background: rgba(19, 78, 74, 0.2);
+}
+
+/* ================================================
+   43. Dot Pattern Background
+   ================================================ */
+.bg-dot-pattern {
+  background-image: radial-gradient(circle, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ── 44. Floating Action Button ────────────────────────────────────── */
+.fab-primary {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #10b981, #14b8a6);
+  color: #ffffff;
+  box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 50;
+  cursor: pointer;
+  border: none;
+}
+.fab-primary:hover {
+  box-shadow: 0 20px 40px -8px rgba(16, 185, 129, 0.5), 0 12px 16px -8px rgba(0, 0, 0, 0.15);
+  transform: scale(1.1);
+}
+.fab-primary:active {
+  transform: scale(0.95);
+}

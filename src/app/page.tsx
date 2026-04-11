@@ -265,9 +265,9 @@ export default function HomePage() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 lg:pl-64 flex flex-col min-h-screen">
+      <main className="flex-1 lg:pl-64 flex flex-col min-h-screen bg-dot-pattern">
         {/* Top Bar */}
-        <header className="sticky top-0 z-30 bg-card/80 backdrop-blur-xl border-b border-border px-4 lg:px-6 py-3 relative">
+        <header className="sticky top-0 z-30 bg-card/80 backdrop-blur-xl border-b border-border px-4 lg:px-6 py-3 relative card-elevated">
           <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-emerald-500 to-teal-500 rounded-r-full" />
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -308,10 +308,10 @@ export default function HomePage() {
               {/* Notifications Popover */}
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button variant="ghost" size="icon" className="relative">
+                  <Button variant="ghost" size="icon" className={unreadCount > 0 ? "relative badge-notification-dot" : "relative"}>
                     <Bell className="h-5 w-5" />
                     {unreadCount > 0 && (
-                      <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                      <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center badge-pulse">
                         {unreadCount > 9 ? "9+" : unreadCount}
                       </span>
                     )}
@@ -463,7 +463,7 @@ export default function HomePage() {
         </header>
 
         {/* Page Content */}
-        <div className="animate-fade-in-up flex-1 p-4 lg:p-6">
+        <div className="animate-fade-in-up flex-1 p-4 lg:p-6 bg-dot-pattern">
           {currentView === "dashboard" && <DashboardView />}
           {currentView === "attendance" && <AttendanceView />}
           {currentView === "employees" && <EmployeesView />}
@@ -491,7 +491,7 @@ export default function HomePage() {
               <div className="w-5 h-5 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
                 <Shield className="w-3 h-3 text-white" />
               </div>
-              <span className="font-medium">MSBM-HR Suite v6.0</span>
+              <span className="font-medium">MSBM-HR Suite v7.0</span>
             </div>
             <div className="flex items-center gap-3">
               <span>AI-Powered Human Resource Management</span>
@@ -543,7 +543,7 @@ function SidebarContent({
           </div>
           <div className="text-center">
             <h1 className="text-base font-bold text-white tracking-tight">MSBM-HR</h1>
-            <p className="text-[10px] text-emerald-100 font-medium uppercase tracking-[0.2em]">AI Suite v6.0</p>
+            <p className="text-[10px] text-emerald-100 font-medium uppercase tracking-[0.2em]">AI Suite v7.0</p>
           </div>
         </div>
         {/* Mobile close button overlay */}
@@ -598,7 +598,7 @@ function SidebarContent({
       </ScrollArea>
 
       {/* Active view indicator */}
-      <div className="mx-3 mt-4 mb-2 px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50">
+      <div className="mx-3 mt-4 mb-2 px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50 border-gradient-emerald">
         <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold uppercase tracking-wider">Active</p>
         <p className="text-sm font-medium text-emerald-700 dark:text-emerald-300 truncate">
           {NAV_ITEMS.find((n) => n.id === currentView)?.label || "Dashboard"}

@@ -11,17 +11,8 @@ Work Log:
 - Built payroll calculation engine with federal/state tax brackets, Social Security, Medicare, and configurable deductions
 - Created Zustand store for global state management with typed interfaces
 - Built main page layout with responsive sidebar navigation, mobile menu, user switching, and notification system
-- Dispatched 6 parallel subagents to build UI modules:
-  - Dashboard view with stats cards, charts, activity feed, quick actions
-  - Attendance view with clock-in/out GPS, Leaflet map, history table
-  - Employees view with directory, profile dialogs, add form, department cards
-  - Payroll view with run wizard, period table, detail view, analytics charts, pay stubs
-  - PTO view with balance overview, request form, calendar, approval table
-  - Geofence view with interactive map, CRUD management
-  - AI Chat view with 4 agent types, conversational interface, quick suggestions
 - Created seed API with 15 demo employees, 6 departments, 3 geofences, 24 attendance records, 6 PTO requests
-- All APIs verified working: employees (15), geofences (3), attendance (24), PTO (6)
-- Zero lint errors, clean compilation, HTTP 200 on all routes
+- All APIs verified working with zero lint errors
 
 Stage Summary:
 - Complete MSBM-HR Suite MVP built and functional
@@ -29,850 +20,184 @@ Stage Summary:
 - API: 8 RESTful endpoints with full CRUD operations
 - Frontend: 7 view modules with responsive design, emerald/teal theme
 - AI: 4 agent types (HR Assistant, Payroll Detective, PTO Fairy, Compliance Agent)
-- Key features: Geofenced attendance, automated payroll, PTO management, interactive maps, AI chat
-- All files in /home/z/my-project/src/components/hrm/ and /home/z/my-project/src/app/api/
 
 ---
-Task ID: styling-enhance
-Agent: styling-expert
-Task: Enhance global CSS with custom animations and utilities
+Task ID: r2-r6 (condensed)
+Agent: multiple-agents
+Task: Rounds 2-6: Dark Mode, Documents, Compliance, Shifts, World Clock, CSV Export, Announcements, Benefits, Team Analytics, Org Chart, Performance Reviews, CSS Overhaul
 
-Work Log:
-- Added custom scrollbar styling (thin, rounded, emerald-tinted)
-- Added glass morphism card effects (.glass-card)
-- Added gradient text utility (.gradient-text)
-- Added pulse ring animation for status dots
-- Added shimmer loading animation (.shimmer)
-- Added chat bubble styles (user/ai)
-- Added card hover lift effects
-- Added map container styling
-- Added smooth scrolling
-- Added emerald text selection color
+Work Log (condensed from v1.0 to v6.0 across 6 review rounds):
+- Round 2: Fixed critical Notification FK bug, added Dark Mode, Notification Panel, Documents module, Compliance module (12 views)
+- Round 3: Shift Management module with calendar/list views, World Clock widget, CSV export utility, toast notifications (13 views)
+- Round 4: Fixed Payroll API route mismatch, 10 new CSS sections (13-25), staggered animations, glassmorphism, gradient buttons
+- Round 5: Announcements Board module, Benefits Hub module (16 benefits, 4 categories), payroll crash bug fix (15 views)
+- Round 6: Sidebar gradient branding, Team Analytics (8+ charts, 5 tabs), Employee Org Chart, 5-tab profile dialogs (16 views)
+- Round 7: Performance Reviews module (16th Prisma model, CRUD API, 10 seeded reviews), CSS expansion to 35 sections, Enhanced Dashboard with activity feed
 
 Stage Summary:
-- Enhanced /home/z/my-project/src/app/globals.css with 12+ new utility classes
-
----
-Task ID: new-features-2
-Agent: onboarding-builder
-Task: MSBM-HR Suite - Onboarding Module
-
-Work Log:
-- Created onboarding-view.tsx with 5 sections
-- Built onboarding pipeline stats (4 cards)
-- Built interactive checklist builder with 21 items across 4 phases
-- Built new hire profiles with expandable detail dialogs
-- Built add new hire form with API integration
-- Built 4 onboarding templates
-
-Stage Summary:
-- Full onboarding module at /home/z/my-project/src/components/hrm/onboarding-view.tsx
-
----
-Task ID: new-features-1
-Agent: reports-settings-builder
-Task: MSBM-HR Suite - Reports & Analytics + Settings Views
-
-Work Log:
-- Created reports-view.tsx with 4 tabs (Attendance, Payroll, Employee, PTO analytics)
-- Built 8+ recharts visualizations with store data integration
-- Created settings-view.tsx with 5 tabs (Company, Attendance, Payroll, Notifications, Security)
-- Built 20+ configurable fields with form controls
-- Added audit log viewer table
-
-Stage Summary:
-- Reports at /home/z/my-project/src/components/hrm/reports-view.tsx
-- Settings at /home/z/my-project/src/components/hrm/settings-view.tsx
-
----
-Task ID: review-round-1
-Agent: web-dev-reviewer
-Task: QA Testing, Bug Fixes, Feature Additions
-
-Work Log:
-- Full QA review via agent-browser testing all 7 original views
-- Tested Dashboard, Attendance, Employees, Payroll, PTO, Geofences, AI Chat
-- Identified bug: Dashboard payroll total showing $0.00 (no payroll records seeded)
-- Identified bug: Clocked In Today showing 0 (expected, no active attendance)
-- Fixed seed API to generate payroll records with proper calculations for all 15 employees
-- Added audit log entries and notification records to seed
-- Verified fix: Dashboard now shows $23,223.05 payroll total
-- Enhanced global CSS with custom scrollbar, glass morphism, animations, hover effects
-- Added 3 new views: Onboarding (checklist builder), Reports (4-tab analytics), Settings (5-tab config)
-- Updated main navigation to include all 10 modules
-- Verified all 10 views load correctly with zero console errors
-- Captured 11 QA screenshots
-
-Stage Summary:
-- All original bugs fixed (payroll data now populated)
-- 3 new feature modules added (Onboarding, Reports, Settings)
-- CSS enhancements applied (12+ utility classes)
-- Total views: 10 modules, all tested and working
-- Zero lint errors, zero console errors
-- Screenshots saved to /home/z/my-project/download/qa-screenshot-*.png
-
----
-## CURRENT PROJECT STATUS
-
-### Assessment
-The MSBM-HR Suite is in a **stable, feature-rich state** with 10 fully functional modules, comprehensive API layer, and polished UI. The application compiles cleanly with zero lint errors and zero runtime console errors. All core requirements from the original specification are met.
-
-### Architecture Summary
-- **Database**: 13 Prisma models on SQLite
-- **API Endpoints**: 10 (employees, attendance, attendance/records, geofences, departments, payroll, pto, pto-balances, notifications, ai-chat, seed)
-- **UI Components**: 10 view modules + shared layout with responsive sidebar
-- **Features**: Geofenced attendance, payroll engine, PTO management, AI chat with 4 agents, onboarding, reports, settings
-
-### Completed Modifications
-- Fixed payroll seed to generate real records with calculated deductions
-- Added audit log and notification records to seed data
-- Enhanced CSS with custom animations and utilities
-- Added Onboarding module with 21-item checklist builder
-- Added Reports & Analytics module with 8+ charts
-- Added Settings module with 20+ configurable fields
-- Updated navigation for all 10 modules
-
-### Unresolved Issues & Risks
-- Minor: "Clocked In Today" shows 0 (no active clock-in sessions in seed - this is correct behavior)
-- Enhancement: AI agents use rule-based responses, not LLM-powered (marked as optional feature in spec)
-- Enhancement: No actual dark mode toggle button in header (CSS supports it, just needs ThemeProvider)
-- Enhancement: Settings fields are UI-only (no persistence to database)
-- Enhancement: Reports use simulated fallback data when store is empty
-
-### Priority Recommendations for Next Phase
-1. Connect Settings form fields to actual database persistence
-2. Integrate LLM SDK for AI agent responses (optional feature)
-3. Add data export functionality (CSV/PDF) to Reports
-4. Add real-time notification panel (WebSocket or polling)
-5. Add employee document upload support
-6. Add compliance alert system with real regulatory data
-
----
-Task ID: review-round-2
-Agent: web-dev-reviewer
-Task: QA Testing, Critical Bug Fix, Dark Mode, Notifications, New Modules
-
-Work Log:
-- Full QA via agent-browser: tested all 12 navigation items and views
-- Found critical bug: seed API 500 error - FK constraint violation in Notification model
-  - Root cause: `Notification.ptoRequest @relation(fields: [id], references: [id])` shared PK as FK
-  - Fix: Added separate `ptoRequestId` field to Notification model
-  - Result: Seed now returns 200 with all data populated
-- Verified all existing views still working (Dashboard, Attendance, Employees, Payroll, PTO, Geofences, Onboarding, Reports, AI Chat, Settings)
-- Zero console errors across entire application
-
-New features added:
-1. Dark Mode Toggle: Added ThemeProvider to layout.tsx, sun/moon toggle button in header, verified class toggling works
-2. Notification Dropdown Panel: Popover with scrollable notification list, type-based icons, relative timestamps, mark-all-read, empty state
-3. Documents Module (documents-view.tsx): 3 tabs (All Documents, Employee Documents, Upload), 12 simulated docs, search/filter, file type badges, drag-drop placeholder
-4. Compliance Module (compliance-view.tsx): 4 tabs (Dashboard, Regulatory Alerts, Calendar, Audit Trail), compliance score SVG ring, 8 regulatory alerts timeline, monthly calendar, 18 audit log entries
-5. Updated navigation to 12 items total
-6. Updated footer to v2.0
-
-Stage Summary:
-- Critical FK bug fixed (Notification schema)
-- 2 new major modules added (Documents, Compliance)
-- Dark mode toggle fully functional
-- Notification dropdown panel implemented
-- Total modules: 12 views
-- Zero lint errors, zero console errors
-- Screenshots: qa-r2-01 through qa-r2-07
-
----
-## CURRENT PROJECT STATUS (Updated)
-
-### Assessment
-The MSBM-HR Suite v2.0 is in a **stable, production-ready state** with 12 fully functional modules. All previously identified issues from Round 1 have been resolved (dark mode, notification panel, FK bug). The application compiles with zero lint errors and zero runtime console errors.
-
-### Architecture Summary
-- **Database**: 13 Prisma models on SQLite (Notification model fixed with ptoRequestId)
-- **API Endpoints**: 11 (employees, attendance, attendance/records, geofences, departments, payroll, pto, pto-balances, notifications, ai-chat, seed)
-- **UI Components**: 12 view modules + responsive sidebar + notification panel + dark mode
-- **Features**: Geofenced attendance, payroll engine, PTO management, AI chat with 4 agents, onboarding, reports, documents, compliance, settings
-
-### Completed This Round
-- Fixed critical Notification FK constraint bug in Prisma schema
-- Added dark mode toggle with ThemeProvider
-- Added notification dropdown panel with type-based icons
-- Added Documents management module with 3 tabs
-- Added Compliance & Alerts module with 4 tabs
-- Updated navigation and footer version
-
-### Unresolved Issues & Risks
-- Enhancement: AI agents use rule-based responses, not LLM-powered (optional)
-- Enhancement: Settings fields are UI-only (no DB persistence)
-- Enhancement: Document upload is visual placeholder only
-- Enhancement: Compliance alerts use simulated data
-- Minor: Reports fallback to simulated data when store empty
-
-### Priority Recommendations for Next Phase
-1. Connect Settings to database persistence (create CompanySettings model)
-2. Add real LLM integration for AI chat agents
-3. Add CSV/PDF export to Reports module
-4. Implement real file upload for Documents
-5. Add WebSocket or polling for real-time notifications
-6. Add employee self-service profile editing
-
----
-Task ID: r3-dark-mode-notifications
-Agent: ui-enhancer
-Task: Add dark mode toggle and notification dropdown panel
-
-Work Log:
-- Added ThemeProvider from next-themes to layout.tsx
-- Added dark/light mode toggle button in top bar header
-- Replaced notification bell with Popover dropdown panel
-- Notification panel shows unread count badge, scrollable list, type icons, relative timestamps
-- Mark all read functionality included
-
-Stage Summary:
-- Dark mode toggle now functional across entire application
-- Notification dropdown provides real-time notification viewing
-- Zero lint errors
-
----
-Task ID: r3-docs-compliance
-Agent: feature-builder
-Task: Add Documents and Compliance modules
-
-Work Log:
-- Created documents-view.tsx with 3 tabs: All Documents, Employee Documents, Upload
-- Built document grid with 12 simulated documents, search/filter, category badges
-- Created compliance-view.tsx with 4 tabs: Dashboard, Regulatory Alerts, Calendar, Audit Trail
-- Built compliance score visualization, 8 regulatory alerts timeline, monthly calendar, audit trail table
-- Zero lint errors
-
-Stage Summary:
-- Documents module at /home/z/my-project/src/components/hrm/documents-view.tsx
-- Compliance module at /home/z/my-project/src/components/hrm/compliance-view.tsx
-
----
-Task ID: r4-styling-css
-Agent: frontend-styling-expert
-Task: Enhance global CSS with advanced animations, utilities, and visual effects
-
-Work Log:
-- Added 5 page transition keyframe animations (fadeInUp, fadeIn, slideInLeft, slideInRight, scaleIn)
-- Added 5 corresponding .animate-* utility classes with timing functions
-- Added staggered animation delays (.stagger-1 through .stagger-8, .stagger-grid for 12 children)
-- Added enhanced card styles (.card-gradient-emerald, .card-gradient-dark, .card-glow, .card-border-gradient, .card-stat)
-- Added metric display utilities (.metric-large, .metric-change-positive/negative, .metric-label)
-- Added enhanced button styles (.btn-glow-emerald, .btn-gradient, .btn-outline-animated)
-- Added progress/status indicators (.progress-ring with conic-gradient, .status-online/offline/busy)
-- Added skeleton loading enhancements (.skeleton-shimmer, .skeleton-pulse)
-- Added tooltip modern style (.tooltip-modern)
-- Added sidebar navigation utilities (.sidebar-item-active, .sidebar-item-hover)
-- Added micro-interactions (.hover-scale, .hover-brightness, .hover-underline-animation)
-- Added responsive container utility (.container-hrm with 3 breakpoints)
-- Added dark mode card enhancements (.dark-glass-card, .dark-gradient-card)
-- Added prefers-reduced-motion media query for accessibility
-
-Stage Summary:
-- globals.css expanded from 323 lines to 916 lines
-- 13 new style sections added (sections 13-25)
-- All styles use emerald/teal palette only (no indigo/blue)
-- Dark mode variants included for all relevant classes
-- Accessibility-compliant with reduced-motion support
-
----
-Task ID: r4-shift-management
-Agent: full-stack-developer
-Task: Create Shift Scheduling Module with API and UI
-
-Work Log:
-- Added Shift model to Prisma schema with relations to Company and Department
-- Created /api/shifts route with full CRUD (GET, POST, PUT, DELETE)
-- Added 5 default shifts to seed data: Morning, Day, Evening, Night, Flex
-- Created shifts-view.tsx (955 lines) with:
-  - 4 animated stat cards (Total shifts, Avg duration, Daily coverage, Departments)
-  - Quick preset templates (Standard 9-5, Early Bird, Night Owl, Part Time)
-  - List View with full CRUD table
-  - Calendar View (weekly Mon-Sun grid with color-coded shift blocks)
-  - Create/Edit Dialog with time pickers, 12-color picker, department select
-  - Delete confirmation dialog
-  - Department filter dropdown
-- Updated page.tsx navigation to include Shifts (CalendarClock icon)
-- Updated footer to v3.0
-
-Stage Summary:
-- New Shift model in Prisma schema
-- New API endpoint: /api/shifts (full CRUD)
-- New UI module: shifts-view.tsx at /home/z/my-project/src/components/hrm/
-- 5 seeded shifts with distinct colors
-- Total navigation items: 13
-
----
-Task ID: r4-new-features
-Agent: full-stack-developer
-Task: World Clock Widget, CSV Export, Toast Notifications
-
-Work Log:
-- Added World Clock section to Dashboard with 4 timezones (New York, London, Tokyo, Sydney)
-  - Real-time updating every second using setInterval
-  - 12-hour AM/PM format with date display
-  - Day/night gradient backgrounds with sun/moon icons
-- Added Employee Quick Stats Widget to Dashboard
-  - Total Active, On Leave, New Hires (this month), Anniversary (this month)
-  - Colored icons with counts
-- Created /src/lib/export.ts with 3 export functions:
-  - exportToCSV() - generic CSV export with proper escaping
-  - exportPayrollToCSV() - specialized payroll with 18 columns
-  - exportAttendanceToCSV() - specialized attendance with employee info
-- Added CSV Export button to Payroll detail view header
-- Added CSV Export buttons to Reports (Attendance and Payroll tabs)
-- Enhanced Quick Actions in Dashboard with toast notifications (sonner)
-  - Contextual toast messages before navigation
-  - 300ms delay for smooth UX transition
-
-Stage Summary:
-- World Clock widget with 4 timezone clocks (real-time)
-- Employee Quick Stats widget on Dashboard
-- CSV export utility library at /home/z/my-project/src/lib/export.ts
-- Export buttons in Payroll and Reports modules
-- Toast notification system integrated with Dashboard quick actions
-
----
-Task ID: r4-review
-Agent: main-coordinator
-Task: Round 4 QA Testing, Bug Fixes, Integration
-
-Work Log:
-- Reviewed worklog.md for complete project history
-- Ran agent-browser QA on Dashboard, Attendance, Payroll, AI Chat, Compliance, Reports, Settings views
-- All 7 tested views loaded with zero console errors
-- Captured 7 QA screenshots (qa-r3-dashboard through qa-r3-settings, qa-r4-dashboard, qa-r4-shifts, qa-r4-payroll)
-- Identified and fixed bug: payroll-view.tsx fetching /api/payroll/periods instead of /api/payroll (route mismatch)
-- Verified all API endpoints returning HTTP 200
-- Ran bun run lint: zero errors
-- Verified server compilation: all 13 modules compile successfully
-
-Stage Summary:
-- Payroll route mismatch bug fixed
-- All 13 view modules verified loading correctly
-- 12 QA screenshots captured
-- Zero lint errors, zero console errors
-
----
-## CURRENT PROJECT STATUS (v3.0)
-
-### Assessment
-The MSBM-HR Suite v3.0 is in a **stable, feature-rich state** with 13 fully functional modules. This round focused on styling enhancements, a new Shift Management module, and quality-of-life features (world clock, CSV export, toast notifications). The application compiles cleanly with zero lint errors.
-
-### Architecture Summary
-- **Database**: 14 Prisma models on SQLite (added Shift model)
-- **API Endpoints**: 12 (employees, attendance, attendance/records, geofences, departments, payroll, pto, pto-balances, notifications, ai-chat, shifts, seed)
-- **UI Components**: 13 view modules + responsive sidebar + notification panel + dark mode + world clock
-- **CSS**: 916 lines with 25 style sections including animations, transitions, and dark mode variants
-- **Features**: Geofenced attendance, payroll engine, PTO management, AI chat (4 agents), onboarding, reports, documents, compliance, settings, shift scheduling, CSV export, world clock
-
-### Completed This Round
-1. **Styling Overhaul**: 13 new CSS sections with page transitions, staggered animations, enhanced cards, gradient buttons, status indicators, micro-interactions, accessibility support
-2. **Shift Management Module**: Full CRUD API, weekly calendar view, list view, color-coded shifts, preset templates, department filtering
-3. **World Clock Widget**: 4 timezone clocks (NYC, London, Tokyo, Sydney) with real-time updates, day/night indicators
-4. **CSV Export**: Generic + specialized export functions for payroll and attendance data
-5. **Toast Notifications**: Quick action buttons now show contextual toasts before navigation
-6. **Bug Fix**: Payroll view API route mismatch (/api/payroll/periods → /api/payroll)
-7. **Version Bump**: Footer updated to v3.0
-
-### Files Modified/Created
-- `/home/z/my-project/prisma/schema.prisma` — Added Shift model + relations
-- `/home/z/my-project/src/app/globals.css` — Expanded to 916 lines (25 style sections)
-- `/home/z/my-project/src/app/api/shifts/route.ts` — NEW: Shift CRUD API
-- `/home/z/my-project/src/app/api/seed/route.ts` — Added 5 default shifts to seed
-- `/home/z/my-project/src/app/page.tsx` — Added ShiftsView import + navigation
-- `/home/z/my-project/src/components/hrm/shifts-view.tsx` — NEW: 955-line shift management UI
-- `/home/z/my-project/src/components/hrm/dashboard-view.tsx` — Added world clock + employee stats + toasts
-- `/home/z/my-project/src/components/hrm/payroll-view.tsx` — Fixed API route + added CSV export button
-- `/home/z/my-project/src/components/hrm/reports-view.tsx` — Added CSV export buttons
-- `/home/z/my-project/src/lib/export.ts` — NEW: CSV export utility
-
-### Unresolved Issues & Risks
-- Enhancement: AI agents use rule-based responses, not LLM-powered (optional)
-- Enhancement: Settings fields are UI-only (no DB persistence)
-- Enhancement: Document upload is visual placeholder only
-- Enhancement: Compliance alerts use simulated data
-- Enhancement: World clock timezones are hardcoded (could be configurable)
-
-### Priority Recommendations for Next Phase
-1. Connect Settings to database persistence (create CompanySettings model)
-2. Add real LLM integration for AI chat agents (z-ai-web-dev-sdk)
-3. Add PDF export to Reports module (complement CSV export)
-4. Implement real file upload for Documents module
-5. Add WebSocket or polling for real-time notifications
-6. Add employee self-service profile editing
-7. Make shift scheduling configurable per department
-8. Add shift assignment to individual employees
-
----
-Task ID: r5-review-bugs
-Agent: main-coordinator
-Task: Round 5 QA, Bug Fix, Styling, New Features
-
-Work Log:
-- Reviewed worklog.md and assessed v3.0 project state (13 modules, 14 Prisma models)
-- Ran agent-browser QA on all views: Dashboard, Attendance, Shifts, Employees, Payroll, Time Off, Geofences, Onboarding, Documents, Reports, Compliance, AI Chat, Settings
-- Found critical bug: Payroll view crashing with client-side exception
-  - Root cause: API returns `{ periods: [...] }` but code called `setPayrollPeriods(data)` expecting an array
-  - Fix: Changed to `setPayrollPeriods(data.periods || [])` in payroll-view.tsx line 1375
-  - Verified fix: Payroll now loads with period table showing $28,886.04 gross pay
-- All 13 views tested: zero console errors after fix
-- Captured 6 QA screenshots (qa-r5-01 through qa-r5-06)
-
-Stage Summary:
-- Critical Payroll crash bug fixed
-- All 13 existing views verified loading correctly
-- Zero lint errors
-
----
-Task ID: r5-styling-enhance
-Agent: frontend-styling-expert
-Task: Apply CSS utility classes to existing components
-
-Work Log:
-- Applied `.stagger-grid` and `.stagger-1` through `.stagger-4` to Dashboard stats cards grid
-- Added `.card-glow` and `.hover-scale` to Dashboard and Payroll stat cards
-- Added `.metric-large` to stat value numbers in Dashboard
-- Added `.btn-gradient` to Attendance clock-in button
-- Added `.animate-fade-in-up` to main page content wrapper for page transitions
-- Added `.glass-card` to Geofence map container
-- Added `.btn-gradient` to AI Chat send button
-
-Stage Summary:
-- 6 existing components enhanced with CSS utilities
-- Dashboard: staggered entrance animations + glow hover + larger metrics
-- Payroll: staggered cards + glow hover
-- Attendance: gradient clock-in button
-- Geofence: glass morphism map border
-- AI Chat: gradient send button
-- Page transitions: fade-in-up animation on view switch
-
----
-Task ID: r5-announcements
-Agent: full-stack-developer
-Task: Create Announcements / Company Bulletin Board Module
-
-Work Log:
-- Added Announcement model to Prisma schema with fields: title, content, category, priority, isPinned, isPublished, expiresAt
-- Created /api/announcements route with full CRUD (GET, POST, PUT, DELETE)
-- Seeded 8 announcements: 2 pinned (Welcome v3.0, Employee of the Month), 3 urgent, 2 general, 1 celebration
-- Created announcements-view.tsx (31KB) with:
-  - Pinned announcements section (top, emerald gradient border)
-  - Category filter tabs (All, General, Events, Policy, Urgent, Celebrations)
-  - Announcement cards with: title, content preview, author, relative timestamp, category badge
-  - Create/Edit/Delete functionality
-  - Stats sidebar (total, pinned, urgent, this month)
-- Updated page.tsx navigation with Megaphone icon
-
-Stage Summary:
-- New Announcement model in Prisma schema
-- New API endpoint: /api/announcements (full CRUD)
-- New UI module: announcements-view.tsx
-- 8 seeded announcements with realistic content
-
----
-Task ID: r5-benefits
-Agent: full-stack-developer
-Task: Create Benefits Management Hub Module
-
-Work Log:
-- Created benefits-view.tsx (55KB) with comprehensive benefits management:
-  - 6 animated stat cards (Total Benefits Value, Active Enrollments, Monthly Cost, Next Enrollment, Coverage Score, Pending Claims)
-  - 4-tab benefits categories:
-    - Health & Medical: Medical (PPO), Dental, Vision, Life Insurance
-    - Financial & Retirement: 401(k), HSA, FSA, Stock Options
-    - Work-Life Balance: PTO Summary with usage bars, Remote Work, Parental Leave, EAP
-    - Perks & Extras: Gym, Education, Commuter, Coffee, Team Events, Referral Bonus
-  - Enrollment Timeline (5 milestone visual)
-  - Quick Actions bar (Enroll, File Claim, Download, Contact HR)
-  - Benefits Health Score SVG ring (92/100 with category breakdowns)
-  - 3 dialogs: Enroll, File Claim, Benefit Detail View
-- Updated page.tsx navigation with Heart icon
-
-Stage Summary:
-- New UI module: benefits-view.tsx at /home/z/my-project/src/components/hrm/
-- Comprehensive benefits hub with 16 benefit items across 4 categories
-- Interactive enrollment, claims, and detail dialogs
-- Benefits health score visualization
-
----
-## CURRENT PROJECT STATUS (v4.0)
-
-### Assessment
-The MSBM-HR Suite v4.0 is in a **stable, production-ready state** with 15 fully functional modules. This round focused on critical bug fixes, applying CSS utility animations to existing views, and adding 2 new feature modules (Announcements Board and Benefits Hub). The application compiles with zero lint errors and all views load without runtime errors.
-
-### Architecture Summary
-- **Database**: 15 Prisma models on SQLite (added Announcement model)
-- **API Endpoints**: 13 (employees, attendance, attendance/records, geofences, departments, payroll, pto, pto-balances, notifications, ai-chat, shifts, announcements, seed)
-- **UI Components**: 15 view modules + responsive sidebar + notification panel + dark mode + world clock
-- **CSS**: 916 lines with 25 style sections + utilities applied to 6 existing components
-- **Features**: Geofenced attendance, payroll engine, PTO management, AI chat (4 agents), onboarding, reports, documents, compliance, settings, shift scheduling, CSV export, world clock, announcements, benefits hub
-
-### Completed This Round
-1. **Critical Bug Fix**: Payroll view crash — `setPayrollPeriods(data.periods || [])` instead of `setPayrollPeriods(data)`
-2. **Styling Enhancements**: Applied CSS utility classes to 6 existing components:
-   - Dashboard: staggered animations, card glow, metric-large text
-   - Payroll: staggered cards, hover glow
-   - Attendance: gradient clock-in button
-   - Geofence: glass morphism map card
-   - AI Chat: gradient send button
-   - Page: fade-in-up view transitions
-3. **Announcements Module**: Full CRUD API, pinned section, category filtering, 8 seeded announcements
-4. **Benefits Hub Module**: 4-tab categories (Health, Financial, Work-Life, Perks), 16 benefits, health score ring, enrollment timeline, 3 interactive dialogs
-5. **Version Bump**: Footer updated to v4.0, navigation now has 15 items
-
-### Files Modified/Created
-- `/home/z/my-project/prisma/schema.prisma` — Added Announcement model + Company relation
-- `/home/z/my-project/src/app/api/announcements/route.ts` — NEW: Announcement CRUD API
-- `/home/z/my-project/src/app/api/seed/route.ts` — Added 8 announcements to seed
-- `/home/z/my-project/src/app/page.tsx` — Added AnnouncementsView + BenefitsView imports, navigation, render; added animate-fade-in-up; updated footer to v4.0
-- `/home/z/my-project/src/components/hrm/announcements-view.tsx` — NEW: 31KB announcements board
-- `/home/z/my-project/src/components/hrm/benefits-view.tsx` — NEW: 55KB benefits hub
-- `/home/z/my-project/src/components/hrm/payroll-view.tsx` — Fixed data.periods extraction, added stagger/glow classes
-- `/home/z/my-project/src/components/hrm/dashboard-view.tsx` — Added stagger-grid, card-glow, hover-scale, metric-large
-- `/home/z/my-project/src/components/hrm/attendance-view.tsx` — Added btn-gradient to clock-in
-- `/home/z/my-project/src/components/hrm/geofence-view.tsx` — Added glass-card to map
-- `/home/z/my-project/src/components/hrm/ai-chat-view.tsx` — Added btn-gradient to send
-
-### QA Screenshots
-- qa-r5-01-dashboard.png through qa-r5-06-announcements.png
-
-### Unresolved Issues & Risks
-- Enhancement: AI agents use rule-based responses, not LLM-powered (optional)
-- Enhancement: Settings fields are UI-only (no DB persistence)
-- Enhancement: Document upload is visual placeholder only
-- Enhancement: Compliance alerts use simulated data
-- Enhancement: Benefits data is hardcoded (not database-driven)
-- Enhancement: Announcements don't have real authentication (anyone can create/edit)
-- Enhancement: CSV export only covers payroll and attendance (not announcements/benefits)
-
-### Priority Recommendations for Next Phase
-1. Connect Settings to database persistence (create CompanySettings model)
-2. Add real LLM integration for AI chat agents (z-ai-web-dev-sdk)
-3. Add PDF export to Reports module
-4. Implement real file upload for Documents module
-5. Add WebSocket or polling for real-time notifications
-6. Add employee self-service profile editing
-7. Persist benefits enrollment to database
-8. Add announcement comments/reactions feature
-9. Add employee onboarding checklist completion tracking
-
----
-Task ID: r6-review
-Agent: main-coordinator
-Task: Round 6 QA, Styling, New Features
-
-Work Log:
-- Reviewed worklog.md and assessed v4.0 project state (15 modules, 15 Prisma models, 13 API endpoints)
-- Ran agent-browser QA on all 15 views: Dashboard, Attendance, Shifts, Employees, Payroll, Time Off, Benefits, Geofences, Onboarding, Announcements, Documents, Reports, Compliance, AI Chat, Settings
-- All 15 views loaded with zero console errors
-- Captured 6 QA screenshots (qa-r6-01 through qa-r6-06)
-- Zero lint errors
-
-Stage Summary:
-- All 15 existing views verified loading correctly
-- Zero bugs found
-- Zero lint errors
-
----
-Task ID: r6-sidebar-page-styling
-Agent: frontend-styling-expert
-Task: Enhance sidebar branding, top bar, and footer
-
-Work Log:
-- Replaced simple sidebar logo with full-width gradient banner (emerald-600 → teal-600 → emerald-700)
-  - Radial glow overlay, bottom fade-to-card gradient, glassmorphic icon
-  - White branding text, mobile close button repositioned as overlay
-- Added active view indicator card between nav and user switcher (emerald-tinted)
-- Added subtle emerald gradient accent line to top bar (left edge, rounded-full)
-- Enhanced footer with gradient background, branded Shield icon box, responsive layout
-  - Added copyright text (© 2026 MSBM Group), bullet separator on sm screens
-
-Stage Summary:
-- Sidebar: gradient banner branding with glassmorphic icon
-- Active view indicator added
-- Top bar: left-edge emerald gradient accent
-- Footer: branded with gradient background + copyright
-
----
-Task ID: r6-team-analytics
-Agent: full-stack-developer
-Task: Create Team Analytics & People Insights Module
-
-Work Log:
-- Created team-analytics-view.tsx with comprehensive workforce analytics
-- Data loading from 5 existing APIs (employees, departments, attendance, pto, payroll)
-- Built 6 overview stat cards (Headcount, Active Rate, Avg Tenure, Departments, Avg Pay Rate, Role Diversity)
-- Built 5 tabs with 8+ charts:
-  - Overview: Department donut, Role bar, Headcount trend line, Workforce status donut, Pay type breakdown, Top earners
-  - Attendance: 30-day area chart (hours + overtime overlay), 4 stat cards
-  - Compensation: Department grouped bar (Min/Avg/Max), Pay rate distribution, 4 stat cards
-  - PTO: Stacked bar by month (Sick/Vacation/Personal/Other), PTO type pie, Recent requests
-  - Diversity: People insights radar chart (6 dimensions), Seniority distribution, Department balance
-- Added nav item with UsersRound icon after Reports (16th navigation item)
-
-Stage Summary:
-- New UI module: team-analytics-view.tsx at /home/z/my-project/src/components/hrm/
-- 8+ Recharts visualizations with real data
-- 5 analytical tabs
-- Zero lint errors
-
----
-Task ID: r6-employee-profiles
-Agent: full-stack-developer
-Task: Enhance Employees Module with Org Chart and Rich Profiles
-
-Work Log:
-- Enhanced employee cards with: gradient top border by department, department name, employment type badge, "Joined X ago" date, status indicator dot, pay rate display
-- Added Card/Table view toggle with LayoutGrid and LayoutList icons
-- Created Org Chart tab: tree structure (Company → Departments → Employees), expand/collapse per department, color-coded department cards, dashed tree connector lines, Expand All/Collapse All controls
-- Enhanced search: Sort dropdown (Name/Department/Hire Date/Pay Rate), filtered results count ("Showing X of Y"), Clear All button
-- Enhanced employee profile dialog with 5 tabs:
-  - Overview: existing info, prettier layout
-  - Activity: mock timeline with 5 items (clock in, PTO, payroll, profile update, joined)
-  - Compensation: pay breakdown card, last pay period estimate (gross/deductions/net), YTD estimate
-  - Attendance: attendance summary with stat cards
-  - PTO: PTO balance display
-- Added status dot to profile dialog avatar
-
-Stage Summary:
-- Enhanced employees-view.tsx from ~1500 to 1993 lines
-- New Org Chart tab with expandable department tree
-- Card/Table view toggle
-- Sort dropdown + filtered results count
-- 5-tab employee profile dialog
-- Zero lint errors
-
----
-## CURRENT PROJECT STATUS (v5.0)
-
-### Assessment
-The MSBM-HR Suite v5.0 is in a **stable, production-ready state** with 16 fully functional modules. This round focused on applying rich visual branding to the sidebar/header/footer, creating a comprehensive Team Analytics module with 8+ charts, and significantly enhancing the Employees module with an Org Chart and rich profile dialogs. All 16 views load without runtime errors and the application compiles with zero lint errors.
-
-### Architecture Summary
-- **Database**: 15 Prisma models on SQLite
-- **API Endpoints**: 13 (employees, attendance, attendance/records, geofences, departments, payroll, pto, pto-balances, notifications, ai-chat, shifts, announcements, seed)
-- **UI Components**: 16 view modules + responsive sidebar (gradient branding) + notification panel + dark mode + world clock
-- **CSS**: 916 lines with 25 style sections + utilities applied to 8+ components
-- **Features**: Geofenced attendance, payroll engine, PTO management, AI chat (4 agents), onboarding, reports, documents, compliance, settings, shift scheduling, CSV export, world clock, announcements, benefits hub, team analytics, org chart
-
-### Completed This Round
-1. **Sidebar Gradient Banner**: Full-width emerald gradient with glassmorphic branding, active view indicator card
-2. **Top Bar Accent**: Subtle left-edge gradient line on header
-3. **Enhanced Footer**: Branded Shield icon, gradient background, copyright text, responsive layout
-4. **Team Analytics Module**: 8+ Recharts visualizations across 5 tabs (Overview, Attendance, Compensation, PTO, Diversity), 6 stat cards, data from 5 existing APIs
-5. **Employee Org Chart**: Department tree with expand/collapse, employee cards, tree connectors, Expand All/Collapse All
-6. **Enhanced Employee Profiles**: 5-tab dialog (Overview, Activity, Compensation, Attendance, PTO), Card/Table view toggle, sort dropdown, filtered results count
-7. **Version Bump**: Navigation now has 16 items (added Team Analytics)
-
-### Files Modified/Created
-- `/home/z/my-project/src/app/page.tsx` — Sidebar gradient banner, active view indicator, top bar accent, enhanced footer, TeamAnalyticsView import/nav/render
-- `/home/z/my-project/src/components/hrm/team-analytics-view.tsx` — NEW: Team Analytics with 8+ charts
-- `/home/z/my-project/src/components/hrm/employees-view.tsx` — Enhanced cards, Org Chart tab, sort/filter, 5-tab profile dialog (expanded to 1993 lines)
-
-### QA Screenshots
-- qa-r6-01 through qa-r6-06
-
-### Unresolved Issues & Risks
-- Enhancement: AI agents use rule-based responses, not LLM-powered (optional)
-- Enhancement: Settings fields are UI-only (no DB persistence)
-- Enhancement: Document upload is visual placeholder only
-- Enhancement: Compliance alerts use simulated data
-- Enhancement: Benefits data is hardcoded (not database-driven)
-- Enhancement: Employee activity timeline uses mock data
-- Enhancement: Team analytics attendance chart shows limited data from seed
-- Enhancement: CSV export only covers payroll and attendance
-
-### Priority Recommendations for Next Phase
-1. Connect Settings to database persistence (create CompanySettings model)
-2. Add real LLM integration for AI chat agents (z-ai-web-dev-sdk)
-3. Add PDF export to Reports module
-4. Implement real file upload for Documents module
-5. Add WebSocket or polling for real-time notifications
-6. Add employee self-service profile editing
-7. Persist benefits enrollment to database
-8. Add announcement comments/reactions feature
-9. Connect employee activity timeline to real audit log data
-10. Add performance review/rating system
-
----
-Task ID: 7-performance-reviews
-Agent: fullstack-developer
-Task: Create Performance Reviews Module with Full UI
-
-Work Log:
-- Added PerformanceReview model to Prisma schema with fields: employeeId, reviewerId, cycleName, status, rating, strengths, improvements, goals, overallComment, reviewedAt
-- Added two Employee relations: reviewsReceived and reviewsGiven (with "Reviewer" named relation)
-- Pushed schema to SQLite database (removed @db.Text annotations incompatible with SQLite)
-- Created /api/performance-reviews route with full CRUD (GET, POST, PUT, DELETE)
-  - GET returns all reviews with employee and reviewer info joined
-  - POST creates new review with validation (employeeId, reviewerId, cycleName required; rating 1-5 range)
-  - PUT updates review fields, auto-sets reviewedAt on completion
-  - DELETE removes review by id query param
-- Seeded 10 performance reviews with realistic data:
-  - 5 completed (Q4 2025): Priya Patel (4.5), James O'Brien (4.0), Emma Thompson (4.8), Maria Garcia (3.5), Noah Martinez (3.8)
-  - 3 in-progress (Q1 2026): Aisha Johnson, Carlos Rodriguez (4.2), Liam Turner
-  - 2 pending (Q1 2026): Sophia Lee, Olivia Brown
-- Created performance-reviews-view.tsx (~1350 lines) with:
-  - Page header with "Create Review" button
-  - 4 animated stat cards (Total Reviews, Average Rating with star icon, Completed with %, Pending with warning)
-  - 4-tab layout:
-    - Overview: Department avg rating bar chart, rating distribution (1-5), recent reviews list
-    - Reviews: Status/Sort filter bar, review cards with avatar, star rating, status badge, truncated text with expand
-    - My Reviews: Reviews assigned to current user with Start/Complete action buttons
-    - Cycles: 3 mock review cycles (Q1 2026, Q4 2025, Annual 2025) with progress bars and timeline
-  - Create Review dialog: employee select, cycle name, interactive 1-5 star selector, textareas for strengths/improvements/goals/comment
-  - Review Detail dialog: full review info, edit mode for in-progress reviews, complete action
-  - StarRating component with interactive hover effect
-  - StatusBadge component (pending=slate, in_progress=amber, completed=emerald)
-  - TruncatableText component with read more/less toggle
-  - DetailSection component with inline edit capability
-- Updated page.tsx:
-  - Added PerformanceReviewsView import
-  - Added "Reviews" nav item with Star icon after "Time Off" (index 7, before "Benefits")
-  - Added render condition for performance view
-  - Updated footer version to v6.0
-  - Updated sidebar version to v6.0
-
-Stage Summary:
-- New PerformanceReview model in Prisma schema (16th model)
-- New API endpoint: /api/performance-reviews (full CRUD)
-- 10 seeded performance reviews with realistic detailed text
-- New UI module: performance-reviews-view.tsx at /home/z/my-project/src/components/hrm/
-- Navigation now has 17 items
-- Zero new lint errors
-
----
-Task ID: 7-styling
-Agent: frontend-styling-expert
-Task: Add 10 new CSS sections and apply to existing components
-
-Work Log:
-- Added 10 new CSS sections (26-35) to globals.css (916 → 1441 lines, +525 lines)
-  - Section 26: Number counter animation (.animate-count-up, @keyframes countSlideUp)
-  - Section 27: Floating label input (.input-floating)
-  - Section 28: Stat card color variants (.stat-card-emerald/amber/rose/violet)
-  - Section 29: Tab navigation (.tab-active-emerald)
-  - Section 30: Timeline/activity feed (.timeline-item, .timeline-dot-*, .timeline-connector)
-  - Section 31: Badge enhancements (.badge-glow-emerald/amber, .badge-pulse)
-  - Section 32: Card pattern backgrounds (.card-pattern, .card-pattern-dark)
-  - Section 33: Tooltip arrow (.tooltip-arrow-emerald)
-  - Section 34: Focus ring (.focus-ring-emerald, .focus-ring-offset)
-  - Section 35: Empty state (.empty-state)
-- Applied CSS classes to 5 existing components:
-  - Dashboard: stat-card-emerald/rose/violet/amber + animate-count-up
-  - Team Analytics: card-pattern + timeline-item/timeline-dot-emerald
-  - Benefits: badge-glow-emerald + card-glow
-  - Compliance: badge-glow-amber
-  - AI Chat: focus-ring-emerald
-
-Stage Summary:
-- globals.css expanded to 1441 lines with 35 style sections
-- 5 existing components enhanced with new CSS utilities
-
----
-Task ID: 7-dashboard-enhance
-Agent: full-stack-developer
-Task: Enhanced Dashboard with activity feed and widgets
-
-Work Log:
-- Created /api/activity-feed/route.ts (unified activity feed API)
-  - Aggregates data from attendance, PTO, announcements, and audit logs
-  - Returns sorted activities with type-based icons and department info
-  - Also returns "Who's Out Today" (employees on approved PTO)
-- Enhanced Dashboard with:
-  - Real-time activity feed: 8 latest activities with color-coded borders (emerald=attendance, amber=PTO, violet=announcements, gray=system)
-  - Auto-refresh every 30 seconds
-  - "Who's Out Today" widget showing employees on PTO
-  - Enhanced stat cards with animated gradient borders and trend indicators
-  - "Upcoming Events" section with 3 mock company events
-
-Stage Summary:
-- New API: /api/activity-feed
-- Dashboard now has live activity feed, who's out widget, trend indicators, upcoming events
-
----
-Task ID: 7-qa-bugs
-Agent: main-coordinator
-Task: Round 7 QA, Bug Fixes
-
-Work Log:
-- Reviewed worklog.md and assessed v5.0 project state (16 modules, 15 Prisma models)
-- Ran agent-browser QA on all 16 views: all passed with zero crashes
-- Found 2 bugs:
-  1. Missing React key in PayrollPeriodsTable — Fragment wrapping TableRows had key on inner element
-     - Fix: Changed `<>` to `<React.Fragment key={period.id}>` and added React import
-  2. Nested button in Announcements view — "Read more" was a `<button>` inside clickable Card
-     - Fix: Changed to `<span role="button">` with keyboard handlers
-- Verified fix: lint passes with zero errors
-
-Stage Summary:
-- 2 bugs fixed (React key, nested button)
-- All 16 views load successfully
-- Zero lint errors
+- Evolved from 7 to 17 view modules
+- Database grew from 13 to 16 Prisma models
+- CSS expanded from ~300 to 1441 lines (35 style sections)
+- Multiple bug fixes: Notification FK, Payroll API route, Payroll crash, React Fragment key
 
 ---
 ## CURRENT PROJECT STATUS (v6.0)
 
 ### Assessment
-The MSBM-HR Suite v6.0 is in a **stable, production-ready state** with 17 fully functional modules. This round focused on major CSS expansion (10 new style sections), a comprehensive Performance Reviews module with database persistence, and a significantly enhanced Dashboard with real-time activity feed. The application compiles with zero lint errors and all views load without runtime errors.
+The MSBM-HR Suite v6.0 is in a **stable, production-ready state** with 17 fully functional modules, 16 Prisma models, and ~15 API endpoints. The application compiles with zero lint errors and all views load without runtime errors.
 
 ### Architecture Summary
-- **Database**: 16 Prisma models on SQLite (added PerformanceReview model)
-- **API Endpoints**: 15 (employees, attendance, attendance/records, geofences, departments, payroll, pto, pto-balances, notifications, ai-chat, shifts, announcements, performance-reviews, activity-feed, seed)
-- **UI Components**: 17 view modules + responsive sidebar (gradient branding) + notification panel + dark mode + world clock + activity feed
+- **Database**: 16 Prisma models on SQLite
+- **API Endpoints**: 15 (employees, attendance, attendance/records, geofences, departments, payroll, pto, pto-balances, notifications, ai-chat, shifts, announcements, performance-reviews, activity-feed, jobs, seed)
+- **UI Components**: 18 view files, 17 navigation items + responsive sidebar + notification panel + dark mode + world clock + activity feed
 - **CSS**: 1441 lines with 35 style sections including animations, transitions, dark mode variants, stat card colors, timeline styles, badge glows, focus rings, empty states
-- **Features**: Geofenced attendance, payroll engine, PTO management, AI chat (4 agents), onboarding, reports, documents, compliance, settings, shift scheduling, CSV export, world clock, announcements, benefits hub, team analytics, org chart, performance reviews, real-time activity feed
-
-### Completed This Round
-1. **Bug Fixes**: React Fragment key in PayrollPeriodsTable, nested button in Announcements
-2. **CSS Expansion**: 10 new style sections (26-35) — counter animations, stat card variants, timeline styles, badge glows, focus rings, empty states; 525 lines added
-3. **Performance Reviews Module**: Full CRUD API, 16th Prisma model, 10 seeded reviews, 4-tab UI with charts, star ratings, create/detail dialogs
-4. **Enhanced Dashboard**: Real-time activity feed (auto-refresh 30s), Who's Out Today widget, upcoming events, animated gradient stat card borders, trend indicators
-5. **Version Bump**: Footer and sidebar updated to v6.0, navigation now has 17 items
-
-### Files Modified/Created
-- `/home/z/my-project/prisma/schema.prisma` — Added PerformanceReview model + Employee relations
-- `/home/z/my-project/src/app/globals.css` — Expanded to 1441 lines (35 style sections)
-- `/home/z/my-project/src/app/api/performance-reviews/route.ts` — NEW: Performance Reviews CRUD API
-- `/home/z/my-project/src/app/api/activity-feed/route.ts` — NEW: Unified activity feed API
-- `/home/z/my-project/src/app/api/seed/route.ts` — Added 10 performance reviews to seed
-- `/home/z/my-project/src/app/page.tsx` — Added PerformanceReviewsView import, nav item (Star icon, after Time Off), render condition; version v6.0
-- `/home/z/my-project/src/components/hrm/performance-reviews-view.tsx` — NEW: ~53KB reviews module
-- `/home/z/my-project/src/components/hrm/dashboard-view.tsx` — Activity feed, who's out, upcoming events, trend indicators
-- `/home/z/my-project/src/components/hrm/payroll-view.tsx` — Fixed React.Fragment key, added React import
-- `/home/z/my-project/src/components/hrm/announcements-view.tsx` — Fixed nested button (span role=button)
-- `/home/z/my-project/src/components/hrm/team-analytics-view.tsx` — Applied card-pattern, timeline-item CSS
-- `/home/z/my-project/src/components/hrm/benefits-view.tsx` — Applied badge-glow-emerald, card-glow CSS
-- `/home/z/my-project/src/components/hrm/compliance-view.tsx` — Applied badge-glow-amber CSS
-- `/home/z/my-project/src/components/hrm/ai-chat-view.tsx` — Applied focus-ring-emerald CSS
-
-### QA Screenshots
-- qa-r7-01-dashboard.png through qa-r7-16-settings.png
-- qa-r7-reviews.png, qa-r7-dashboard-v2.png, qa-r7-shifts.png
+- **Features**: Geofenced attendance, payroll engine, PTO management, AI chat (4 agents), onboarding, reports, documents, compliance, settings, shift scheduling, CSV export, world clock, announcements, benefits hub, team analytics, org chart, performance reviews, real-time activity feed, recruitment board
 
 ### Seed Data Summary
-- 15 employees, 6 departments, 3 geofences, 49 attendance records
+- 15 employees, 6 departments, 3 geofences, 49+ attendance records
 - 5 shifts, 8 announcements, 6 PTO requests, 15 payroll records
-- 10 performance reviews (5 completed, 3 in-progress, 2 pending)
+- 10 performance reviews, 8 job listings
 
-### Unresolved Issues & Risks
-- Enhancement: AI agents use rule-based responses, not LLM-powered (optional)
-- Enhancement: Settings fields are UI-only (no DB persistence)
-- Enhancement: Document upload is visual placeholder only
-- Enhancement: Compliance alerts use simulated data
-- Enhancement: Benefits data is hardcoded (not database-driven)
-- Enhancement: Employee activity timeline uses mock data
-- Enhancement: Upcoming events are hardcoded mock data
-- Enhancement: Who's Out widget depends on PTO date matching (edge cases possible)
-
-### Priority Recommendations for Next Phase
-1. Connect Settings to database persistence (create CompanySettings model)
+### Priority Recommendations (carried from v6.0)
+1. Connect Settings to database persistence
 2. Add real LLM integration for AI chat agents (z-ai-web-dev-sdk)
 3. Add PDF export to Reports module
 4. Implement real file upload for Documents module
 5. Add WebSocket for real-time notifications
 6. Add employee self-service profile editing
-7. Persist benefits enrollment to database
-8. Add announcement comments/reactions
-9. Connect employee activity timeline to audit log data
-10. Add candidate/recruitment pipeline module
+
+---
+Task ID: 8-llm-chat
+Agent: full-stack-developer
+Task: Create LLM-powered AI Chat backend with z-ai-web-dev-sdk
+
+Work Log:
+- Created /api/ai-chat/llm/route.ts with z-ai-web-dev-sdk integration
+- 4 specialized system prompts: HR Assistant (warm/professional), Payroll Detective (analytical/tables), PTO Fairy (enthusiastic/emojis), Compliance Agent (thorough/regulatory)
+- Dynamic employee context injection (name, role, department, pay rate, PTO balance from DB)
+- Sophisticated fallback with rich markdown responses if SDK fails
+- Updated ai-chat-view.tsx with AI Power Toggle (pill switch: "Rule-Based" vs "AI Powered")
+- Visual differentiation: violet gradient send button, BrainCircuit typing indicator, "⚡ LLM" badge on messages
+- 30s AbortController timeout, automatic silent fallback to rule-based on error
+- Zero lint errors
+
+Stage Summary:
+- New API: /api/ai-chat/llm (POST with LLM SDK)
+- AI Chat UI enhanced with mode toggle, AI badges, typing indicators
+- Backward compatible: rule-based mode still works as fallback
+
+---
+Task ID: 8-settings-persistence
+Agent: full-stack-developer
+Task: Add database persistence for company settings
+
+Work Log:
+- Added CompanySettings model to Prisma schema (22 fields across 5 categories: Company, Attendance, Payroll, Notifications, Security)
+- One-to-one relation with Company model (@@unique constraint)
+- Ran bun run db:push to sync schema
+- Created /api/settings/route.ts (GET: fetch/auto-create defaults, PUT: partial merge update)
+- Updated seed API to create default CompanySettings with realistic demo values
+- Rewrote settings-view.tsx: loads from DB on mount, saves per-tab, loading skeletons, save button spinners, "Last updated" timestamp, toast notifications
+- Fixed pre-existing JSX syntax error in page.tsx
+- Zero lint errors
+
+Stage Summary:
+- New Prisma model: CompanySettings (17th model)
+- New API: /api/settings (GET/PUT)
+- Settings UI now persists to database
+- Fixed pre-existing bug in page.tsx
+
+---
+Task ID: 8-styling-enhance
+Agent: frontend-styling-expert
+Task: Add CSS utility classes and apply to components
+
+Work Log:
+- Sections 36-43 already existed in globals.css (plain CSS equivalents)
+- Added Section 44: Floating Action Button (.fab-primary) - fixed circular gradient button with hover/active effects
+- Added bg-dot-pattern class to main content area in page.tsx (subtle emerald dot grid)
+- Added badge-pulse class to notification unread count badge
+- Dashboard stat cards already had card-elevated card-spotlight from previous passes
+- globals.css: 3134 → 3161 lines
+- Zero lint errors
+
+Stage Summary:
+- New CSS: .fab-primary floating action button
+- Applied bg-dot-pattern to main content area
+- Applied badge-pulse to notification badge
+- No duplication of existing sections
+
+---
+Task ID: 8-quick-actions
+Agent: full-stack-developer
+Task: Add Quick Actions Toolbar to Dashboard + version bump
+
+Work Log:
+- Added Quick Actions card section to dashboard-view.tsx (after stat cards, before World Clock)
+- 8 action buttons: Clock In, Request Time Off, View Pay Stub, My Reviews, Announcements, Reports, Ask AI, Settings
+- Each button: lucide-react icon, emerald/teal accent, rounded-xl, hover effects, navigates via setCurrentView
+- Horizontal scrollable flex row wrapped in rounded-2xl card with Zap icon header
+- Updated version to v7.0 in footer and sidebar banner
+- Zero lint errors
+
+Stage Summary:
+- Quick Actions toolbar with 8 navigation shortcuts on Dashboard
+- Version bumped from v6.0 to v7.0
+
+---
+## CURRENT PROJECT STATUS (v7.0)
+
+### Assessment
+The MSBM-HR Suite v7.0 is in a **stable, feature-rich state** with 18 view modules, 17 Prisma models, and 16 API endpoints. This round focused on three major features: real LLM-powered AI chat integration, database-persisted company settings, and enhanced visual styling with a new Quick Actions toolbar. The application compiles with zero lint errors (0 errors, 0 warnings).
+
+### Architecture Summary
+- **Database**: 17 Prisma models on SQLite (added CompanySettings)
+- **API Endpoints**: 16 (employees, attendance, attendance/records, geofences, departments, payroll, pto, pto-balances, notifications, ai-chat, ai-chat/llm, shifts, announcements, performance-reviews, settings, jobs, activity-feed, seed)
+- **UI Components**: 18 view files, 17 navigation items + responsive sidebar (gradient branding) + notification panel (badge-pulse) + dark mode + world clock + activity feed + quick actions toolbar
+- **CSS**: 3161 lines with 44 style sections including animations, transitions, dark mode variants, gradient borders, text gradients, shimmer loading, toast styles, dot pattern, FAB button
+- **Features**: Geofenced attendance, payroll engine, PTO management, **LLM-powered AI chat** (4 agents + rule-based fallback), onboarding, reports, documents, compliance, **database-persisted settings**, shift scheduling, CSV export, world clock, announcements, benefits hub, team analytics, org chart, performance reviews, real-time activity feed, recruitment board, **quick actions toolbar**
+
+### Completed This Round (v6.0 → v7.0)
+1. **LLM-powered AI Chat**: Real AI responses via z-ai-web-dev-sdk with 4 specialized agent prompts, dynamic employee context, 30s timeout, silent fallback to rule-based mode, toggle switch in UI, "⚡ LLM" badges on AI messages
+2. **Settings Persistence**: CompanySettings model (22 fields, 5 categories), GET/PUT API, seed integration, UI loads/saves from database with loading states, toast notifications, "Last updated" timestamp
+3. **Styling Enhancements**: FAB button CSS, bg-dot-pattern on main content, badge-pulse on notifications
+4. **Quick Actions Toolbar**: 8 shortcut buttons on Dashboard (Clock In, Time Off, Pay Stub, Reviews, Announcements, Reports, AI, Settings)
+5. **Lint Cleanup**: Removed 9 unused eslint-disable directives, zero warnings
+6. **Bug Fix**: Pre-existing JSX syntax error in page.tsx
+7. **Version Bump**: v6.0 → v7.0
+
+### Files Modified/Created This Round
+- `prisma/schema.prisma` — Added CompanySettings model + Company relation (17th model)
+- `src/app/api/ai-chat/llm/route.ts` — NEW: LLM-powered chat API with z-ai-web-dev-sdk
+- `src/app/api/settings/route.ts` — NEW: Settings GET/PUT API
+- `src/app/api/seed/route.ts` — Added CompanySettings to seed cleanup and creation
+- `src/app/globals.css` — Added .fab-primary (3161 lines total)
+- `src/app/page.tsx` — bg-dot-pattern, badge-pulse, version v7.0, fixed JSX bug
+- `src/components/hrm/ai-chat-view.tsx` — AI power toggle, LLM mode, typing indicator, AI badges
+- `src/components/hrm/settings-view.tsx` — Full rewrite for DB persistence
+- `src/components/hrm/dashboard-view.tsx` — Quick Actions toolbar
+- `src/lib/export.ts` — Removed unused eslint-disable directives
+- `src/app/api/payroll/route.ts` — Removed unused eslint-disable directive
+- `src/components/hrm/pto-view.tsx` — Removed unused eslint-disable directive
+
+### Unresolved Issues & Risks
+- Enhancement: Document upload is still visual placeholder only
+- Enhancement: Compliance alerts use simulated data
+- Enhancement: Benefits data is partially hardcoded
+- Enhancement: Employee activity timeline uses mock data
+- Enhancement: Upcoming events are hardcoded mock data
+- Enhancement: Reports fallback to simulated data when store is empty
+- Enhancement: PDF export not yet implemented
+- Enhancement: WebSocket for real-time notifications not yet implemented
+
+### Priority Recommendations for Next Phase
+1. Add PDF export to Reports module (complement CSV export)
+2. Implement real file upload for Documents module
+3. Add WebSocket or polling for real-time notifications
+4. Add employee self-service profile editing
+5. Persist benefits enrollment to database
+6. Add announcement comments/reactions feature
+7. Connect employee activity timeline to audit log data
+8. Add candidate pipeline stages to Recruitment module
+9. Make shift scheduling configurable per department
+10. Add performance review goals tracking with progress visualization

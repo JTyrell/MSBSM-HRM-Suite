@@ -18,8 +18,7 @@ function escapeCSVValue(value: unknown): string {
 /**
  * Convert an array of objects to a CSV string.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function objectsToCSV(data: any[]): string {
+function objectsToCSV(data: Record<string, unknown>[]): string {
   if (data.length === 0) return "";
 
   const headers = Object.keys(data[0]);
@@ -37,9 +36,8 @@ function objectsToCSV(data: any[]): string {
  * @param data - Array of objects to export
  * @param filename - Name of the file (without .csv extension)
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function exportToCSV(
-  data: any[],
+  data: Record<string, unknown>[],
   filename: string
 ): void {
   if (data.length === 0) return;
@@ -53,8 +51,7 @@ export function exportToCSV(
  * @param periods - Array of payroll periods (with records)
  * @param filename - Optional custom filename
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function exportPayrollToCSV(periods: any[], filename?: string): void {
+export function exportPayrollToCSV(periods: Record<string, unknown>[], filename?: string): void {
   // Flatten all records from all periods
   const rows: Record<string, string>[] = [];
 
@@ -99,8 +96,7 @@ export function exportPayrollToCSV(periods: any[], filename?: string): void {
  * @param records - Array of attendance records
  * @param filename - Optional custom filename
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function exportAttendanceToCSV(records: any[], filename?: string): void {
+export function exportAttendanceToCSV(records: Record<string, unknown>[], filename?: string): void {
   const rows: Record<string, string>[] = records.map((r) => {
     const emp = r.employee;
     return {

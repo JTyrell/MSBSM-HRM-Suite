@@ -68,8 +68,7 @@ import type { DateRange } from "react-day-picker";
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 interface PTOResponse {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  requests: any[];
+  requests: Record<string, unknown>[];
 }
 
 interface BalanceResponse {

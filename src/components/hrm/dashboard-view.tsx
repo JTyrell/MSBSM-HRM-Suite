@@ -50,6 +50,11 @@ import {
   PartyPopper,
   Building2,
   RefreshCw,
+  FileText,
+  Star,
+  Bot,
+  Settings,
+  Zap,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAppStore } from "@/store/app";
@@ -671,7 +676,7 @@ export function DashboardView() {
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <div key={stat.label} className="relative rounded-xl p-[2px] bg-gradient-to-br from-transparent via-muted-foreground/10 to-transparent animate-gradient-border">
+            <div key={stat.label} className="relative rounded-xl p-[2px] bg-gradient-to-br from-transparent via-muted-foreground/10 to-transparent animate-gradient-border card-elevated card-spotlight">
               <Card
                 className={`stagger-${index + 1} card-hover-lift hover-scale group transition-all duration-300 border ${stat.borderColorClass} bg-background rounded-xl ${
                   index === 0 ? 'stat-card-emerald' : index === 1 ? 'stat-card-rose' : index === 2 ? 'stat-card-violet' : 'stat-card-amber'
@@ -688,7 +693,7 @@ export function DashboardView() {
                       <p className="text-sm font-medium text-muted-foreground truncate">
                         {stat.label}
                       </p>
-                      <p className="metric-large text-2xl font-bold tracking-tight animate-count-up">{stat.value}</p>
+                      <p className="metric-large text-2xl font-bold tracking-tight animate-count-up text-gradient-emerald">{stat.value}</p>
                     </div>
                   </div>
                   {stat.trend && (
@@ -714,6 +719,40 @@ export function DashboardView() {
           );
         })}
       </div>
+
+      {/* ─── Global Quick Actions Toolbar ────────────────────────── */}
+      <Card className="rounded-2xl border bg-card p-4 transition-all duration-300 hover:shadow-md">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center justify-center h-6 w-6 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500">
+            <Zap className="h-3.5 w-3.5 text-white" />
+          </div>
+          <h3 className="text-sm font-semibold">Quick Actions</h3>
+        </div>
+        <div className="flex gap-3 overflow-x-auto pb-1">
+          {[
+            { label: "Clock In", icon: Clock, view: "attendance", color: "text-emerald-600 dark:text-emerald-400" },
+            { label: "Request Time Off", icon: FileText, view: "pto", color: "text-teal-600 dark:text-teal-400" },
+            { label: "View Pay Stub", icon: DollarSign, view: "payroll", color: "text-emerald-600 dark:text-emerald-400" },
+            { label: "My Reviews", icon: Star, view: "performance", color: "text-amber-600 dark:text-amber-400" },
+            { label: "Announcements", icon: Megaphone, view: "announcements", color: "text-violet-600 dark:text-violet-400" },
+            { label: "Reports", icon: BarChart3, view: "reports", color: "text-teal-600 dark:text-teal-400" },
+            { label: "Ask AI", icon: Bot, view: "ai-assistant", color: "text-emerald-600 dark:text-emerald-400" },
+            { label: "Settings", icon: Settings, view: "settings", color: "text-muted-foreground" },
+          ].map((action) => {
+            const ActionIcon = action.icon;
+            return (
+              <button
+                key={action.view}
+                onClick={() => handleQuickAction(action.view, `Opening ${action.label}...`)}
+                className="flex flex-col items-center gap-1.5 min-w-20 p-3 rounded-xl border hover:bg-accent transition-colors cursor-pointer"
+              >
+                <ActionIcon className={`h-5 w-5 ${action.color}`} />
+                <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">{action.label}</span>
+              </button>
+            );
+          })}
+        </div>
+      </Card>
 
       {/* ─── World Clock ──────────────────────────────────────────── */}
       <WorldClockWidget />

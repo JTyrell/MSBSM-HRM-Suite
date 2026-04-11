@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Card,
   CardContent,
@@ -54,8 +54,39 @@ import {
   FileText,
   CalendarDays,
   ShieldCheck,
+  Loader2,
+  RefreshCw,
 } from "lucide-react";
 import { toast } from "sonner";
+
+// ─── Types ────────────────────────────────────────────────────
+interface CompanySettings {
+  id: string;
+  companyId: string;
+  companyName: string;
+  companyAddress: string;
+  companyPhone: string;
+  companyEmail: string;
+  companyWebsite: string;
+  attendanceGracePeriod: number;
+  autoClockOutHours: number;
+  requireGeofence: boolean;
+  overtimeThreshold: number;
+  payrollFrequency: string;
+  payPeriodStartDay: number;
+  taxFilingDefault: string;
+  overtimeMultiplier: number;
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+  payrollAlerts: boolean;
+  ptoAlerts: boolean;
+  complianceAlerts: boolean;
+  twoFactorAuth: boolean;
+  sessionTimeout: number;
+  passwordMinLength: number;
+  createdAt: string;
+  updatedAt: string;
+}
 
 // ─── Simulated Audit Log Data ─────────────────────────────────────
 const AUDIT_LOG = [
@@ -150,80 +181,271 @@ function SettingRow({
   );
 }
 
+// ─── Loading Skeleton ─────────────────────────────────────────────
+function SettingsSkeleton() {
+  return (
+    <div className="space-y-6 animate-in fade-in duration-300">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div>
+          <div className="h-8 w-48 bg-muted rounded-md" />
+          <div className="h-4 w-80 bg-muted rounded-md mt-2" />
+        </div>
+      </div>
+      <Card>
+        <CardHeader>
+          <div className="h-6 w-48 bg-muted rounded-md" />
+          <div className="h-4 w-72 bg-muted rounded-md mt-1" />
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="space-y-2">
+              <div className="h-4 w-32 bg-muted rounded-md" />
+              <div className="h-10 w-64 bg-muted rounded-md" />
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+// ─── Save Button ──────────────────────────────────────────────────
+function SaveButton({ isSaving, onClick, label }: { isSaving: boolean; onClick: () => void; label?: string }) {
+  return (
+    <Button
+      onClick={onClick}
+      disabled={isSaving}
+      className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white disabled:opacity-60"
+    >
+      {isSaving ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : (
+        <Save className="h-4 w-4" />
+      )}
+      {label ?? "Save Changes"}
+    </Button>
+  );
+}
+
+// ─── Format Date Helper ───────────────────────────────────────────
+function formatLastUpdated(dateStr: string): string {
+  try {
+    const date = new Date(dateStr);
+    return date.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  } catch {
+    return "Unknown";
+  }
+}
+
 // ─── Main Component ────────────────────────────────────────────────
 export function SettingsView() {
-  // ─── Company Settings State ─────────────────────────────────────
+  // ─── Data State ─────────────────────────────────────────────
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+
+  // ─── Company Settings State ─────────────────────────────────
   const [companyName, setCompanyName] = useState("MSBM Technologies Inc.");
   const [companyAddress, setCompanyAddress] = useState("1234 Innovation Drive, Suite 500, San Francisco, CA 94102");
-  const [companyTimezone, setCompanyTimezone] = useState("America/Los_Angeles");
+  const [companyPhone, setCompanyPhone] = useState("(555) 100-1000");
+  const [companyEmail, setCompanyEmail] = useState("info@msbm.com");
+  const [companyWebsite, setCompanyWebsite] = useState("https://msbm.com");
 
-  // ─── Attendance Settings State ──────────────────────────────────
-  const [geofenceRadius, setGeofenceRadius] = useState("300");
-  const [allowClockInWithoutGeofence, setAllowClockInWithoutGeofence] = useState(false);
+  // ─── Attendance Settings State ──────────────────────────────
+  const [attendanceGracePeriod, setAttendanceGracePeriod] = useState("5");
   const [autoClockOutHours, setAutoClockOutHours] = useState("12");
-  const [attendanceRounding, setAttendanceRounding] = useState("15min");
+  const [requireGeofence, setRequireGeofence] = useState(true);
   const [overtimeThreshold, setOvertimeThreshold] = useState("40");
 
-  // ─── Payroll Settings State ────────────────────────────────────
-  const [payPeriodType, setPayPeriodType] = useState("bi-weekly");
-  const [payDateOfMonth, setPayDateOfMonth] = useState("15");
+  // ─── Payroll Settings State ────────────────────────────────
+  const [payPeriodType, setPayPeriodType] = useState("biweekly");
+  const [payPeriodStartDay, setPayPeriodStartDay] = useState("15");
   const [overtimeMultiplier, setOvertimeMultiplier] = useState("1.5");
   const [taxFilingDefault, setTaxFilingDefault] = useState("single");
-  const [healthInsurance, setHealthInsurance] = useState("350");
-  const [retirement401k, setRetirement401k] = useState("5");
 
-  // ─── Notification Settings State ────────────────────────────────
+  // ─── Notification Settings State ────────────────────────────
   const [emailNotifications, setEmailNotifications] = useState(true);
-  const [clockReminders, setClockReminders] = useState(true);
+  const [pushNotifications, setPushNotifications] = useState(true);
   const [ptoAlerts, setPtoAlerts] = useState(true);
   const [payrollAlerts, setPayrollAlerts] = useState(true);
   const [complianceAlerts, setComplianceAlerts] = useState(false);
 
-  // ─── Security Settings State ───────────────────────────────────
+  // ─── Security Settings State ───────────────────────────────
   const [sessionTimeout, setSessionTimeout] = useState("30min");
   const [twoFactor, setTwoFactor] = useState(false);
+  const [passwordMinLength, setPasswordMinLength] = useState("8");
 
-  // ─── Handlers ──────────────────────────────────────────────────
+  // ─── Fetch Settings ──────────────────────────────────────────
+  const fetchSettings = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/settings");
+      if (!res.ok) throw new Error("Failed to fetch settings");
+      const { settings } = await res.json();
+      const s = settings as CompanySettings;
+
+      // Populate company state
+      setCompanyName(s.companyName);
+      setCompanyAddress(s.companyAddress);
+      setCompanyPhone(s.companyPhone);
+      setCompanyEmail(s.companyEmail);
+      setCompanyWebsite(s.companyWebsite);
+
+      // Populate attendance state
+      setAttendanceGracePeriod(String(s.attendanceGracePeriod));
+      setAutoClockOutHours(String(s.autoClockOutHours));
+      setRequireGeofence(s.requireGeofence);
+      setOvertimeThreshold(String(s.overtimeThreshold));
+
+      // Populate payroll state
+      setPayPeriodType(s.payrollFrequency);
+      setPayPeriodStartDay(String(s.payPeriodStartDay));
+      setOvertimeMultiplier(String(s.overtimeMultiplier));
+      setTaxFilingDefault(s.taxFilingDefault);
+
+      // Populate notification state
+      setEmailNotifications(s.emailNotifications);
+      setPushNotifications(s.pushNotifications);
+      setPtoAlerts(s.ptoAlerts);
+      setPayrollAlerts(s.payrollAlerts);
+      setComplianceAlerts(s.complianceAlerts);
+
+      // Populate security state
+      setSessionTimeout(s.sessionTimeout + "min");
+      setTwoFactor(s.twoFactorAuth);
+      setPasswordMinLength(String(s.passwordMinLength));
+
+      setLastUpdated(s.updatedAt);
+    } catch (error) {
+      console.error("Error loading settings:", error);
+      toast.error("Failed to load settings", {
+        description: "Could not fetch settings from the server. Using defaults.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchSettings();
+  }, [fetchSettings]);
+
+  // ─── Save Handler ────────────────────────────────────────────
+  const saveSettings = async (data: Record<string, unknown>, successMessage: string) => {
+    setIsSaving(true);
+    try {
+      const res = await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error("Failed to save settings");
+      const { settings } = await res.json();
+      setLastUpdated((settings as CompanySettings).updatedAt);
+      toast.success(successMessage, {
+        description: "Your settings have been updated and saved.",
+      });
+    } catch (error) {
+      console.error("Error saving settings:", error);
+      toast.error("Failed to save settings", {
+        description: "There was an error saving your changes. Please try again.",
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  // ─── Individual Save Handlers ────────────────────────────────
   const handleSaveCompany = () => {
-    toast.success("Company settings saved", {
-      description: "Your company information has been updated successfully.",
-    });
+    saveSettings(
+      {
+        companyName,
+        companyAddress,
+        companyPhone,
+        companyEmail,
+        companyWebsite,
+      },
+      "Company settings saved"
+    );
   };
 
   const handleSaveAttendance = () => {
-    toast.success("Attendance settings saved", {
-      description: "Attendance policies have been updated.",
-    });
+    saveSettings(
+      {
+        attendanceGracePeriod: parseInt(attendanceGracePeriod) || 5,
+        autoClockOutHours: parseInt(autoClockOutHours) || 10,
+        requireGeofence,
+        overtimeThreshold: parseInt(overtimeThreshold) || 8,
+      },
+      "Attendance settings saved"
+    );
   };
 
   const handleSavePayroll = () => {
-    toast.success("Payroll settings saved", {
-      description: "Payroll configuration has been updated.",
-    });
+    saveSettings(
+      {
+        payrollFrequency: payPeriodType,
+        payPeriodStartDay: parseInt(payPeriodStartDay) || 1,
+        overtimeMultiplier: parseFloat(overtimeMultiplier) || 1.5,
+        taxFilingDefault,
+      },
+      "Payroll settings saved"
+    );
   };
 
   const handleSaveNotifications = () => {
-    toast.success("Notification preferences saved", {
-      description: "Your notification settings have been updated.",
-    });
+    saveSettings(
+      {
+        emailNotifications,
+        pushNotifications,
+        ptoAlerts,
+        payrollAlerts,
+        complianceAlerts,
+      },
+      "Notification preferences saved"
+    );
   };
 
   const handleSaveSecurity = () => {
-    toast.success("Security settings saved", {
-      description: "Security configuration has been updated.",
-    });
+    const timeoutMinutes = parseInt(sessionTimeout) || 30;
+    saveSettings(
+      {
+        twoFactorAuth: twoFactor,
+        sessionTimeout: timeoutMinutes,
+        passwordMinLength: parseInt(passwordMinLength) || 8,
+      },
+      "Security settings saved"
+    );
   };
 
-  // ─── Render ─────────────────────────────────────────────────────
+  // ─── Loading State ──────────────────────────────────────────
+  if (isLoading) {
+    return <SettingsSkeleton />;
+  }
+
+  // ─── Render ─────────────────────────────────────────────────
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Settings</h1>
           <p className="text-sm text-muted-foreground">
             Manage your organization&apos;s configuration and preferences.
           </p>
+          {lastUpdated && (
+            <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+              <RefreshCw className="h-3 w-3" />
+              Last updated: {formatLastUpdated(lastUpdated)}
+            </p>
+          )}
         </div>
         <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 w-fit">
           <ShieldCheck className="h-3.5 w-3.5 mr-1" />
@@ -231,7 +453,7 @@ export function SettingsView() {
         </Badge>
       </div>
 
-      {/* ─── Tabbed Content ─────────────────────────────────────── */}
+      {/* ─── Tabbed Content ─────────────────────────────────── */}
       <Tabs defaultValue="company" className="space-y-6">
         <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
           <TabsTrigger value="company" className="gap-1.5 text-xs sm:text-sm">
@@ -300,21 +522,37 @@ export function SettingsView() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="timezone" className="text-sm font-medium">Timezone</Label>
-                    <Select value={companyTimezone} onValueChange={setCompanyTimezone}>
-                      <SelectTrigger id="timezone" className="max-w-md">
-                        <Globe className="h-4 w-4 text-muted-foreground mr-2" />
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="America/Los_Angeles">Pacific Time (PT)</SelectItem>
-                        <SelectItem value="America/Denver">Mountain Time (MT)</SelectItem>
-                        <SelectItem value="America/Chicago">Central Time (CT)</SelectItem>
-                        <SelectItem value="America/New_York">Eastern Time (ET)</SelectItem>
-                        <SelectItem value="Europe/London">GMT (London)</SelectItem>
-                        <SelectItem value="Asia/Tokyo">Japan Standard Time</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Label htmlFor="company-email" className="text-sm font-medium">Contact Email</Label>
+                    <Input
+                      id="company-email"
+                      type="email"
+                      value={companyEmail}
+                      onChange={(e) => setCompanyEmail(e.target.value)}
+                      placeholder="contact@company.com"
+                      className="max-w-md"
+                    />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="company-phone" className="text-sm font-medium">Phone Number</Label>
+                    <Input
+                      id="company-phone"
+                      value={companyPhone}
+                      onChange={(e) => setCompanyPhone(e.target.value)}
+                      placeholder="(555) 000-0000"
+                      className="max-w-md"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="company-website" className="text-sm font-medium">Website</Label>
+                    <Input
+                      id="company-website"
+                      value={companyWebsite}
+                      onChange={(e) => setCompanyWebsite(e.target.value)}
+                      placeholder="https://company.com"
+                      className="max-w-md"
+                    />
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -333,10 +571,7 @@ export function SettingsView() {
               </SettingsSection>
 
               <div className="flex justify-end">
-                <Button onClick={handleSaveCompany} className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white">
-                  <Save className="h-4 w-4" />
-                  Save Changes
-                </Button>
+                <SaveButton isSaving={isSaving} onClick={handleSaveCompany} />
               </div>
             </CardContent>
           </Card>
@@ -356,28 +591,28 @@ export function SettingsView() {
             <CardContent className="space-y-6">
               <SettingsSection title="Geofence Settings" description="Configure location-based clock-in requirements.">
                 <SettingRow
-                  label="Default Geofence Radius"
-                  description="Radius in meters around each geofence location"
+                  label="Attendance Grace Period"
+                  description="Minutes after shift start before marking employee as late"
                 >
                   <div className="flex items-center gap-2">
                     <Input
                       type="number"
-                      value={geofenceRadius}
-                      onChange={(e) => setGeofenceRadius(e.target.value)}
+                      value={attendanceGracePeriod}
+                      onChange={(e) => setAttendanceGracePeriod(e.target.value)}
                       className="w-28"
-                      min="50"
-                      max="2000"
+                      min="0"
+                      max="60"
                     />
-                    <span className="text-sm text-muted-foreground">meters</span>
+                    <span className="text-sm text-muted-foreground">minutes</span>
                   </div>
                 </SettingRow>
                 <SettingRow
-                  label="Allow Clock-in Without Geofence"
-                  description="Let employees clock in when outside geofence boundaries"
+                  label="Require Geofence for Clock-in"
+                  description="Employees must be within geofence boundaries to clock in"
                 >
                   <Switch
-                    checked={allowClockInWithoutGeofence}
-                    onCheckedChange={setAllowClockInWithoutGeofence}
+                    checked={requireGeofence}
+                    onCheckedChange={setRequireGeofence}
                   />
                 </SettingRow>
               </SettingsSection>
@@ -398,22 +633,6 @@ export function SettingsView() {
                     />
                     <span className="text-sm text-muted-foreground">hours</span>
                   </div>
-                </SettingRow>
-                <SettingRow
-                  label="Attendance Rounding"
-                  description="Round clock-in/out times to the nearest interval"
-                >
-                  <Select value={attendanceRounding} onValueChange={setAttendanceRounding}>
-                    <SelectTrigger className="w-40">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="none">No Rounding</SelectItem>
-                      <SelectItem value="5min">5 Minutes</SelectItem>
-                      <SelectItem value="15min">15 Minutes</SelectItem>
-                      <SelectItem value="30min">30 Minutes</SelectItem>
-                    </SelectContent>
-                  </Select>
                 </SettingRow>
               </SettingsSection>
 
@@ -438,10 +657,7 @@ export function SettingsView() {
               </SettingsSection>
 
               <div className="flex justify-end">
-                <Button onClick={handleSaveAttendance} className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white">
-                  <Save className="h-4 w-4" />
-                  Save Changes
-                </Button>
+                <SaveButton isSaving={isSaving} onClick={handleSaveAttendance} />
               </div>
             </CardContent>
           </Card>
@@ -471,21 +687,21 @@ export function SettingsView() {
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="weekly">Weekly</SelectItem>
-                      <SelectItem value="bi-weekly">Bi-Weekly</SelectItem>
-                      <SelectItem value="semi-monthly">Semi-Monthly</SelectItem>
+                      <SelectItem value="biweekly">Bi-Weekly</SelectItem>
+                      <SelectItem value="semimonthly">Semi-Monthly</SelectItem>
                       <SelectItem value="monthly">Monthly</SelectItem>
                     </SelectContent>
                   </Select>
                 </SettingRow>
                 <SettingRow
-                  label="Pay Date of Month"
-                  description="Day of the month employees receive pay (1-31)"
+                  label="Pay Period Start Day"
+                  description="Day of the month the pay period starts (1-31)"
                 >
                   <div className="flex items-center gap-2">
                     <Input
                       type="number"
-                      value={payDateOfMonth}
-                      onChange={(e) => setPayDateOfMonth(e.target.value)}
+                      value={payPeriodStartDay}
+                      onChange={(e) => setPayPeriodStartDay(e.target.value)}
                       className="w-28"
                       min="1"
                       max="31"
@@ -529,46 +745,8 @@ export function SettingsView() {
                 </SettingRow>
               </SettingsSection>
 
-              <SettingsSection title="Benefit Deductions" description="Default deduction amounts for employee benefits.">
-                <SettingRow
-                  label="Health Insurance"
-                  description="Monthly employee health insurance contribution"
-                >
-                  <div className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-muted-foreground" />
-                    <Input
-                      type="number"
-                      value={healthInsurance}
-                      onChange={(e) => setHealthInsurance(e.target.value)}
-                      className="w-32"
-                      min="0"
-                    />
-                    <span className="text-sm text-muted-foreground">/month</span>
-                  </div>
-                </SettingRow>
-                <SettingRow
-                  label="401(k) Match"
-                  description="Employer 401(k) match percentage"
-                >
-                  <div className="flex items-center gap-2">
-                    <Input
-                      type="number"
-                      value={retirement401k}
-                      onChange={(e) => setRetirement401k(e.target.value)}
-                      className="w-28"
-                      min="0"
-                      max="10"
-                    />
-                    <span className="text-sm text-muted-foreground">% match</span>
-                  </div>
-                </SettingRow>
-              </SettingsSection>
-
               <div className="flex justify-end">
-                <Button onClick={handleSavePayroll} className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white">
-                  <Save className="h-4 w-4" />
-                  Save Changes
-                </Button>
+                <SaveButton isSaving={isSaving} onClick={handleSavePayroll} />
               </div>
             </CardContent>
           </Card>
@@ -596,18 +774,18 @@ export function SettingsView() {
                     onCheckedChange={setEmailNotifications}
                   />
                 </SettingRow>
+                <SettingRow
+                  label="Push Notifications"
+                  description="Send push notifications to mobile devices"
+                >
+                  <Switch
+                    checked={pushNotifications}
+                    onCheckedChange={setPushNotifications}
+                  />
+                </SettingRow>
               </SettingsSection>
 
               <SettingsSection title="Alert Types" description="Choose which events trigger notifications.">
-                <SettingRow
-                  label="Clock-in/out Reminders"
-                  description="Remind employees to clock in at shift start and clock out at end of day"
-                >
-                  <Switch
-                    checked={clockReminders}
-                    onCheckedChange={setClockReminders}
-                  />
-                </SettingRow>
                 <SettingRow
                   label="PTO Request Alerts"
                   description="Notify managers when new PTO requests are submitted"
@@ -638,10 +816,7 @@ export function SettingsView() {
               </SettingsSection>
 
               <div className="flex justify-end">
-                <Button onClick={handleSaveNotifications} className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white">
-                  <Save className="h-4 w-4" />
-                  Save Preferences
-                </Button>
+                <SaveButton isSaving={isSaving} onClick={handleSaveNotifications} label="Save Preferences" />
               </div>
             </CardContent>
           </Card>
@@ -661,12 +836,12 @@ export function SettingsView() {
                   </div>
                   <p className="text-xs text-muted-foreground">{emailNotifications ? "Active" : "Disabled"}</p>
                 </div>
-                <div className={`p-4 rounded-xl border transition-colors ${clockReminders ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-950/20" : "border-border bg-muted/30"}`}>
+                <div className={`p-4 rounded-xl border transition-colors ${pushNotifications ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-950/20" : "border-border bg-muted/30"}`}>
                   <div className="flex items-center gap-2 mb-1">
-                    <Clock className={`h-4 w-4 ${clockReminders ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`} />
-                    <span className="text-sm font-medium">Clock Reminders</span>
+                    <Bell className={`h-4 w-4 ${pushNotifications ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`} />
+                    <span className="text-sm font-medium">Push</span>
                   </div>
-                  <p className="text-xs text-muted-foreground">{clockReminders ? "Active" : "Disabled"}</p>
+                  <p className="text-xs text-muted-foreground">{pushNotifications ? "Active" : "Disabled"}</p>
                 </div>
                 <div className={`p-4 rounded-xl border transition-colors ${ptoAlerts ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-950/20" : "border-border bg-muted/30"}`}>
                   <div className="flex items-center gap-2 mb-1">
@@ -718,24 +893,40 @@ export function SettingsView() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="15min">15 minutes</SelectItem>
-                      <SelectItem value="30min">30 minutes</SelectItem>
-                      <SelectItem value="1hr">1 hour</SelectItem>
-                      <SelectItem value="4hr">4 hours</SelectItem>
+                      <SelectItem value="15">15 minutes</SelectItem>
+                      <SelectItem value="30">30 minutes</SelectItem>
+                      <SelectItem value="60">1 hour</SelectItem>
+                      <SelectItem value="240">4 hours</SelectItem>
                     </SelectContent>
                   </Select>
+                </SettingRow>
+                <SettingRow
+                  label="Minimum Password Length"
+                  description="Minimum number of characters required for passwords"
+                >
+                  <div className="flex items-center gap-2">
+                    <Lock className="h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="number"
+                      value={passwordMinLength}
+                      onChange={(e) => setPasswordMinLength(e.target.value)}
+                      className="w-28"
+                      min="6"
+                      max="32"
+                    />
+                    <span className="text-sm text-muted-foreground">characters</span>
+                  </div>
                 </SettingRow>
               </SettingsSection>
 
               <SettingsSection title="Authentication" description="Configure multi-factor and access controls.">
                 <SettingRow
                   label="Two-Factor Authentication"
-                  description="Require 2FA for all users (contact IT admin to enable)"
+                  description="Require 2FA for all users"
                 >
                   <Switch
                     checked={twoFactor}
                     onCheckedChange={setTwoFactor}
-                    disabled
                   />
                 </SettingRow>
               </SettingsSection>
@@ -763,10 +954,7 @@ export function SettingsView() {
               </div>
 
               <div className="flex justify-end">
-                <Button onClick={handleSaveSecurity} className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white">
-                  <Save className="h-4 w-4" />
-                  Save Changes
-                </Button>
+                <SaveButton isSaving={isSaving} onClick={handleSaveSecurity} />
               </div>
             </CardContent>
           </Card>

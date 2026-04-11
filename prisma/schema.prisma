@@ -223,20 +223,22 @@ model PayrollRecord {
 // ============ NOTIFICATIONS ============
 
 model Notification {
-  id        String   @id @default(cuid())
-  userId    String   // employeeId
-  title     String
-  message   String
-  type      String   @default("info") // info, warning, alert, success
-  isRead    Boolean  @default(false)
-  link      String?
-  createdAt DateTime @default(now())
+  id          String   @id @default(cuid())
+  userId      String   // employeeId
+  title       String
+  message     String
+  type        String   @default("info") // info, warning, alert, success
+  isRead      Boolean  @default(false)
+  link        String?
+  ptoRequestId String?
+  createdAt   DateTime @default(now())
 
   employee   Employee    @relation(fields: [userId], references: [id])
-  ptoRequest PTORequest? @relation(fields: [id], references: [id])
+  ptoRequest PTORequest? @relation(fields: [ptoRequestId], references: [id])
 
   @@index([userId])
   @@index([isRead])
+  @@index([ptoRequestId])
 }
 
 // ============ AI CHAT ============

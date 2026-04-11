@@ -14,17 +14,28 @@ import {
   Menu,
   X,
   ChevronDown,
-  LogOut,
   Shield,
   Building2,
   ChevronRight,
   BarChart3,
   ClipboardCheck,
+  FileText,
+  Scale,
+  Sun,
+  Moon,
+  CheckCircle2,
+  AlertTriangle,
+  Info,
+  CalendarClock,
+  UserPlus,
 } from "lucide-react";
+import { useTheme } from "next-themes";
+import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import {
   DropdownMenu,
@@ -47,6 +58,8 @@ import { GeofenceView } from "@/components/hrm/geofence-view";
 import { ReportsView } from "@/components/hrm/reports-view";
 import { OnboardingView } from "@/components/hrm/onboarding-view";
 import { SettingsView } from "@/components/hrm/settings-view";
+import { DocumentsView } from "@/components/hrm/documents-view";
+import { ComplianceView } from "@/components/hrm/compliance-view";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -56,7 +69,9 @@ const NAV_ITEMS = [
   { id: "pto", label: "Time Off", icon: CalendarDays },
   { id: "geofences", label: "Geofences", icon: MapPin },
   { id: "onboarding", label: "Onboarding", icon: ClipboardCheck },
+  { id: "documents", label: "Documents", icon: FileText },
   { id: "reports", label: "Reports", icon: BarChart3 },
+  { id: "compliance", label: "Compliance", icon: Scale },
   { id: "ai-assistant", label: "AI Assistant", icon: Bot },
   { id: "settings", label: "Settings", icon: Settings },
 ];
@@ -88,6 +103,8 @@ export default function HomePage() {
     sidePanelOpen,
     setSidePanelOpen,
   } = useAppStore();
+
+  const { theme, setTheme, resolvedTheme } = useTheme();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isSeeding, setIsSeeding] = useState(false);
@@ -270,19 +287,90 @@ export default function HomePage() {
                 {isSeeding ? "Loading..." : "Reset Demo"}
               </Button>
 
-              {/* Notifications */}
+              {/* Notifications Popover */}
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="ghost" size="icon" className="relative">
+                    <Bell className="h-5 w-5" />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                        {unreadCount > 9 ? "9+" : unreadCount}
+                      </span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="end" className="w-80 p-0">
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+                    <h3 className="text-sm font-semibold">Notifications</h3>
+                    {unreadCount > 0 && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-xs text-emerald-600 hover:text-emerald-700 dark:text-emerald-400"
+                        onClick={() => {
+                          setNotifications(
+                            notifications.map((n) => ({ ...n, isRead: true }))
+                          );
+                        }}
+                      >
+                        Mark all read
+                      </Button>
+                    )}
+                  </div>
+                  {notifications.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-10 px-4">
+                      <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center mb-3">
+                        <Bell className="h-5 w-5 text-muted-foreground" />
+                      </div>
+                      <p className="text-sm font-medium text-muted-foreground">No notifications</p>
+                      <p className="text-xs text-muted-foreground mt-1">You're all caught up!</p>
+                    </div>
+                  ) : (
+                    <ScrollArea className="max-h-80">
+                      <div className="divide-y divide-border">
+                        {notifications.map((notif) => (
+                          <button
+                            key={notif.id}
+                            className={`w-full text-left px-4 py-3 transition-colors hover:bg-accent/50 ${
+                              !notif.isRead
+                                ? "border-l-2 border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20"
+                                : ""
+                            }`}
+                          >
+                            <div className="flex gap-3">
+                              <div className="mt-0.5">
+                                <NotificationIcon type={notif.type} />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className={`text-sm ${!notif.isRead ? "font-semibold" : "font-medium"}`}>
+                                  {notif.title}
+                                </p>
+                                <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">
+                                  {notif.message}
+                                </p>
+                                <p className="text-[10px] text-muted-foreground mt-1">
+                                  {formatDistanceToNow(new Date(notif.createdAt), { addSuffix: true })}
+                                </p>
+                              </div>
+                              {!notif.isRead && (
+                                <div className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
+                              )}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </ScrollArea>
+                  )}
+                </PopoverContent>
+              </Popover>
+
+              {/* Dark Mode Toggle */}
               <Button
                 variant="ghost"
                 size="icon"
-                className="relative"
-                onClick={() => setSidePanelOpen(!sidePanelOpen)}
+                onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
               >
-                <Bell className="h-5 w-5" />
-                {unreadCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                    {unreadCount > 9 ? "9+" : unreadCount}
-                  </span>
-                )}
+                {resolvedTheme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </Button>
 
               {/* User Menu */}
@@ -367,6 +455,8 @@ export default function HomePage() {
           {currentView === "onboarding" && <OnboardingView />}
           {currentView === "reports" && <ReportsView />}
           {currentView === "ai-assistant" && <AIChatView />}
+          {currentView === "documents" && <DocumentsView />}
+          {currentView === "compliance" && <ComplianceView />}
           {currentView === "settings" && <SettingsView />}
         </div>
 
@@ -375,7 +465,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <Shield className="w-3 h-3" />
-              MSBM-HR Suite v1.0
+              MSBM-HR Suite v2.0
             </span>
             <span>AI-Powered Human Resource Management</span>
           </div>
@@ -518,6 +608,53 @@ function SidebarContent({
           </div>
         </ScrollArea>
       </div>
+    </div>
+  );
+}
+
+// Notification icon helper component
+function NotificationIcon({ type }: { type: string }) {
+  const t = type?.toLowerCase() || "";
+
+  if (t.includes("success") || t.includes("approved") || t.includes("complete")) {
+    return (
+      <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+        <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+      </div>
+    );
+  }
+  if (t.includes("warning") || t.includes("alert") || t.includes("overdue")) {
+    return (
+      <div className="w-8 h-8 rounded-full bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+        <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+      </div>
+    );
+  }
+  if (t.includes("payroll") || t.includes("salary") || t.includes("payment")) {
+    return (
+      <div className="w-8 h-8 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
+        <DollarSign className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+      </div>
+    );
+  }
+  if (t.includes("pto") || t.includes("leave") || t.includes("time_off") || t.includes("vacation")) {
+    return (
+      <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+        <CalendarClock className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+      </div>
+    );
+  }
+  if (t.includes("onboarding") || t.includes("new_hire") || t.includes("welcome")) {
+    return (
+      <div className="w-8 h-8 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+        <UserPlus className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+      </div>
+    );
+  }
+  // Default info icon
+  return (
+    <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+      <Info className="h-4 w-4 text-muted-foreground" />
     </div>
   );
 }

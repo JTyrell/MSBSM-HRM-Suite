@@ -188,10 +188,10 @@ function SummaryCards({ summary }: { summary: PayrollSummary }) {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {cards.map((card) => (
+      {cards.map((card, index) => (
         <Card
           key={card.title}
-          className={`${card.border} hover:shadow-md transition-shadow`}
+          className={`stagger-${index + 1} card-glow hover-scale ${card.border} hover:shadow-md transition-shadow`}
         >
           <CardContent className="p-5">
             <div className="flex items-center justify-between">
@@ -1372,7 +1372,7 @@ export function PayrollView() {
       const res = await fetch("/api/payroll");
       if (res.ok) {
         const data = await res.json();
-        setPayrollPeriods(data);
+        setPayrollPeriods(data.periods || []);
       }
     } catch {
       // Use cached store data on error

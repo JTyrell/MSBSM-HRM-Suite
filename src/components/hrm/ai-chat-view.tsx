@@ -716,7 +716,7 @@ export function AIChatView() {
                 type="submit"
                 size="icon"
                 disabled={!inputValue.trim() || isTyping}
-                className="h-11 w-11 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-md shadow-emerald-500/20 disabled:opacity-40 disabled:shadow-none shrink-0"
+                className="btn-gradient h-11 w-11 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-md shadow-emerald-500/20 disabled:opacity-40 disabled:shadow-none shrink-0"
               >
                 {isTyping ? (
                   <Loader2 className="h-4 w-4 animate-spin" />

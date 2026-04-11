@@ -15,6 +15,7 @@ export async function POST() {
     await db.attendance.deleteMany();
     await db.employee.deleteMany();
     await db.shift.deleteMany();
+    await db.announcement.deleteMany();
     await db.geofence.deleteMany();
     await db.department.deleteMany();
     await db.company.deleteMany();
@@ -327,6 +328,81 @@ export async function POST() {
       });
     }
 
+    // Create announcements
+    const announcementData = [
+      {
+        title: "Welcome to MSBM-HR Suite v3.0",
+        content: "We're excited to announce the launch of MSBM-HR Suite v3.0! This major update includes a completely redesigned interface, real-time attendance tracking with GPS geofencing, automated payroll processing, and our new AI-powered assistant. Please take some time to explore all the new features and let us know your feedback.",
+        category: "general",
+        priority: "high",
+        isPinned: true,
+      },
+      {
+        title: "Q2 All-Hands Meeting",
+        content: "Our quarterly all-hands meeting is scheduled for Friday at 2:00 PM in the main auditorium. CEO Alex Rivera will share Q1 results and outline our Q2 strategic priorities. There will be an open Q&A session followed by a networking reception. Please RSVP by Wednesday.",
+        category: "event",
+        priority: "normal",
+        isPinned: false,
+      },
+      {
+        title: "Updated Remote Work Policy",
+        content: "Effective immediately, our remote work policy has been updated. Employees may now work remotely up to 3 days per week with manager approval. All remote workers must maintain available hours between 10 AM and 4 PM in their local timezone and must use the geofenced attendance app when visiting any company location.",
+        category: "policy",
+        priority: "high",
+        isPinned: false,
+      },
+      {
+        title: "New Office Snack Bar Now Open",
+        content: "Great news! The new snack bar on the 3rd floor is now officially open. We've partnered with local vendors to offer fresh fruit, healthy snacks, coffee, and beverages throughout the day. A big thank you to the Operations team for making this happen. Enjoy!",
+        category: "celebration",
+        priority: "low",
+        isPinned: false,
+      },
+      {
+        title: "Holiday Schedule: Memorial Day",
+        content: "Please note that the office will be closed on Monday, May 26th in observance of Memorial Day. Normal business hours will resume on Tuesday, May 27th. All employees will receive this day as a paid holiday. Please plan your projects and deadlines accordingly.",
+        category: "general",
+        priority: "normal",
+        isPinned: false,
+      },
+      {
+        title: "Open Enrollment Period Starts Monday",
+        content: "The annual open enrollment period for benefits begins Monday and runs through the end of the month. This is your opportunity to review and update your health insurance, dental, vision, and 401(k) contributions. HR will host information sessions on Tuesday and Thursday at noon in Conference Room A.",
+        category: "urgent",
+        priority: "urgent",
+        isPinned: false,
+      },
+      {
+        title: "Employee of the Month: Sarah Chen",
+        content: "Congratulations to Sarah Chen from Human Resources for being named Employee of the Month! Sarah has been instrumental in streamlining our onboarding process, reducing new hire time-to-productivity by 40%. She consistently demonstrates exceptional dedication and innovation. Join us in celebrating her achievement!",
+        category: "celebration",
+        priority: "normal",
+        isPinned: true,
+      },
+      {
+        title: "IT Maintenance Window This Weekend",
+        content: "The IT department will be performing scheduled system maintenance this Saturday from 10 PM to 4 AM Sunday. During this window, email, VPN, and internal tools may be intermittently unavailable. Please save any work in progress before the maintenance window. Contact IT support if you experience issues after Sunday morning.",
+        category: "urgent",
+        priority: "high",
+        isPinned: false,
+      },
+    ];
+
+    for (const ann of announcementData) {
+      await db.announcement.create({
+        data: {
+          title: ann.title,
+          content: ann.content,
+          category: ann.category,
+          priority: ann.priority,
+          authorId: employees[0].id,
+          isPinned: ann.isPinned,
+          isPublished: true,
+          companyId: company.id,
+        },
+      });
+    }
+
     // Create audit log entries
     const auditActions = [
       { userId: employees[0].id, action: "Payroll processed", module: "payroll", details: JSON.stringify({ periodId: payrollPeriod.id, totalEmployees: employees.length, totalGross: totalGrossPay }) },
@@ -360,6 +436,7 @@ export async function POST() {
         geofences: 3,
         attendanceRecords: attendanceRecords.length,
         shifts: shifts.length,
+        announcements: announcementData.length,
         ptoRequests: ptoData.length,
         payrollRecords: employees.length,
         totalGrossPay: Math.round(totalGrossPay * 100) / 100,

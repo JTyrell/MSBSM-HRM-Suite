@@ -28,6 +28,8 @@ import {
   Info,
   CalendarClock,
   UserPlus,
+  Heart,
+  Megaphone,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { formatDistanceToNow } from "date-fns";
@@ -61,6 +63,8 @@ import { SettingsView } from "@/components/hrm/settings-view";
 import { DocumentsView } from "@/components/hrm/documents-view";
 import { ComplianceView } from "@/components/hrm/compliance-view";
 import { ShiftsView } from "@/components/hrm/shifts-view";
+import { AnnouncementsView } from "@/components/hrm/announcements-view";
+import { BenefitsView } from "@/components/hrm/benefits-view";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -69,8 +73,10 @@ const NAV_ITEMS = [
   { id: "employees", label: "Employees", icon: Users },
   { id: "payroll", label: "Payroll", icon: DollarSign },
   { id: "pto", label: "Time Off", icon: CalendarDays },
+  { id: "benefits", label: "Benefits", icon: Heart },
   { id: "geofences", label: "Geofences", icon: MapPin },
   { id: "onboarding", label: "Onboarding", icon: ClipboardCheck },
+  { id: "announcements", label: "Announcements", icon: Megaphone },
   { id: "documents", label: "Documents", icon: FileText },
   { id: "reports", label: "Reports", icon: BarChart3 },
   { id: "compliance", label: "Compliance", icon: Scale },
@@ -447,7 +453,7 @@ export default function HomePage() {
         </header>
 
         {/* Page Content */}
-        <div className="flex-1 p-4 lg:p-6">
+        <div className="animate-fade-in-up flex-1 p-4 lg:p-6">
           {currentView === "dashboard" && <DashboardView />}
           {currentView === "attendance" && <AttendanceView />}
           {currentView === "employees" && <EmployeesView />}
@@ -455,12 +461,14 @@ export default function HomePage() {
           {currentView === "pto" && <PTOView />}
           {currentView === "geofences" && <GeofenceView />}
           {currentView === "onboarding" && <OnboardingView />}
+          {currentView === "announcements" && <AnnouncementsView />}
           {currentView === "reports" && <ReportsView />}
           {currentView === "ai-assistant" && <AIChatView />}
           {currentView === "documents" && <DocumentsView />}
           {currentView === "compliance" && <ComplianceView />}
           {currentView === "settings" && <SettingsView />}
           {currentView === "shifts" && <ShiftsView />}
+          {currentView === "benefits" && <BenefitsView />}
         </div>
 
         {/* Footer */}
@@ -468,7 +476,7 @@ export default function HomePage() {
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <Shield className="w-3 h-3" />
-              MSBM-HR Suite v3.0
+              MSBM-HR Suite v4.0
             </span>
             <span>AI-Powered Human Resource Management</span>
           </div>

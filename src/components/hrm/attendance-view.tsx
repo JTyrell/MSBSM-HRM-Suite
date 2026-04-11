@@ -607,7 +607,7 @@ export function AttendanceView() {
               ) : (
                 <Button
                   size="lg"
-                  className="w-full max-w-xs h-16 text-lg font-bold rounded-2xl shadow-lg shadow-emerald-300/50 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                  className="btn-gradient w-full max-w-xs h-16 text-lg font-bold rounded-2xl shadow-lg shadow-emerald-300/50 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                   onClick={handleClockIn}
                   disabled={clockingIn}
                 >

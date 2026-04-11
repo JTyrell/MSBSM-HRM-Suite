@@ -360,7 +360,7 @@ export function GeofenceView() {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {/* ─── Map Section ─────────────────────────────────────────────── */}
         <div className="xl:col-span-2">
-          <Card>
+          <Card className="glass-card">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
                 <MapIcon className="h-5 w-5 text-emerald-600" />

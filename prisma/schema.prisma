@@ -23,6 +23,7 @@ model Company {
   geofences   Geofence[]
   payrollPeriods PayrollPeriod[]
   shifts      Shift[]
+  announcements Announcement[]
 }
 
 model Department {
@@ -263,6 +264,29 @@ model Notification {
   @@index([userId])
   @@index([isRead])
   @@index([ptoRequestId])
+}
+
+// ============ ANNOUNCEMENTS ============
+
+model Announcement {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  category    String   @default("general") // general, urgent, policy, event, celebration
+  priority    String   @default("normal") // low, normal, high, urgent
+  authorId    String
+  isPinned    Boolean  @default(false)
+  isPublished Boolean  @default(true)
+  expiresAt   DateTime?
+  companyId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id])
+
+  @@index([companyId])
+  @@index([category])
+  @@index([isPublished])
 }
 
 // ============ AI CHAT ============

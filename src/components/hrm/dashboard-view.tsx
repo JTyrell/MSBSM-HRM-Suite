@@ -581,13 +581,13 @@ export function DashboardView() {
       </div>
 
       {/* ─── Stat Cards Row ──────────────────────────────────────── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {statCards.map((stat) => {
+      <div className="stagger-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
             <Card
               key={stat.label}
-              className={`group transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 border ${stat.borderColorClass}`}
+              className={`stagger-${index + 1} card-glow hover-scale group transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 border ${stat.borderColorClass}`}
             >
               <CardContent className="pt-0">
                 <div className="flex items-center gap-4">
@@ -600,7 +600,7 @@ export function DashboardView() {
                     <p className="text-sm font-medium text-muted-foreground truncate">
                       {stat.label}
                     </p>
-                    <p className="text-2xl font-bold tracking-tight">{stat.value}</p>
+                    <p className="metric-large text-2xl font-bold tracking-tight">{stat.value}</p>
                   </div>
                 </div>
                 {stat.trend && (

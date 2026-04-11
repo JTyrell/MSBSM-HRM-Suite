@@ -685,7 +685,7 @@ export function DashboardView() {
                 <CardContent className="pt-0">
                   <div className="flex items-center gap-4">
                     <div
-                      className={`flex items-center justify-center h-12 w-12 rounded-xl ${stat.bgColorClass} transition-transform duration-300 group-hover:scale-110`}
+                      className={`flex items-center justify-center h-12 w-12 rounded-xl ${stat.bgColorClass} transition-transform duration-300 group-hover:scale-110 icon-container-lg icon-container-emerald`}
                     >
                       <Icon className={`h-6 w-6 ${stat.colorClass}`} />
                     </div>

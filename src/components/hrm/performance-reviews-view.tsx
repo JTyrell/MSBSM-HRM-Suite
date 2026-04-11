@@ -424,7 +424,7 @@ export function PerformanceReviewsView() {
                 <p className="stat-label">Total Reviews</p>
                 <p className="stat-value text-2xl">{totalReviews}</p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center icon-container-sm icon-container-emerald">
                 <BarChart3 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
               </div>
             </div>
@@ -439,7 +439,7 @@ export function PerformanceReviewsView() {
                 <p className="stat-label">Average Rating</p>
                 <p className="stat-value text-2xl">{avgRating > 0 ? avgRating.toFixed(1) : "—"}</p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center icon-container-sm icon-container-amber">
                 <Star className="w-5 h-5 text-amber-600 dark:text-amber-400 fill-amber-400" />
               </div>
             </div>
@@ -459,7 +459,7 @@ export function PerformanceReviewsView() {
                 <p className="stat-label">Completed</p>
                 <p className="stat-value text-2xl">{completedReviews.length}</p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center icon-container-sm icon-container-teal">
                 <CheckCircle2 className="w-5 h-5 text-teal-600 dark:text-teal-400" />
               </div>
             </div>
@@ -477,7 +477,7 @@ export function PerformanceReviewsView() {
                 <p className="stat-label">Pending Reviews</p>
                 <p className="stat-value text-2xl">{pendingReviews.length}</p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-xl bg-rose-100 dark:bg-rose-900/30 flex items-center justify-center icon-container-sm icon-container-rose">
                 <AlertTriangle className="w-5 h-5 text-rose-600 dark:text-rose-400" />
               </div>
             </div>

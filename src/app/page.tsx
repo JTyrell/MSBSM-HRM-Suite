@@ -33,6 +33,7 @@ import {
   Briefcase,
   Megaphone,
   UsersRound,
+  UserCog,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { formatDistanceToNow } from "date-fns";
@@ -71,6 +72,7 @@ import { BenefitsView } from "@/components/hrm/benefits-view";
 import { PerformanceReviewsView } from "@/components/hrm/performance-reviews-view";
 import { TeamAnalyticsView } from "@/components/hrm/team-analytics-view";
 import { RecruitmentView } from "@/components/hrm/recruitment-view";
+import { EmployeeProfileEditor } from "@/components/hrm/employee-profile-editor";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -124,6 +126,7 @@ export default function HomePage() {
   const { theme, setTheme, resolvedTheme } = useTheme();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [profileEditorOpen, setProfileEditorOpen] = useState(false);
   const [isSeeding, setIsSeeding] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -219,7 +222,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen flex bg-muted/30">
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 border-r border-border bg-card z-40">
+      <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0 border-r border-border bg-card z-40 glass-sidebar">
         <SidebarContent
           currentUser={currentUser}
           getInitials={getInitials}
@@ -427,6 +430,11 @@ export default function HomePage() {
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => setProfileEditorOpen(true)}>
+                    <UserCog className="mr-2 h-4 w-4" />
+                    Edit My Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
                   {employees.slice(0, 5).map((emp) => (
                     <DropdownMenuItem
                       key={emp.id}
@@ -482,16 +490,23 @@ export default function HomePage() {
           {currentView === "team-analytics" && <TeamAnalyticsView />}
           {currentView === "performance" && <PerformanceReviewsView />}
           {currentView === "recruitment" && <RecruitmentView />}
+
+          {/* Employee Profile Editor Dialog */}
+          <EmployeeProfileEditor
+            open={profileEditorOpen}
+            onOpenChange={setProfileEditorOpen}
+            employee={currentUser}
+          />
         </div>
 
         {/* Footer */}
-        <footer className="border-t border-border bg-gradient-to-r from-card via-card to-emerald-50/30 dark:from-card dark:via-card dark:to-emerald-950/10 px-4 lg:px-6 py-4 mt-auto">
+        <footer className="border-t border-border bg-gradient-to-r from-card via-card to-emerald-50/30 dark:from-card dark:via-card dark:to-emerald-950/10 px-4 lg:px-6 py-4 mt-auto section-divider">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
             <div className="flex items-center gap-2">
               <div className="w-5 h-5 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
                 <Shield className="w-3 h-3 text-white" />
               </div>
-              <span className="font-medium">MSBM-HR Suite v7.0</span>
+              <span className="font-medium">MSBM-HR Suite v8.0</span>
             </div>
             <div className="flex items-center gap-3">
               <span>AI-Powered Human Resource Management</span>
@@ -543,7 +558,7 @@ function SidebarContent({
           </div>
           <div className="text-center">
             <h1 className="text-base font-bold text-white tracking-tight">MSBM-HR</h1>
-            <p className="text-[10px] text-emerald-100 font-medium uppercase tracking-[0.2em]">AI Suite v7.0</p>
+            <p className="text-[10px] text-emerald-100 font-medium uppercase tracking-[0.2em]">AI Suite v8.0</p>
           </div>
         </div>
         {/* Mobile close button overlay */}

@@ -3158,3 +3158,149 @@
 .fab-primary:active {
   transform: scale(0.95);
 }
+
+/* ── 45. Glassmorphism 2.0 ─────────────────────────────────────────── */
+.glass-card-enhanced {
+  @apply backdrop-blur-xl border border-white/10 rounded-2xl shadow-lg;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+}
+:is(.dark .glass-card-enhanced) {
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  border-color: rgba(255,255,255,0.08);
+}
+.glass-sidebar {
+  @apply backdrop-blur-2xl border-r border-white/5;
+  background: rgba(255,255,255,0.7);
+}
+:is(.dark .glass-sidebar) {
+  background: rgba(0,0,0,0.4);
+}
+
+/* ── 46. Neomorphic Cards ──────────────────────────────────────────── */
+.card-neu-light {
+  @apply rounded-2xl border-0;
+  background: #f0fdf4;
+  box-shadow: 8px 8px 16px rgba(0,0,0,0.04), -8px -8px 16px rgba(255,255,255,0.8);
+}
+.card-neu-dark {
+  @apply rounded-2xl border-0;
+  background: #052e16;
+  box-shadow: 8px 8px 16px rgba(0,0,0,0.3), -8px -8px 16px rgba(255,255,255,0.03);
+}
+
+/* ── 47. Animated Gradient Backgrounds ──────────────────────────────── */
+.bg-gradient-animated {
+  background: linear-gradient(-45deg, #059669, #0d9488, #14b8a6, #059669);
+  background-size: 400% 400%;
+  animation: gradient-shift 8s ease infinite;
+}
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.bg-gradient-subtle {
+  background: linear-gradient(135deg, rgba(16,185,129,0.03) 0%, rgba(20,184,166,0.03) 50%, rgba(16,185,129,0.03) 100%);
+}
+
+/* ── 48. Hover Card Reveal Effects ─────────────────────────────────── */
+.card-reveal-overlay {
+  @apply relative overflow-hidden;
+}
+.card-reveal-overlay .card-reveal-content {
+  @apply absolute inset-0 flex items-end p-4 opacity-0 transition-all duration-300 translate-y-2;
+  background: linear-gradient(to top, rgba(5,150,105,0.9) 0%, transparent 100%);
+  border-radius: inherit;
+}
+.card-reveal-overlay:hover .card-reveal-content {
+  @apply opacity-100 translate-y-0;
+}
+
+/* ── 49. Progress Bar Enhancements ─────────────────────────────────── */
+.progress-bar-emerald {
+  @apply h-2 rounded-full bg-muted overflow-hidden;
+}
+.progress-bar-emerald .progress-bar-fill {
+  @apply h-full rounded-full transition-all duration-700 ease-out;
+  background: linear-gradient(90deg, #059669, #10b981, #34d399);
+  background-size: 200% 100%;
+}
+.progress-bar-emerald .progress-bar-fill.animated {
+  animation: progress-shimmer 2s ease-in-out infinite;
+}
+@keyframes progress-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── 50. Icon Container Styles ─────────────────────────────────────── */
+.icon-container-sm {
+  @apply w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200;
+}
+.icon-container-md {
+  @apply w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200;
+}
+.icon-container-lg {
+  @apply w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-200;
+}
+.icon-container-emerald {
+  @apply bg-emerald-50 text-emerald-600;
+}
+:is(.dark .icon-container-emerald) {
+  @apply bg-emerald-950/30 text-emerald-400;
+}
+.icon-container-teal {
+  @apply bg-teal-50 text-teal-600;
+}
+:is(.dark .icon-container-teal) {
+  @apply bg-teal-950/30 text-teal-400;
+}
+.icon-container-amber {
+  @apply bg-amber-50 text-amber-600;
+}
+:is(.dark .icon-container-amber) {
+  @apply bg-amber-950/30 text-amber-400;
+}
+.icon-container-rose {
+  @apply bg-rose-50 text-rose-600;
+}
+:is(.dark .icon-container-rose) {
+  @apply bg-rose-950/30 text-rose-400;
+}
+
+/* ── 51. Section Dividers and Decorators ───────────────────────────── */
+.section-divider {
+  @apply relative py-6;
+}
+.section-divider::after {
+  content: "";
+  @apply absolute bottom-0 left-1/4 right-1/4 h-px;
+  background: linear-gradient(90deg, transparent, rgba(16,185,129,0.2), transparent);
+}
+.divider-dots {
+  @apply flex items-center justify-center gap-2 py-4;
+}
+.divider-dots::before, .divider-dots::after {
+  content: "";
+  @apply flex-1 h-px bg-gradient-to-r from-transparent to-border;
+}
+.divider-dots::after {
+  @apply bg-gradient-to-l from-transparent to-border;
+}
+
+/* ── 52. Responsive Grid Helpers ───────────────────────────────────── */
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: 1rem;
+}
+.grid-auto-fit-sm {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
+  gap: 0.75rem;
+}
+.grid-auto-fit-lg {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
+  gap: 1.25rem;
+}

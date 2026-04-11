@@ -33,6 +33,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   Megaphone,
   Pin,
   AlertTriangle,
@@ -50,6 +55,7 @@ import {
   TrendingUp,
   PinIcon,
   Zap,
+  SmilePlus,
 } from "lucide-react";
 
 // ============ TYPES ============
@@ -135,6 +141,101 @@ const CATEGORY_TABS = [
   { value: "celebration", label: "Celebrations" },
 ];
 
+// ============ REACTIONS ============
+
+type Reaction = {
+  emoji: string;
+  count: number;
+  hasReacted: boolean;
+};
+
+const REACTION_EMOJIS = ["👍", "❤️", "🎉", "👏", "🤔", "🔥"];
+
+const MOCK_REACTIONS: Record<string, Reaction[]> = {
+  "Welcome to MSBM-HR Suite!": [
+    { emoji: "👍", count: 12, hasReacted: false },
+    { emoji: "❤️", count: 8, hasReacted: false },
+    { emoji: "🎉", count: 5, hasReacted: false },
+  ],
+  "Employee of the Month — January": [
+    { emoji: "❤️", count: 15, hasReacted: false },
+    { emoji: "👏", count: 10, hasReacted: false },
+    { emoji: "🎉", count: 3, hasReacted: false },
+  ],
+  "Q1 All-Hands Meeting Schedule": [
+    { emoji: "👍", count: 7, hasReacted: false },
+    { emoji: "🤔", count: 4, hasReacted: false },
+  ],
+  "Updated Remote Work Policy": [
+    { emoji: "👍", count: 9, hasReacted: false },
+    { emoji: "🔥", count: 6, hasReacted: false },
+    { emoji: "🤔", count: 3, hasReacted: false },
+  ],
+  "Holiday Schedule — Spring 2025": [
+    { emoji: "🎉", count: 18, hasReacted: false },
+    { emoji: "❤️", count: 6, hasReacted: false },
+  ],
+  "Annual Company Retreat": [
+    { emoji: "🎉", count: 22, hasReacted: false },
+    { emoji: "❤️", count: 14, hasReacted: false },
+    { emoji: "🔥", count: 8, hasReacted: false },
+    { emoji: "👍", count: 5, hasReacted: false },
+  ],
+  "New Health & Wellness Benefits": [
+    { emoji: "❤️", count: 20, hasReacted: false },
+    { emoji: "👏", count: 11, hasReacted: false },
+    { emoji: "👍", count: 7, hasReacted: false },
+  ],
+  "IT Maintenance Window — Weekend": [
+    { emoji: "👍", count: 5, hasReacted: false },
+    { emoji: "🤔", count: 2, hasReacted: false },
+  ],
+  "Diversity & Inclusion Initiative Launch": [
+    { emoji: "❤️", count: 16, hasReacted: false },
+    { emoji: "👏", count: 12, hasReacted: false },
+    { emoji: "🎉", count: 9, hasReacted: false },
+    { emoji: "🔥", count: 6, hasReacted: false },
+    { emoji: "👍", count: 4, hasReacted: false },
+  ],
+  "Parking Lot Renovation Notice": [
+    { emoji: "🤔", count: 8, hasReacted: false },
+    { emoji: "👍", count: 3, hasReacted: false },
+  ],
+  "Safety Training Refresher Required": [
+    { emoji: "👍", count: 6, hasReacted: false },
+    { emoji: "🔥", count: 2, hasReacted: false },
+  ],
+  "Open Enrollment Period": [
+    { emoji: "👍", count: 10, hasReacted: false },
+    { emoji: "🤔", count: 5, hasReacted: false },
+    { emoji: "❤️", count: 3, hasReacted: false },
+  ],
+  "Congratulations Team — Q4 Targets Met!": [
+    { emoji: "🎉", count: 25, hasReacted: false },
+    { emoji: "👏", count: 18, hasReacted: false },
+    { emoji: "❤️", count: 12, hasReacted: false },
+    { emoji: "🔥", count: 9, hasReacted: false },
+    { emoji: "👍", count: 7, hasReacted: false },
+  ],
+  "New Coffee Machine in Break Room": [
+    { emoji: "❤️", count: 30, hasReacted: false },
+    { emoji: "🎉", count: 20, hasReacted: false },
+    { emoji: "🔥", count: 15, hasReacted: false },
+    { emoji: "👏", count: 8, hasReacted: false },
+  ],
+  "Casual Fridays Now Permanent": [
+    { emoji: "🎉", count: 35, hasReacted: false },
+    { emoji: "❤️", count: 28, hasReacted: false },
+    { emoji: "👍", count: 14, hasReacted: false },
+    { emoji: "🔥", count: 10, hasReacted: false },
+  ],
+  "Birthday Celebrations This Month": [
+    { emoji: "🎉", count: 19, hasReacted: false },
+    { emoji: "❤️", count: 15, hasReacted: false },
+    { emoji: "👏", count: 7, hasReacted: false },
+  ],
+};
+
 const defaultForm: AnnouncementForm = {
   title: "",
   content: "",
@@ -162,6 +263,7 @@ export function AnnouncementsView() {
   const [submitting, setSubmitting] = useState(false);
   const [formErrors, setFormErrors] = useState<Partial<Record<keyof AnnouncementForm, string>>>({});
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+  const [reactions, setReactions] = useState<Record<string, Reaction[]>>({});
 
   const currentUser = employees.find((e) => e.id === currentUserId);
   const isAdmin = currentUser?.role === "admin" || currentUser?.role === "hr";
@@ -189,6 +291,80 @@ export function AnnouncementsView() {
   useEffect(() => {
     fetchAnnouncements();
   }, [fetchAnnouncements]);
+
+  // ============ REACTIONS HANDLERS ============
+
+  // Initialize mock reactions for seeded announcements
+  useEffect(() => {
+    const initialReactions: Record<string, Reaction[]> = {};
+    announcements.forEach((a) => {
+      if (MOCK_REACTIONS[a.title]) {
+        initialReactions[a.id] = MOCK_REACTIONS[a.title].map((r) => ({ ...r }));
+      }
+    });
+    setReactions(initialReactions);
+  }, [announcements]);
+
+  const toggleReaction = (announcementId: string, emoji: string) => {
+    setReactions((prev) => {
+      const current = prev[announcementId] || [];
+      const existing = current.find((r) => r.emoji === emoji);
+
+      if (!existing) return prev;
+
+      if (existing.hasReacted) {
+        // Remove user's reaction
+        const updated = current
+          .map((r) =>
+            r.emoji === emoji
+              ? { ...r, count: Math.max(0, r.count - 1), hasReacted: false }
+              : r
+          )
+          .filter((r) => r.count > 0);
+        return { ...prev, [announcementId]: updated };
+      } else {
+        // Add user's reaction
+        const updated = current.map((r) =>
+          r.emoji === emoji
+            ? { ...r, count: r.count + 1, hasReacted: true }
+            : r
+        );
+        return { ...prev, [announcementId]: updated };
+      }
+    });
+  };
+
+  const addReaction = (announcementId: string, emoji: string) => {
+    setReactions((prev) => {
+      const current = prev[announcementId] || [];
+      const existing = current.find((r) => r.emoji === emoji);
+
+      if (existing) {
+        // If already reacted by user, un-react; otherwise, add reaction
+        if (existing.hasReacted) {
+          const updated = current
+            .map((r) =>
+              r.emoji === emoji
+                ? { ...r, count: Math.max(0, r.count - 1), hasReacted: false }
+                : r
+            )
+            .filter((r) => r.count > 0);
+          return { ...prev, [announcementId]: updated };
+        } else {
+          const updated = current.map((r) =>
+            r.emoji === emoji
+              ? { ...r, count: r.count + 1, hasReacted: true }
+              : r
+          );
+          return { ...prev, [announcementId]: updated };
+        }
+      } else {
+        // New reaction
+        const newReaction: Reaction = { emoji, count: 1, hasReacted: true };
+        return { ...prev, [announcementId]: [...current, newReaction] };
+      }
+    });
+  };
 
   // ============ COMPUTED VALUES ============
 
@@ -335,7 +511,7 @@ export function AnnouncementsView() {
     return (
       <Card
         key={announcement.id}
-        className={`group card-hover-lift transition-all duration-200 ${
+        className={`group card-hover-lift transition-all duration-200 card-neu-light ${
           isPinned
             ? "border-2 border-emerald-300 dark:border-emerald-700 bg-gradient-to-r from-emerald-50/50 to-teal-50/50 dark:from-emerald-950/20 dark:to-teal-950/20"
             : "hover:border-emerald-200 dark:hover:border-emerald-800"
@@ -426,6 +602,83 @@ export function AnnouncementsView() {
                     </div>
                   )}
                 </div>
+
+                {/* Reaction Bar */}
+                {(reactions[announcement.id]?.length ?? 0) > 0 && (
+                  <div className="flex items-center gap-2 mt-3 flex-wrap">
+                    {reactions[announcement.id].map((reaction) => (
+                      <button
+                        key={reaction.emoji}
+                        onClick={() => toggleReaction(announcement.id, reaction.emoji)}
+                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-sm border transition-colors cursor-pointer ${
+                          reaction.hasReacted
+                            ? "bg-emerald-50 border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/50"
+                            : "hover:bg-accent/50"
+                        }`}
+                      >
+                        <span>{reaction.emoji}</span>
+                        <span className="text-xs text-muted-foreground font-medium">{reaction.count}</span>
+                      </button>
+                    ))}
+
+                    {/* Emoji Picker Button */}
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <button
+                          className="w-7 h-7 rounded-full border flex items-center justify-center hover:bg-accent/50 text-muted-foreground transition-colors cursor-pointer"
+                          aria-label="Add reaction"
+                        >
+                          <SmilePlus className="h-3.5 w-3.5" />
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-2" align="start">
+                        <div className="flex items-center gap-1">
+                          {REACTION_EMOJIS.map((emoji) => (
+                            <button
+                              key={emoji}
+                              onClick={() => addReaction(announcement.id, emoji)}
+                              className="text-xl hover:scale-125 transition-transform cursor-pointer p-1 rounded-md hover:bg-accent/50"
+                              aria-label={`React with ${emoji}`}
+                            >
+                              {emoji}
+                            </button>
+                          ))}
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                )}
+
+                {/* Show picker when no reactions yet */}
+                {(reactions[announcement.id]?.length ?? 0) === 0 && (
+                  <div className="flex items-center gap-2 mt-3">
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <button
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs border text-muted-foreground hover:bg-accent/50 transition-colors cursor-pointer"
+                          aria-label="Add reaction"
+                        >
+                          <SmilePlus className="h-3.5 w-3.5" />
+                          <span>React</span>
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-2" align="start">
+                        <div className="flex items-center gap-1">
+                          {REACTION_EMOJIS.map((emoji) => (
+                            <button
+                              key={emoji}
+                              onClick={() => addReaction(announcement.id, emoji)}
+                              className="text-xl hover:scale-125 transition-transform cursor-pointer p-1 rounded-md hover:bg-accent/50"
+                              aria-label={`React with ${emoji}`}
+                            >
+                              {emoji}
+                            </button>
+                          ))}
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                )}
               </div>
             </div>
 

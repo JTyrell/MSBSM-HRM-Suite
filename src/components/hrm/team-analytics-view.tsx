@@ -681,7 +681,7 @@ export function TeamAnalyticsView() {
           {/* Row 1: Department Pie + Role Horizontal Bar */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Department Distribution Pie */}
-            <Card className="hover:shadow-md transition-shadow">
+            <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
@@ -740,7 +740,7 @@ export function TeamAnalyticsView() {
             </Card>
 
             {/* Role Distribution Horizontal Bar */}
-            <Card className="hover:shadow-md transition-shadow">
+            <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
@@ -784,7 +784,7 @@ export function TeamAnalyticsView() {
           {/* Row 2: Headcount Trend + Status Donut */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Headcount Trend Line */}
-            <Card className="hover:shadow-md transition-shadow">
+            <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
                   <TrendingUp className="h-4 w-4 text-emerald-600" />
@@ -821,7 +821,7 @@ export function TeamAnalyticsView() {
             </Card>
 
             {/* Active vs On Leave Donut */}
-            <Card className="hover:shadow-md transition-shadow">
+            <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
                   <UserCheck className="h-4 w-4 text-teal-600" />
@@ -867,7 +867,7 @@ export function TeamAnalyticsView() {
 
           {/* Salary vs Hourly Split */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <Card className="hover:shadow-md transition-shadow">
+            <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="text-base font-semibold">Pay Type Breakdown</CardTitle>
                 <CardDescription>Salary vs Hourly employees</CardDescription>
@@ -915,7 +915,7 @@ export function TeamAnalyticsView() {
             </Card>
 
             {/* Top Earners */}
-            <Card className="hover:shadow-md transition-shadow">
+            <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
                   <Award className="h-4 w-4 text-amber-600" />
@@ -1022,7 +1022,7 @@ export function TeamAnalyticsView() {
           </div>
 
           {/* 30-Day Attendance Area Chart */}
-          <Card className="hover:shadow-md transition-shadow">
+          <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
@@ -1155,7 +1155,7 @@ export function TeamAnalyticsView() {
           </div>
 
           {/* Compensation by Department Bar Chart */}
-          <Card className="hover:shadow-md transition-shadow">
+          <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
@@ -1210,7 +1210,7 @@ export function TeamAnalyticsView() {
           </Card>
 
           {/* Pay Distribution per Employee */}
-          <Card className="hover:shadow-md transition-shadow">
+          <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
             <CardHeader>
               <CardTitle className="text-base font-semibold">Pay Rate Distribution</CardTitle>
               <CardDescription>All employees sorted by pay rate</CardDescription>
@@ -1312,7 +1312,7 @@ export function TeamAnalyticsView() {
           </div>
 
           {/* PTO Usage Stacked Bar Chart */}
-          <Card className="hover:shadow-md transition-shadow">
+          <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
@@ -1346,7 +1346,7 @@ export function TeamAnalyticsView() {
           {/* PTO Type Pie + Recent Requests */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* PTO Type Distribution */}
-            <Card className="hover:shadow-md transition-shadow">
+            <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="text-base font-semibold">PTO Type Breakdown</CardTitle>
                 <CardDescription>Days taken by leave type</CardDescription>
@@ -1391,7 +1391,7 @@ export function TeamAnalyticsView() {
             </Card>
 
             {/* Recent PTO Requests */}
-            <Card className="hover:shadow-md transition-shadow">
+            <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="text-base font-semibold">Recent PTO Requests</CardTitle>
                 <CardDescription>Latest leave requests</CardDescription>
@@ -1540,7 +1540,7 @@ export function TeamAnalyticsView() {
           {/* Radar Chart + Seniority Distribution */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Diversity Radar */}
-            <Card className="hover:shadow-md transition-shadow">
+            <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
                   <Sparkles className="h-4 w-4 text-emerald-600" />
@@ -1571,7 +1571,7 @@ export function TeamAnalyticsView() {
             </Card>
 
             {/* Seniority Distribution */}
-            <Card className="hover:shadow-md transition-shadow">
+            <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
                   <Timer className="h-4 w-4 text-teal-600" />
@@ -1600,7 +1600,7 @@ export function TeamAnalyticsView() {
           </div>
 
           {/* Department Balance Detail */}
-          <Card className="hover:shadow-md transition-shadow">
+          <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
             <CardHeader>
               <CardTitle className="text-base font-semibold">Department Balance Detail</CardTitle>
               <CardDescription>How evenly employees are distributed across teams</CardDescription>
@@ -1647,7 +1647,7 @@ export function TeamAnalyticsView() {
           </Card>
 
           {/* Tenure Breakdown by Employee */}
-          <Card className="hover:shadow-md transition-shadow">
+          <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>

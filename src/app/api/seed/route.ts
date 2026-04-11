@@ -14,6 +14,7 @@ export async function POST() {
     await db.pTORequest.deleteMany();
     await db.attendance.deleteMany();
     await db.performanceReview.deleteMany();
+    await db.jobListing.deleteMany();
     await db.employee.deleteMany();
     await db.shift.deleteMany();
     await db.announcement.deleteMany();
@@ -105,7 +106,8 @@ export async function POST() {
       { name: "Flex Shift", startTime: "10:00", endTime: "16:00", breakMinutes: 30, color: "#ec4899", isActive: true, departmentId: departments[3].id },
     ];
 
-    const shifts = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const shifts: any[] = [];
     for (const shiftData of defaultShifts) {
       const shift = await db.shift.create({
         data: {
@@ -118,7 +120,8 @@ export async function POST() {
 
     // Create employees
     const now = new Date();
-    const employees = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const employees: any[] = [];
 
     const employeeData = [
       { firstName: "Alex", lastName: "Rivera", email: "alex.rivera@msbm.com", role: "admin", dept: 0, pay: 55, type: "salary", hire: "2021-03-15", location: mainOffice.id },
@@ -165,7 +168,8 @@ export async function POST() {
     }
 
     // Create attendance records for the last 30 days
-    const attendanceRecords = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const attendanceRecords: any[] = [];
     for (let day = 30; day >= 0; day--) {
       if (Math.random() > 0.15) continue; // Skip some days randomly
       const date = new Date(now);
@@ -404,6 +408,115 @@ export async function POST() {
       });
     }
 
+    // Create job listings
+    const jobListings = [
+      {
+        title: "Senior Software Engineer",
+        department: "Engineering",
+        location: "San Francisco, CA",
+        type: "full-time",
+        status: "open",
+        description: "We are looking for a Senior Software Engineer to join our core platform team. You will be responsible for designing and implementing scalable backend services, mentoring junior developers, and driving technical decisions that impact our entire product ecosystem.",
+        requirements: "7+ years of software development experience, proficiency in TypeScript/Node.js and Python, experience with cloud platforms (AWS/GCP), strong understanding of distributed systems and microservices architecture, excellent problem-solving and communication skills.",
+        salaryMin: 120000,
+        salaryMax: 160000,
+        applicantCount: 24,
+      },
+      {
+        title: "HR Business Partner",
+        department: "Human Resources",
+        location: "New York, NY",
+        type: "full-time",
+        status: "open",
+        description: "We are seeking an experienced HR Business Partner to serve as a strategic advisor to our leadership team. You will drive talent management initiatives, support organizational development, and ensure HR programs align with business objectives.",
+        requirements: "5+ years of HRBP experience, SHRM-CP/SCP or PHR certification preferred, experience with HRIS platforms, strong consulting and stakeholder management skills, knowledge of employment law and compliance.",
+        salaryMin: 85000,
+        salaryMax: 110000,
+        applicantCount: 18,
+      },
+      {
+        title: "Product Manager",
+        department: "Product",
+        location: "Remote",
+        type: "full-time",
+        status: "open",
+        description: "Join our Product team to define and deliver best-in-class features for our HR platform. You will work closely with engineering, design, and customer success teams to translate user needs into compelling product experiences.",
+        requirements: "4+ years of product management experience in B2B SaaS, experience with agile methodologies, strong analytical and data-driven mindset, excellent written and verbal communication, ability to prioritize competing demands.",
+        salaryMin: 110000,
+        salaryMax: 140000,
+        applicantCount: 32,
+      },
+      {
+        title: "Data Analyst",
+        department: "Analytics",
+        location: "Austin, TX",
+        type: "full-time",
+        status: "open",
+        description: "We are looking for a Data Analyst to help us unlock insights from our growing data assets. You will build dashboards, perform ad-hoc analyses, and collaborate with cross-functional teams to support data-driven decision making across the organization.",
+        requirements: "3+ years of experience in data analysis, proficiency in SQL and Python/R, experience with BI tools (Tableau, Looker, or Power BI), strong statistical analysis skills, experience with ETL processes.",
+        salaryMin: 75000,
+        salaryMax: 100000,
+        applicantCount: 15,
+      },
+      {
+        title: "UX Designer",
+        department: "Design",
+        location: "Remote",
+        type: "full-time",
+        status: "closed",
+        description: "We are seeking a talented UX Designer to create intuitive and delightful user experiences for our suite of HR tools. You will conduct user research, create wireframes and prototypes, and collaborate closely with engineering to bring designs to life.",
+        requirements: "4+ years of UX design experience, proficiency in Figma and design systems, experience conducting user research and usability testing, strong portfolio demonstrating end-to-end design process, experience with accessibility standards.",
+        salaryMin: 90000,
+        salaryMax: 120000,
+        applicantCount: 41,
+      },
+      {
+        title: "DevOps Engineer",
+        department: "Engineering",
+        location: "San Francisco, CA",
+        type: "full-time",
+        status: "open",
+        description: "We are looking for a DevOps Engineer to help us build and maintain our cloud infrastructure. You will design CI/CD pipelines, manage Kubernetes clusters, and implement monitoring and alerting systems to ensure high availability.",
+        requirements: "5+ years of DevOps/SRE experience, strong knowledge of AWS or GCP, experience with Kubernetes and container orchestration, proficiency in Terraform or Pulumi, experience with monitoring tools (Datadog, Prometheus, Grafana).",
+        salaryMin: 105000,
+        salaryMax: 135000,
+        applicantCount: 12,
+      },
+      {
+        title: "Marketing Coordinator",
+        department: "Marketing",
+        location: "New York, NY",
+        type: "full-time",
+        status: "open",
+        description: "We are hiring a Marketing Coordinator to support our growing marketing team. You will assist with campaign execution, content creation, event coordination, and help maintain our brand presence across multiple channels.",
+        requirements: "2+ years of marketing or communications experience, experience with social media management tools, strong writing and editing skills, basic graphic design skills, detail-oriented and highly organized.",
+        salaryMin: 55000,
+        salaryMax: 70000,
+        applicantCount: 28,
+      },
+      {
+        title: "Financial Analyst",
+        department: "Finance",
+        location: "New York, NY",
+        type: "full-time",
+        status: "draft",
+        description: "We are seeking a Financial Analyst to join our Finance team. You will be responsible for financial modeling, budgeting, forecasting, and providing actionable insights to support strategic business decisions.",
+        requirements: "3+ years of financial analysis experience, advanced proficiency in Excel and financial modeling, experience with ERP systems, strong understanding of GAAP, CFA Level 1 or higher preferred.",
+        salaryMin: 70000,
+        salaryMax: 95000,
+        applicantCount: 0,
+      },
+    ];
+
+    for (const job of jobListings) {
+      await db.jobListing.create({
+        data: {
+          ...job,
+          companyId: company.id,
+        },
+      });
+    }
+
     // Create audit log entries
     const auditActions = [
       { userId: employees[0].id, action: "Payroll processed", module: "payroll", details: JSON.stringify({ periodId: payrollPeriod.id, totalEmployees: employees.length, totalGross: totalGrossPay }) },
@@ -572,6 +685,7 @@ export async function POST() {
         ptoRequests: ptoData.length,
         payrollRecords: employees.length,
         performanceReviews: performanceReviews.length,
+        jobListings: jobListings.length,
         totalGrossPay: Math.round(totalGrossPay * 100) / 100,
         totalNetPay: Math.round(totalNetPay * 100) / 100,
       },

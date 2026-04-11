@@ -24,6 +24,7 @@ model Company {
   payrollPeriods PayrollPeriod[]
   shifts      Shift[]
   announcements Announcement[]
+  jobListings JobListing[]
 }
 
 model Department {
@@ -330,6 +331,31 @@ model PerformanceReview {
   @@index([reviewerId])
   @@index([status])
   @@map("performance_reviews")
+}
+
+// ============ JOB LISTINGS ============
+
+model JobListing {
+  id          String   @id @default(cuid())
+  title       String
+  department  String
+  location    String
+  type        String   @default("full-time") // full-time, part-time, contract, remote
+  status      String   @default("open") // draft, open, closed, filled, archived
+  description String
+  requirements String
+  salaryMin   Float?
+  salaryMax   Float?
+  applicantCount Int    @default(0)
+  companyId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id])
+
+  @@index([status])
+  @@index([companyId])
+  @@map("job_listings")
 }
 
 // ============ AUDIT LOG ============

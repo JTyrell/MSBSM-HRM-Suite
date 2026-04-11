@@ -68,20 +68,8 @@ import type { DateRange } from "react-day-picker";
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 interface PTOResponse {
-  requests: {
-    id: string;
-    employeeId: string;
-    type: string;
-    startDate: string;
-    endDate: string;
-    daysCount: number;
-    reason?: string;
-    status: string;
-    approvedBy?: string;
-    approvedAt?: string;
-    createdAt: string;
-    employee?: { id: string; firstName: string; lastName: string; avatar?: string; employeeId?: string };
-  }[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  requests: any[];
 }
 
 interface BalanceResponse {
@@ -561,7 +549,7 @@ export function PTOView() {
 
               <div className="flex justify-center">
                 <Calendar
-                  mode="default"
+                  mode="single"
                   month={calendarMonth}
                   onMonthChange={setCalendarMonth}
                   modifiers={{

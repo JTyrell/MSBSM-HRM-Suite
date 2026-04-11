@@ -671,7 +671,7 @@ export function DashboardView() {
           return (
             <div key={stat.label} className="relative rounded-xl p-[2px] bg-gradient-to-br from-transparent via-muted-foreground/10 to-transparent animate-gradient-border">
               <Card
-                className={`stagger-${index + 1} hover-scale group transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 border ${stat.borderColorClass} bg-background rounded-xl ${
+                className={`stagger-${index + 1} card-hover-lift hover-scale group transition-all duration-300 border ${stat.borderColorClass} bg-background rounded-xl ${
                   index === 0 ? 'stat-card-emerald' : index === 1 ? 'stat-card-rose' : index === 2 ? 'stat-card-violet' : 'stat-card-amber'
                 }`}
               >

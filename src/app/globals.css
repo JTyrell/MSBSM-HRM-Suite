@@ -1439,3 +1439,396 @@
 .empty-state .empty-state-action {
   margin-top: 1rem;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Section 36: Badge Pulse — Animated notification badge
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes badgePulseRing {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+.badge-pulse-enhanced {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  padding: 0 0.375rem;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #f43f5e, #e11d48);
+  color: #ffffff;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4);
+}
+.badge-pulse-enhanced::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #f43f5e;
+  animation: badgePulseRing 1.8s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  z-index: -1;
+}
+.dark .badge-pulse-enhanced {
+  background: linear-gradient(135deg, #fb7185, #f43f5e);
+  box-shadow: 0 0 0 0 rgba(251, 113, 133, 0.4);
+}
+.dark .badge-pulse-enhanced::after {
+  background: #fb7185;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Section 37: Card Hover Lift — Enhanced lift + shadow transition
+   ═══════════════════════════════════════════════════════════════ */
+.card-hover-lift-enhanced {
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.35s ease;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+.card-hover-lift-enhanced:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08),
+              0 8px 16px rgba(0, 0, 0, 0.04),
+              0 0 0 1px rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+.dark .card-hover-lift-enhanced {
+  border-color: rgba(255, 255, 255, 0.06);
+}
+.dark .card-hover-lift-enhanced:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
+              0 8px 16px rgba(0, 0, 0, 0.2),
+              0 0 0 1px rgba(52, 211, 153, 0.12);
+  border-color: rgba(52, 211, 153, 0.2);
+}
+.card-hover-lift-enhanced:active {
+  transform: translateY(-2px);
+  transition-duration: 0.15s;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Section 38: Text Gradient Animated — Shifting color gradient
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  25%  { background-position: 50% 100%; }
+  50%  { background-position: 100% 50%; }
+  75%  { background-position: 50% 0%; }
+  100% { background-position: 0% 50%; }
+}
+.text-gradient-animated {
+  background: linear-gradient(270deg, #10b981, #14b8a6, #f59e0b, #f43f5e, #10b981);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 6s ease infinite;
+  font-weight: 700;
+}
+.dark .text-gradient-animated {
+  background: linear-gradient(270deg, #34d399, #2dd4bf, #fbbf24, #fb7185, #34d399);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Section 39: Sidebar Nav Indicator — Animated left-border
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes navIndicatorSlideIn {
+  from {
+    opacity: 0;
+    transform: scaleY(0.6);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+.sidebar-nav-indicator {
+  position: relative;
+  transition: background-color 0.25s ease, color 0.25s ease, padding-left 0.25s ease;
+}
+.sidebar-nav-indicator::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 15%;
+  bottom: 15%;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: linear-gradient(180deg, #10b981, #14b8a6, #0d9488);
+  background-size: 100% 200%;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.3);
+  animation: navIndicatorSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+.sidebar-nav-indicator:hover::before {
+  background-size: 100% 200%;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+}
+.dark .sidebar-nav-indicator::before {
+  background: linear-gradient(180deg, #34d399, #2dd4bf, #14b8a6);
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Section 40: Tooltip Enhanced — Arrow, shadow, fade-in
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes tooltipEnhancedFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.94);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+.tooltip-enhanced {
+  position: relative;
+  background: #064e3b;
+  color: #f0fdf4;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18),
+              0 2px 8px rgba(0, 0, 0, 0.1),
+              0 0 0 1px rgba(16, 185, 129, 0.15);
+  animation: tooltipEnhancedFadeIn 0.25s ease-out both;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 50;
+}
+.tooltip-enhanced::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 8px;
+  height: 8px;
+  background: #064e3b;
+  border-right: 1px solid rgba(16, 185, 129, 0.15);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+}
+.dark .tooltip-enhanced {
+  background: #065f46;
+  color: #ecfdf5;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
+              0 2px 8px rgba(0, 0, 0, 0.3),
+              0 0 0 1px rgba(52, 211, 153, 0.12);
+}
+.dark .tooltip-enhanced::after {
+  background: #065f46;
+  border-right-color: rgba(52, 211, 153, 0.12);
+  border-bottom-color: rgba(52, 211, 153, 0.12);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Section 41: Skeleton Card — Card-shaped skeleton loader
+   ═══════════════════════════════════════════════════════════════ */
+@keyframes skeletonCardShimmer {
+  0%   { background-position: -800px 0; }
+  100% { background-position: 800px 0; }
+}
+.skeleton-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: linear-gradient(
+    90deg,
+    rgba(16, 185, 129, 0.03) 25%,
+    rgba(16, 185, 129, 0.08) 37%,
+    rgba(16, 185, 129, 0.03) 63%
+  );
+  background-size: 1600px 100%;
+  animation: skeletonCardShimmer 2s ease-in-out infinite;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+.dark .skeleton-card {
+  background: linear-gradient(
+    90deg,
+    rgba(52, 211, 153, 0.02) 25%,
+    rgba(52, 211, 153, 0.06) 37%,
+    rgba(52, 211, 153, 0.02) 63%
+  );
+  background-size: 1600px 100%;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+.skeleton-card-header {
+  height: 3rem;
+  margin: 1rem 1rem 0;
+  border-radius: 0.375rem;
+  background: rgba(16, 185, 129, 0.06);
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+.dark .skeleton-card-header {
+  background: rgba(52, 211, 153, 0.05);
+}
+.skeleton-card-body {
+  height: 6rem;
+  margin: 0.75rem 1rem 1rem;
+  border-radius: 0.375rem;
+  background: rgba(16, 185, 129, 0.04);
+  animation: skeletonPulse 1.5s ease-in-out infinite 0.15s;
+}
+.dark .skeleton-card-body {
+  background: rgba(52, 211, 153, 0.03);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Section 42: Stat Ring Container — SVG stat ring centered
+   ═══════════════════════════════════════════════════════════════ */
+.stat-ring-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+}
+.stat-ring-container svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.stat-ring-container .stat-ring-track {
+  fill: none;
+  stroke: rgba(16, 185, 129, 0.1);
+  stroke-width: 6;
+}
+.dark .stat-ring-container .stat-ring-track {
+  stroke: rgba(52, 211, 153, 0.08);
+}
+.stat-ring-container .stat-ring-fill {
+  fill: none;
+  stroke: url(#statRingGradient);
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.stat-ring-container .stat-ring-value {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #064e3b;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.dark .stat-ring-container .stat-ring-value {
+  color: #a7f3d0;
+}
+.stat-ring-container .stat-ring-label {
+  font-size: 0.5625rem;
+  font-weight: 500;
+  color: oklch(0.556 0 0);
+  margin-top: 0.125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.dark .stat-ring-container .stat-ring-label {
+  color: oklch(0.708 0 0);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Section 43: Empty State — Styled empty state container
+   ═══════════════════════════════════════════════════════════════ */
+.empty-state-enhanced {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  min-height: 280px;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.02), rgba(20, 184, 166, 0.02), transparent);
+  border: 1px dashed rgba(16, 185, 129, 0.15);
+}
+.dark .empty-state-enhanced {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.03), rgba(20, 184, 166, 0.03), transparent);
+  border-color: rgba(52, 211, 153, 0.12);
+}
+.empty-state-enhanced .empty-state-enhanced-icon {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(20, 184, 166, 0.06));
+  margin-bottom: 1.25rem;
+  color: #10b981;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.08);
+}
+.dark .empty-state-enhanced .empty-state-enhanced-icon {
+  background: linear-gradient(135deg, rgba(52, 211, 153, 0.1), rgba(45, 212, 191, 0.06));
+  color: #34d399;
+  box-shadow: 0 4px 12px rgba(52, 211, 153, 0.08);
+}
+.empty-state-enhanced .empty-state-enhanced-title {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: oklch(0.205 0 0);
+  margin-bottom: 0.5rem;
+}
+.dark .empty-state-enhanced .empty-state-enhanced-title {
+  color: oklch(0.985 0 0);
+}
+.empty-state-enhanced .empty-state-enhanced-description {
+  font-size: 0.875rem;
+  color: oklch(0.556 0 0);
+  max-width: 24rem;
+  line-height: 1.6;
+}
+.dark .empty-state-enhanced .empty-state-enhanced-description {
+  color: oklch(0.708 0 0);
+}
+.empty-state-enhanced .empty-state-enhanced-action {
+  margin-top: 1.5rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Accessibility — Reduced Motion (extends Section 25)
+   ═══════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .badge-pulse-enhanced,
+  .badge-pulse-enhanced::after,
+  .text-gradient-animated,
+  .sidebar-nav-indicator::before,
+  .tooltip-enhanced,
+  .skeleton-card,
+  .skeleton-card-header,
+  .skeleton-card-body {
+    animation: none !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  .card-hover-lift-enhanced,
+  .sidebar-nav-indicator {
+    transition: none !important;
+    transition-duration: 0.01ms !important;
+  }
+  .stat-ring-container .stat-ring-fill {
+    transition: none !important;
+  }
+}

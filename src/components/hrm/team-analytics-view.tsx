@@ -409,7 +409,7 @@ export function TeamAnalyticsView() {
     });
 
     // Fill last 6 months
-    const result = [];
+    const result: Array<{ month: string; Sick: number; Vacation: number; Personal: number; Other: number }> = [];
     for (let i = 5; i >= 0; i--) {
       const d = subMonths(new Date(), i);
       const key = format(startOfMonth(d), "MMM yyyy");
@@ -423,7 +423,7 @@ export function TeamAnalyticsView() {
   // 10. Headcount Trend (6-month simulated)
   const headcountTrend = useMemo(() => {
     const currentCount = employees.length || 15;
-    const months = [];
+    const months: Array<{ month: string; headcount: number }> = [];
     for (let i = 5; i >= 0; i--) {
       const d = subMonths(new Date(), i);
       const seed = currentCount - (6 - i) * 0.8 + (i * 0.5);
@@ -535,7 +535,7 @@ export function TeamAnalyticsView() {
       {/* ═══════════════════════════════════════════════════════ */}
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 card-pattern rounded-xl p-4 border border-border/50">
         {/* Total Headcount */}
-        <Card className="border-emerald-100 dark:border-emerald-900/30 overflow-hidden hover:shadow-md transition-shadow">
+        <Card className="border-emerald-100 dark:border-emerald-900/30 overflow-hidden card-hover-lift hover:shadow-md transition-shadow">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -553,7 +553,7 @@ export function TeamAnalyticsView() {
         </Card>
 
         {/* Active vs On Leave */}
-        <Card className="border-teal-100 dark:border-teal-900/30 overflow-hidden hover:shadow-md transition-shadow">
+        <Card className="border-teal-100 dark:border-teal-900/30 overflow-hidden card-hover-lift hover:shadow-md transition-shadow">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="relative w-12 h-12 shrink-0">
@@ -583,7 +583,7 @@ export function TeamAnalyticsView() {
         </Card>
 
         {/* Average Tenure */}
-        <Card className="border-amber-100 dark:border-amber-900/30 overflow-hidden hover:shadow-md transition-shadow">
+        <Card className="border-amber-100 dark:border-amber-900/30 overflow-hidden card-hover-lift hover:shadow-md transition-shadow">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -599,7 +599,7 @@ export function TeamAnalyticsView() {
         </Card>
 
         {/* Department Count */}
-        <Card className="border-cyan-100 dark:border-cyan-900/30 overflow-hidden hover:shadow-md transition-shadow">
+        <Card className="border-cyan-100 dark:border-cyan-900/30 overflow-hidden card-hover-lift hover:shadow-md transition-shadow">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -615,7 +615,7 @@ export function TeamAnalyticsView() {
         </Card>
 
         {/* Average Hourly Rate */}
-        <Card className="border-violet-100 dark:border-violet-900/30 overflow-hidden hover:shadow-md transition-shadow">
+        <Card className="border-violet-100 dark:border-violet-900/30 overflow-hidden card-hover-lift hover:shadow-md transition-shadow">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -631,7 +631,7 @@ export function TeamAnalyticsView() {
         </Card>
 
         {/* Role Diversity Index */}
-        <Card className="border-rose-100 dark:border-rose-900/30 overflow-hidden hover:shadow-md transition-shadow">
+        <Card className="border-rose-100 dark:border-rose-900/30 overflow-hidden card-hover-lift hover:shadow-md transition-shadow">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>

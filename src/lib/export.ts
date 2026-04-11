@@ -18,7 +18,8 @@ function escapeCSVValue(value: unknown): string {
 /**
  * Convert an array of objects to a CSV string.
  */
-function objectsToCSV(data: Record<string, unknown>[]): string {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function objectsToCSV(data: any[]): string {
   if (data.length === 0) return "";
 
   const headers = Object.keys(data[0]);
@@ -36,8 +37,9 @@ function objectsToCSV(data: Record<string, unknown>[]): string {
  * @param data - Array of objects to export
  * @param filename - Name of the file (without .csv extension)
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function exportToCSV(
-  data: Record<string, unknown>[],
+  data: any[],
   filename: string
 ): void {
   if (data.length === 0) return;
@@ -51,32 +53,35 @@ export function exportToCSV(
  * @param periods - Array of payroll periods (with records)
  * @param filename - Optional custom filename
  */
-export function exportPayrollToCSV(periods: Record<string, unknown>[], filename?: string): void {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function exportPayrollToCSV(periods: any[], filename?: string): void {
   // Flatten all records from all periods
-  const rows: Record<string, unknown>[] = [];
+  const rows: Record<string, string>[] = [];
 
   for (const period of periods) {
-    for (const record of period.records || []) {
+    const records = period.records || [];
+    for (const record of records) {
+      const emp = record.employee;
       rows.push({
         Period: period.name || "",
         "Period Start": period.startDate || "",
         "Period End": period.endDate || "",
         "Period Status": period.status || "",
-        Employee: record.employee
-          ? `${record.employee.firstName} ${record.employee.lastName}`
+        Employee: emp
+          ? `${emp.firstName} ${emp.lastName}`
           : record.employeeId || "",
-        "Regular Hours": record.regularHours?.toFixed(1) || "0",
-        "Overtime Hours": record.overtimeHours?.toFixed(1) || "0",
-        "Total Hours": record.totalHours?.toFixed(1) || "0",
-        "Gross Pay": (record.grossPay || 0).toFixed(2),
-        "Federal Tax": (record.federalTax || 0).toFixed(2),
-        "State Tax": (record.stateTax || 0).toFixed(2),
-        "Social Security": (record.socialSecurity || 0).toFixed(2),
-        Medicare: (record.medicare || 0).toFixed(2),
-        "Health Insurance": (record.healthInsurance || 0).toFixed(2),
-        "401(k)": (record.retirement401k || 0).toFixed(2),
-        "Total Deductions": (record.totalDeductions || 0).toFixed(2),
-        "Net Pay": (record.netPay || 0).toFixed(2),
+        "Regular Hours": record.regularHours != null ? String(record.regularHours.toFixed(1)) : "0",
+        "Overtime Hours": record.overtimeHours != null ? String(record.overtimeHours.toFixed(1)) : "0",
+        "Total Hours": record.totalHours != null ? String(record.totalHours.toFixed(1)) : "0",
+        "Gross Pay": record.grossPay != null ? String(record.grossPay.toFixed(2)) : "0",
+        "Federal Tax": record.federalTax != null ? String(record.federalTax.toFixed(2)) : "0",
+        "State Tax": record.stateTax != null ? String(record.stateTax.toFixed(2)) : "0",
+        "Social Security": record.socialSecurity != null ? String(record.socialSecurity.toFixed(2)) : "0",
+        Medicare: record.medicare != null ? String(record.medicare.toFixed(2)) : "0",
+        "Health Insurance": record.healthInsurance != null ? String(record.healthInsurance.toFixed(2)) : "0",
+        "401(k)": record.retirement401k != null ? String(record.retirement401k.toFixed(2)) : "0",
+        "Total Deductions": record.totalDeductions != null ? String(record.totalDeductions.toFixed(2)) : "0",
+        "Net Pay": record.netPay != null ? String(record.netPay.toFixed(2)) : "0",
         Status: record.status || "",
       });
     }
@@ -94,22 +99,26 @@ export function exportPayrollToCSV(periods: Record<string, unknown>[], filename?
  * @param records - Array of attendance records
  * @param filename - Optional custom filename
  */
-export function exportAttendanceToCSV(records: Record<string, unknown>[], filename?: string): void {
-  const rows: Record<string, unknown>[] = records.map((r) => ({
-    Employee: r.employee
-      ? `${r.employee.firstName} ${r.employee.lastName}`
-      : r.employeeId || "",
-    Department: r.employee?.department?.name || "",
-    "Clock In": r.clockIn || "",
-    "Clock Out": r.clockOut || "",
-    "Total Hours": r.totalHours?.toFixed(1) || "0",
-    Status: r.status || "",
-    "Geofence": r.geofence?.name || "",
-    "Clock In Lat": r.clockInLat ?? "",
-    "Clock In Lng": r.clockInLng ?? "",
-    "Clock Out Lat": r.clockOutLat ?? "",
-    "Clock Out Lng": r.clockOutLng ?? "",
-  }));
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function exportAttendanceToCSV(records: any[], filename?: string): void {
+  const rows: Record<string, string>[] = records.map((r) => {
+    const emp = r.employee;
+    return {
+      Employee: emp
+        ? `${emp.firstName} ${emp.lastName}`
+        : r.employeeId || "",
+      Department: emp?.department?.name || "",
+      "Clock In": r.clockIn || "",
+      "Clock Out": r.clockOut || "",
+      "Total Hours": r.totalHours != null ? String(r.totalHours.toFixed(1)) : "0",
+      Status: r.status || "",
+      "Geofence": r.geofence?.name || "",
+      "Clock In Lat": String(r.clockInLat ?? ""),
+      "Clock In Lng": String(r.clockInLng ?? ""),
+      "Clock Out Lat": String(r.clockOutLat ?? ""),
+      "Clock Out Lng": String(r.clockOutLng ?? ""),
+    };
+  });
 
   if (rows.length === 0) return;
 

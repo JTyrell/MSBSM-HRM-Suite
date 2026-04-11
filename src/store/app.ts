@@ -19,6 +19,11 @@ export interface Employee {
   overtimeRate: number;
   workLocationId?: string;
   address?: string;
+  emergencyContact?: string;
+  emergencyPhone?: string;
+  bankAccount?: string;
+  taxFilingStatus?: string;
+  taxAllowances?: number;
   department?: Department;
   workLocation?: Geofence;
 }
@@ -42,6 +47,7 @@ export interface Geofence {
   radius: number;
   companyId: string;
   departmentId?: string;
+  department?: Department;
 }
 
 export interface AttendanceRecord {
@@ -105,6 +111,7 @@ export interface PTORequest {
   status: string;
   approvedBy?: string;
   approvedAt?: string;
+  createdAt?: string;
   employee?: Employee;
 }
 

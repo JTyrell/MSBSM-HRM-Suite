@@ -335,7 +335,7 @@ export function AnnouncementsView() {
     return (
       <Card
         key={announcement.id}
-        className={`group transition-all duration-200 hover:shadow-md ${
+        className={`group card-hover-lift transition-all duration-200 ${
           isPinned
             ? "border-2 border-emerald-300 dark:border-emerald-700 bg-gradient-to-r from-emerald-50/50 to-teal-50/50 dark:from-emerald-950/20 dark:to-teal-950/20"
             : "hover:border-emerald-200 dark:hover:border-emerald-800"

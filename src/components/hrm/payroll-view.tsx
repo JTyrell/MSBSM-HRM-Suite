@@ -1353,7 +1353,7 @@ export function PayrollView() {
     ),
     totalDeductions: payrollPeriods.reduce(
       (sum, p) =>
-        sum + (p.records?.reduce((s, r) => s + r.totalDeductions, 0) ?? 0),
+        sum + (p.records?.reduce((s, r) => s + ((r.grossPay || 0) - (r.netPay || 0)), 0) ?? 0),
       0
     ),
     flaggedRecords: payrollPeriods.reduce(

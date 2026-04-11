@@ -470,7 +470,7 @@ export function PerformanceReviewsView() {
           </CardContent>
         </Card>
 
-        <Card className="card-glow animate-fade-in-up card-stat">
+        <Card className="card-glow animate-fade-in-up card-stat badge-pulse">
           <CardContent className="p-4 pt-5">
             <div className="flex items-center justify-between">
               <div>

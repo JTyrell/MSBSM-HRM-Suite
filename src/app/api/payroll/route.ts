@@ -98,7 +98,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate payroll for each employee
-    const records = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const records: any[] = [];
     for (const employee of employees) {
       const empAttendance = attendanceByEmployee.get(employee.id) || [];
 

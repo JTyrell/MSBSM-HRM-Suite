@@ -30,6 +30,7 @@ import {
   UserPlus,
   Heart,
   Star,
+  Briefcase,
   Megaphone,
   UsersRound,
 } from "lucide-react";
@@ -69,6 +70,7 @@ import { AnnouncementsView } from "@/components/hrm/announcements-view";
 import { BenefitsView } from "@/components/hrm/benefits-view";
 import { PerformanceReviewsView } from "@/components/hrm/performance-reviews-view";
 import { TeamAnalyticsView } from "@/components/hrm/team-analytics-view";
+import { RecruitmentView } from "@/components/hrm/recruitment-view";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -81,6 +83,7 @@ const NAV_ITEMS = [
   { id: "benefits", label: "Benefits", icon: Heart },
   { id: "geofences", label: "Geofences", icon: MapPin },
   { id: "onboarding", label: "Onboarding", icon: ClipboardCheck },
+  { id: "recruitment", label: "Recruitment", icon: Briefcase },
   { id: "announcements", label: "Announcements", icon: Megaphone },
   { id: "documents", label: "Documents", icon: FileText },
   { id: "reports", label: "Reports", icon: BarChart3 },
@@ -478,6 +481,7 @@ export default function HomePage() {
           {currentView === "benefits" && <BenefitsView />}
           {currentView === "team-analytics" && <TeamAnalyticsView />}
           {currentView === "performance" && <PerformanceReviewsView />}
+          {currentView === "recruitment" && <RecruitmentView />}
         </div>
 
         {/* Footer */}
@@ -568,7 +572,7 @@ function SidebarContent({
                 onClick={() => setCurrentView(item.id)}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? "bg-gradient-to-r from-emerald-500/10 to-teal-500/10 text-emerald-700 dark:text-emerald-400 shadow-sm"
+                    ? "sidebar-nav-indicator bg-gradient-to-r from-emerald-500/10 to-teal-500/10 text-emerald-700 dark:text-emerald-400 shadow-sm"
                     : "text-muted-foreground hover:text-foreground hover:bg-accent"
                 }`}
               >

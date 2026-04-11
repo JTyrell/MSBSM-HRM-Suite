@@ -98,7 +98,7 @@ export function ReportsView() {
 
   // Attendance trend data (last 6 months)
   const attendanceTrendData = useMemo(() => {
-    const months = [];
+    const months: Array<{ month: string; attendanceRate: number; avgHours: number; totalRecords: number }> = [];
     for (let i = 5; i >= 0; i--) {
       const date = subMonths(new Date(), i);
       months.push({
@@ -154,7 +154,7 @@ export function ReportsView() {
 
   // Payroll trend data
   const payrollTrendData = useMemo(() => {
-    const months = [];
+    const months: Array<{ month: string; grossPay: number; netPay: number; deductions: number }> = [];
     for (let i = 5; i >= 0; i--) {
       const date = subMonths(new Date(), i);
       const gross = Math.round((45000 + Math.random() * 15000));
@@ -244,7 +244,7 @@ export function ReportsView() {
 
   // Employee growth trend
   const employeeGrowthData = useMemo(() => {
-    const months = [];
+    const months: Array<{ month: string; count: number }> = [];
     let count = activeEmployees.length > 0 ? Math.max(activeEmployees.length - 8, 5) : 12;
     for (let i = 11; i >= 0; i--) {
       const date = subMonths(new Date(), i);

@@ -30,6 +30,7 @@ import {
   UserPlus,
   Heart,
   Megaphone,
+  UsersRound,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { formatDistanceToNow } from "date-fns";
@@ -65,6 +66,7 @@ import { ComplianceView } from "@/components/hrm/compliance-view";
 import { ShiftsView } from "@/components/hrm/shifts-view";
 import { AnnouncementsView } from "@/components/hrm/announcements-view";
 import { BenefitsView } from "@/components/hrm/benefits-view";
+import { TeamAnalyticsView } from "@/components/hrm/team-analytics-view";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -79,6 +81,7 @@ const NAV_ITEMS = [
   { id: "announcements", label: "Announcements", icon: Megaphone },
   { id: "documents", label: "Documents", icon: FileText },
   { id: "reports", label: "Reports", icon: BarChart3 },
+  { id: "team-analytics", label: "Team Analytics", icon: UsersRound },
   { id: "compliance", label: "Compliance", icon: Scale },
   { id: "ai-assistant", label: "AI Assistant", icon: Bot },
   { id: "settings", label: "Settings", icon: Settings },
@@ -258,7 +261,8 @@ export default function HomePage() {
       {/* Main Content */}
       <main className="flex-1 lg:pl-64 flex flex-col min-h-screen">
         {/* Top Bar */}
-        <header className="sticky top-0 z-30 bg-card/80 backdrop-blur-xl border-b border-border px-4 lg:px-6 py-3">
+        <header className="sticky top-0 z-30 bg-card/80 backdrop-blur-xl border-b border-border px-4 lg:px-6 py-3 relative">
+          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-emerald-500 to-teal-500 rounded-r-full" />
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Button
@@ -469,16 +473,23 @@ export default function HomePage() {
           {currentView === "settings" && <SettingsView />}
           {currentView === "shifts" && <ShiftsView />}
           {currentView === "benefits" && <BenefitsView />}
+          {currentView === "team-analytics" && <TeamAnalyticsView />}
         </div>
 
         {/* Footer */}
-        <footer className="border-t border-border bg-card px-4 lg:px-6 py-3 mt-auto">
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <Shield className="w-3 h-3" />
-              MSBM-HR Suite v4.0
-            </span>
-            <span>AI-Powered Human Resource Management</span>
+        <footer className="border-t border-border bg-gradient-to-r from-card via-card to-emerald-50/30 dark:from-card dark:via-card dark:to-emerald-950/10 px-4 lg:px-6 py-4 mt-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+                <Shield className="w-3 h-3 text-white" />
+              </div>
+              <span className="font-medium">MSBM-HR Suite v4.0</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <span>AI-Powered Human Resource Management</span>
+              <span className="hidden sm:inline">•</span>
+              <span className="hidden sm:inline">© 2026 MSBM Group</span>
+            </div>
           </div>
         </footer>
       </main>
@@ -514,23 +525,24 @@ function SidebarContent({
 }) {
   return (
     <div className="flex flex-col h-full">
-      {/* Logo */}
-      <div className="flex items-center justify-between px-4 py-4 border-b border-border">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-            <Building2 className="w-5 h-5 text-white" />
+      {/* Decorative gradient banner */}
+      <div className="h-24 -mx-4 -mt-4 mb-4 bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-700 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.1),transparent_60%)]" />
+        <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-card to-transparent" />
+        <div className="relative z-10 flex flex-col items-center justify-center h-full gap-2 pt-6">
+          <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/20">
+            <Building2 className="w-7 h-7 text-white" />
           </div>
-          <div>
-            <h1 className="text-lg font-bold tracking-tight">MSBM-HR</h1>
-            <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-widest">
-              AI Suite
-            </p>
+          <div className="text-center">
+            <h1 className="text-base font-bold text-white tracking-tight">MSBM-HR</h1>
+            <p className="text-[10px] text-emerald-100 font-medium uppercase tracking-[0.2em]">AI Suite v4.0</p>
           </div>
         </div>
+        {/* Mobile close button overlay */}
         <Button
           variant="ghost"
           size="icon"
-          className="lg:hidden"
+          className="lg:hidden absolute top-2 right-2 text-white hover:bg-white/20 hover:text-white z-20"
           onClick={() => setMobileMenuOpen(false)}
         >
           <X className="h-5 w-5" />
@@ -576,6 +588,14 @@ function SidebarContent({
           })}
         </div>
       </ScrollArea>
+
+      {/* Active view indicator */}
+      <div className="mx-3 mt-4 mb-2 px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50">
+        <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold uppercase tracking-wider">Active</p>
+        <p className="text-sm font-medium text-emerald-700 dark:text-emerald-300 truncate">
+          {NAV_ITEMS.find((n) => n.id === currentView)?.label || "Dashboard"}
+        </p>
+      </div>
 
       {/* User Switcher */}
       <div className="border-t border-border p-3">

@@ -428,7 +428,72 @@ The MSBM-HR Suite v9.0 is in a **stable, production-ready state** with 20 view m
 4. Persist announcement reactions to database
 5. Persist benefits enrollment to database
 6. Add candidate pipeline stages to Recruitment module
-7. Add employee training/learning management module
+7. ~~Add employee training/learning management module~~ ✅ Done in v10.0
 8. Add performance review goals tracking with progress visualization
 9. Add company org chart with drag-and-drop reordering
 10. Add time tracking with project/task allocation
+
+---
+Task ID: 11-training-expenses
+Agent: full-stack-developer
+Task: Add Training & Learning Management Module + Expense Reimbursement Module (v10.0)
+
+Work Log:
+- Created `src/components/hrm/training-view.tsx` (~540 lines) with:
+  - Training Courses List: Card grid showing 12 realistic courses with category badges, difficulty levels, duration, enrolled count, ratings, progress bars
+  - Categories: Compliance, Leadership, Soft Skills, Technical, Wellness
+  - Difficulty colors: green (Beginner), amber (Intermediate), rose (Advanced)
+  - My Learning Tab: Enrolled courses with progress bars, Continue Learning button, completed courses with Certified badges, 7-day learning streak counter
+  - Course Detail Dialog: Full description, learning objectives, prerequisites, curriculum modules (3-5 per course), enroll/in-progress/completed states, quiz placeholder
+  - Leaderboard Tab: Top 10 learners from employee store with gold/silver/bronze styling for top 3
+  - Stats Cards: Total Courses (12), Completed (2), In Progress (3), Learning Hours
+  - Search bar with category and difficulty filters
+  - 12 courses: Workplace Safety, Anti-Harassment, Data Privacy & GDPR, Leadership Excellence, Project Management, D&I Workshop, Communication Skills, Time Management, Financial Wellness, Cybersecurity Awareness, Conflict Resolution, Customer Service Excellence
+- Created `src/components/hrm/expense-view.tsx` (~530 lines) with:
+  - Submit Expense Dialog: Type dropdown, amount with currency formatting, date picker, description textarea, receipt upload placeholder, loading state
+  - Expense List: Desktop table + mobile cards with status badges (Pending/Approved/Rejected/Processing)
+  - Filters by status and type, sort by date or amount, search
+  - 3 tabs: All Expenses, My Expenses, Approvals (admin/manager only)
+  - Approval Section with Approve/Reject confirmation dialogs
+  - Stats Row: Total Submitted, Pending, Approved, Rejected amounts
+  - 14 pre-seeded realistic expense records
+- Updated `src/app/page.tsx`: Added 2 imports, 2 nav items, 2 view renderers, version v10.0
+- Zero lint errors
+
+Stage Summary:
+- New components: 2 (training-view.tsx, expense-view.tsx)
+- Total view modules: 22 (was 20)
+- Total nav items: 21 (was 19)
+- Version: v9.0 → v10.0
+
+Files Created:
+- `src/components/hrm/training-view.tsx` — NEW: ~540-line Training & Learning Management Module
+- `src/components/hrm/expense-view.tsx` — NEW: ~530-line Expense Reimbursement Module
+
+Files Modified:
+- `src/app/page.tsx` — Added imports, nav items, view renderers, version v10.0
+
+---
+## CURRENT PROJECT STATUS (v10.0)
+
+### Assessment
+The MSBM-HR Suite v10.0 is in a **stable, feature-rich state** with 22 view modules, 17 Prisma models, and 16 API endpoints. This round added two major new features: a comprehensive Training & Learning Management Module and an Expense Reimbursement Module. The build compiles with zero lint errors.
+
+### Architecture Summary
+- **Database**: 17 Prisma models on SQLite
+- **API Endpoints**: 16 (employees, attendance, attendance/records, geofences, departments, payroll, pto, pto-balances, notifications, ai-chat, ai-chat/llm, shifts, announcements, performance-reviews, settings, jobs, activity-feed, seed)
+- **UI Components**: 22 view files, 21 navigation items + responsive sidebar + notification panel + dark mode + world clock + activity feed + quick actions toolbar + employee profile editor
+- **CSS**: 3580 lines with 60 style sections
+- **Features**: Geofenced attendance, payroll engine, PTO management, LLM-powered AI chat, onboarding, reports, documents, compliance, settings, shift scheduling, CSV export, world clock, announcements (with reactions + holidays), benefits hub, team analytics, org chart, performance reviews, activity feed, recruitment board, quick actions, employee self-service profile editor, employee directory, **training & learning management**, **expense reimbursement**
+
+### Priority Recommendations for Next Phase
+1. Add PDF export to Reports module (complement CSV export)
+2. Implement real file upload for Documents module
+3. Add WebSocket or polling for real-time notifications
+4. Persist announcement reactions to database
+5. Persist benefits enrollment to database
+6. Add candidate pipeline stages to Recruitment module
+7. Add performance review goals tracking with progress visualization
+8. Add company org chart with drag-and-drop reordering
+9. Add time tracking with project/task allocation
+10. Add expense reimbursement API with database persistence

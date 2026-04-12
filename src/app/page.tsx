@@ -34,6 +34,8 @@ import {
   Megaphone,
   UsersRound,
   UserCog,
+  GraduationCap,
+  Receipt,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { formatDistanceToNow } from "date-fns";
@@ -74,6 +76,8 @@ import { TeamAnalyticsView } from "@/components/hrm/team-analytics-view";
 import { RecruitmentView } from "@/components/hrm/recruitment-view";
 import { EmployeeDirectoryView } from "@/components/hrm/employee-directory-view";
 import { EmployeeProfileEditor } from "@/components/hrm/employee-profile-editor";
+import { TrainingView } from "@/components/hrm/training-view";
+import { ExpenseView } from "@/components/hrm/expense-view";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -92,6 +96,8 @@ const NAV_ITEMS = [
   { id: "reports", label: "Reports", icon: BarChart3 },
   { id: "team-analytics", label: "Team Analytics", icon: BarChart3 },
   { id: "employee-directory", label: "Employee Directory", icon: UsersRound },
+  { id: "training", label: "Training", icon: GraduationCap },
+  { id: "expenses", label: "Expenses", icon: Receipt },
   { id: "compliance", label: "Compliance", icon: Scale },
   { id: "ai-assistant", label: "AI Assistant", icon: Bot },
   { id: "settings", label: "Settings", icon: Settings },
@@ -473,7 +479,7 @@ export default function HomePage() {
         </header>
 
         {/* Page Content */}
-        <div className="animate-fade-in-up flex-1 p-4 lg:p-6 bg-dot-pattern">
+        <div className="page-transition animate-in-up flex-1 p-4 lg:p-6 bg-dot-pattern">
           {currentView === "dashboard" && <DashboardView />}
           {currentView === "attendance" && <AttendanceView />}
           {currentView === "employees" && <EmployeesView />}
@@ -493,6 +499,8 @@ export default function HomePage() {
           {currentView === "performance" && <PerformanceReviewsView />}
           {currentView === "recruitment" && <RecruitmentView />}
           {currentView === "employee-directory" && <EmployeeDirectoryView />}
+          {currentView === "training" && <TrainingView />}
+          {currentView === "expenses" && <ExpenseView />}
 
           {/* Employee Profile Editor Dialog */}
           <EmployeeProfileEditor
@@ -509,7 +517,7 @@ export default function HomePage() {
               <div className="w-5 h-5 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
                 <Shield className="w-3 h-3 text-white" />
               </div>
-              <span className="font-medium">MSBM-HR Suite v9.0</span>
+              <span className="font-medium">MSBM-HR Suite v10.0</span>
             </div>
             <div className="flex items-center gap-3">
               <span>AI-Powered Human Resource Management</span>
@@ -561,7 +569,7 @@ function SidebarContent({
           </div>
           <div className="text-center">
             <h1 className="text-base font-bold text-white tracking-tight">MSBM-HR</h1>
-            <p className="text-[10px] text-emerald-100 font-medium uppercase tracking-[0.2em]">AI Suite v9.0</p>
+            <p className="text-[10px] text-emerald-100 font-medium uppercase tracking-[0.2em]">AI Suite v10.0</p>
           </div>
         </div>
         {/* Mobile close button overlay */}

@@ -3369,27 +3369,27 @@
   @apply inline-block h-2.5 w-2.5 rounded-full flex-shrink-0;
 }
 .status-dot-active {
-  @apply status-dot bg-emerald-500;
+  @apply inline-block h-2.5 w-2.5 rounded-full flex-shrink-0 bg-emerald-500;
   animation: status-pulse-active 2s ease-in-out infinite;
 }
 :is(.dark .status-dot-active) {
   @apply bg-emerald-400;
 }
 .status-dot-inactive {
-  @apply status-dot bg-gray-400;
+  @apply inline-block h-2.5 w-2.5 rounded-full flex-shrink-0 bg-gray-400;
 }
 :is(.dark .status-dot-inactive) {
   @apply bg-gray-500;
 }
 .status-dot-pending {
-  @apply status-dot bg-amber-500;
+  @apply inline-block h-2.5 w-2.5 rounded-full flex-shrink-0 bg-amber-500;
   animation: status-pulse-pending 2.5s ease-in-out infinite;
 }
 :is(.dark .status-dot-pending) {
   @apply bg-amber-400;
 }
 .status-dot-suspended {
-  @apply status-dot bg-rose-500;
+  @apply inline-block h-2.5 w-2.5 rounded-full flex-shrink-0 bg-rose-500;
 }
 :is(.dark .status-dot-suspended) {
   @apply bg-rose-400;
@@ -3407,16 +3407,16 @@
   @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-colors;
 }
 .status-pill-active {
-  @apply status-pill bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300;
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-colors bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300;
 }
 .status-pill-inactive {
-  @apply status-pill bg-gray-100 text-gray-600 dark:bg-gray-800/50 dark:text-gray-400;
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-colors bg-gray-100 text-gray-600 dark:bg-gray-800/50 dark:text-gray-400;
 }
 .status-pill-pending {
-  @apply status-pill bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300;
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-colors bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300;
 }
 .status-pill-suspended {
-  @apply status-pill bg-rose-100 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300;
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-colors bg-rose-100 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300;
 }
 
 /* ── 56. Card Hover Lift Effects ─────────────────────────────────── */
@@ -3467,17 +3467,40 @@
   animation: skeleton-shimmer 1.8s ease-in-out infinite;
 }
 .skeleton-text {
-  @apply skeleton-shimmer h-4 rounded;
+  position: relative;
+  overflow: hidden;
+  height: 1rem;
+  border-radius: 0.25rem;
+  background: linear-gradient(90deg, rgba(16,185,129,0.04) 25%, rgba(16,185,129,0.12) 37%, rgba(16,185,129,0.04) 63%);
+  background-size: 1200px 100%;
+  animation: skeletonShimmer 1.8s ease-in-out infinite;
 }
 .skeleton-text-sm {
-  @apply skeleton-shimmer h-3 rounded;
+  position: relative;
+  overflow: hidden;
+ height: 0.75rem;
+ border-radius: 0.25rem;
+ background: linear-gradient(90deg, rgba(16,185,129,0.04) 25%, rgba(16,185,129,0.12) 37%, rgba(16,185,129,0.04) 63%);
+  background-size: 1200px 100%;
+ animation: skeletonShimmer 1.8s ease-in-out infinite;
 }
 .skeleton-circle {
-  @apply skeleton-shimmer rounded-full;
+  position: relative;
+  overflow: hidden;
+  border-radius: 9999px;
+ background: linear-gradient(90deg, rgba(16,185,129,0.04) 25%, rgba(16,185,129,0.12) 37%, rgba(16,185,129,0.04) 63%);
+  background-size: 1200px 100%;
+ animation: skeletonShimmer 1.8s ease-in-out infinite;
 }
 .skeleton-card {
-  @apply skeleton-shimmer rounded-xl p-6;
-  border: 1px solid hsl(var(--border));
+  position: relative;
+ overflow: hidden;
+ border-radius: 0.75rem;
+ padding: 1.5rem;
+ border: 1px solid hsl(var(--border));
+ background: linear-gradient(90deg, rgba(16,185,129,0.04) 25%, rgba(16,185,129,0.12) 37%, rgba(16,185,129,0.04) 63%);
+  background-size: 1200px 100%;
+ animation: skeletonShimmer 1.8s ease-in-out infinite;
 }
 :is(.dark .skeleton-card) {
   border-color: hsl(var(--border));
@@ -3569,7 +3592,7 @@
   box-shadow: 0 2px 6px rgba(5, 150, 105, 0.2);
 }
 .notification-badge-urgent {
-  @apply notification-badge;
+  @apply inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-[10px] font-bold leading-none text-white;
   background: linear-gradient(135deg, #dc2626, #e11d48);
   box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
   animation: notification-urgent-pulse 1.5s ease-in-out infinite;
@@ -3577,4 +3600,256 @@
 @keyframes notification-urgent-pulse {
   0%, 100% { box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3); }
   50% { box-shadow: 0 2px 12px rgba(220, 38, 38, 0.5); }
+}
+
+/* ================================================
+   61. Micro-interaction Button Styles
+   ================================================ */
+.btn-micro {
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.15s ease;
+}
+.btn-micro:hover {
+  transform: translateY(-1px) scale(1.01);
+}
+.btn-micro:active {
+  transform: translateY(0) scale(0.98);
+}
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.15),
+    transparent
+  );
+  transform: skewX(-25deg);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+.btn-shine:hover::after {
+  left: 120%;
+}
+.dark .btn-shine::after {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    transparent
+  );
+}
+
+/* ================================================
+   62. Enhanced Card Variants
+   ================================================ */
+.card-bordered-gradient {
+  position: relative;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+.dark .card-bordered-gradient {
+  background: #1e1e1e;
+}
+.card-bordered-gradient::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(135deg, #10b981, #14b8a6, #0d9488);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.card-glass-frost {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+}
+.dark .card-glass-frost {
+  background: rgba(30, 30, 30, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+/* ================================================
+   63. Typography Enhancements
+   ================================================ */
+.text-gradient-emerald {
+  background: linear-gradient(135deg, #10b981, #14b8a6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-gradient-gold {
+  background: linear-gradient(135deg, #f59e0b, #eab308);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-shadow-subtle {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+.dark .text-shadow-subtle {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ================================================
+   64. Animated Badge/Pill Styles
+   ================================================ */
+@keyframes badgeShimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.badge-shimmer {
+  background-size: 200% 100%;
+  background-image: linear-gradient(
+    90deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 70%
+  );
+  animation: badgeShimmer 2.5s ease-in-out infinite;
+}
+.dark .badge-shimmer {
+  background-image: linear-gradient(
+    90deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 70%
+  );
+}
+.badge-dot::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* ================================================
+   65. Enhanced Input/Form Styles
+   ================================================ */
+.input-emerald-focus:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+  outline: none;
+}
+.dark .input-emerald-focus:focus {
+  border-color: #34d399;
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.12);
+}
+.input-group {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+.input-group > :first-child {
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+.input-group > :last-child {
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+/* ================================================
+   66. Transition/Animation Utilities
+   ================================================ */
+.animate-in-up { animation: fadeInUp 0.35s ease-out both; }
+.animate-in-down { animation: fadeInDown 0.35s ease-out both; }
+.animate-in-left { animation: slideInLeft 0.35s ease-out both; }
+.animate-in-right { animation: slideInRight 0.35s ease-out both; }
+.animate-scale-in { animation: scaleIn 0.3s ease-out both; }
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================================
+   67. Chart Container Styles
+   ================================================ */
+.chart-container {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: #ffffff;
+  overflow: hidden;
+}
+.dark .chart-container {
+  background: rgba(30, 30, 30, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+.chart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+.dark .chart-header {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+.chart-legend {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  color: oklch(0.556 0 0);
+}
+.dark .chart-legend-item {
+  color: oklch(0.708 0 0);
+}
+.chart-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+.chart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  min-height: 160px;
+  color: oklch(0.556 0 0);
+}
+.dark .chart-empty {
+  color: oklch(0.708 0 0);
+}
+
+/* ================================================
+   68. Page Transition Effects
+   ================================================ */
+.page-transition {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.page-enter {
+  opacity: 0;
+  transform: translateY(6px);
+}
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
 }

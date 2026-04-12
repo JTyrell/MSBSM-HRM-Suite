@@ -331,3 +331,104 @@ The MSBM-HR Suite v8.0 is in a **stable, production-ready state** with 19 view m
 8. Add performance review goals tracking with progress visualization
 9. Add employee directory search with advanced filters
 10. Add company org chart with drag-and-drop reordering
+
+---
+Task ID: 10-bugfix-styling-features
+Agent: main-architect + frontend-styling-expert + full-stack-developer
+Task: Round 10 — Bug fixes, CSS polish, Employee Directory, Company Holidays
+
+Work Log:
+- **Critical Bug Fix**: Fixed `Runtime TypeError: Cannot read properties of undefined (reading 'charAt')` in `employee-profile-editor.tsx:92`
+  - Root cause: `employee.payType` was `undefined` for some employee records (DB migration edge case)
+  - Fixed `formatPayType()` in both `employee-profile-editor.tsx` and `employees-view.tsx` to accept `string | undefined | null` with null guard
+  - Fixed `formatPayRate()` in `employee-profile-editor.tsx` to accept nullable payType parameter
+- **QA Testing**: Tested all 19 modules via agent-browser — all load without errors, zero runtime exceptions
+- **CSS Styling Overhaul** (8 new sections, 53-60):
+  - Section 53: Animated tooltip styles (.tooltip-animated with data-tooltip attribute)
+  - Section 54: Enhanced data table styles (.data-table-header, .data-table-row with zebra striping)
+  - Section 55: Status indicator dots/pills (.status-dot-*, .status-pill-* with pulse animations)
+  - Section 56: Card hover lift effects (.card-lift with translateY + emerald shadow)
+  - Section 57: Skeleton loading variants (.skeleton-shimmer, .skeleton-text, .skeleton-circle, .skeleton-card)
+  - Section 58: Scrollbar customization (thin webkit + firefox scrollbars)
+  - Section 59: Focus ring improvements (.focus-ring-emerald, .focus-ring-teal with offset)
+  - Section 60: Notification badge improvements (.notification-dot, .notification-badge, .notification-badge-urgent)
+- **CSS Applied** to components:
+  - dashboard-view.tsx: .card-lift on stat cards, quick actions, world clock
+  - employees-view.tsx: .data-table-header/.data-table-row, .status-dot-* classes
+  - settings-view.tsx: .skeleton-shimmer/.skeleton-text/.skeleton-card in loading states
+- **New Feature: Employee Directory** (~580 lines):
+  - Grid/List view toggle, search bar, filter chips (Department, Role, Status)
+  - 7 sort options, employee cards with gradient avatars, status dots, role badges
+  - Profile dialog with Overview/Activity/Compensation/Attendance tabs
+  - CSV export, responsive grid (1/2/3 cols), stats row
+- **New Feature: Company Holidays Calendar** (added to Announcements view):
+  - "Holidays" tab with monthly calendar grid, month navigation
+  - 12 preset US holidays (Federal + Company types)
+  - Past holidays muted, upcoming highlighted, today in emerald
+  - Next holiday countdown widget, upcoming/past holiday lists
+- globals.css: 3306 → 3580 lines (60 style sections)
+- Zero lint errors
+
+Stage Summary:
+- Critical bug fixed: payType null safety in formatPayType/formatPayRate
+- 8 new CSS sections applied to 3+ component files
+- Employee Directory module: 20th view module added
+- Company Holidays: integrated into Announcements view
+- Version bump: v8.0 → v9.0
+
+---
+## CURRENT PROJECT STATUS (v9.0)
+
+### Assessment
+The MSBM-HR Suite v9.0 is in a **stable, production-ready state** with 20 view modules, 17 Prisma models, and 16 API endpoints. This round focused on a critical bug fix (payType null safety), a major CSS styling overhaul (8 new sections), an Employee Directory with advanced search/filters, and a Company Holidays Calendar integrated into the Announcements view. The build compiles with zero lint errors (0 errors, 0 warnings).
+
+### Architecture Summary
+- **Database**: 17 Prisma models on SQLite
+- **API Endpoints**: 16 (employees, attendance, attendance/records, geofences, departments, payroll, pto, pto-balances, notifications, ai-chat, ai-chat/llm, shifts, announcements, performance-reviews, settings, jobs, activity-feed, seed)
+- **UI Components**: 20 view files, 18 navigation items + responsive sidebar (glass-sidebar) + notification panel + dark mode + world clock + activity feed + quick actions toolbar + employee profile editor
+- **CSS**: 3580 lines with 60 style sections including tooltips, data tables, status indicators, card lifts, skeleton loading, scrollbars, focus rings, notification badges
+- **Features**: Geofenced attendance, payroll engine, PTO management, LLM-powered AI chat (4 agents + fallback), onboarding, reports, documents, compliance, database-persisted settings, shift scheduling, CSV export, world clock, announcements (with reactions + holidays calendar), benefits hub, team analytics, org chart, performance reviews, real-time activity feed, recruitment board, quick actions toolbar, employee self-service profile editor, **employee directory with advanced search**, **company holidays calendar**
+
+### Completed This Round (v8.0 → v9.0)
+1. **Bug Fix**: payType null safety in formatPayType/formatPayRate across 2 files
+2. **CSS Overhaul**: 8 new style sections (53-60) — tooltips, data tables, status dots/pills, card lifts, skeleton loading, scrollbars, focus rings, notification badges
+3. **CSS Applied**: New classes applied to dashboard, employees, settings views
+4. **Employee Directory**: Grid/list toggle, search, filters, sort, profile dialog, CSV export
+5. **Company Holidays**: 12 US holidays, calendar grid, countdown, monthly navigation
+
+### Files Modified/Created This Round
+- `src/components/hrm/employee-profile-editor.tsx` — Fixed formatPayType/formatPayRate null safety
+- `src/components/hrm/employees-view.tsx` — Fixed formatPayType null safety, applied data-table/status-dot CSS
+- `src/app/globals.css` — 8 new sections (53-60), 3306 → 3580 lines
+- `src/components/hrm/dashboard-view.tsx` — Applied .card-lift
+- `src/components/hrm/settings-view.tsx` — Applied skeleton loading CSS
+- `src/components/hrm/employee-directory-view.tsx` — NEW: ~580-line Employee Directory
+- `src/components/hrm/announcements-view.tsx` — Added Holidays tab with calendar
+- `src/app/page.tsx` — Added Employee Directory nav item + view, version v9.0
+
+### QA Verification
+- ✅ `bun run lint` — 0 errors, 0 warnings
+- ✅ agent-browser QA — all 20 modules load without runtime errors
+- ✅ All API endpoints return 200
+
+### Unresolved Issues & Risks
+- Enhancement: Document upload is still visual placeholder only
+- Enhancement: Compliance alerts use simulated data
+- Enhancement: Benefits data is partially hardcoded
+- Enhancement: Employee activity timeline uses mock data
+- Enhancement: Reports fallback to simulated data when store is empty
+- Enhancement: PDF export not yet implemented
+- Enhancement: WebSocket for real-time notifications not yet implemented
+- Enhancement: Announcement reactions are client-side only (no persistence)
+
+### Priority Recommendations for Next Phase
+1. Add PDF export to Reports module (complement CSV export)
+2. Implement real file upload for Documents module
+3. Add WebSocket or polling for real-time notifications
+4. Persist announcement reactions to database
+5. Persist benefits enrollment to database
+6. Add candidate pipeline stages to Recruitment module
+7. Add employee training/learning management module
+8. Add performance review goals tracking with progress visualization
+9. Add company org chart with drag-and-drop reordering
+10. Add time tracking with project/task allocation

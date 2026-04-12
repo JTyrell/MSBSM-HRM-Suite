@@ -206,7 +206,7 @@ function WorldClockWidget() {
   }, []);
 
   return (
-    <Card className="transition-all duration-300 hover:shadow-md">
+    <Card className="transition-all duration-300 hover:shadow-md card-lift">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div>
@@ -676,7 +676,7 @@ export function DashboardView() {
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <div key={stat.label} className="relative rounded-xl p-[2px] bg-gradient-to-br from-transparent via-muted-foreground/10 to-transparent animate-gradient-border card-elevated card-spotlight">
+            <div key={stat.label} className="relative rounded-xl p-[2px] bg-gradient-to-br from-transparent via-muted-foreground/10 to-transparent animate-gradient-border card-elevated card-spotlight card-lift">
               <Card
                 className={`stagger-${index + 1} card-hover-lift hover-scale group transition-all duration-300 border ${stat.borderColorClass} bg-background rounded-xl ${
                   index === 0 ? 'stat-card-emerald' : index === 1 ? 'stat-card-rose' : index === 2 ? 'stat-card-violet' : 'stat-card-amber'
@@ -721,7 +721,7 @@ export function DashboardView() {
       </div>
 
       {/* ─── Global Quick Actions Toolbar ────────────────────────── */}
-      <Card className="rounded-2xl border bg-card p-4 transition-all duration-300 hover:shadow-md">
+      <Card className="rounded-2xl border bg-card p-4 transition-all duration-300 hover:shadow-md card-lift">
         <div className="flex items-center gap-2 mb-3">
           <div className="flex items-center justify-center h-6 w-6 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500">
             <Zap className="h-3.5 w-3.5 text-white" />
@@ -758,7 +758,7 @@ export function DashboardView() {
       <WorldClockWidget />
 
       {/* ─── Employee Quick Stats ───────────────────────────────────── */}
-      <Card className="transition-all duration-300 hover:shadow-md">
+      <Card className="transition-all duration-300 hover:shadow-md card-lift">
         <CardHeader className="pb-3">
           <CardTitle className="text-base font-semibold flex items-center gap-2">
             <PlaneTakeoff className="h-4 w-4 text-teal-500" />

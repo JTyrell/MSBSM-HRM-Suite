@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "sonner";
-import { formatDistanceToNow, isThisMonth } from "date-fns";
+import { formatDistanceToNow, isThisMonth, format, differenceInDays, startOfMonth, endOfMonth, getDay, getDate, getDaysInMonth, addMonths, subMonths, isSameDay, isSameMonth, isBefore, startOfDay, isAfter } from "date-fns";
 import { useAppStore } from "@/store/app";
 
 import {
@@ -42,9 +42,14 @@ import {
   Pin,
   AlertTriangle,
   Calendar,
+  CalendarDays,
   PartyPopper,
   BookOpen,
   Plus,
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
+  Gift,
   Edit,
   Trash2,
   Eye,
@@ -139,7 +144,329 @@ const CATEGORY_TABS = [
   { value: "policy", label: "Policy" },
   { value: "urgent", label: "Urgent" },
   { value: "celebration", label: "Celebrations" },
+  { value: "holidays", label: "Holidays" },
 ];
+
+// ============ COMPANY HOLIDAYS ============
+
+function getHolidaysForYear(year: number) {
+    return [
+      { name: "New Year's Day", date: new Date(year, 0, 1), type: "Federal" as const },
+      { name: "MLK Day", date: new Date(year, 0, 20), type: "Federal" as const },
+      { name: "Presidents' Day", date: new Date(year, 1, 17), type: "Federal" as const },
+      { name: "Memorial Day", date: new Date(year, 4, 26), type: "Federal" as const },
+      { name: "Independence Day", date: new Date(year, 6, 4), type: "Federal" as const },
+      { name: "Labor Day", date: new Date(year, 8, 1), type: "Federal" as const },
+      { name: "Columbus Day", date: new Date(year, 9, 13), type: "Federal" as const },
+      { name: "Veterans Day", date: new Date(year, 10, 11), type: "Federal" as const },
+      { name: "Thanksgiving", date: new Date(year, 10, 27), type: "Federal" as const },
+      { name: "Day After Thanksgiving", date: new Date(year, 10, 28), type: "Company" as const },
+      { name: "Christmas Eve", date: new Date(year, 11, 24), type: "Company" as const },
+      { name: "Christmas Day", date: new Date(year, 11, 25), type: "Federal" as const },
+    ];
+  }
+
+// ============ HOLIDAYS CALENDAR COMPONENT ============
+
+function HolidaysCalendar() {
+  const [currentMonth, setCurrentMonth] = useState(() => new Date());
+  const today = useMemo(() => startOfDay(new Date()), []);
+  const year = currentMonth.getFullYear();
+
+  const holidays = useMemo(() => getHolidaysForYear(year), [year]);
+  const monthHolidays = useMemo(
+    () => holidays.filter((h) => isSameMonth(h.date, currentMonth)),
+    [holidays, currentMonth]
+  );
+
+  const nextHoliday = useMemo(() => {
+    return holidays.find((h) => isAfter(h.date, today));
+  }, [holidays, today]);
+
+  const daysUntilNext = useMemo(() => {
+    if (!nextHoliday) return null;
+    return differenceInDays(nextHoliday.date, today);
+  }, [nextHoliday, today]);
+
+  const totalHolidays = holidays.length;
+  const pastHolidays = holidays.filter((h) => isBefore(h.date, today));
+  const upcomingHolidays = holidays.filter((h) => isAfter(h.date, today) || isSameDay(h.date, today));
+
+  // Calendar grid data
+  const calendarDays = useMemo(() => {
+    const firstDay = getDay(startOfMonth(currentMonth));
+    const daysInMonth = getDaysInMonth(currentMonth);
+    const days: (number | null)[] = [];
+
+    // Pad start of month
+    for (let i = 0; i < firstDay; i++) {
+      days.push(null);
+    }
+    // Add days
+    for (let d = 1; d <= daysInMonth; d++) {
+      days.push(d);
+    }
+    return days;
+  }, [currentMonth]);
+
+  const holidayMap = useMemo(() => {
+    const map = new Map<number, typeof monthHolidays[number][]>();
+    for (const h of monthHolidays) {
+      const day = getDate(h.date);
+      if (!map.has(day)) map.set(day, []);
+      map.get(day)!.push(h);
+    }
+    return map;
+  }, [monthHolidays]);
+
+  const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  return (
+    <div className="space-y-6">
+      {/* Countdown + Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* Next Holiday Countdown */}
+        {nextHoliday && (
+          <Card className="border-2 border-emerald-300 dark:border-emerald-700 bg-gradient-to-br from-emerald-50 via-teal-50 to-emerald-100/50 dark:from-emerald-950/30 dark:via-teal-950/20 dark:to-emerald-900/10 sm:col-span-2 overflow-hidden">
+            <CardContent className="p-5">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                      <Sparkles className="h-5 w-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Next Holiday</p>
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white">{nextHoliday.name}</h3>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 mt-2">
+                    <Badge variant="outline" className="text-[10px] bg-white/80 dark:bg-gray-900/50 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800">
+                      {nextHoliday.type}
+                    </Badge>
+                    <span className="text-sm text-muted-foreground">
+                      {format(nextHoliday.date, "EEEE, MMMM d, yyyy")}
+                    </span>
+                  </div>
+                </div>
+                <div className="flex flex-col items-center justify-center px-6 py-3 rounded-2xl bg-white/60 dark:bg-gray-900/40 border border-emerald-200 dark:border-emerald-800">
+                  <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">{daysUntilNext}</p>
+                  <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium uppercase tracking-wider">Days Left</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Stats */}
+        <Card className="border-teal-100 dark:border-teal-900/30 overflow-hidden">
+          <CardContent className="p-4 flex flex-col justify-between h-full">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center">
+                <Gift className="h-4 w-4 text-white" />
+              </div>
+              <p className="text-xs font-semibold text-gray-900 dark:text-white">Holiday Stats</p>
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">Total Holidays</span>
+                <span className="text-sm font-bold text-gray-900 dark:text-white">{totalHolidays}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">Past</span>
+                <span className="text-sm font-medium text-muted-foreground">{pastHolidays.length}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground">Upcoming</span>
+                <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{upcomingHolidays.length}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Calendar Grid */}
+      <Card>
+        <CardHeader className="pb-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setCurrentMonth((m) => subMonths(m, 1))}>
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <CardTitle className="text-base font-semibold">
+                {format(currentMonth, "MMMM yyyy")}
+              </CardTitle>
+              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setCurrentMonth((m) => addMonths(m, 1))}>
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+            <Button variant="ghost" size="sm" className="text-xs" onClick={() => setCurrentMonth(new Date())}>
+              Today
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="p-3 sm:p-4">
+          {/* Weekday Headers */}
+          <div className="grid grid-cols-7 gap-1 mb-1">
+            {weekDays.map((day) => (
+              <div key={day} className="text-center text-[10px] font-semibold text-muted-foreground uppercase tracking-wider py-1">
+                {day}
+              </div>
+            ))}
+          </div>
+
+          {/* Calendar Grid */}
+          <div className="grid grid-cols-7 gap-1">
+            {calendarDays.map((day, idx) => {
+              const isCurrentDay = day !== null && isSameDay(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day), today);
+              const holidaysForDay = day !== null ? (holidayMap.get(day) || []) : [];
+              const isPast = day !== null && isBefore(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day!), today);
+              const isToday = day !== null && isSameDay(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day), today);
+
+              return (
+                <div
+                  key={idx}
+                  className={`min-h-[60px] sm:min-h-[72px] rounded-lg border p-1 transition-colors ${
+                    isCurrentDay
+                      ? "border-emerald-400 dark:border-emerald-600 bg-emerald-50/50 dark:bg-emerald-950/20"
+                      : isToday
+                        ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50/30 dark:bg-emerald-950/10"
+                        : "border-transparent bg-muted/20"
+                  }`}
+                >
+                  {day !== null && (
+                    <>
+                      <p className={`text-[11px] font-medium text-right mb-0.5 ${
+                        isCurrentDay
+                          ? "text-emerald-700 dark:text-emerald-300"
+                          : isPast
+                            ? "text-muted-foreground/50"
+                            : "text-gray-700 dark:text-gray-300"
+                      }`}>
+                        {day}
+                      </p>
+                      <div className="space-y-0.5">
+                        {holidaysForDay.map((holiday) => {
+                          const isHolidayPast = isBefore(holiday.date, today);
+                          const isHolidayToday = isSameDay(holiday.date, today);
+                          return (
+                            <div
+                              key={holiday.name}
+                              className={`text-[8px] sm:text-[9px] px-1 py-0.5 rounded truncate leading-tight ${
+                                isHolidayToday
+                                  ? "bg-emerald-500 text-white font-semibold"
+                                  : isHolidayPast
+                                    ? "bg-gray-100 text-gray-500 dark:bg-gray-800/50 dark:text-gray-400"
+                                    : "bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400"
+                              }`}
+                              title={`${holiday.name} (${holiday.type})`}
+                            >
+                              {holiday.name}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Upcoming Holidays List */}
+      {upcomingHolidays.length > 0 && (
+        <div>
+          <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+            <CalendarDays className="h-4 w-4 text-teal-600" />
+            Upcoming Holidays ({year})
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {upcomingHolidays.map((holiday) => {
+              const isToday = isSameDay(holiday.date, today);
+              return (
+                <Card
+                  key={holiday.name}
+                  className={`transition-all ${
+                    isToday
+                      ? "border-2 border-emerald-400 dark:border-emerald-600 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20"
+                      : "hover:border-emerald-200 dark:hover:border-emerald-800"
+                  }`}
+                >
+                  <CardContent className="p-3 flex items-center gap-3">
+                    <div className={`h-10 w-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
+                      isToday
+                        ? "bg-gradient-to-br from-emerald-400 to-teal-500 shadow-lg shadow-emerald-500/20"
+                        : "bg-muted"
+                    }`}>
+                      {isToday ? (
+                        <Sparkles className="h-5 w-5 text-white" />
+                      ) : (
+                        <Calendar className="h-5 w-5 text-muted-foreground" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-sm font-medium truncate ${isToday ? "text-emerald-700 dark:text-emerald-300" : "text-gray-900 dark:text-white"}`}>
+                        {holiday.name}
+                      </p>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <span className="text-xs text-muted-foreground">
+                          {format(holiday.date, "MMM d, yyyy")}
+                        </span>
+                        <Badge
+                          variant="outline"
+                          className={`text-[9px] px-1.5 py-0 ${
+                            holiday.type === "Federal"
+                              ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200 dark:border-amber-800"
+                              : "bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400 border-teal-200 dark:border-teal-800"
+                          }`}
+                        >
+                          {holiday.type}
+                        </Badge>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Past Holidays (collapsible) */}
+      {pastHolidays.length > 0 && (
+        <div>
+          <h3 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
+            <Calendar className="h-4 w-4" />
+            Past Holidays ({year})
+          </h3>
+          <div className="space-y-2">
+            {pastHolidays.map((holiday) => (
+              <div
+                key={holiday.name}
+                className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 opacity-60"
+              >
+                <div className="h-8 w-8 rounded-lg bg-muted flex items-center justify-center flex-shrink-0">
+                  <Calendar className="h-4 w-4 text-muted-foreground/60" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-muted-foreground truncate">{holiday.name}</p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-muted-foreground">{format(holiday.date, "MMM d, yyyy")}</span>
+                    <Badge variant="outline" className="text-[9px] px-1.5 py-0 bg-gray-100 text-gray-500 dark:bg-gray-800/30 dark:text-gray-400 border-gray-200 dark:border-gray-700">
+                      {holiday.type}
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 // ============ REACTIONS ============
 
@@ -271,10 +598,12 @@ export function AnnouncementsView() {
   // ============ DATA FETCHING ============
 
   const fetchAnnouncements = useCallback(async () => {
+    // Skip fetching when on holidays tab
+    if (activeTab === "holidays") return;
     try {
       setIsLoading(true);
       const params = new URLSearchParams();
-      if (activeTab !== "all") {
+      if (activeTab !== "all" && activeTab !== "holidays") {
         params.set("category", activeTab);
       }
       const res = await fetch(`/api/announcements?${params.toString()}`);
@@ -845,8 +1174,10 @@ export function AnnouncementsView() {
           </TabsList>
         </Tabs>
 
-        {/* Announcements Feed */}
-        {isLoading ? (
+        {/* Holidays View */}
+        {activeTab === "holidays" ? (
+          <HolidaysCalendar />
+        ) : isLoading ? (
           <div className="flex items-center justify-center py-16">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600" />
           </div>

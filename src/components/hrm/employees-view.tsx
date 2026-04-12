@@ -174,7 +174,8 @@ function formatRoleLabel(role: string): string {
   }
 }
 
-function formatPayType(payType: string): string {
+function formatPayType(payType: string | undefined | null): string {
+  if (!payType) return "Hourly";
   switch (payType) {
     case "hourly":
       return "Hourly";
@@ -231,13 +232,13 @@ function getAvatarColor(id: string): string {
 function getStatusDotColor(status: string): string {
   switch (status) {
     case "active":
-      return "bg-emerald-500";
+      return "status-dot-active";
     case "on_leave":
-      return "bg-amber-500";
+      return "status-dot-pending";
     case "inactive":
     case "terminated":
     default:
-      return "bg-gray-400";
+      return "status-dot-inactive";
   }
 }
 
@@ -1261,7 +1262,7 @@ export function EmployeesView() {
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
-                      <TableRow className="border-border/50 hover:bg-transparent">
+                      <TableRow className="data-table-header border-border/50 hover:bg-transparent">
                         <TableHead className="min-w-[220px]">Employee</TableHead>
                         <TableHead className="min-w-[180px] hidden md:table-cell">
                           Email
@@ -1286,7 +1287,7 @@ export function EmployeesView() {
                       {sortedEmployees.map((emp) => (
                         <TableRow
                           key={emp.id}
-                          className="cursor-pointer transition-colors hover:bg-emerald-50/50 dark:hover:bg-emerald-950/20 border-border/30"
+                          className="data-table-row cursor-pointer"
                           onClick={() => fetchEmployeeProfile(emp)}
                         >
                           <TableCell>
@@ -1299,7 +1300,7 @@ export function EmployeesView() {
                                     {getInitials(emp.firstName, emp.lastName)}
                                   </AvatarFallback>
                                 </Avatar>
-                                <div className={`absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-white dark:border-gray-950 ${getStatusDotColor(emp.status)}`} />
+                                <div className={`absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full border-2 border-white dark:border-gray-950 ${emp.status === "active" ? "status-dot-active" : emp.status === "on_leave" ? "status-dot-pending" : "status-dot-inactive"}`} />
                               </div>
                               <div className="min-w-0">
                                 <div className="font-medium text-sm text-gray-900 dark:text-white truncate">
@@ -1341,7 +1342,7 @@ export function EmployeesView() {
                               className={`text-[11px] ${getStatusBadgeClasses(emp.status)}`}
                             >
                               <span
-                                className={`inline-block h-1.5 w-1.5 rounded-full mr-1 ${getStatusDotColor(emp.status)}`}
+                                className={`inline-block h-1.5 w-1.5 rounded-full mr-1 ${emp.status === "active" ? "status-dot-active" : emp.status === "on_leave" ? "status-dot-pending" : "status-dot-inactive"}`}
                               />
                               {formatStatusLabel(emp.status)}
                             </Badge>

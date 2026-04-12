@@ -60,7 +60,7 @@ function getAvatarGradient(id: string): string {
   return gradients[Math.abs(hash) % gradients.length];
 }
 
-function formatPayRate(payType: string, payRate: number): string {
+function formatPayRate(payType: string | undefined | null, payRate: number): string {
   if (payType === "salary") {
     return `$${(payRate || 0).toLocaleString()}/yr`;
   }
@@ -82,7 +82,8 @@ function formatRoleLabel(role: string): string {
   }
 }
 
-function formatPayType(payType: string): string {
+function formatPayType(payType: string | undefined | null): string {
+  if (!payType) return "Hourly";
   switch (payType) {
     case "hourly":
       return "Hourly";

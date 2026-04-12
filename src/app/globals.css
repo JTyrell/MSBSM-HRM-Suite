@@ -3304,3 +3304,277 @@
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 350px), 1fr));
   gap: 1.25rem;
 }
+
+/* ── 53. Animated Tooltip Styles ─────────────────────────────────── */
+.tooltip-animated {
+  @apply relative;
+}
+.tooltip-animated::before {
+  content: attr(data-tooltip);
+  @apply absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap opacity-0 invisible pointer-events-none z-50 transition-all duration-200;
+  @apply bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.tooltip-animated::after {
+  content: "";
+  @apply absolute left-1/2 -translate-x-1/2 bottom-full mb-0 w-0 h-0 opacity-0 invisible pointer-events-none z-50 transition-all duration-200;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #111827;
+}
+:is(.dark .tooltip-animated)::after {
+  border-top-color: #f3f4f6;
+}
+.tooltip-animated:hover::before {
+  @apply opacity-100 visible;
+  transform: translateX(-50%) translateY(-4px);
+}
+.tooltip-animated:hover::after {
+  @apply opacity-100 visible;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+/* ── 54. Enhanced Data Table Styles ──────────────────────────────── */
+.data-table-header {
+  @apply sticky top-0 z-10 bg-background/95 backdrop-blur-sm;
+  border-bottom: 2px solid rgba(16, 185, 129, 0.15);
+}
+:is(.dark .data-table-header) {
+  border-bottom-color: rgba(16, 185, 129, 0.1);
+}
+.data-table-header th {
+  @apply text-xs font-semibold uppercase tracking-wider text-muted-foreground py-3 px-4;
+}
+.data-table-row {
+  @apply transition-all duration-150 ease-out cursor-pointer border-b border-border/40;
+}
+.data-table-row:hover {
+  @apply bg-emerald-50/70 dark:bg-emerald-950/15;
+}
+.data-table-row:nth-child(even) {
+  @apply bg-muted/20;
+}
+.data-table-row:nth-child(even):hover {
+  @apply bg-emerald-50/70 dark:bg-emerald-950/15;
+}
+.data-table-row:last-child {
+  @apply border-b-0;
+}
+.data-table-row td {
+  @apply py-3 px-4;
+}
+
+/* ── 55. Status Indicator Dots & Pills ───────────────────────────── */
+.status-dot {
+  @apply inline-block h-2.5 w-2.5 rounded-full flex-shrink-0;
+}
+.status-dot-active {
+  @apply status-dot bg-emerald-500;
+  animation: status-pulse-active 2s ease-in-out infinite;
+}
+:is(.dark .status-dot-active) {
+  @apply bg-emerald-400;
+}
+.status-dot-inactive {
+  @apply status-dot bg-gray-400;
+}
+:is(.dark .status-dot-inactive) {
+  @apply bg-gray-500;
+}
+.status-dot-pending {
+  @apply status-dot bg-amber-500;
+  animation: status-pulse-pending 2.5s ease-in-out infinite;
+}
+:is(.dark .status-dot-pending) {
+  @apply bg-amber-400;
+}
+.status-dot-suspended {
+  @apply status-dot bg-rose-500;
+}
+:is(.dark .status-dot-suspended) {
+  @apply bg-rose-400;
+}
+@keyframes status-pulse-active {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 0 0 4px rgba(16, 185, 129, 0); }
+}
+@keyframes status-pulse-pending {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.3); }
+  50% { box-shadow: 0 0 0 4px rgba(245, 158, 11, 0); }
+}
+
+.status-pill {
+  @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-colors;
+}
+.status-pill-active {
+  @apply status-pill bg-emerald-100 text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300;
+}
+.status-pill-inactive {
+  @apply status-pill bg-gray-100 text-gray-600 dark:bg-gray-800/50 dark:text-gray-400;
+}
+.status-pill-pending {
+  @apply status-pill bg-amber-100 text-amber-700 dark:bg-amber-950/50 dark:text-amber-300;
+}
+.status-pill-suspended {
+  @apply status-pill bg-rose-100 text-rose-700 dark:bg-rose-950/50 dark:text-rose-300;
+}
+
+/* ── 56. Card Hover Lift Effects ─────────────────────────────────── */
+.card-lift {
+  @apply transition-all duration-300 ease-out;
+  transform: translateY(0);
+}
+.card-lift:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 10px 25px -5px rgba(16, 185, 129, 0.08),
+    0 8px 10px -6px rgba(0, 0, 0, 0.06);
+}
+:is(.dark .card-lift):hover {
+  box-shadow:
+    0 10px 25px -5px rgba(16, 185, 129, 0.12),
+    0 8px 10px -6px rgba(0, 0, 0, 0.3);
+}
+.card-lift:active {
+  transform: translateY(-2px);
+  transition-duration: 100ms;
+}
+
+/* ── 57. Skeleton Loading Variants ───────────────────────────────── */
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 25%,
+    hsl(var(--muted) / 0.5) 50%,
+    hsl(var(--muted)) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  @apply rounded-md;
+}
+:is(.dark .skeleton-shimmer) {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.06) 25%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.8s ease-in-out infinite;
+}
+.skeleton-text {
+  @apply skeleton-shimmer h-4 rounded;
+}
+.skeleton-text-sm {
+  @apply skeleton-shimmer h-3 rounded;
+}
+.skeleton-circle {
+  @apply skeleton-shimmer rounded-full;
+}
+.skeleton-card {
+  @apply skeleton-shimmer rounded-xl p-6;
+  border: 1px solid hsl(var(--border));
+}
+:is(.dark .skeleton-card) {
+  border-color: hsl(var(--border));
+}
+
+/* ── 58. Scrollbar Customization ─────────────────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(16, 185, 129, 0.25) transparent;
+}
+:is(.dark *) {
+  scrollbar-color: rgba(16, 185, 129, 0.2) transparent;
+}
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+*::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+*::-webkit-scrollbar-thumb {
+  @apply rounded-full;
+  background: rgba(16, 185, 129, 0.2);
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(16, 185, 129, 0.35);
+}
+:is(.dark *::-webkit-scrollbar-thumb) {
+  background: rgba(16, 185, 129, 0.15);
+}
+:is(.dark *::-webkit-scrollbar-thumb:hover) {
+  background: rgba(16, 185, 129, 0.3);
+}
+
+/* ── 59. Focus Ring Improvements ─────────────────────────────────── */
+.focus-ring-emerald {
+  @apply outline-none;
+  transition: box-shadow 0.2s ease-out;
+}
+.focus-ring-emerald:focus-visible {
+  box-shadow:
+    0 0 0 3px hsl(var(--background)),
+    0 0 0 5px rgba(16, 185, 129, 0.5);
+}
+:is(.dark .focus-ring-emerald):focus-visible {
+  box-shadow:
+    0 0 0 3px hsl(var(--background)),
+    0 0 0 5px rgba(16, 185, 129, 0.4);
+}
+.focus-ring-teal {
+  @apply outline-none;
+  transition: box-shadow 0.2s ease-out;
+}
+.focus-ring-teal:focus-visible {
+  box-shadow:
+    0 0 0 3px hsl(var(--background)),
+    0 0 0 5px rgba(13, 148, 136, 0.5);
+}
+:is(.dark .focus-ring-teal):focus-visible {
+  box-shadow:
+    0 0 0 3px hsl(var(--background)),
+    0 0 0 5px rgba(13, 148, 136, 0.4);
+}
+
+/* ── 60. Notification Badge Improvements ─────────────────────────── */
+.notification-dot {
+  @apply relative;
+}
+.notification-dot::after {
+  content: "";
+  @apply absolute -top-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-background;
+  background: linear-gradient(135deg, #059669, #0d9488);
+  animation: notification-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+:is(.dark .notification-dot)::after {
+  border-color: hsl(var(--background));
+}
+@keyframes notification-ping {
+  0% { transform: scale(1); opacity: 1; }
+  75%, 100% { transform: scale(1.5); opacity: 0; }
+}
+.notification-badge {
+  @apply inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-[10px] font-bold leading-none;
+  background: linear-gradient(135deg, #059669, #0d9488);
+  @apply text-white;
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
+}
+:is(.dark .notification-badge) {
+  box-shadow: 0 2px 6px rgba(5, 150, 105, 0.2);
+}
+.notification-badge-urgent {
+  @apply notification-badge;
+  background: linear-gradient(135deg, #dc2626, #e11d48);
+  box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3);
+  animation: notification-urgent-pulse 1.5s ease-in-out infinite;
+}
+@keyframes notification-urgent-pulse {
+  0%, 100% { box-shadow: 0 2px 6px rgba(220, 38, 38, 0.3); }
+  50% { box-shadow: 0 2px 12px rgba(220, 38, 38, 0.5); }
+}

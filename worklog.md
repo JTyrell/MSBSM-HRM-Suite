@@ -838,3 +838,35 @@ Files Created:
 Files Modified:
 - `src/components/hrm/dashboard-view.tsx` — Added Upcoming Events & Deadlines section, Calendar import
 - `src/app/page.tsx` — Added imports, nav items, view renderers
+
+---
+Task ID: 15-hydration-fix
+Agent: main-architect
+Task: Fix React hydration mismatch error on body tag
+
+Work Log:
+- Identified root cause: Browser extension (Grammarly) injects `data-new-gr-c-s-check-loaded` and `data-gr-ext-installed` attributes into `<body>` before React hydrates
+- Error: "A tree hydrated but some attributes of the server rendered HTML didn't match the client properties"
+- Fix: Added `suppressHydrationWarning` to `<body>` tag in src/app/layout.tsx (line 47)
+- This matches the existing `suppressHydrationWarning` already on `<html>` tag (line 44)
+- Lint: 0 errors, 0 warnings
+- Dev server: Running, all routes returning 200
+
+Stage Summary:
+- Single-line fix: Added `suppressHydrationWarning` to `<body>` element
+- Hydration mismatch warning eliminated
+- No functional changes to application behavior
+
+Files Modified:
+- `src/app/layout.tsx` — Added suppressHydrationWarning to body tag
+
+---
+## CURRENT PROJECT STATUS (v12.1 — Hydration Fix)
+
+### Assessment
+The MSBM-HR Suite v12.1 is stable with the React hydration mismatch warning resolved. The fix suppresses the warning caused by browser extensions (Grammarly) injecting attributes into the `<body>` element during SSR hydration.
+
+### Verification
+- ✅ `bun run lint` — 0 errors, 0 warnings
+- ✅ Dev server running, all routes returning 200
+- ✅ Hydration mismatch warning suppressed

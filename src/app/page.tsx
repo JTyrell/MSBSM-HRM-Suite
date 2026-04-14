@@ -42,6 +42,8 @@ import {
   MessageSquare,
   FileBarChart,
   Target,
+  HeartPulse,
+  MessageSquareQuote,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { formatDistanceToNow } from "date-fns";
@@ -94,6 +96,8 @@ import { MeetingRoomsView } from "@/components/hrm/meeting-rooms-view";
 import { KudosView } from "@/components/hrm/kudos-view";
 import { MyDocumentsView } from "@/components/hrm/my-documents-view";
 import { GoalsView } from "@/components/hrm/goals-view";
+import { WellnessView } from "@/components/hrm/wellness-view";
+import { FeedbackView } from "@/components/hrm/feedback-view";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -125,6 +129,8 @@ const NAV_ITEMS = [
   { id: "kudos", label: "Kudos", icon: Heart },
   { id: "my-documents", label: "My Documents", icon: FileText },
   { id: "goals", label: "Goals & OKRs", icon: Target },
+  { id: "wellness", label: "Wellness", icon: HeartPulse },
+  { id: "feedback", label: "Feedback", icon: MessageSquareQuote },
   { id: "ai-assistant", label: "AI Assistant", icon: Bot },
   { id: "settings", label: "Settings", icon: Settings },
 ];
@@ -537,6 +543,8 @@ export default function HomePage() {
           {currentView === "kudos" && <KudosView />}
           {currentView === "my-documents" && <MyDocumentsView />}
           {currentView === "goals" && <GoalsView />}
+          {currentView === "wellness" && <WellnessView />}
+          {currentView === "feedback" && <FeedbackView />}
 
           {/* Employee Profile Editor Dialog */}
           <EmployeeProfileEditor
@@ -553,7 +561,7 @@ export default function HomePage() {
               <div className="w-5 h-5 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
                 <Shield className="w-3 h-3 text-white" />
               </div>
-              <span className="font-medium">MSBM-HR Suite v12.0</span>
+              <span className="font-medium">MSBM-HR Suite v13.0</span>
             </div>
             <div className="flex items-center gap-3">
               <span>AI-Powered Human Resource Management</span>
@@ -605,7 +613,7 @@ function SidebarContent({
           </div>
           <div className="text-center">
             <h1 className="text-base font-bold text-white tracking-tight">MSBM-HR</h1>
-            <p className="text-[10px] text-emerald-100 font-medium uppercase tracking-[0.2em]">AI Suite v10.0</p>
+            <p className="text-[10px] text-emerald-100 font-medium uppercase tracking-[0.2em]">AI Suite v13.0</p>
           </div>
         </div>
         {/* Mobile close button overlay */}

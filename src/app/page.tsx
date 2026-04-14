@@ -36,6 +36,10 @@ import {
   UserCog,
   GraduationCap,
   Receipt,
+  ShieldCheck,
+  Timer,
+  MessageSquare,
+  FileBarChart,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { formatDistanceToNow } from "date-fns";
@@ -78,6 +82,12 @@ import { EmployeeDirectoryView } from "@/components/hrm/employee-directory-view"
 import { EmployeeProfileEditor } from "@/components/hrm/employee-profile-editor";
 import { TrainingView } from "@/components/hrm/training-view";
 import { ExpenseView } from "@/components/hrm/expense-view";
+import { JAComplianceView } from "@/components/hrm/ja-compliance-view";
+import { DepartmentRolesView } from "@/components/hrm/department-roles-view";
+import { SmartSchedulingView } from "@/components/hrm/smart-scheduling-view";
+import { TimeTrackingView } from "@/components/hrm/time-tracking-view";
+import { TeamHubView } from "@/components/hrm/team-hub-view";
+import { WorkforceReportsView } from "@/components/hrm/workforce-reports-view";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -99,6 +109,12 @@ const NAV_ITEMS = [
   { id: "training", label: "Training", icon: GraduationCap },
   { id: "expenses", label: "Expenses", icon: Receipt },
   { id: "compliance", label: "Compliance", icon: Scale },
+  { id: "ja-compliance", label: "JA Statutory", icon: ShieldCheck, badge: "JM" },
+  { id: "department-roles", label: "Dept Roles", icon: UserCog },
+  { id: "smart-schedule", label: "Smart Schedule", icon: CalendarClock, badge: "Sling" },
+  { id: "time-tracking", label: "Time Tracking", icon: Timer, badge: "GPS" },
+  { id: "team-hub", label: "Team Hub", icon: MessageSquare, badge: "Chat" },
+  { id: "workforce-reports", label: "Workforce Reports", icon: FileBarChart },
   { id: "ai-assistant", label: "AI Assistant", icon: Bot },
   { id: "settings", label: "Settings", icon: Settings },
 ];
@@ -501,6 +517,12 @@ export default function HomePage() {
           {currentView === "employee-directory" && <EmployeeDirectoryView />}
           {currentView === "training" && <TrainingView />}
           {currentView === "expenses" && <ExpenseView />}
+          {currentView === "ja-compliance" && <JAComplianceView />}
+          {currentView === "department-roles" && <DepartmentRolesView />}
+          {currentView === "smart-schedule" && <SmartSchedulingView />}
+          {currentView === "time-tracking" && <TimeTrackingView />}
+          {currentView === "team-hub" && <TeamHubView />}
+          {currentView === "workforce-reports" && <WorkforceReportsView />}
 
           {/* Employee Profile Editor Dialog */}
           <EmployeeProfileEditor
@@ -517,7 +539,7 @@ export default function HomePage() {
               <div className="w-5 h-5 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
                 <Shield className="w-3 h-3 text-white" />
               </div>
-              <span className="font-medium">MSBM-HR Suite v10.0</span>
+              <span className="font-medium">MSBM-HR Suite v12.0</span>
             </div>
             <div className="flex items-center gap-3">
               <span>AI-Powered Human Resource Management</span>

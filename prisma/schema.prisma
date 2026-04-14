@@ -41,6 +41,7 @@ model Department {
   employees  Employee[]
   geofences  Geofence[]
   shifts     Shift[]
+  roles      DepartmentRole[]
 }
 
 // ============ SHIFTS ============
@@ -417,4 +418,33 @@ model AuditLog {
   @@index([userId])
   @@index([module])
   @@index([createdAt])
+}
+
+// ============ DEPARTMENT ROLES ============
+
+model DepartmentRole {
+  id                String   @id @default(cuid())
+  title             String
+  code              String   @unique
+  description       String?
+  gradeLevel        Int      @default(1)
+  reportsTo         String?  // DepartmentRole id
+  isManagement      Boolean  @default(false)
+  canApprovePayroll Boolean  @default(false)
+  canAssignRoles    Boolean  @default(false)
+  canViewAllEmployees Boolean @default(false)
+  canEditEmployees  Boolean  @default(false)
+  canManageIT       Boolean  @default(false)
+  canViewPayroll    Boolean  @default(false)
+  canEditPayroll    Boolean  @default(false)
+  canManageSchedule Boolean  @default(false)
+  departmentId      String?
+  sortOrder         Int      @default(0)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  department Department? @relation(fields: [departmentId], references: [id])
+
+  @@index([departmentId])
+  @@index([sortOrder])
 }

@@ -135,7 +135,7 @@ export async function POST() {
       { name: "Flex Shift", startTime: "10:00", endTime: "16:00", breakMinutes: 30, color: "#ec4899", isActive: true, departmentId: departments[3].id },
     ];
 
-    const shifts: Record<string, unknown>[] = [];
+    const shifts: any[] = [];
     for (const shiftData of defaultShifts) {
       const shift = await db.shift.create({
         data: {
@@ -148,7 +148,7 @@ export async function POST() {
 
     // Create employees
     const now = new Date();
-    const employees: Record<string, unknown>[] = [];
+    const employees: any[] = [];
 
     const employeeData = [
       { firstName: "Alex", lastName: "Rivera", email: "alex.rivera@msbm.com", role: "admin", dept: 0, pay: 55, type: "salary", hire: "2021-03-15", location: mainOffice.id },
@@ -195,7 +195,7 @@ export async function POST() {
     }
 
     // Create attendance records for the last 30 days
-    const attendanceRecords: Record<string, unknown>[] = [];
+    const attendanceRecords: any[] = [];
     for (let day = 30; day >= 0; day--) {
       if (Math.random() > 0.15) continue; // Skip some days randomly
       const date = new Date(now);

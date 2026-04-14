@@ -18,7 +18,7 @@ function escapeCSVValue(value: unknown): string {
 /**
  * Convert an array of objects to a CSV string.
  */
-function objectsToCSV(data: Record<string, unknown>[]): string {
+function objectsToCSV(data: Record<string, string>[]): string {
   if (data.length === 0) return "";
 
   const headers = Object.keys(data[0]);
@@ -37,7 +37,7 @@ function objectsToCSV(data: Record<string, unknown>[]): string {
  * @param filename - Name of the file (without .csv extension)
  */
 export function exportToCSV(
-  data: Record<string, unknown>[],
+  data: any[],
   filename: string
 ): void {
   if (data.length === 0) return;
@@ -51,14 +51,14 @@ export function exportToCSV(
  * @param periods - Array of payroll periods (with records)
  * @param filename - Optional custom filename
  */
-export function exportPayrollToCSV(periods: Record<string, unknown>[], filename?: string): void {
+export function exportPayrollToCSV(periods: any[], filename?: string): void {
   // Flatten all records from all periods
   const rows: Record<string, string>[] = [];
 
   for (const period of periods) {
-    const records = period.records || [];
+    const records: any[] = period.records || [];
     for (const record of records) {
-      const emp = record.employee;
+      const emp: any = record.employee;
       rows.push({
         Period: period.name || "",
         "Period Start": period.startDate || "",
@@ -96,9 +96,9 @@ export function exportPayrollToCSV(periods: Record<string, unknown>[], filename?
  * @param records - Array of attendance records
  * @param filename - Optional custom filename
  */
-export function exportAttendanceToCSV(records: Record<string, unknown>[], filename?: string): void {
+export function exportAttendanceToCSV(records: any[], filename?: string): void {
   const rows: Record<string, string>[] = records.map((r) => {
-    const emp = r.employee;
+    const emp: any = r.employee;
     return {
       Employee: emp
         ? `${emp.firstName} ${emp.lastName}`

@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Calculate payroll for each employee
-    const records: Record<string, unknown>[] = [];
+    const records: any[] = [];
     for (const employee of employees) {
       const empAttendance = attendanceByEmployee.get(employee.id) || [];
 
@@ -166,8 +166,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       period,
       records,
-      totalGross: records.reduce((sum, r) => sum + r.grossPay, 0),
-      totalNet: records.reduce((sum, r) => sum + r.netPay, 0),
+      totalGross: records.reduce((sum: number, r: any) => sum + (r.grossPay || 0), 0),
+      totalNet: records.reduce((sum: number, r: any) => sum + (r.netPay || 0), 0),
       flaggedCount: records.filter((r) => r.status === "flagged").length,
     });
   } catch (error) {

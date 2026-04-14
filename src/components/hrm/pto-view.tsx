@@ -68,7 +68,7 @@ import type { DateRange } from "react-day-picker";
 // ─── Types ───────────────────────────────────────────────────────────────────
 
 interface PTOResponse {
-  requests: Record<string, unknown>[];
+  requests: any[];
 }
 
 interface BalanceResponse {

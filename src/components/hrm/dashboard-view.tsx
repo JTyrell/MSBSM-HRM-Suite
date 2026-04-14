@@ -694,7 +694,7 @@ export function DashboardView() {
                       <p className="text-sm font-medium text-muted-foreground truncate">
                         {stat.label}
                       </p>
-                      <p className="metric-large text-2xl font-bold tracking-tight animate-count-up text-gradient-emerald">{stat.value}</p>
+                      <p className="metric-large text-2xl font-bold tracking-tight animate-count-up text-gradient-emerald stat-highlight">{stat.value}</p>
                     </div>
                   </div>
                   {stat.trend && (
@@ -722,7 +722,7 @@ export function DashboardView() {
       </div>
 
       {/* ─── Global Quick Actions Toolbar ────────────────────────── */}
-      <Card className="rounded-2xl border bg-card p-4 transition-all duration-300 hover:shadow-md card-lift">
+      <Card className="rounded-2xl border bg-card p-4 transition-all duration-300 hover:shadow-md card-lift card-accent-emerald">
         <div className="flex items-center gap-2 mb-3">
           <div className="flex items-center justify-center h-6 w-6 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-500">
             <Zap className="h-3.5 w-3.5 text-white" />
@@ -756,7 +756,7 @@ export function DashboardView() {
       </Card>
 
       {/* ─── Upcoming Events & Deadlines ──────────────────────────── */}
-      <Card className="card-elevated transition-all duration-300 hover:shadow-md card-lift">
+      <Card className="card-elevated transition-all duration-300 hover:shadow-md card-lift card-gradient-border">
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
             <div>

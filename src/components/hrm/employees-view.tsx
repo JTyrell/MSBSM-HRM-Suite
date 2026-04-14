@@ -133,10 +133,10 @@ function getRoleBadgeClasses(role: string): string {
 function getStatusBadgeClasses(status: string): string {
   switch (status) {
     case "active":
-      return "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800";
+      return "badge-gradient-emerald";
     case "inactive":
     case "terminated":
-      return "bg-gray-100 text-gray-600 dark:bg-gray-800/30 dark:text-gray-400 border-gray-200 dark:border-gray-700";
+      return "badge-gradient-rose";
     case "on_leave":
       return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200 dark:border-amber-800";
     default:

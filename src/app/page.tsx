@@ -41,6 +41,7 @@ import {
   Timer,
   MessageSquare,
   FileBarChart,
+  Target,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { formatDistanceToNow } from "date-fns";
@@ -91,6 +92,8 @@ import { TeamHubView } from "@/components/hrm/team-hub-view";
 import { WorkforceReportsView } from "@/components/hrm/workforce-reports-view";
 import { MeetingRoomsView } from "@/components/hrm/meeting-rooms-view";
 import { KudosView } from "@/components/hrm/kudos-view";
+import { MyDocumentsView } from "@/components/hrm/my-documents-view";
+import { GoalsView } from "@/components/hrm/goals-view";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -120,6 +123,8 @@ const NAV_ITEMS = [
   { id: "workforce-reports", label: "Workforce Reports", icon: FileBarChart },
   { id: "meeting-rooms", label: "Meeting Rooms", icon: DoorOpen },
   { id: "kudos", label: "Kudos", icon: Heart },
+  { id: "my-documents", label: "My Documents", icon: FileText },
+  { id: "goals", label: "Goals & OKRs", icon: Target },
   { id: "ai-assistant", label: "AI Assistant", icon: Bot },
   { id: "settings", label: "Settings", icon: Settings },
 ];
@@ -530,6 +535,8 @@ export default function HomePage() {
           {currentView === "workforce-reports" && <WorkforceReportsView />}
           {currentView === "meeting-rooms" && <MeetingRoomsView />}
           {currentView === "kudos" && <KudosView />}
+          {currentView === "my-documents" && <MyDocumentsView />}
+          {currentView === "goals" && <GoalsView />}
 
           {/* Employee Profile Editor Dialog */}
           <EmployeeProfileEditor

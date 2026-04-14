@@ -414,7 +414,7 @@ export function BenefitsView() {
       {/* ============ STATS CARDS ============ */}
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
         {/* Total Value */}
-        <Card className="border-emerald-100 dark:border-emerald-900/30 overflow-hidden">
+        <Card className="border-emerald-100 dark:border-emerald-900/30 overflow-hidden card-glass">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
@@ -480,7 +480,7 @@ export function BenefitsView() {
         </Card>
 
         {/* Coverage Score */}
-        <Card className="border-emerald-100 dark:border-emerald-900/30 overflow-hidden">
+        <Card className="border-emerald-100 dark:border-emerald-900/30 overflow-hidden card-glass">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="relative w-12 h-12 shrink-0">

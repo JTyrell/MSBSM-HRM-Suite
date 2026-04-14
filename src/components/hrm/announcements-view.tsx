@@ -130,11 +130,11 @@ const CATEGORY_CONFIG: Record<string, { label: string; color: string; bgColor: s
   },
 };
 
-const PRIORITY_CONFIG: Record<string, { label: string; color: string; dotColor: string }> = {
+const PRIORITY_CONFIG: Record<string, { label: string; color: string; dotColor: string; badgeClass?: string }> = {
   low: { label: "Low", color: "text-gray-500 dark:text-gray-400", dotColor: "bg-gray-400" },
-  normal: { label: "Normal", color: "text-emerald-600 dark:text-emerald-400", dotColor: "bg-emerald-500" },
-  high: { label: "High", color: "text-amber-600 dark:text-amber-400", dotColor: "bg-amber-500" },
-  urgent: { label: "Urgent", color: "text-red-600 dark:text-red-400", dotColor: "bg-red-500" },
+  normal: { label: "Normal", color: "text-emerald-600 dark:text-emerald-400", dotColor: "bg-emerald-500", badgeClass: "badge-gradient-emerald" },
+  high: { label: "High", color: "text-amber-600 dark:text-amber-400", dotColor: "bg-amber-500", badgeClass: "badge-gradient-amber" },
+  urgent: { label: "Urgent", color: "text-red-600 dark:text-red-400", dotColor: "bg-red-500", badgeClass: "badge-gradient-rose" },
 };
 
 const CATEGORY_TABS = [

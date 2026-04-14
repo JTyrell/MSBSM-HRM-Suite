@@ -46,6 +46,7 @@ import {
   Briefcase,
   Megaphone,
   Shield,
+  Calendar,
   CalendarHeart,
   PartyPopper,
   Building2,
@@ -752,6 +753,94 @@ export function DashboardView() {
             );
           })}
         </div>
+      </Card>
+
+      {/* ─── Upcoming Events & Deadlines ──────────────────────────── */}
+      <Card className="card-elevated transition-all duration-300 hover:shadow-md card-lift">
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle className="text-base font-semibold flex items-center gap-2">
+                <Calendar className="h-4 w-4 text-emerald-500" />
+                Upcoming Events &amp; Deadlines
+              </CardTitle>
+              <CardDescription className="mt-1">Your schedule at a glance</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-0">
+          <div className="space-y-3">
+            {[
+              {
+                title: "Board Meeting Q2 Review",
+                datetime: "Tomorrow, 10:00 AM",
+                location: "Board Room A",
+                category: "Meeting",
+                dotColor: "bg-emerald-500",
+                accentBg: "bg-emerald-50 dark:bg-emerald-950/40",
+                badgeClass: "text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800",
+              },
+              {
+                title: "Training: Leadership Workshop",
+                datetime: "Wed, 2:00 PM",
+                location: "Training Lab",
+                category: "Training",
+                dotColor: "bg-teal-500",
+                accentBg: "bg-teal-50 dark:bg-teal-950/40",
+                badgeClass: "text-teal-700 dark:text-teal-400 bg-teal-100 dark:bg-teal-900/30 border-teal-200 dark:border-teal-800",
+              },
+              {
+                title: "Payroll Submission Deadline",
+                datetime: "Fri, 5:00 PM",
+                location: "HR Portal",
+                category: "Deadline",
+                dotColor: "bg-amber-500",
+                accentBg: "bg-amber-50 dark:bg-amber-950/40",
+                badgeClass: "text-amber-700 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/30 border-amber-200 dark:border-amber-800",
+              },
+              {
+                title: "MSBM Staff Retreat",
+                datetime: "Next Saturday, 9:00 AM",
+                location: "Graduate Centre",
+                category: "Event",
+                dotColor: "bg-violet-500",
+                accentBg: "bg-violet-50 dark:bg-violet-950/40",
+                badgeClass: "text-violet-700 dark:text-violet-400 bg-violet-100 dark:bg-violet-900/30 border-violet-200 dark:border-violet-800",
+              },
+              {
+                title: "FY2026 Budget Review",
+                datetime: "Next Monday, 11:00 AM",
+                location: "Executive Suite",
+                category: "Review",
+                dotColor: "bg-rose-500",
+                accentBg: "bg-rose-50 dark:bg-rose-950/40",
+                badgeClass: "text-rose-700 dark:text-rose-400 bg-rose-100 dark:bg-rose-900/30 border-rose-200 dark:border-rose-800",
+              },
+            ].map((event) => (
+              <div
+                key={event.title}
+                className="flex items-center gap-4 p-3 rounded-xl border hover:bg-accent/30 transition-all duration-200"
+              >
+                <div className="flex flex-col items-center justify-center h-10 w-10 rounded-xl shrink-0">
+                  <span className={`inline-block h-2.5 w-2.5 rounded-full ${event.dotColor} ${event.category === "Deadline" ? "animate-pulse" : ""}`} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h4 className="text-sm font-medium truncate">{event.title}</h4>
+                    <Badge variant="outline" className={`text-[10px] px-1.5 py-0 border ${event.badgeClass}`}>
+                      {event.category}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center gap-3 mt-0.5 text-xs text-muted-foreground">
+                    <span>{event.datetime}</span>
+                    <span>•</span>
+                    <span>{event.location}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
       </Card>
 
       {/* ─── World Clock ──────────────────────────────────────────── */}

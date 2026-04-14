@@ -764,3 +764,77 @@ Work Log:
 Stage Summary:
 - 2 new view components created
 - Zero TypeScript compilation errors
+
+---
+Task ID: 16-css-v13
+Agent: frontend-styling-expert
+Task: Add 8 NEW CSS sections (86-93) to globals.css
+
+Work Log:
+- Appended 8 new CSS sections (86-93) to the end of globals.css (4204 → 4461 lines)
+  - Section 86: Meeting Room Styles (.meeting-room-card, .meeting-room-available, .meeting-booking-item)
+  - Section 87: Kudos & Recognition Styles (.kudos-type-badge with 6 color variants, .kudos-wall-card, .kudos-like-btn)
+  - Section 88: Upcoming Events Timeline (.upcoming-event-item, .event-dot with 5 color variants + staggered animation)
+  - Section 89: Calendar Booking Grid (.calendar-grid, .calendar-day-header, .calendar-day with today/other-month states, .calendar-booking-block)
+  - Section 90: Availability Heatmap (.availability-cell with available/booked/unavailable states)
+  - Section 91: Leaderboard Styles (.leaderboard-row, .rank-badge with gold/silver/bronze/default gradients)
+  - Section 92: Confetti Animation (@keyframes confetti-fall, .confetti-particle)
+  - Section 93: Enhanced Toast Notification (.toast-celebration, .toast-info with gradient left-border)
+- All sections use plain CSS properties (no @apply) — Tailwind CSS 4 compatible
+- Zero lint errors
+
+Stage Summary:
+- globals.css: 85 → 93 style sections, 4204 → 4461 lines
+- Total new lines: ~257 lines of plain CSS
+- Lint: 0 errors, 0 warnings
+
+---
+Task ID: 15-new-features-v13
+Agent: full-stack-developer
+Task: Create Meeting Rooms Booking System, Employee Kudos & Recognition System, and Dashboard enhancement
+
+Work Log:
+- Created `src/components/hrm/meeting-rooms-view.tsx` (~470 lines) with:
+  - 4 tabs: Rooms, My Bookings, Calendar View, Availability
+  - 6 meeting rooms: Board Room A/B, Training Lab, Innovation Hub, Executive Suite, Graduate Centre
+  - Each room card: name, capacity (4-25), floor/building, equipment icons (Projector, Whiteboard, Video Conferencing, Speakerphone, TV Screen), status (Available/In Use) with color-coded headers
+  - My Bookings tab: 8 mock upcoming bookings with status badges (Confirmed/Pending/Cancelled), cancel button on pending
+  - Calendar View: Monthly calendar grid with navigation, bookings as colored blocks, room color legend, today highlighted in emerald, click-to-see-details
+  - Availability tab: Per-room weekly grid (Mon-Sun x 8AM-6PM), color-coded slots (green=available, red=booked, gray=unavailable), quick 30/60/90min booking buttons
+  - Book Room Dialog: Room select, date picker, start time select (8AM-5PM 30min intervals), title, description, attendees, recurrence (None/Daily/Weekly/Monthly), equipment checkboxes
+  - Stats: Total Rooms (6), Available Now, Today's Bookings (8), This Week (23)
+  - Search rooms by name, filter by capacity, equipment, floor
+- Created `src/components/hrm/kudos-view.tsx` (~460 lines) with:
+  - 3 tabs: Give Kudos, Wall of Fame, Leaderboard
+  - Give Kudos tab: 6 kudos types (Star Performer, Team Player, Goal Crusher, Helpful Hero, Creative Spark, Going Above & Beyond), recipient dropdown (12 employees), title, message (280 char limit), company value alignment, send button with toast notification
+  - 12 mock kudos entries in recent feed with sender/recipient avatars, type badges, like toggle
+  - Wall of Fame tab: Top 12 most-liked kudos as glass-card-enhanced cards with gradient borders, monthly/department filters
+  - Leaderboard tab: Dual table — "Most Appreciative" (top 10 senders) and "Most Recognized" (top 10 recipients), gold/silver/bronze rank badges with Crown/Medal/Award icons, trend indicators (up/down/same)
+  - Stats: Total Kudos Given (247), This Month (34), Unique Participants (89), Streak (12 days)
+- Enhanced `src/components/hrm/dashboard-view.tsx`:
+  - Added "Upcoming Events & Deadlines" card between Quick Actions and World Clock
+  - 5 mock events: Board Meeting Q2 Review (emerald), Leadership Workshop (teal), Payroll Deadline (amber/warning pulse), Staff Retreat (violet), FY2026 Budget Review (rose/urgent)
+  - Each item: color dot indicator, title, category badge, datetime, location
+  - Uses card-elevated CSS class
+- Wired both new views into `src/app/page.tsx`:
+  - Added imports for MeetingRoomsView, KudosView
+  - Added DoorOpen, Heart icon imports
+  - Added 2 nav items: Meeting Rooms (DoorOpen icon), Kudos (Heart icon)
+  - Added 2 view renderers
+- Fixed 3 TypeScript errors: added Calendar import to dashboard-view, typed TIME_SLOTS as string[] in meeting-rooms
+- Zero TypeScript errors, zero ESLint errors
+
+Stage Summary:
+- 2 new view components: meeting-rooms-view.tsx, kudos-view.tsx
+- Dashboard enhanced with Upcoming Events & Deadlines section
+- Total view modules: 28 → 30
+- Total nav items: 27 → 29
+- TypeScript: 0 errors, ESLint: 0 errors
+
+Files Created:
+- `src/components/hrm/meeting-rooms-view.tsx` — Meeting Room Booking System (~470 lines)
+- `src/components/hrm/kudos-view.tsx` — Employee Kudos & Recognition System (~460 lines)
+
+Files Modified:
+- `src/components/hrm/dashboard-view.tsx` — Added Upcoming Events & Deadlines section, Calendar import
+- `src/app/page.tsx` — Added imports, nav items, view renderers

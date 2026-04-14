@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import {
+  DoorOpen,
   LayoutDashboard,
   Clock,
   Users,
@@ -88,6 +89,8 @@ import { SmartSchedulingView } from "@/components/hrm/smart-scheduling-view";
 import { TimeTrackingView } from "@/components/hrm/time-tracking-view";
 import { TeamHubView } from "@/components/hrm/team-hub-view";
 import { WorkforceReportsView } from "@/components/hrm/workforce-reports-view";
+import { MeetingRoomsView } from "@/components/hrm/meeting-rooms-view";
+import { KudosView } from "@/components/hrm/kudos-view";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -115,6 +118,8 @@ const NAV_ITEMS = [
   { id: "time-tracking", label: "Time Tracking", icon: Timer, badge: "GPS" },
   { id: "team-hub", label: "Team Hub", icon: MessageSquare, badge: "Chat" },
   { id: "workforce-reports", label: "Workforce Reports", icon: FileBarChart },
+  { id: "meeting-rooms", label: "Meeting Rooms", icon: DoorOpen },
+  { id: "kudos", label: "Kudos", icon: Heart },
   { id: "ai-assistant", label: "AI Assistant", icon: Bot },
   { id: "settings", label: "Settings", icon: Settings },
 ];
@@ -523,6 +528,8 @@ export default function HomePage() {
           {currentView === "time-tracking" && <TimeTrackingView />}
           {currentView === "team-hub" && <TeamHubView />}
           {currentView === "workforce-reports" && <WorkforceReportsView />}
+          {currentView === "meeting-rooms" && <MeetingRoomsView />}
+          {currentView === "kudos" && <KudosView />}
 
           {/* Employee Profile Editor Dialog */}
           <EmployeeProfileEditor

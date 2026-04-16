@@ -1,52 +1,47 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { createClient } from "@/lib/supabase/server";
 
-// GET /api/geofences - List all geofences
+// GET /api/geofences
 export async function GET() {
   try {
-    const geofences = await db.geofence.findMany({
-      include: {
-        department: { select: { id: true, name: true, code: true } },
-      },
-      orderBy: { createdAt: "desc" },
-    });
+    const supabase = await createClient();
+    const { data: geofences, error } = await supabase
+      .from("geofences")
+      .select("*, department:departments(id, name, code)")
+      .order("created_at", { ascending: false });
 
-    return NextResponse.json({ geofences });
+    if (error) throw error;
+    return NextResponse.json({ geofences: geofences || [] });
   } catch (error) {
     console.error("Error fetching geofences:", error);
     return NextResponse.json({ error: "Failed to fetch geofences" }, { status: 500 });
   }
 }
 
-// POST /api/geofences - Create a new geofence
+// POST /api/geofences
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, address, type, centerLat, centerLng, radius, departmentId, polygon } = body;
+    const supabase = await createClient();
 
-    const company = await db.company.findFirst();
-    if (!company) {
-      return NextResponse.json({ error: "No company found. Please seed the database first." }, { status: 400 });
-    }
+    const { data: geofence, error } = await supabase
+      .from("geofences")
+      .insert({
+        name: body.name,
+        address: body.address || null,
+        type: body.type || "office",
+        center_lat: parseFloat(body.centerLat || body.center_lat),
+        center_lng: parseFloat(body.centerLng || body.center_lng),
+        radius: parseFloat(body.radius) || 200,
+        is_active: true,
+        company_id: body.companyId || body.company_id || "00000000-0000-0000-0000-000000000001",
+        department_id: body.departmentId || body.department_id || null,
+        polygon: body.polygon || {},
+      })
+      .select("*, department:departments(id, name, code)")
+      .single();
 
-    const geofence = await db.geofence.create({
-      data: {
-        name,
-        address,
-        type: type || "office",
-        centerLat: parseFloat(centerLat),
-        centerLng: parseFloat(centerLng),
-        radius: parseFloat(radius) || 200,
-        isActive: true,
-        companyId: company.id,
-        departmentId: departmentId || null,
-        polygon: polygon || null,
-      },
-      include: {
-        department: { select: { id: true, name: true, code: true } },
-      },
-    });
-
+    if (error) throw error;
     return NextResponse.json({ geofence }, { status: 201 });
   } catch (error) {
     console.error("Error creating geofence:", error);
@@ -54,27 +49,33 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// PUT /api/geofences - Update a geofence
+// PUT /api/geofences
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
     const { id, ...data } = body;
+    if (!id) return NextResponse.json({ error: "Geofence ID is required" }, { status: 400 });
 
-    if (!id) {
-      return NextResponse.json({ error: "Geofence ID is required" }, { status: 400 });
-    }
+    const supabase = await createClient();
+    const updateData: Record<string, unknown> = {};
+    if (data.name !== undefined) updateData.name = data.name;
+    if (data.address !== undefined) updateData.address = data.address;
+    if (data.type !== undefined) updateData.type = data.type;
+    if (data.centerLat || data.center_lat) updateData.center_lat = parseFloat(data.centerLat || data.center_lat);
+    if (data.centerLng || data.center_lng) updateData.center_lng = parseFloat(data.centerLng || data.center_lng);
+    if (data.radius) updateData.radius = parseFloat(data.radius);
+    if (data.isActive !== undefined || data.is_active !== undefined) updateData.is_active = data.isActive ?? data.is_active;
+    if (data.polygon !== undefined) updateData.polygon = data.polygon;
+    if (data.departmentId || data.department_id) updateData.department_id = data.departmentId || data.department_id;
 
-    const geofence = await db.geofence.update({
-      where: { id },
-      data: {
-        ...data,
-        centerLat: data.centerLat ? parseFloat(data.centerLat) : undefined,
-        centerLng: data.centerLng ? parseFloat(data.centerLng) : undefined,
-        radius: data.radius ? parseFloat(data.radius) : undefined,
-        updatedAt: new Date(),
-      },
-    });
+    const { data: geofence, error } = await supabase
+      .from("geofences")
+      .update(updateData)
+      .eq("id", id)
+      .select()
+      .single();
 
+    if (error) throw error;
     return NextResponse.json({ geofence });
   } catch (error) {
     console.error("Error updating geofence:", error);
@@ -87,12 +88,12 @@ export async function DELETE(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
+    if (!id) return NextResponse.json({ error: "Geofence ID is required" }, { status: 400 });
 
-    if (!id) {
-      return NextResponse.json({ error: "Geofence ID is required" }, { status: 400 });
-    }
+    const supabase = await createClient();
+    const { error } = await supabase.from("geofences").delete().eq("id", id);
 
-    await db.geofence.delete({ where: { id } });
+    if (error) throw error;
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting geofence:", error);

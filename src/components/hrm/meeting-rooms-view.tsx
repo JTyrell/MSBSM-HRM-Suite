@@ -146,16 +146,7 @@ const ROOMS: MeetingRoom[] = [
   },
 ];
 
-const MOCK_BOOKINGS: Booking[] = [
-  { id: "b1", roomId: "room-1", roomName: "Board Room A", date: "2025-07-15", startTime: "9:00 AM", endTime: "10:00 AM", duration: "1h", organizer: "Dr. Sarah Chen", attendees: 12, status: "Confirmed", title: "Q2 Strategy Review" },
-  { id: "b2", roomId: "room-3", roomName: "Training Lab", date: "2025-07-15", startTime: "2:00 PM", endTime: "4:00 PM", duration: "2h", organizer: "Mark Williams", attendees: 18, status: "Confirmed", title: "Leadership Workshop" },
-  { id: "b3", roomId: "room-4", roomName: "Innovation Hub", date: "2025-07-16", startTime: "10:00 AM", endTime: "11:30 AM", duration: "1.5h", organizer: "Lisa Park", attendees: 8, status: "Pending", title: "Product Brainstorm" },
-  { id: "b4", roomId: "room-2", roomName: "Board Room B", date: "2025-07-16", startTime: "1:00 PM", endTime: "2:00 PM", duration: "1h", organizer: "James Rodriguez", attendees: 6, status: "Confirmed", title: "Client Presentation" },
-  { id: "b5", roomId: "room-5", roomName: "Executive Suite", date: "2025-07-17", startTime: "3:00 PM", endTime: "4:30 PM", duration: "1.5h", organizer: "Dr. Sarah Chen", attendees: 5, status: "Pending", title: "Budget Planning" },
-  { id: "b6", roomId: "room-1", roomName: "Board Room A", date: "2025-07-17", startTime: "11:00 AM", endTime: "12:00 PM", duration: "1h", organizer: "Aisha Johnson", attendees: 15, status: "Confirmed", title: "Department Sync" },
-  { id: "b7", roomId: "room-6", roomName: "Graduate Centre", date: "2025-07-18", startTime: "9:30 AM", endTime: "10:30 AM", duration: "1h", organizer: "Tom Baker", attendees: 3, status: "Confirmed", title: "Thesis Review" },
-  { id: "b8", roomId: "room-3", roomName: "Training Lab", date: "2025-07-18", startTime: "1:00 PM", endTime: "3:00 PM", duration: "2h", organizer: "Nina Patel", attendees: 20, status: "Pending", title: "Onboarding Session" },
-];
+
 
 const TIME_SLOTS: string[] = [];
 for (let h = 8; h <= 17; h++) {
@@ -195,7 +186,7 @@ export function MeetingRoomsView() {
   const [filterEquipment, setFilterEquipment] = useState("all");
   const [filterFloor, setFilterFloor] = useState("all");
   const [activeTab, setActiveTab] = useState("rooms");
-  const [bookings, setBookings] = useState<Booking[]>(MOCK_BOOKINGS);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<MeetingRoom | null>(null);
   const [bookingDialogOpen, setBookingDialogOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
@@ -331,8 +322,8 @@ export function MeetingRoomsView() {
   const stats = [
     { label: "Total Rooms", value: 6, icon: DoorOpen, color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40" },
     { label: "Available Now", value: availableCount, icon: Check, color: "text-teal-600 dark:text-teal-400", bg: "bg-teal-50 dark:bg-teal-950/40" },
-    { label: "Today's Bookings", value: 8, icon: CalendarDays, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/40" },
-    { label: "This Week", value: 23, icon: Sparkles, color: "text-violet-600 dark:text-violet-400", bg: "bg-violet-50 dark:bg-violet-950/40" },
+    { label: "Today's Bookings", value: bookings.filter(b => b.date === new Date().toISOString().split('T')[0]).length, icon: CalendarDays, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/40" },
+    { label: "This Week", value: bookings.length, icon: Sparkles, color: "text-violet-600 dark:text-violet-400", bg: "bg-violet-50 dark:bg-violet-950/40" },
   ];
 
   // ─── Equipment Icon Helper ──────────────────────────────────────

@@ -1,16 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { createClient } from "@/lib/supabase/server";
 
 // GET /api/departments
 export async function GET() {
   try {
-    const departments = await db.department.findMany({
-      include: {
-        _count: { select: { employees: true, geofences: true } },
+    const supabase = await createClient();
+
+    const { data: departments, error } = await supabase
+      .from("departments")
+      .select("*, employees(id), geofences(id)")
+      .order("name");
+
+    if (error) throw error;
+
+    // Transform to include counts (matching Prisma _count format)
+    const transformed = (departments || []).map((d: any) => ({
+      ...d,
+      _count: {
+        employees: d.employees?.length || 0,
+        geofences: d.geofences?.length || 0,
       },
-      orderBy: { name: "asc" },
-    });
-    return NextResponse.json({ departments });
+      employees: undefined,
+      geofences: undefined,
+    }));
+
+    return NextResponse.json({ departments: transformed });
   } catch (error) {
     console.error("Error fetching departments:", error);
     return NextResponse.json({ error: "Failed to fetch departments" }, { status: 500 });
@@ -22,15 +36,20 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const { name, code, description } = body;
+    const supabase = await createClient();
 
-    const company = await db.company.findFirst();
-    if (!company) {
-      return NextResponse.json({ error: "No company found" }, { status: 400 });
-    }
+    const { data: department, error } = await supabase
+      .from("departments")
+      .insert({
+        name,
+        code,
+        description: description || null,
+        company_id: "00000000-0000-0000-0000-000000000001",
+      })
+      .select()
+      .single();
 
-    const department = await db.department.create({
-      data: { name, code, description, companyId: company.id },
-    });
+    if (error) throw error;
     return NextResponse.json({ department }, { status: 201 });
   } catch (error) {
     console.error("Error creating department:", error);
@@ -45,7 +64,10 @@ export async function DELETE(request: NextRequest) {
     const id = searchParams.get("id");
     if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
 
-    await db.department.delete({ where: { id } });
+    const supabase = await createClient();
+    const { error } = await supabase.from("departments").delete().eq("id", id);
+
+    if (error) throw error;
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting department:", error);

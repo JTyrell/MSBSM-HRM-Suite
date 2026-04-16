@@ -117,20 +117,7 @@ const TYPE_CONFIG: Record<string, { label: string; color: string; bg: string }> 
   remote: { label: "Remote", color: "text-cyan-700 dark:text-cyan-400", bg: "bg-cyan-100 dark:bg-cyan-900/30" },
 };
 
-const MOCK_PIPELINE_CANDIDATES: PipelineCandidate[] = [
-  { id: "c1", name: "Alice Wang", role: "Senior Software Engineer", avatar: "AW", appliedDate: "2026-01-15", rating: 4.5, stage: "applied" },
-  { id: "c2", name: "Brian Foster", role: "Senior Software Engineer", avatar: "BF", appliedDate: "2026-01-18", rating: 4.0, stage: "applied" },
-  { id: "c3", name: "Clara Reyes", role: "Senior Software Engineer", avatar: "CR", appliedDate: "2026-01-20", rating: 3.5, stage: "applied" },
-  { id: "c4", name: "Daniel Kim", role: "HR Business Partner", avatar: "DK", appliedDate: "2026-01-10", rating: 4.8, stage: "screening" },
-  { id: "c5", name: "Elena Vasquez", role: "Product Manager", avatar: "EV", appliedDate: "2026-01-12", rating: 4.2, stage: "screening" },
-  { id: "c6", name: "Frank Li", role: "Data Analyst", avatar: "FL", appliedDate: "2026-01-08", rating: 3.8, stage: "screening" },
-  { id: "c7", name: "Grace Okafor", role: "DevOps Engineer", avatar: "GO", appliedDate: "2026-01-05", rating: 4.7, stage: "interview" },
-  { id: "c8", name: "Hiro Tanaka", role: "Marketing Coordinator", avatar: "HT", appliedDate: "2026-01-03", rating: 4.1, stage: "interview" },
-  { id: "c9", name: "Isabella Rossi", role: "Senior Software Engineer", avatar: "IR", appliedDate: "2025-12-28", rating: 4.9, stage: "offer" },
-  { id: "c10", name: "Jake Morrison", role: "HR Business Partner", avatar: "JM", appliedDate: "2025-12-30", rating: 4.3, stage: "offer" },
-  { id: "c11", name: "Karen Chen", role: "Product Manager", avatar: "KC", appliedDate: "2026-01-22", rating: 4.6, stage: "applied" },
-  { id: "c12", name: "Leo Martinez", role: "DevOps Engineer", avatar: "LM", appliedDate: "2026-01-14", rating: 3.9, stage: "interview" },
-];
+
 
 const PIPELINE_STAGES = [
   { id: "applied", label: "Applied", color: "from-slate-400 to-slate-500", dotColor: "bg-slate-400" },
@@ -256,6 +243,7 @@ export function RecruitmentView() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [departmentFilter, setDepartmentFilter] = useState("all");
+  const [pipelineCandidates, setPipelineCandidates] = useState<PipelineCandidate[]>([]);
 
   // Dialog states
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
@@ -323,10 +311,6 @@ export function RecruitmentView() {
     applicants: jobs.filter((j) => j.department === dept).reduce((sum, j) => sum + j.applicantCount, 0),
   }));
 
-  const pipelineCandidates = MOCK_PIPELINE_CANDIDATES.filter((c) => {
-    if (statusFilter !== "all") return true;
-    return true;
-  });
 
   // Form handlers
   const resetForm = () => {

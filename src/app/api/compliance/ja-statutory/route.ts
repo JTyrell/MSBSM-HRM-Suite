@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase/server";
 
-// ─── JA Statutory Deduction Calculator ──────────────────────────────────────
-// Calculates NIS, NHT, Education Tax, and PAYE for Jamaican payroll.
+// ─── JA Statutory Deduction Calculator ──────────────────────────────
+// Now pulls rates from the statutory_rates table in Supabase
+// so rate changes don't require code changes.
 
 interface DeductionBreakdownItem {
   rate: string;
@@ -35,54 +37,37 @@ interface DeductionResult {
   totalEmployerContributions: number;
   netPay: number;
   breakdown: DeductionBreakdown;
+  ratesEffectiveFrom?: string;
 }
-
-// PAYE thresholds by code (annual, JMD)
-const PAYE_THRESHOLDS: Record<string, number> = {
-  A: 1500096,
-  B: 1200000,
-  C: 900000,
-  D: 600000,
-  E: 300000,
-};
 
 function normalizeToAnnual(grossPay: number, payType: string): number {
   switch (payType) {
-    case "weekly":
-      return grossPay * 52;
-    case "biweekly":
-      return grossPay * 26;
-    case "monthly":
-      return grossPay * 12;
-    case "annual":
-      return grossPay;
-    default:
-      return grossPay;
+    case "weekly": return grossPay * 52;
+    case "biweekly": return grossPay * 26;
+    case "monthly": return grossPay * 12;
+    case "annual": return grossPay;
+    default: return grossPay;
   }
 }
 
 function normalizeToPeriod(annual: number, payType: string): number {
   switch (payType) {
-    case "weekly":
-      return annual / 52;
-    case "biweekly":
-      return annual / 26;
-    case "monthly":
-      return annual / 12;
-    case "annual":
-      return annual;
-    default:
-      return annual;
+    case "weekly": return annual / 52;
+    case "biweekly": return annual / 26;
+    case "monthly": return annual / 12;
+    case "annual": return annual;
+    default: return annual;
   }
 }
 
-// GET /api/compliance/ja-statutory — Calculate deductions
+// GET /api/compliance/ja-statutory — Calculate deductions using DB rates
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const grossPayStr = searchParams.get("grossPay");
     const payType = searchParams.get("payType") || "monthly";
     const payeCode = searchParams.get("payeCode") || "A";
+    const effectiveDate = searchParams.get("effectiveDate"); // For historical lookups
 
     if (!grossPayStr) {
       return NextResponse.json({ error: "grossPay query parameter is required" }, { status: 400 });
@@ -93,7 +78,50 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "grossPay must be a valid non-negative number" }, { status: 400 });
     }
 
-    const result = calculateDeductions(grossPay, payType, payeCode);
+    // Fetch rates from the DB
+    const supabase = await createClient();
+    const targetDate = effectiveDate || new Date().toISOString().split("T")[0];
+
+    const { data: rates, error } = await supabase
+      .from("statutory_rates")
+      .select("*")
+      .lte("effective_from", targetDate)
+      .order("effective_from", { ascending: false });
+
+    if (error) throw error;
+
+    // Build rate map (latest rate for each key)
+    const rateMap: Record<string, { value: number; ceiling: number | null; period: string | null; effectiveFrom: string }> = {};
+    for (const rate of rates || []) {
+      if (!rateMap[rate.rate_key]) {
+        rateMap[rate.rate_key] = {
+          value: rate.rate_value,
+          ceiling: rate.ceiling_value,
+          period: rate.ceiling_period,
+          effectiveFrom: rate.effective_from,
+        };
+      }
+    }
+
+    // Use DB rates or fall back to hardcoded defaults
+    const nisEmployeeRate = rateMap.nis_employee?.value ?? 0.03;
+    const nisEmployerRate = rateMap.nis_employer?.value ?? 0.0375;
+    const nisWeeklyCeiling = rateMap.nis_employee?.ceiling ?? 32400;
+    const nhtEmployeeRate = rateMap.nht_employee?.value ?? 0.02;
+    const nhtEmployerRate = rateMap.nht_employer?.value ?? 0.03;
+    const nhtMonthlyCeiling = rateMap.nht_employee?.ceiling ?? 1500000;
+    const educationTaxRate = rateMap.education_tax?.value ?? 0.025;
+    const payeRate = rateMap.paye_rate?.value ?? 0.25;
+    const payeThresholdKey = `paye_threshold_${payeCode.toLowerCase()}`;
+    const payeThreshold = rateMap[payeThresholdKey]?.value ?? 1500096;
+    const ratesEffectiveFrom = rateMap.nis_employee?.effectiveFrom;
+
+    const result = calculateDeductions(
+      grossPay, payType, payeCode,
+      { nisEmployeeRate, nisEmployerRate, nisWeeklyCeiling, nhtEmployeeRate, nhtEmployerRate, nhtMonthlyCeiling, educationTaxRate, payeRate, payeThreshold },
+      ratesEffectiveFrom
+    );
+
     return NextResponse.json(result);
   } catch (error) {
     console.error("Error calculating JA statutory deductions:", error);
@@ -101,46 +129,58 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/compliance/ja-statutory — Seed compliance data (no-op)
+// POST /api/compliance/ja-statutory — No-op (rates are seeded via migrations)
 export async function POST(_request: NextRequest) {
-  return NextResponse.json({ success: true, message: "Compliance data seeded successfully" });
+  return NextResponse.json({ success: true, message: "Compliance data managed via Supabase migrations" });
 }
 
-// ─── Calculation Engine ─────────────────────────────────────────────────────
+// ─── Calculation Engine ─────────────────────────────────────────────
 
-function calculateDeductions(grossPay: number, payType: string, payeCode: string): DeductionResult {
+interface Rates {
+  nisEmployeeRate: number;
+  nisEmployerRate: number;
+  nisWeeklyCeiling: number;
+  nhtEmployeeRate: number;
+  nhtEmployerRate: number;
+  nhtMonthlyCeiling: number;
+  educationTaxRate: number;
+  payeRate: number;
+  payeThreshold: number;
+}
+
+function calculateDeductions(
+  grossPay: number, payType: string, payeCode: string,
+  rates: Rates, ratesEffectiveFrom?: string
+): DeductionResult {
   const normalizedAnnual = normalizeToAnnual(grossPay, payType);
 
-  // NIS Employee: 3% of gross, ceiling JMD 32,400/week
-  const nisWeeklyCeiling = 32400;
+  // NIS Employee
   const nisWeeklyGross = normalizedAnnual / 52;
-  const nisWeeklyCapped = Math.min(nisWeeklyGross, nisWeeklyCeiling);
-  const nisEmployeeAnnual = nisWeeklyCapped * 0.03 * 52;
+  const nisWeeklyCapped = Math.min(nisWeeklyGross, rates.nisWeeklyCeiling);
+  const nisEmployeeAnnual = nisWeeklyCapped * rates.nisEmployeeRate * 52;
   const nisEmployee = normalizeToPeriod(nisEmployeeAnnual, payType);
 
-  // NIS Employer: 3.75% of gross, ceiling JMD 32,400/week
-  const nisEmployerAnnual = nisWeeklyCapped * 0.0375 * 52;
+  // NIS Employer
+  const nisEmployerAnnual = nisWeeklyCapped * rates.nisEmployerRate * 52;
   const nisEmployer = normalizeToPeriod(nisEmployerAnnual, payType);
 
-  // NHT Employee: 2% of gross, ceiling JMD 1,500,000/month
-  const nhtMonthlyCeiling = 1500000;
+  // NHT Employee
   const nhtMonthlyGross = normalizedAnnual / 12;
-  const nhtMonthlyCapped = Math.min(nhtMonthlyGross, nhtMonthlyCeiling);
-  const nhtEmployeeAnnual = nhtMonthlyCapped * 0.02 * 12;
+  const nhtMonthlyCapped = Math.min(nhtMonthlyGross, rates.nhtMonthlyCeiling);
+  const nhtEmployeeAnnual = nhtMonthlyCapped * rates.nhtEmployeeRate * 12;
   const nhtEmployee = normalizeToPeriod(nhtEmployeeAnnual, payType);
 
-  // NHT Employer: 3% of gross, ceiling JMD 1,500,000/month
-  const nhtEmployerAnnual = nhtMonthlyCapped * 0.03 * 12;
+  // NHT Employer
+  const nhtEmployerAnnual = nhtMonthlyCapped * rates.nhtEmployerRate * 12;
   const nhtEmployer = normalizeToPeriod(nhtEmployerAnnual, payType);
 
-  // Education Tax: 2.5% of gross (no ceiling)
-  const educationTaxAnnual = normalizedAnnual * 0.025;
+  // Education Tax (no ceiling)
+  const educationTaxAnnual = normalizedAnnual * rates.educationTaxRate;
   const educationTax = normalizeToPeriod(educationTaxAnnual, payType);
 
-  // PAYE: 25% of amount above threshold (Code A: JMD 1,500,096/year)
-  const payeThreshold = PAYE_THRESHOLDS[payeCode] || PAYE_THRESHOLDS.A;
-  const taxableIncome = Math.max(0, normalizedAnnual - payeThreshold);
-  const payeAnnual = taxableIncome * 0.25;
+  // PAYE
+  const taxableIncome = Math.max(0, normalizedAnnual - rates.payeThreshold);
+  const payeAnnual = taxableIncome * rates.payeRate;
   const paye = normalizeToPeriod(payeAnnual, payType);
 
   const totalEmployeeDeductions = nisEmployee + nhtEmployee + educationTax + paye;
@@ -148,42 +188,12 @@ function calculateDeductions(grossPay: number, payType: string, payeCode: string
   const netPay = grossPay - totalEmployeeDeductions;
 
   const breakdown: DeductionBreakdown = {
-    nisEmployee: {
-      rate: "3%",
-      ceiling: "JMD 32,400/week",
-      applied: nisWeeklyCapped,
-      amount: nisEmployee,
-    },
-    nisEmployer: {
-      rate: "3.75%",
-      ceiling: "JMD 32,400/week",
-      applied: nisWeeklyCapped,
-      amount: nisEmployer,
-    },
-    nhtEmployee: {
-      rate: "2%",
-      ceiling: "JMD 1,500,000/month",
-      applied: nhtMonthlyCapped,
-      amount: nhtEmployee,
-    },
-    nhtEmployer: {
-      rate: "3%",
-      ceiling: "JMD 1,500,000/month",
-      applied: nhtMonthlyCapped,
-      amount: nhtEmployer,
-    },
-    educationTax: {
-      rate: "2.5%",
-      ceiling: "None",
-      applied: normalizedAnnual,
-      amount: educationTax,
-    },
-    paye: {
-      rate: "25%",
-      ceiling: `Threshold: JMD ${payeThreshold.toLocaleString()}/year (${payeCode})`,
-      applied: taxableIncome,
-      amount: paye,
-    },
+    nisEmployee: { rate: `${rates.nisEmployeeRate * 100}%`, ceiling: `JMD ${rates.nisWeeklyCeiling.toLocaleString()}/week`, applied: nisWeeklyCapped, amount: nisEmployee },
+    nisEmployer: { rate: `${rates.nisEmployerRate * 100}%`, ceiling: `JMD ${rates.nisWeeklyCeiling.toLocaleString()}/week`, applied: nisWeeklyCapped, amount: nisEmployer },
+    nhtEmployee: { rate: `${rates.nhtEmployeeRate * 100}%`, ceiling: `JMD ${rates.nhtMonthlyCeiling.toLocaleString()}/month`, applied: nhtMonthlyCapped, amount: nhtEmployee },
+    nhtEmployer: { rate: `${rates.nhtEmployerRate * 100}%`, ceiling: `JMD ${rates.nhtMonthlyCeiling.toLocaleString()}/month`, applied: nhtMonthlyCapped, amount: nhtEmployer },
+    educationTax: { rate: `${rates.educationTaxRate * 100}%`, ceiling: "None", applied: normalizedAnnual, amount: educationTax },
+    paye: { rate: `${rates.payeRate * 100}%`, ceiling: `Threshold: JMD ${rates.payeThreshold.toLocaleString()}/year (${payeCode})`, applied: taxableIncome, amount: paye },
     normalizedAnnual,
   };
 
@@ -202,5 +212,6 @@ function calculateDeductions(grossPay: number, payType: string, payeCode: string
     totalEmployerContributions: Math.round(totalEmployerContributions * 100) / 100,
     netPay: Math.round(netPay * 100) / 100,
     breakdown,
+    ratesEffectiveFrom,
   };
 }

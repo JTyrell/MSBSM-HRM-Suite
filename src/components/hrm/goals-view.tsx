@@ -119,117 +119,6 @@ function getProgressTextColor(progress: number): string {
   return "text-rose-600 dark:text-rose-400";
 }
 
-// ─── Mock Data ──────────────────────────────────────────────────────
-
-const MOCK_OBJECTIVES: Objective[] = [
-  {
-    id: "okr-1",
-    title: "Improve Team Communication",
-    description: "Enhance communication channels and frequency across the department to reduce misunderstandings and improve project delivery.",
-    progress: 75,
-    priority: "High",
-    deadline: "2025-09-30",
-    status: "On Track",
-    keyResults: [
-      { id: "kr-1-1", title: "Establish weekly standup meetings", completed: true },
-      { id: "kr-1-2", title: "Implement monthly feedback sessions", completed: true },
-      { id: "kr-1-3", title: "Create team documentation wiki", completed: true },
-      { id: "kr-1-4", title: "Deploy collaboration tools (Slack, Notion)", completed: false },
-    ],
-  },
-  {
-    id: "okr-2",
-    title: "Professional Development",
-    description: "Invest in personal growth through courses, conferences, and certifications to enhance skill set.",
-    progress: 50,
-    priority: "Medium",
-    deadline: "2025-12-31",
-    status: "On Track",
-    keyResults: [
-      { id: "kr-2-1", title: "Complete 3 online courses on leadership", completed: true },
-      { id: "kr-2-2", title: "Attend 2 industry conferences", completed: false },
-      { id: "kr-2-3", title: "Obtain new professional certification", completed: false },
-    ],
-  },
-  {
-    id: "okr-3",
-    title: "Process Optimization",
-    description: "Streamline departmental workflows and reduce inefficiencies in onboarding, reporting, and approvals.",
-    progress: 60,
-    priority: "High",
-    deadline: "2025-08-15",
-    status: "At Risk",
-    keyResults: [
-      { id: "kr-3-1", title: "Reduce onboarding time by 30%", completed: true },
-      { id: "kr-3-2", title: "Automate monthly reporting process", completed: true },
-      { id: "kr-3-3", title: "Streamline expense approval workflow", completed: false },
-    ],
-  },
-  {
-    id: "okr-4",
-    title: "Employee Engagement",
-    description: "Foster a positive team culture through events, recognition programmes, and regular feedback loops.",
-    progress: 85,
-    priority: "Medium",
-    deadline: "2025-10-31",
-    status: "On Track",
-    keyResults: [
-      { id: "kr-4-1", title: "Organize quarterly team building events", completed: true },
-      { id: "kr-4-2", title: "Launch peer recognition programme", completed: true },
-      { id: "kr-4-3", title: "Conduct bi-annual engagement surveys", completed: true },
-      { id: "kr-4-4", title: "Implement employee wellness initiative", completed: false },
-    ],
-  },
-];
-
-const MOCK_TEAM_GOALS: TeamGoal[] = [
-  {
-    id: "tg-1",
-    title: "Reduce Employee Turnover Rate",
-    department: "Human Resources",
-    progress: 72,
-    deadline: "2025-12-31",
-    assignees: [
-      { name: "Dr. Sarah Chen", initials: "SC" },
-      { name: "Mark Williams", initials: "MW" },
-      { name: "Lisa Park", initials: "LP" },
-    ],
-  },
-  {
-    id: "tg-2",
-    title: "Launch New LMS Platform",
-    department: "IT & Training",
-    progress: 45,
-    deadline: "2025-09-30",
-    assignees: [
-      { name: "James Rodriguez", initials: "JR" },
-      { name: "David Kim", initials: "DK" },
-    ],
-  },
-  {
-    id: "tg-3",
-    title: "Achieve ISO 9001 Certification",
-    department: "Quality Assurance",
-    progress: 88,
-    deadline: "2025-07-31",
-    assignees: [
-      { name: "Aisha Johnson", initials: "AJ" },
-      { name: "Tom Baker", initials: "TB" },
-      { name: "Nina Patel", initials: "NP" },
-      { name: "Rachel Foster", initials: "RF" },
-    ],
-  },
-];
-
-const MOCK_CHECKINS: CheckIn[] = [
-  { id: "ci-1", date: "2025-06-12", type: "Weekly", notes: "Made good progress on documentation wiki. Communication channels are working well with the new standup format.", rating: "On Track", actionItems: ["Finalize Notion workspace setup", "Schedule next feedback session"] },
-  { id: "ci-2", date: "2025-06-05", type: "Weekly", notes: "Completed the automated reporting POC. Expense approval automation blocked by IT dependency.", rating: "At Risk", actionItems: ["Follow up with IT on API access", "Draft approval workflow document"] },
-  { id: "ci-3", date: "2025-05-29", type: "Bi-weekly", notes: "Team building event was a success with 95% attendance. Peer recognition programme receiving positive feedback.", rating: "On Track", actionItems: ["Plan next quarter team event", "Review survey results"] },
-  { id: "ci-4", date: "2025-05-15", type: "Bi-weekly", notes: "First leadership course completed. Conference registration pending budget approval.", rating: "On Track", actionItems: ["Submit conference budget request", "Start second course module"] },
-  { id: "ci-5", date: "2025-05-01", type: "Monthly", notes: "Monthly progress review: onboarding time reduced by 28%. On track to hit 30% target. Engagement survey scores up 12%.", rating: "On Track", actionItems: ["Prepare monthly report", "Update KPI dashboard"] },
-  { id: "ci-6", date: "2025-04-15", type: "Monthly", notes: "ISO certification audit prep behind schedule. Need to allocate additional resources to documentation review.", rating: "Behind", actionItems: ["Request additional QA support", "Prioritize documentation gaps"] },
-];
-
 // ─── Avatar Colors ──────────────────────────────────────────────────
 
 const AVATAR_GRADIENTS = [
@@ -271,20 +160,23 @@ export function GoalsView() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [selectedObjective, setSelectedObjective] = useState<Objective | null>(null);
   const [editForm, setEditForm] = useState({ title: "", description: "", progress: 50, deadline: "", priority: "Medium" as Priority });
+  const [objectives, setObjectives] = useState<Objective[]>([]);
+  const [teamGoals, setTeamGoals] = useState<TeamGoal[]>([]);
+  const [checkIns, setCheckIns] = useState<CheckIn[]>([]);
 
   // ─── Computed Stats ────────────────────────────────────────────
   const stats = useMemo(() => {
-    const active = MOCK_OBJECTIVES.length;
-    const onTrack = MOCK_OBJECTIVES.filter((o) => o.status === "On Track").length;
-    const atRisk = MOCK_OBJECTIVES.filter((o) => o.status === "At Risk").length;
-    const avgProgress = Math.round(MOCK_OBJECTIVES.reduce((sum, o) => sum + o.progress, 0) / MOCK_OBJECTIVES.length * 10) / 10;
+    const active = objectives.length;
+    const onTrack = objectives.filter((o) => o.status === "On Track").length;
+    const atRisk = objectives.filter((o) => o.status === "At Risk").length;
+    const avgProgress = active > 0 ? Math.round(objectives.reduce((sum, o) => sum + o.progress, 0) / active * 10) / 10 : 0;
     return [
       { label: "Active OKRs", value: active, icon: Target, color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40" },
       { label: "On Track", value: onTrack, icon: CheckCircle2, color: "text-teal-600 dark:text-teal-400", bg: "bg-teal-50 dark:bg-teal-950/40" },
       { label: "At Risk", value: atRisk, icon: AlertTriangle, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/40" },
       { label: "Avg. Progress", value: `${avgProgress}%`, icon: BarChart3, color: "text-rose-600 dark:text-rose-400", bg: "bg-rose-50 dark:bg-rose-950/40" },
     ];
-  }, []);
+  }, [objectives]);
 
   // ─── Edit Handler ──────────────────────────────────────────────
   const openEditDialog = (obj: Objective) => {
@@ -347,7 +239,8 @@ export function GoalsView() {
         {/* ─── My OKRs Tab ──────────────────────────────────────── */}
         <TabsContent value="my-okrs" className="mt-4 space-y-4">
           <div className="space-y-4">
-            {MOCK_OBJECTIVES.map((obj) => {
+            {objectives.length === 0 && <div className="text-center py-12 text-muted-foreground"><Target className="h-10 w-10 mx-auto mb-2 opacity-40" /><p>No objectives set yet. Create your first OKR to get started.</p></div>}
+            {objectives.map((obj) => {
               const statusCfg = OKR_STATUS_STYLES[obj.status];
               const StatusIcon = statusCfg.icon;
               const completedKRs = obj.keyResults.filter((kr) => kr.completed).length;
@@ -422,7 +315,8 @@ export function GoalsView() {
         {/* ─── Team Goals Tab ───────────────────────────────────── */}
         <TabsContent value="team-goals" className="mt-4 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {MOCK_TEAM_GOALS.map((goal) => (
+            {teamGoals.length === 0 && <div className="text-center py-12 text-muted-foreground col-span-full"><Users className="h-10 w-10 mx-auto mb-2 opacity-40" /><p>No team goals configured yet.</p></div>}
+            {teamGoals.map((goal) => (
               <Card key={goal.id} className="card-lift transition-all duration-300 hover:border-emerald-200/60 dark:hover:border-emerald-800/40">
                 <CardContent className="pt-4">
                   <div className="flex items-center gap-2 mb-2">
@@ -469,10 +363,11 @@ export function GoalsView() {
         <TabsContent value="checkins" className="mt-4 space-y-4">
           <ScrollArea className="max-h-[700px]">
             <div className="space-y-0 pr-2">
-              {MOCK_CHECKINS.map((ci, idx) => {
+              {checkIns.length === 0 && <div className="text-center py-12 text-muted-foreground"><MessageSquare className="h-10 w-10 mx-auto mb-2 opacity-40" /><p>No check-ins recorded yet.</p></div>}
+              {checkIns.map((ci, idx) => {
                 const ratingCfg = OKR_STATUS_STYLES[ci.rating];
                 const RatingIcon = ratingCfg.icon;
-                const isLast = idx === MOCK_CHECKINS.length - 1;
+                const isLast = idx === checkIns.length - 1;
 
                 return (
                   <div key={ci.id} className="relative pl-8 pb-6">

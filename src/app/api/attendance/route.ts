@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { createClient } from "@/lib/supabase/server";
 import { isPointInGeofence } from "@/lib/geo";
 
 // POST /api/attendance/clock-in
@@ -15,12 +15,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const employee = await db.employee.findUnique({
-      where: { id: userId },
-      include: { workLocation: true, company: true },
-    });
+    const supabase = await createClient();
 
-    if (!employee) {
+    // Get employee with work location
+    const { data: employee, error: empError } = await supabase
+      .from("employees")
+      .select("*, work_location:geofences(*), company:companies(*)")
+      .eq("id", userId)
+      .single();
+
+    if (empError || !employee) {
       return NextResponse.json({ error: "Employee not found" }, { status: 404 });
     }
 
@@ -32,12 +36,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if already clocked in
-    const activeAttendance = await db.attendance.findFirst({
-      where: {
-        employeeId: userId,
-        status: "active",
-      },
-    });
+    const { data: activeAttendance } = await supabase
+      .from("attendance")
+      .select("id")
+      .eq("employee_id", userId)
+      .eq("status", "active")
+      .single();
 
     if (activeAttendance) {
       return NextResponse.json(
@@ -47,32 +51,23 @@ export async function POST(request: NextRequest) {
     }
 
     // Determine which geofence to check
-    let targetGeofence = employee.workLocation;
+    let targetGeofence = employee.work_location;
 
-    // If no specific work location, check all active geofences
     if (!targetGeofence) {
-      const geofences = await db.geofence.findMany({
-        where: {
-          isActive: true,
-          companyId: employee.companyId,
-          ...(employee.departmentId && {
-            OR: [
-              { departmentId: employee.departmentId },
-              { departmentId: null },
-            ],
-          }),
-        },
-      });
+      // Check all active geofences for this company
+      const { data: geofences } = await supabase
+        .from("geofences")
+        .select("*")
+        .eq("is_active", true)
+        .eq("company_id", employee.company_id);
 
-      // Check each geofence
-      for (const fence of geofences) {
+      for (const fence of geofences || []) {
         if (isPointInGeofence(latitude, longitude, fence)) {
           targetGeofence = fence;
           break;
         }
       }
     } else {
-      // Validate against assigned work location
       if (!isPointInGeofence(latitude, longitude, targetGeofence)) {
         return NextResponse.json(
           {
@@ -96,30 +91,29 @@ export async function POST(request: NextRequest) {
     }
 
     // Create attendance record
-    const attendance = await db.attendance.create({
-      data: {
-        employeeId: userId,
-        geofenceId: targetGeofence.id,
-        clockIn: timestamp ? new Date(timestamp) : new Date(),
-        clockInLat: latitude,
-        clockInLng: longitude,
+    const { data: attendance, error: attError } = await supabase
+      .from("attendance")
+      .insert({
+        employee_id: userId,
+        geofence_id: targetGeofence.id,
+        clock_in: timestamp || new Date().toISOString(),
+        clock_in_lat: latitude,
+        clock_in_lng: longitude,
         status: "active",
-        notes,
-      },
-      include: {
-        geofence: { select: { id: true, name: true, address: true } },
-      },
-    });
+        notes: notes || null,
+      })
+      .select("*, geofence:geofences(id, name, address)")
+      .single();
+
+    if (attError) throw attError;
 
     // Create notification
-    await db.notification.create({
-      data: {
-        userId,
-        title: "Clock In Successful",
-        message: `You have clocked in at ${targetGeofence.name}`,
-        type: "success",
-        link: "/attendance",
-      },
+    await supabase.from("notifications").insert({
+      user_id: userId,
+      title: "Clock In Successful",
+      message: `You have clocked in at ${targetGeofence.name}`,
+      type: "success",
+      link: "/attendance",
     });
 
     return NextResponse.json({
@@ -144,15 +138,20 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: "userId is required" }, { status: 400 });
     }
 
-    // Find active attendance record
-    const activeRecord = await db.attendance.findFirst({
-      where: attendanceId
-        ? { id: attendanceId, employeeId: userId, status: "active" }
-        : { employeeId: userId, status: "active" },
-      include: { geofence: true },
-    });
+    const supabase = await createClient();
 
-    if (!activeRecord) {
+    // Find active attendance record
+    let query = supabase
+      .from("attendance")
+      .select("*, geofence:geofences(*)")
+      .eq("employee_id", userId)
+      .eq("status", "active");
+
+    if (attendanceId) query = query.eq("id", attendanceId);
+
+    const { data: activeRecord, error: findError } = await query.single();
+
+    if (findError || !activeRecord) {
       return NextResponse.json(
         { error: "No active clock-in found" },
         { status: 404 }
@@ -160,40 +159,69 @@ export async function PUT(request: NextRequest) {
     }
 
     const clockOut = new Date();
-    const clockInDate = new Date(activeRecord.clockIn);
+    const clockInDate = new Date(activeRecord.clock_in);
     const totalMs = clockOut.getTime() - clockInDate.getTime();
     const totalHours = totalMs / (1000 * 60 * 60);
-
-    // Calculate overtime (hours over 8 per day)
-    const regularHours = Math.min(totalHours, 8);
     const overtimeHours = Math.max(0, totalHours - 8);
 
-    const attendance = await db.attendance.update({
-      where: { id: activeRecord.id },
-      data: {
-        clockOut,
-        clockOutLat: latitude,
-        clockOutLng: longitude,
-        totalHours: Math.round(totalHours * 100) / 100,
-        overtimeHours: Math.round(overtimeHours * 100) / 100,
+    const { data: attendance, error: updateError } = await supabase
+      .from("attendance")
+      .update({
+        clock_out: clockOut.toISOString(),
+        clock_out_lat: latitude,
+        clock_out_lng: longitude,
+        total_hours: Math.round(totalHours * 100) / 100,
+        overtime_hours: Math.round(overtimeHours * 100) / 100,
         status: "completed",
         notes: notes || activeRecord.notes,
-      },
-      include: {
-        geofence: { select: { id: true, name: true } },
-        employee: { select: { firstName: true, lastName: true } },
-      },
-    });
+      })
+      .eq("id", activeRecord.id)
+      .select("*, geofence:geofences(id, name), employee:employees(first_name, last_name)")
+      .single();
+
+    if (updateError) throw updateError;
 
     return NextResponse.json({
       success: true,
-      message: `Clock-out successful. Total hours: ${attendance.totalHours}`,
+      message: `Clock-out successful. Total hours: ${attendance.total_hours}`,
       attendance,
-      totalHours: attendance.totalHours,
-      overtimeHours: attendance.overtimeHours,
+      totalHours: attendance.total_hours,
+      overtimeHours: attendance.overtime_hours,
     });
   } catch (error) {
     console.error("Error clocking out:", error);
     return NextResponse.json({ error: "Failed to clock out" }, { status: 500 });
+  }
+}
+
+// GET /api/attendance - Get attendance records
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const employeeId = searchParams.get("employeeId");
+    const status = searchParams.get("status");
+    const from = searchParams.get("from");
+    const to = searchParams.get("to");
+
+    const supabase = await createClient();
+
+    let query = supabase
+      .from("attendance")
+      .select("*, employee:employees(id, first_name, last_name, employee_id, department:departments(name)), geofence:geofences(id, name, address)")
+      .order("clock_in", { ascending: false })
+      .limit(200);
+
+    if (employeeId) query = query.eq("employee_id", employeeId);
+    if (status) query = query.eq("status", status);
+    if (from) query = query.gte("clock_in", from);
+    if (to) query = query.lte("clock_in", to);
+
+    const { data: records, error } = await query;
+
+    if (error) throw error;
+    return NextResponse.json({ records: records || [] });
+  } catch (error) {
+    console.error("Error fetching attendance:", error);
+    return NextResponse.json({ error: "Failed to fetch attendance" }, { status: 500 });
   }
 }

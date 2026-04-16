@@ -478,90 +478,7 @@ type Reaction = {
 
 const REACTION_EMOJIS = ["👍", "❤️", "🎉", "👏", "🤔", "🔥"];
 
-const MOCK_REACTIONS: Record<string, Reaction[]> = {
-  "Welcome to MSBM-HR Suite!": [
-    { emoji: "👍", count: 12, hasReacted: false },
-    { emoji: "❤️", count: 8, hasReacted: false },
-    { emoji: "🎉", count: 5, hasReacted: false },
-  ],
-  "Employee of the Month — January": [
-    { emoji: "❤️", count: 15, hasReacted: false },
-    { emoji: "👏", count: 10, hasReacted: false },
-    { emoji: "🎉", count: 3, hasReacted: false },
-  ],
-  "Q1 All-Hands Meeting Schedule": [
-    { emoji: "👍", count: 7, hasReacted: false },
-    { emoji: "🤔", count: 4, hasReacted: false },
-  ],
-  "Updated Remote Work Policy": [
-    { emoji: "👍", count: 9, hasReacted: false },
-    { emoji: "🔥", count: 6, hasReacted: false },
-    { emoji: "🤔", count: 3, hasReacted: false },
-  ],
-  "Holiday Schedule — Spring 2025": [
-    { emoji: "🎉", count: 18, hasReacted: false },
-    { emoji: "❤️", count: 6, hasReacted: false },
-  ],
-  "Annual Company Retreat": [
-    { emoji: "🎉", count: 22, hasReacted: false },
-    { emoji: "❤️", count: 14, hasReacted: false },
-    { emoji: "🔥", count: 8, hasReacted: false },
-    { emoji: "👍", count: 5, hasReacted: false },
-  ],
-  "New Health & Wellness Benefits": [
-    { emoji: "❤️", count: 20, hasReacted: false },
-    { emoji: "👏", count: 11, hasReacted: false },
-    { emoji: "👍", count: 7, hasReacted: false },
-  ],
-  "IT Maintenance Window — Weekend": [
-    { emoji: "👍", count: 5, hasReacted: false },
-    { emoji: "🤔", count: 2, hasReacted: false },
-  ],
-  "Diversity & Inclusion Initiative Launch": [
-    { emoji: "❤️", count: 16, hasReacted: false },
-    { emoji: "👏", count: 12, hasReacted: false },
-    { emoji: "🎉", count: 9, hasReacted: false },
-    { emoji: "🔥", count: 6, hasReacted: false },
-    { emoji: "👍", count: 4, hasReacted: false },
-  ],
-  "Parking Lot Renovation Notice": [
-    { emoji: "🤔", count: 8, hasReacted: false },
-    { emoji: "👍", count: 3, hasReacted: false },
-  ],
-  "Safety Training Refresher Required": [
-    { emoji: "👍", count: 6, hasReacted: false },
-    { emoji: "🔥", count: 2, hasReacted: false },
-  ],
-  "Open Enrollment Period": [
-    { emoji: "👍", count: 10, hasReacted: false },
-    { emoji: "🤔", count: 5, hasReacted: false },
-    { emoji: "❤️", count: 3, hasReacted: false },
-  ],
-  "Congratulations Team — Q4 Targets Met!": [
-    { emoji: "🎉", count: 25, hasReacted: false },
-    { emoji: "👏", count: 18, hasReacted: false },
-    { emoji: "❤️", count: 12, hasReacted: false },
-    { emoji: "🔥", count: 9, hasReacted: false },
-    { emoji: "👍", count: 7, hasReacted: false },
-  ],
-  "New Coffee Machine in Break Room": [
-    { emoji: "❤️", count: 30, hasReacted: false },
-    { emoji: "🎉", count: 20, hasReacted: false },
-    { emoji: "🔥", count: 15, hasReacted: false },
-    { emoji: "👏", count: 8, hasReacted: false },
-  ],
-  "Casual Fridays Now Permanent": [
-    { emoji: "🎉", count: 35, hasReacted: false },
-    { emoji: "❤️", count: 28, hasReacted: false },
-    { emoji: "👍", count: 14, hasReacted: false },
-    { emoji: "🔥", count: 10, hasReacted: false },
-  ],
-  "Birthday Celebrations This Month": [
-    { emoji: "🎉", count: 19, hasReacted: false },
-    { emoji: "❤️", count: 15, hasReacted: false },
-    { emoji: "👏", count: 7, hasReacted: false },
-  ],
-};
+
 
 const defaultForm: AnnouncementForm = {
   title: "",
@@ -623,15 +540,9 @@ export function AnnouncementsView() {
 
   // ============ REACTIONS HANDLERS ============
 
-  // Initialize mock reactions for seeded announcements
+  // Initialize empty reactions for announcements that don't have any yet
   useEffect(() => {
-    const initialReactions: Record<string, Reaction[]> = {};
-    announcements.forEach((a) => {
-      if (MOCK_REACTIONS[a.title]) {
-        initialReactions[a.id] = MOCK_REACTIONS[a.title].map((r) => ({ ...r }));
-      }
-    });
-    setReactions(initialReactions);
+    setReactions({});
   }, [announcements]);
 
   const toggleReaction = (announcementId: string, emoji: string) => {

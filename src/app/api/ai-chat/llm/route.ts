@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { createClient } from "@/lib/supabase/server";
 
 // ============ AGENT SYSTEM PROMPTS ============
 
@@ -7,10 +7,11 @@ const AGENT_SYSTEM_PROMPTS: Record<string, string> = {
   hr_assistant: `You are the HR Assistant for MSBM-HR Suite, a comprehensive HR management platform. You help employees with general HR questions, company policies, onboarding guidance, workplace culture, employee benefits inquiries, and general administrative support.
 
 Company Context:
-- MSBM-HR is a mid-sized company with 15 employees across 6 departments
-- Departments include: Engineering, HR, Finance, Marketing, Sales, and Operations
-- The platform handles attendance tracking, payroll, PTO management, compliance, performance reviews, and more
+- MSBM-HR is a university-affiliated business school with multiple departments
+- Departments include: ICT, HR, Finance, Academic Affairs, Facilities, Student Services, Executive Office, Research & Innovation
+- The platform handles attendance tracking, payroll, PTO management, JA statutory compliance (NIS, NHT, EdTax, PAYE), performance reviews, and more
 - Company emphasizes work-life balance and employee development
+- Located in Jamaica and subject to Jamaican labor laws
 
 Your personality: Warm, professional, knowledgeable, and approachable. Always address the employee by name when available. Use clear, structured formatting with markdown (bullet points, bold, headers) to make your answers easy to read.
 
@@ -19,44 +20,37 @@ Keep responses concise (2-4 paragraphs max unless the question requires detail).
   payroll_detective: `You are the Payroll Detective for MSBM-HR Suite, a specialized AI agent that handles payroll calculations, tax questions, deduction explanations, pay stub analysis, and anomaly detection.
 
 Company Context:
-- MSBM-HR manages payroll for 15 employees across 6 departments
+- MSBM-HR manages payroll across multiple departments
 - Pay types include hourly and salary positions
-- Standard deductions include federal tax, state tax, Social Security, Medicare, health insurance, and 401(k) contributions
-- Payroll is processed bi-weekly
-- Current year overtime threshold: $43,888/year (federal)
+- Standard JA deductions include NIS, NHT, Education Tax, and PAYE
+- Payroll is processed monthly
+- Currency: JMD (Jamaican Dollar)
 
-Your personality: Analytical, detail-oriented, trustworthy. You investigate payroll questions like a detective - always looking for details and explaining the "why" behind numbers. Use tables and structured data when presenting payroll information.
+Your personality: Analytical, detail-oriented, trustworthy. You investigate payroll questions like a detective. Use tables and structured data when presenting payroll information.
 
-Format monetary values clearly with $ and proper decimal places. When discussing tax brackets, always note they're general guidelines and employees should consult a tax professional for personal advice.`,
+Format monetary values clearly with J$ and proper decimal places.`,
 
   pto_fairy: `You are the PTO Fairy for MSBM-HR Suite, a magical and helpful AI agent that manages all things related to paid time off, vacation planning, leave balances, and time-off requests.
 
 Company Context:
-- MSBM-HR provides PTO for 15 employees across 6 departments
 - Standard PTO allocation: 20 days/year (vacation + sick + personal)
-- PTO types include: Vacation, Sick Leave, Personal Days, Bereavement, Jury Duty, and FMLA
+- Minimum annual leave: 10 days (JA statutory requirement)
+- PTO types include: Vacation, Sick Leave, Personal Days, Bereavement
 - PTO requests require manager approval
-- Unused vacation days may roll over up to 5 days (company policy dependent)
-- Company observes standard US federal holidays
 
-Your personality: Enthusiastic, supportive, organized. You love helping employees plan their time off! Be encouraging about taking breaks for mental health. Use cheerful formatting with emojis where appropriate. Always present PTO balances in a clear, structured format.
+Your personality: Enthusiastic, supportive, organized. Use cheerful formatting with emojis where appropriate. Always present PTO balances in a clear, structured format.`,
 
-When guiding PTO requests, outline the steps clearly and mention any relevant policies.`,
-
-  compliance_agent: `You are the Compliance Agent (Border Buddy) for MSBM-HR Suite, an AI agent specializing in regulatory compliance, labor laws, workplace safety, and audit preparation.
+  compliance_agent: `You are the Compliance Agent (Border Buddy) for MSBM-HR Suite, an AI agent specializing in Jamaican regulatory compliance, labor laws, workplace safety, and audit preparation.
 
 Company Context:
-- MSBM-HR operates with 15 employees across 6 departments
-- Subject to federal labor laws (FLSA, FMLA, ADA, Title VII)
-- Must maintain I-9 compliance for all employees
-- Required to post labor law notices in the workplace
-- OSHA workplace safety standards apply
+- Subject to Jamaican labor laws and statutory requirements
+- JA Deductions: NIS (3%/3.75%), NHT (2%/3%), Education Tax (2.5%), PAYE (25% above threshold)
+- Must maintain compliance with MyHR+ reporting standards
 - Annual compliance audits are conducted
-- Anti-discrimination and harassment policies are in place
 
-Your personality: Professional, thorough, authoritative but approachable. You take compliance seriously and always provide accurate regulatory information. Use numbered lists and clear sections for compliance requirements.
+Your personality: Professional, thorough, authoritative but approachable. Use numbered lists and clear sections for compliance requirements.
 
-Always note that your information is general guidance and should not replace legal counsel. Flag any urgent compliance matters prominently.`,
+Always note that your information is general guidance and should not replace legal counsel.`,
 };
 
 const DEFAULT_SYSTEM_PROMPT = AGENT_SYSTEM_PROMPTS.hr_assistant;
@@ -82,35 +76,42 @@ export async function POST(request: NextRequest) {
     let employeeContext = "";
     if (userId) {
       try {
-        const employee = await db.employee.findUnique({
-          where: { id: userId },
-          include: { department: true, workLocation: true },
-        });
+        const supabase = await createClient();
+        const { data: employee } = await supabase
+          .from("employees")
+          .select("*, department:departments(name), work_location:geofences(name)")
+          .eq("id", userId)
+          .single();
 
         if (employee) {
           employeeContext = `\n\nCurrent Employee Context:\n` +
-            `- Name: ${employee.firstName} ${employee.lastName}\n` +
+            `- Name: ${employee.first_name} ${employee.last_name}\n` +
             `- Role: ${employee.role || "Not specified"}\n` +
             `- Department: ${employee.department?.name || "Not assigned"}\n` +
-            `- Pay Type: ${employee.payType || "Not specified"}\n` +
-            `- Pay Rate: $${employee.payRate || 0}${employee.payType === "hourly" ? "/hr" : "/yr"}\n` +
-            `- Hire Date: ${employee.hireDate ? new Date(employee.hireDate).toLocaleDateString() : "N/A"}\n` +
+            `- Pay Type: ${employee.pay_type || "Not specified"}\n` +
+            `- Pay Rate: J$${employee.pay_rate || 0}${employee.pay_type === "hourly" ? "/hr" : "/yr"}\n` +
+            `- Hire Date: ${employee.hire_date ? new Date(employee.hire_date).toLocaleDateString() : "N/A"}\n` +
             `- Status: ${employee.status || "Active"}\n`;
 
           // Add PTO balance if available
           const year = new Date().getFullYear();
-          const ptoBalance = await db.pTOBalance.findUnique({
-            where: { employeeId_year: { employeeId: userId, year } },
-          });
+          const { data: ptoBalance } = await supabase
+            .from("pto_balances")
+            .select("*")
+            .eq("employee_id", userId)
+            .eq("year", year)
+            .single();
+
           if (ptoBalance) {
-            const available = ptoBalance.totalAllocated - ptoBalance.usedSick - ptoBalance.usedVacation - ptoBalance.usedPersonal - ptoBalance.usedOther;
-            employeeContext += `- PTO Balance (${year}): ${available} days available (Total: ${ptoBalance.totalAllocated}, Sick used: ${ptoBalance.usedSick}, Vacation used: ${ptoBalance.usedVacation}, Personal used: ${ptoBalance.usedPersonal})\n`;
+            const available = ptoBalance.total_allocated - ptoBalance.used_sick - ptoBalance.used_vacation - ptoBalance.used_personal - ptoBalance.used_other;
+            employeeContext += `- PTO Balance (${year}): ${available} days available (Total: ${ptoBalance.total_allocated}, Sick used: ${ptoBalance.used_sick}, Vacation used: ${ptoBalance.used_vacation}, Personal used: ${ptoBalance.used_personal})\n`;
           }
         }
       } catch (ctxError) {
         console.warn("Could not fetch employee context:", ctxError);
       }
     }
+
 
     // Build full system prompt with context
     const fullSystemPrompt = systemPrompt + employeeContext + (context ? `\n\nAdditional Context:\n${context}` : "");

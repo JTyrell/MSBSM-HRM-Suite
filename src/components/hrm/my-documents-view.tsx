@@ -157,43 +157,6 @@ const REQUEST_STATUS_BADGE: Record<RequestStatus, { className: string; icon: Rea
   Rejected: { className: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300", icon: XCircle },
 };
 
-// ─── Mock Data ──────────────────────────────────────────────────────
-
-const MOCK_DOCUMENTS: MyDocument[] = [
-  { id: "md-1", name: "Jamaican Passport", category: "Identification", fileType: "PDF", uploadDate: "2024-06-15", expiryDate: "2029-06-15", fileSize: "2.4 MB", status: "Valid" },
-  { id: "md-2", name: "TRN Card", category: "Identification", fileType: "JPG", uploadDate: "2023-03-10", expiryDate: "2028-03-10", fileSize: "1.1 MB", status: "Valid" },
-  { id: "md-3", name: "PMP Certification", category: "Certifications", fileType: "PDF", uploadDate: "2023-09-01", expiryDate: "2026-09-01", fileSize: "850 KB", status: "Valid" },
-  { id: "md-4", name: "CPA License", category: "Certifications", fileType: "PDF", uploadDate: "2022-11-20", expiryDate: "2025-07-15", fileSize: "620 KB", status: "Expiring Soon" },
-  { id: "md-5", name: "BSc Business Admin", category: "Education", fileType: "PDF", uploadDate: "2021-05-01", expiryDate: "", fileSize: "3.2 MB", status: "Valid" },
-  { id: "md-6", name: "MSc Human Resources", category: "Education", fileType: "PDF", uploadDate: "2023-12-15", expiryDate: "", fileSize: "2.8 MB", status: "Valid" },
-  { id: "md-7", name: "OSHA 30 Certificate", category: "Training", fileType: "PDF", uploadDate: "2024-01-10", expiryDate: "2025-06-10", fileSize: "450 KB", status: "Expiring Soon" },
-  { id: "md-8", name: "First Aid CPR", category: "Training", fileType: "PDF", uploadDate: "2023-08-20", expiryDate: "2025-08-20", fileSize: "380 KB", status: "Expiring Soon" },
-  { id: "md-9", name: "Employment Contract", category: "Employment", fileType: "DOCX", uploadDate: "2022-01-15", expiryDate: "2025-01-15", fileSize: "520 KB", status: "Expired" },
-  { id: "md-10", name: "Offer Letter", category: "Employment", fileType: "PDF", uploadDate: "2022-01-15", expiryDate: "", fileSize: "340 KB", status: "Valid" },
-  { id: "md-11", name: "Drivers License", category: "Identification", fileType: "PNG", uploadDate: "2024-02-28", expiryDate: "2030-02-28", fileSize: "1.8 MB", status: "Valid" },
-  { id: "md-12", name: "Data Privacy Certificate", category: "Training", fileType: "PDF", uploadDate: "2024-10-05", expiryDate: "2027-10-05", fileSize: "290 KB", status: "Valid" },
-];
-
-const MOCK_CERTIFICATIONS: Certification[] = [
-  { id: "cert-1", name: "Project Management Professional (PMP)", issuingBody: "Project Management Institute", issueDate: "2023-09-01", expiryDate: "2026-09-01", credentialId: "PMI-2847291", status: "Valid", verifyLink: "#" },
-  { id: "cert-2", name: "Certified Public Accountant (CPA)", issuingBody: "ICAJ Jamaica", issueDate: "2022-11-20", expiryDate: "2025-07-15", credentialId: "CPA-JM-4521", status: "Expiring Soon", verifyLink: "#" },
-  { id: "cert-3", name: "SHRM-CP", issuingBody: "Society for HR Management", issueDate: "2023-03-15", expiryDate: "2026-03-15", credentialId: "SHRM-774200", status: "Valid", verifyLink: "#" },
-  { id: "cert-4", name: "OSHA 30-Hour Construction", issuingBody: "OSHA Training Institute", issueDate: "2024-01-10", expiryDate: "2025-06-10", credentialId: "OSHA-30-88341", status: "Expiring Soon", verifyLink: "#" },
-  { id: "cert-5", name: "First Aid CPR / AED", issuingBody: "Jamaican Red Cross", issueDate: "2023-08-20", expiryDate: "2025-08-20", credentialId: "JRC-FA-10234", status: "Expiring Soon", verifyLink: "#" },
-  { id: "cert-6", name: "Data Privacy Fundamentals", issuingBody: "ISACA", issueDate: "2024-10-05", expiryDate: "2027-10-05", credentialId: "ISACA-DP-55812", status: "Valid", verifyLink: "#" },
-  { id: "cert-7", name: "Agile Scrum Master (ASM)", issuingBody: "Scrum Alliance", issueDate: "2024-04-22", expiryDate: "2027-04-22", credentialId: "SA-ASM-99301", status: "Valid", verifyLink: "#" },
-  { id: "cert-8", name: "ITIL Foundation", issuingBody: "Axelos / PeopleCert", issueDate: "2023-06-10", expiryDate: "2026-06-10", credentialId: "ITIL-FND-31290", status: "Valid", verifyLink: "#" },
-];
-
-const MOCK_REQUESTS: DocumentRequest[] = [
-  { id: "req-1", type: "Employment Letter", date: "2025-06-10", status: "Completed", notes: "Required for bank loan application. Letter includes salary details." },
-  { id: "req-2", type: "Reference Letter", date: "2025-06-05", status: "Approved", notes: "Professional reference for academic programme application." },
-  { id: "req-3", type: "Salary Certificate", date: "2025-05-28", status: "Pending", notes: "Needed for mortgage pre-qualification at NHT." },
-  { id: "req-4", type: "Tax Document (P9)", date: "2025-05-15", status: "Completed", notes: "Annual tax document for fiscal year 2024-2025." },
-  { id: "req-5", type: "Experience Letter", date: "2025-05-01", status: "Rejected", notes: "Request for experience letter. Additional details needed." },
-  { id: "req-6", type: "Study Leave Approval", date: "2025-04-20", status: "Pending", notes: "Requesting 3-month study leave for executive MBA programme at UWI." },
-];
-
 // ─── Helpers ────────────────────────────────────────────────────────
 
 function getDaysRemaining(expiryDate: string): number {
@@ -251,24 +214,27 @@ export function MyDocumentsView() {
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
   const [uploadForm, setUploadForm] = useState({ name: "", category: "", expiryDate: "", notes: "" });
   const [requestForm, setRequestForm] = useState({ type: "", notes: "" });
+  const [documents, setDocuments] = useState<MyDocument[]>([]);
+  const [certifications, setCertifications] = useState<Certification[]>([]);
+  const [requests, setRequests] = useState<DocumentRequest[]>([]);
 
   // ─── Computed Stats ────────────────────────────────────────────
   const stats = useMemo(() => {
-    const total = MOCK_DOCUMENTS.length;
-    const valid = MOCK_DOCUMENTS.filter((d) => d.status === "Valid").length;
-    const expiring = MOCK_DOCUMENTS.filter((d) => d.status === "Expiring Soon").length;
-    const expired = MOCK_DOCUMENTS.filter((d) => d.status === "Expired").length;
+    const total = documents.length;
+    const valid = documents.filter((d) => d.status === "Valid").length;
+    const expiring = documents.filter((d) => d.status === "Expiring Soon").length;
+    const expired = documents.filter((d) => d.status === "Expired").length;
     return [
       { label: "Total Documents", value: total, icon: FolderOpen, color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40" },
       { label: "Valid", value: valid, icon: CheckCircle2, color: "text-teal-600 dark:text-teal-400", bg: "bg-teal-50 dark:bg-teal-950/40" },
       { label: "Expiring Soon", value: expiring, icon: AlertTriangle, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/40" },
       { label: "Expired", value: expired, icon: XCircle, color: "text-rose-600 dark:text-rose-400", bg: "bg-rose-50 dark:bg-rose-950/40" },
     ];
-  }, []);
+  }, [documents]);
 
   // ─── Filtered Documents ────────────────────────────────────────
   const filteredDocuments = useMemo(() => {
-    let result = [...MOCK_DOCUMENTS];
+    let result = [...documents];
     if (categoryFilter !== "all") {
       result = result.filter((d) => d.category === categoryFilter);
     }
@@ -441,7 +407,8 @@ export function MyDocumentsView() {
         <TabsContent value="certifications" className="mt-4 space-y-4">
           <ScrollArea className="max-h-[680px]">
             <div className="space-y-3 pr-2">
-              {MOCK_CERTIFICATIONS.map((cert) => {
+              {certifications.length === 0 && <p className="text-sm text-muted-foreground text-center py-8">No certifications uploaded yet.</p>}
+              {certifications.map((cert) => {
                 const daysRemaining = getDaysRemaining(cert.expiryDate);
                 const statusCfg = STATUS_BADGE[cert.status];
 
@@ -491,7 +458,8 @@ export function MyDocumentsView() {
         <TabsContent value="requests" className="mt-4 space-y-4">
           <ScrollArea className="max-h-[680px]">
             <div className="space-y-3 pr-2">
-              {MOCK_REQUESTS.map((req) => {
+              {requests.length === 0 && <p className="text-sm text-muted-foreground text-center py-8">No document requests yet.</p>}
+              {requests.map((req) => {
                 const reqStatus = REQUEST_STATUS_BADGE[req.status];
                 const ReqIcon = reqStatus.icon;
 

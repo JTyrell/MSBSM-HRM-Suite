@@ -191,10 +191,10 @@ interface TimezoneClock {
 }
 
 const TIMEZONE_CLOCKS: TimezoneClock[] = [
-  { city: "New York", timezone: "America/New_York", label: "Company HQ" },
-  { city: "London", timezone: "Europe/London", label: "EMEA Office" },
-  { city: "Tokyo", timezone: "Asia/Tokyo", label: "APAC Office" },
-  { city: "Sydney", timezone: "Australia/Sydney", label: "ANZ Office" },
+  { city: "Kingston", timezone: "America/Jamaica", label: "MSBM HQ" },
+  { city: "New York", timezone: "America/New_York", label: "USA East" },
+  { city: "London", timezone: "Europe/London", label: "UK/Europe" },
+  { city: "Toronto", timezone: "America/Toronto", label: "Canada" },
 ];
 
 // ─── World Clock Component ──────────────────────────────────────────

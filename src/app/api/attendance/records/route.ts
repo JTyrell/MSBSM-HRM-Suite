@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { createClient } from "@/lib/supabase/server";
 
 // GET /api/attendance/records?userId=xxx&from=xxx&to=xxx
 export async function GET(request: NextRequest) {
@@ -13,48 +13,32 @@ export async function GET(request: NextRequest) {
     const page = parseInt(searchParams.get("page") || "1");
     const activeOnly = searchParams.get("activeOnly") === "true";
 
-    const where: Record<string, unknown> = {};
+    const supabase = await createClient();
 
-    if (userId) where.employeeId = userId;
-    if (status) where.status = status;
-    if (activeOnly) {
-      where.status = "active";
-    }
-    if (from || to) {
-      where.clockIn = {};
-      if (from) (where.clockIn as Record<string, unknown>).gte = new Date(from);
-      if (to) (where.clockIn as Record<string, unknown>).lte = new Date(to);
-    }
+    let query = supabase
+      .from("attendance")
+      .select(
+        "*, employee:employees(id, first_name, last_name, employee_id, avatar), geofence:geofences(id, name, address)",
+        { count: "exact" }
+      )
+      .order("clock_in", { ascending: false })
+      .range((page - 1) * limit, page * limit - 1);
 
-    const [records, total] = await Promise.all([
-      db.attendance.findMany({
-        where,
-        include: {
-          employee: {
-            select: {
-              id: true,
-              firstName: true,
-              lastName: true,
-              employeeId: true,
-              avatar: true,
-            },
-          },
-          geofence: {
-            select: { id: true, name: true, address: true },
-          },
-        },
-        orderBy: { clockIn: "desc" },
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      db.attendance.count({ where }),
-    ]);
+    if (userId) query = query.eq("employee_id", userId);
+    if (status) query = query.eq("status", status);
+    if (activeOnly) query = query.eq("status", "active");
+    if (from) query = query.gte("clock_in", from);
+    if (to) query = query.lte("clock_in", to);
+
+    const { data: records, count, error } = await query;
+
+    if (error) throw error;
 
     return NextResponse.json({
-      records,
-      total,
+      records: records || [],
+      total: count || 0,
       page,
-      totalPages: Math.ceil(total / limit),
+      totalPages: Math.ceil((count || 0) / limit),
     });
   } catch (error) {
     console.error("Error fetching attendance records:", error);

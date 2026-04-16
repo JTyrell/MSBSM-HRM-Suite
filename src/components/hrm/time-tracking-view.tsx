@@ -60,80 +60,21 @@ interface LaborDept {
   color: string;
 }
 
-// ============ MOCK DATA ============
-
-const MOCK_TIMESHEET: TimesheetEntry[] = [
-  { id: 'ts1', day: 'Monday', date: '2025-01-13', clockIn: '08:02', clockOut: '17:15', hours: 9.22, status: 'complete' },
-  { id: 'ts2', day: 'Tuesday', date: '2025-01-14', clockIn: '07:55', clockOut: '17:30', hours: 9.58, status: 'complete' },
-  { id: 'ts3', day: 'Wednesday', date: '2025-01-15', clockIn: '08:10', clockOut: '18:45', hours: 10.58, status: 'complete' },
-  { id: 'ts4', day: 'Thursday', date: '2025-01-16', clockIn: '08:00', clockOut: '17:00', hours: 9.0, status: 'complete' },
-  { id: 'ts5', day: 'Friday', date: '2025-01-17', clockIn: '07:45', clockOut: '16:30', hours: 8.75, status: 'complete' },
-  { id: 'ts6', day: 'Saturday', date: '2025-01-18', clockIn: '—', clockOut: '—', hours: 0, status: 'incomplete' },
-  { id: 'ts7', day: 'Sunday', date: '2025-01-19', clockIn: '—', clockOut: '—', hours: 0, status: 'incomplete' },
-];
-
-const MOCK_PENDING: PendingTimesheet[] = [
-  { id: 'pt1', employeeName: 'Marcus Brown', department: 'ICT', weekOf: 'Jan 6–12', totalHours: 42.5, overtimeHours: 2.5, status: 'pending', submittedDate: '2025-01-13' },
-  { id: 'pt2', employeeName: 'Lisa Chen', department: 'Admin', weekOf: 'Jan 6–12', totalHours: 40.0, overtimeHours: 0, status: 'pending', submittedDate: '2025-01-13' },
-  { id: 'pt3', employeeName: 'David Taylor', department: 'Maintenance', weekOf: 'Jan 6–12', totalHours: 48.0, overtimeHours: 8.0, status: 'pending', submittedDate: '2025-01-12' },
-  { id: 'pt4', employeeName: 'Sarah Williams', department: 'Faculty', weekOf: 'Jan 6–12', totalHours: 36.5, overtimeHours: 0, status: 'pending', submittedDate: '2025-01-14' },
-  { id: 'pt5', employeeName: 'James Anderson', department: 'ICT', weekOf: 'Dec 30–Jan 5', totalHours: 44.0, overtimeHours: 4.0, status: 'pending', submittedDate: '2025-01-06' },
-  { id: 'pt6', employeeName: 'Maria Garcia', department: 'Admin', weekOf: 'Dec 30–Jan 5', totalHours: 38.5, overtimeHours: 0, status: 'pending', submittedDate: '2025-01-06' },
-];
-
-function generateTimeEntries(): TimeEntry[] {
-  const names = [
-    { name: 'Marcus Brown', dept: 'ICT' }, { name: 'Lisa Chen', dept: 'Admin' },
-    { name: 'David Taylor', dept: 'Maintenance' }, { name: 'Sarah Williams', dept: 'Faculty' },
-    { name: 'James Anderson', dept: 'ICT' }, { name: 'Maria Garcia', dept: 'Admin' },
-    { name: 'Robert Johnson', dept: 'Maintenance' }, { name: 'Emily Davis', dept: 'Faculty' },
-    { name: 'Michael Thompson', dept: 'ICT' }, { name: 'Jessica Martinez', dept: 'Admin' },
-  ];
-  const statuses: TimeEntry['status'][] = ['approved', 'pending', 'rejected'];
-  const entries: TimeEntry[] = [];
-  const baseDate = new Date(2025, 0, 1);
-
-  names.forEach((emp) => {
-    for (let w = 0; w < 3; w++) {
-      for (let d = 0; d < 7; d++) {
-        if (d >= 5 && Math.random() > 0.3) continue;
-        const date = new Date(baseDate);
-        date.setDate(date.getDate() + w * 7 + d);
-        const hours = 7 + Math.random() * 4;
-        const ot = hours > 8 ? hours - 8 : 0;
-        const startH = 6 + Math.floor(Math.random() * 3);
-        const startM = Math.floor(Math.random() * 30);
-        const endM = startM + Math.floor(hours * 60) % 60;
-        entries.push({
-          id: `te-${entries.length + 1}`,
-          employeeName: emp.name,
-          date: date.toISOString().split('T')[0],
-          clockIn: `${String(startH).padStart(2, '0')}:${String(startM).padStart(2, '0')}`,
-          clockOut: `${String(startH + Math.floor(hours)).padStart(2, '0')}:${String(endM % 60).padStart(2, '0')}`,
-          hours: Math.round(hours * 100) / 100,
-          overtime: Math.round(ot * 100) / 100,
-          status: statuses[Math.floor(Math.random() * 10) < 7 ? 0 : Math.random() > 0.5 ? 1 : 2],
-          department: emp.dept,
-        });
-      }
-    }
-  });
-  return entries;
-}
+// ============ LABOR COST DATA (computed from API in future) ============
 
 const LABOR_DEPTS: LaborDept[] = [
-  { name: 'ICT', budget: 24000, actual: 22800, overtime: 1800, color: 'bg-emerald-500' },
-  { name: 'Admin', budget: 18000, actual: 19200, overtime: 1200, color: 'bg-violet-500' },
-  { name: 'Maintenance', budget: 16000, actual: 14500, overtime: 500, color: 'bg-amber-500' },
-  { name: 'Faculty', budget: 32000, actual: 31500, overtime: 2500, color: 'bg-rose-500' },
-  { name: 'Student Affairs', budget: 12000, actual: 11800, overtime: 300, color: 'bg-blue-500' },
-  { name: 'Finance', budget: 14000, actual: 13500, overtime: 800, color: 'bg-teal-500' },
+  { name: 'CEI/ICT', budget: 24000, actual: 0, overtime: 0, color: 'bg-emerald-500' },
+  { name: 'Admin/Directors', budget: 18000, actual: 0, overtime: 0, color: 'bg-violet-500' },
+  { name: 'Maintenance', budget: 16000, actual: 0, overtime: 0, color: 'bg-amber-500' },
+  { name: 'Graduate Prog.', budget: 32000, actual: 0, overtime: 0, color: 'bg-rose-500' },
+  { name: 'HR', budget: 12000, actual: 0, overtime: 0, color: 'bg-blue-500' },
+  { name: 'Accounting', budget: 14000, actual: 0, overtime: 0, color: 'bg-teal-500' },
 ];
 
 // ============ MAIN COMPONENT ============
 
 export function TimeTrackingView() {
-  const { employees, isClockedIn, setIsClockedIn } = useAppStore();
+  const { employees, isClockedIn, setIsClockedIn, currentUserId } = useAppStore();
   const [activeTab, setActiveTab] = useState('clock');
   const [currentTime, setCurrentTime] = useState(new Date());
   const [sessionStart, setSessionStart] = useState<Date | null>(null);
@@ -145,6 +86,8 @@ export function TimeTrackingView() {
   const [dateRange, setDateRange] = useState({ from: '', to: '' });
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [pendingStatuses, setPendingStatuses] = useState<Record<string, string>>({});
+  const [timesheetEntries, setTimesheetEntries] = useState<TimesheetEntry[]>([]);
+  const [pendingTimesheets, setPendingTimesheets] = useState<PendingTimesheet[]>([]);
 
   // Live clock
   useEffect(() => {
@@ -174,8 +117,31 @@ export function TimeTrackingView() {
     setSessionSeconds(0);
   }, [setIsClockedIn]);
 
-  // Time entries (mock, computed once)
-  const allEntries = useState<TimeEntry[]>(() => generateTimeEntries());
+  // Fetch time entries from API
+  useEffect(() => {
+    fetch(`/api/time-entries${currentUserId ? `?employeeId=${currentUserId}` : ''}`)
+      .then(r => r.json())
+      .then(d => {
+        const entries = d.entries || d.timeEntries || [];
+        // Map API entries to TimesheetEntry format for the current week
+        if (entries.length > 0) {
+          const mapped: TimesheetEntry[] = entries.slice(0, 7).map((e: any, i: number) => ({
+            id: e.id,
+            day: new Date(e.date || e.start_time).toLocaleDateString('en-US', { weekday: 'long' }),
+            date: (e.date || e.start_time || '').split('T')[0],
+            clockIn: e.start_time ? new Date(e.start_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) : '—',
+            clockOut: e.end_time ? new Date(e.end_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }) : '—',
+            hours: e.total_hours || e.totalHours || 0,
+            status: e.end_time ? 'complete' : 'incomplete',
+          }));
+          setTimesheetEntries(mapped);
+        }
+      })
+      .catch(() => {});
+  }, [currentUserId]);
+
+  // Time entries for history table
+  const allEntries = useState<TimeEntry[]>([]);
 
   const filteredEntries = useMemo(() => {
     let entries = [...allEntries[0]];
@@ -211,14 +177,15 @@ export function TimeTrackingView() {
   };
 
   const stats = useMemo(() => {
-    const weekHours = MOCK_TIMESHEET.reduce((s, e) => s + e.hours, 0);
-    const otHours = MOCK_TIMESHEET.reduce((s, e) => s + Math.max(0, e.hours - 8), 0);
-    const workedDays = MOCK_TIMESHEET.filter(e => e.status === 'complete').length;
+    const weekHours = timesheetEntries.reduce((s, e) => s + e.hours, 0);
+    const otHours = timesheetEntries.reduce((s, e) => s + Math.max(0, e.hours - 8), 0);
+    const workedDays = timesheetEntries.filter(e => e.status === 'complete').length;
     const avgDaily = workedDays > 0 ? weekHours / workedDays : 0;
-    const compliant = MOCK_TIMESHEET.filter(e => e.hours >= 8 || e.status === 'incomplete').length;
-    const complianceRate = (compliant / 7) * 100;
+    const total = timesheetEntries.length || 1;
+    const compliant = timesheetEntries.filter(e => e.hours >= 8 || e.status === 'incomplete').length;
+    const complianceRate = (compliant / total) * 100;
     return { weekHours: Math.round(weekHours * 100) / 100, otHours: Math.round(otHours * 100) / 100, avgDaily: Math.round(avgDaily * 100) / 100, complianceRate: Math.round(complianceRate) };
-  }, []);
+  }, [timesheetEntries]);
 
   const handlePendingAction = (id: string, action: 'approved' | 'rejected') => {
     setPendingStatuses(prev => ({ ...prev, [id]: action }));
@@ -387,7 +354,10 @@ export function TimeTrackingView() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {MOCK_TIMESHEET.map(entry => (
+                  {timesheetEntries.length === 0 && (
+                    <TableRow><TableCell colSpan={6} className="text-center text-muted-foreground py-8">No timesheet entries yet. Clock in to start tracking your hours.</TableCell></TableRow>
+                  )}
+                  {timesheetEntries.map(entry => (
                     <TableRow key={entry.id}>
                       <TableCell className="font-medium">{entry.day}</TableCell>
                       <TableCell className="hidden sm:table-cell text-muted-foreground">{entry.date}</TableCell>
@@ -419,7 +389,10 @@ export function TimeTrackingView() {
               <CardTitle className="text-base">Manager Approval Queue</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {MOCK_PENDING.map(pt => {
+              {pendingTimesheets.length === 0 && (
+                <p className="text-sm text-muted-foreground text-center py-8">No pending timesheets to review.</p>
+              )}
+              {pendingTimesheets.map(pt => {
                 const action = pendingStatuses[pt.id] as string | undefined;
                 const currentStatus = action || pt.status;
                 return (

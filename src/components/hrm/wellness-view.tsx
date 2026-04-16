@@ -131,48 +131,6 @@ const RESOURCE_CATEGORY_COLORS: Record<string, string> = {
   Workplace: "bg-violet-50 text-violet-600 dark:bg-violet-950/30 dark:text-violet-400",
 };
 
-// ─── Mock Data ──────────────────────────────────────────────────────
-
-const MOCK_MOODS: MoodEntry[] = [
-  { id: "m1", date: "2025-06-12", mood: "Great" },
-  { id: "m2", date: "2025-06-11", mood: "Good" },
-  { id: "m3", date: "2025-06-10", mood: "Okay" },
-  { id: "m4", date: "2025-06-09", mood: "Good" },
-  { id: "m5", date: "2025-06-08", mood: "Great" },
-  { id: "m6", date: "2025-06-07", mood: "Tired" },
-  { id: "m7", date: "2025-06-06", mood: "Good" },
-  { id: "m8", date: "2025-06-05", mood: "Great" },
-  { id: "m9", date: "2025-06-04", mood: "Okay" },
-  { id: "m10", date: "2025-06-03", mood: "Low" },
-  { id: "m11", date: "2025-06-02", mood: "Good" },
-  { id: "m12", date: "2025-06-01", mood: "Great" },
-  { id: "m13", date: "2025-05-31", mood: "Good" },
-  { id: "m14", date: "2025-05-30", mood: "Great" },
-];
-
-const MOCK_ACTIVITIES: WellnessActivity[] = [
-  { id: "a1", name: "Morning Walk", date: "2025-06-12", duration: 30, category: "Exercise" },
-  { id: "a2", name: "Meditation", date: "2025-06-11", duration: 15, category: "Mindfulness" },
-  { id: "a3", name: "Gym Session", date: "2025-06-10", duration: 60, category: "Exercise" },
-  { id: "a4", name: "Yoga Class", date: "2025-06-09", duration: 45, category: "Exercise" },
-  { id: "a5", name: "Healthy Meal Prep", date: "2025-06-08", duration: 40, category: "Nutrition" },
-  { id: "a6", name: "Team Sport", date: "2025-06-07", duration: 50, category: "Exercise" },
-  { id: "a7", name: "Doctor Visit", date: "2025-06-06", duration: 30, category: "Medical" },
-  { id: "a8", name: "Therapy Session", date: "2025-06-05", duration: 45, category: "Mindfulness" },
-  { id: "a9", name: "Sleep 8+ Hours", date: "2025-06-04", duration: 0, category: "Rest" },
-  { id: "a10", name: "Screen Break", date: "2025-06-03", duration: 5, category: "Rest" },
-];
-
-const MOCK_RESOURCES: WellnessResource[] = [
-  { id: "r1", title: "Mental Health Hotline", type: "Hotline", description: "24/7 confidential counselling support line for employees and their families.", category: "Mental Health", icon: Phone },
-  { id: "r2", title: "EAP Contact", type: "Hotline", description: "Employee Assistance Programme providing professional counselling and advisory services.", category: "Mental Health", icon: Headphones },
-  { id: "r3", title: "Fitness Centre Schedule", type: "Schedule", description: "Weekly timetable for the campus fitness centre including group classes.", category: "Physical Health", icon: CalendarRange },
-  { id: "r4", title: "Nutrition Guide", type: "Guide", description: "Comprehensive guide to healthy eating with Jamaican meal planning tips.", category: "Nutrition", icon: Utensils },
-  { id: "r5", title: "Sleep Hygiene Tips", type: "Article", description: "Evidence-based strategies for improving sleep quality and establishing healthy routines.", category: "Physical Health", icon: BedDouble },
-  { id: "r6", title: "Stress Management", type: "Article", description: "Practical techniques for managing workplace stress and building resilience.", category: "Mental Health", icon: Brain },
-  { id: "r7", title: "Ergonomic Setup", type: "Guide", description: "Best practices for setting up your workstation to prevent strain and injury.", category: "Workplace", icon: Monitor },
-  { id: "r8", title: "Team Sports Calendar", type: "Schedule", description: "Upcoming inter-departmental sports events and friendly match fixtures.", category: "Physical Health", icon: Users },
-];
 
 const WELLNESS_TIPS = [
   { icon: Droplets, text: "Stay hydrated — aim for 8 glasses of water daily to boost energy and focus.", color: "text-cyan-500" },
@@ -233,19 +191,22 @@ export function WellnessView() {
   const [categoryFilter, setCategoryFilter] = useState("All");
   const [newActivity, setNewActivity] = useState({ name: "", category: "Exercise" as ActivityCategory, duration: "", date: "", notes: "" });
   const [selectedMood, setSelectedMood] = useState<MoodType | null>(null);
+  const [moods, setMoods] = useState<MoodEntry[]>([]);
+  const [activities, setActivities] = useState<WellnessActivity[]>([]);
+  const [resources, setResources] = useState<WellnessResource[]>([]);
 
   // ─── Computed Stats ────────────────────────────────────────────
   const stats = useMemo(() => [
-    { label: "Health Score", value: "78/100", icon: HeartPulse, color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40" },
-    { label: "Mood Streak", value: "12 days", icon: Flame, color: "text-rose-600 dark:text-rose-400", bg: "bg-rose-50 dark:bg-rose-950/40" },
-    { label: "Activities This Week", value: "10", icon: Activity, color: "text-violet-600 dark:text-violet-400", bg: "bg-violet-50 dark:bg-violet-950/40" },
-    { label: "Resources", value: "8", icon: BookOpen, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/40" },
-  ], []);
+    { label: "Health Score", value: "--/100", icon: HeartPulse, color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40" },
+    { label: "Mood Streak", value: `${moods.length} days`, icon: Flame, color: "text-rose-600 dark:text-rose-400", bg: "bg-rose-50 dark:bg-rose-950/40" },
+    { label: "Activities This Week", value: String(activities.length), icon: Activity, color: "text-violet-600 dark:text-violet-400", bg: "bg-violet-50 dark:bg-violet-950/40" },
+    { label: "Resources", value: String(resources.length), icon: BookOpen, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/40" },
+  ], [moods, activities, resources]);
 
   // ─── Mood Distribution ────────────────────────────────────────
   const moodDistribution = useMemo(() => {
     const counts: Record<string, number> = {};
-    MOCK_MOODS.forEach((m) => {
+    moods.forEach((m) => {
       counts[m.mood] = (counts[m.mood] || 0) + 1;
     });
     return Object.entries(counts).sort((a, b) => b[1] - a[1]);
@@ -253,9 +214,9 @@ export function WellnessView() {
 
   // ─── Filtered Activities ──────────────────────────────────────
   const filteredActivities = useMemo(() => {
-    if (categoryFilter === "All") return MOCK_ACTIVITIES;
-    return MOCK_ACTIVITIES.filter((a) => a.category === categoryFilter);
-  }, [categoryFilter]);
+    if (categoryFilter === "All") return activities;
+    return activities.filter((a) => a.category === categoryFilter);
+  }, [categoryFilter, activities]);
 
   // ─── Random Tips ──────────────────────────────────────────────
   const tips = useMemo(() => {
@@ -265,8 +226,8 @@ export function WellnessView() {
 
   // ─── Weekly Summary ───────────────────────────────────────────
   const weeklySummary = useMemo(() => ({
-    totalActivities: MOCK_ACTIVITIES.length,
-    totalMinutes: MOCK_ACTIVITIES.reduce((sum, a) => sum + a.duration, 0),
+    totalActivities: activities.length,
+    totalMinutes: activities.reduce((sum, a) => sum + a.duration, 0),
     mostActiveDay: "Wednesday",
   }), []);
 
@@ -476,7 +437,8 @@ export function WellnessView() {
             </CardHeader>
             <CardContent>
               <div className="flex gap-2 overflow-x-auto pb-2">
-                {MOCK_MOODS.map((entry) => {
+                {moods.length === 0 && <p className="text-sm text-muted-foreground text-center py-4">No mood entries yet. Start logging today!</p>}
+                {moods.map((entry) => {
                   const cfg = MOOD_EMOJIS[entry.mood];
                   return (
                     <div key={entry.id} className="flex flex-col items-center gap-1 min-w-[3.5rem]">
@@ -498,7 +460,7 @@ export function WellnessView() {
               <div className="space-y-2.5">
                 {moodDistribution.map(([mood, count]) => {
                   const cfg = MOOD_EMOJIS[mood as MoodType];
-                  const pct = Math.round((count / MOCK_MOODS.length) * 100);
+                  const pct = moods.length > 0 ? Math.round((count / moods.length) * 100) : 0;
                   return (
                     <div key={mood} className="flex items-center gap-3">
                       <span className="text-lg w-7 text-center">{cfg.emoji}</span>
@@ -617,7 +579,8 @@ export function WellnessView() {
         {/* ─── Resources Tab ───────────────────────────────────── */}
         <TabsContent value="resources" className="mt-4 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {MOCK_RESOURCES.map((resource) => {
+            {resources.length === 0 && <p className="text-sm text-muted-foreground text-center py-8 col-span-full">No wellness resources available yet.</p>}
+            {resources.map((resource) => {
               const ResIcon = resource.icon;
               return (
                 <Card key={resource.id} className="card-lift transition-all duration-300 hover:border-emerald-200/60 dark:hover:border-emerald-800/40 group">

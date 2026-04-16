@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { createClient } from "@/lib/supabase/server";
 
 // GET /api/notifications?userId=xxx
 export async function GET(request: NextRequest) {
@@ -11,17 +11,20 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "userId is required" }, { status: 400 });
     }
 
-    const notifications = await db.notification.findMany({
-      where: { userId },
-      orderBy: { createdAt: "desc" },
-      take: 50,
-    });
+    const supabase = await createClient();
 
-    const unreadCount = await db.notification.count({
-      where: { userId, isRead: false },
-    });
+    const { data: notifications, error } = await supabase
+      .from("notifications")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(50);
 
-    return NextResponse.json({ notifications, unreadCount });
+    if (error) throw error;
+
+    const unreadCount = (notifications || []).filter((n: any) => !n.is_read).length;
+
+    return NextResponse.json({ notifications: notifications || [], unreadCount });
   } catch (error) {
     console.error("Error fetching notifications:", error);
     return NextResponse.json({ error: "Failed to fetch notifications" }, { status: 500 });
@@ -34,19 +37,26 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     const { id, markAll, userId } = body;
 
+    const supabase = await createClient();
+
     if (markAll && userId) {
-      await db.notification.updateMany({
-        where: { userId, isRead: false },
-        data: { isRead: true },
-      });
+      const { error } = await supabase
+        .from("notifications")
+        .update({ is_read: true })
+        .eq("user_id", userId)
+        .eq("is_read", false);
+
+      if (error) throw error;
       return NextResponse.json({ success: true });
     }
 
     if (id) {
-      await db.notification.update({
-        where: { id },
-        data: { isRead: true },
-      });
+      const { error } = await supabase
+        .from("notifications")
+        .update({ is_read: true })
+        .eq("id", id);
+
+      if (error) throw error;
       return NextResponse.json({ success: true });
     }
 

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { useAppStore } from "@/store/app";
 import { toast } from "sonner";
 import {
   Card,
@@ -90,61 +91,26 @@ const KUDOS_TYPES: Record<string, KudosType> = {
 
 const COMPANY_VALUES = ["Innovation", "Excellence", "Collaboration", "Integrity", "Service"];
 
-const EMPLOYEE_NAMES = [
-  "Dr. Sarah Chen", "Mark Williams", "Lisa Park", "James Rodriguez",
-  "Aisha Johnson", "Tom Baker", "Nina Patel", "David Kim",
-  "Rachel Foster", "Carlos Mendez", "Emily Watson", "Omar Hassan",
-];
-
-const DEPARTMENTS = ["Engineering", "HR", "Marketing", "Finance", "Operations", "Sales"];
-
-// ─── Mock Kudos Feed ──────────────────────────────────────────────
-const MOCK_KUDOS: KudosEntry[] = [
-  { id: "k1", sender: { name: "Mark Williams", initials: "MW" }, recipient: { name: "Dr. Sarah Chen", initials: "SC" }, type: KUDOS_TYPES.star, title: "Outstanding Research Presentation", message: "Your Q2 presentation was phenomenal! The data visualization and analysis were top-notch. Really raised the bar for the team.", timestamp: "2h ago", likes: 18, companyValue: "Excellence" },
-  { id: "k2", sender: { name: "Lisa Park", initials: "LP" }, recipient: { name: "James Rodriguez", initials: "JR" }, type: KUDOS_TYPES.team, title: "Amazing Collaboration on Project Alpha", message: "You went above and beyond to help the team meet the deadline. Your willingness to stay late and support others is truly appreciated!", timestamp: "3h ago", likes: 24, companyValue: "Collaboration" },
-  { id: "k3", sender: { name: "Aisha Johnson", initials: "AJ" }, recipient: { name: "Nina Patel", initials: "NP" }, type: KUDOS_TYPES.goal, title: "Crushed the Revenue Target!", message: "You exceeded the monthly revenue target by 35%! Your strategic approach to client acquisition is a game-changer.", timestamp: "5h ago", likes: 32, companyValue: "Excellence" },
-  { id: "k4", sender: { name: "Tom Baker", initials: "TB" }, recipient: { name: "Rachel Foster", initials: "RF" }, type: KUDOS_TYPES.helpful, title: "Mentorship Excellence", message: "Thank you for the incredible guidance during my onboarding. Your patience and willingness to share knowledge made all the difference!", timestamp: "8h ago", likes: 15, companyValue: "Service" },
-  { id: "k5", sender: { name: "David Kim", initials: "DK" }, recipient: { name: "Carlos Mendez", initials: "CM" }, type: KUDOS_TYPES.creative, title: "Brilliant Design Solution", message: "Your creative approach to the UX redesign solved a problem we've been stuck on for months. Pure genius!", timestamp: "1d ago", likes: 27, companyValue: "Innovation" },
-  { id: "k6", sender: { name: "Emily Watson", initials: "EW" }, recipient: { name: "Omar Hassan", initials: "OH" }, type: KUDOS_TYPES.above, title: "Weekend War Hero", message: "You came in on Saturday to fix the critical production issue and saved the client demo on Monday. True dedication!", timestamp: "1d ago", likes: 41, companyValue: "Integrity" },
-  { id: "k7", sender: { name: "Dr. Sarah Chen", initials: "SC" }, recipient: { name: "Mark Williams", initials: "MW" }, type: KUDOS_TYPES.star, title: "Technical Leadership", message: "Your architecture proposal for the new microservices migration was brilliant. Clear, thorough, and forward-thinking.", timestamp: "2d ago", likes: 19, companyValue: "Innovation" },
-  { id: "k8", sender: { name: "James Rodriguez", initials: "JR" }, recipient: { name: "Lisa Park", initials: "LP" }, type: KUDOS_TYPES.team, title: "Cross-Team Champion", message: "You seamlessly coordinated between 4 departments for the product launch. Your organizational skills are unmatched!", timestamp: "2d ago", likes: 22, companyValue: "Collaboration" },
-  { id: "k9", sender: { name: "Nina Patel", initials: "NP" }, recipient: { name: "Aisha Johnson", initials: "AJ" }, type: KUDOS_TYPES.goal, title: "Sprint Velocity Record", message: "You completed 48 story points this sprint, breaking the team record! Your focus and efficiency are inspiring.", timestamp: "3d ago", likes: 29, companyValue: "Excellence" },
-  { id: "k10", sender: { name: "Carlos Mendez", initials: "CM" }, recipient: { name: "Emily Watson", initials: "EW" }, type: KUDOS_TYPES.helpful, title: "Knowledge Sharing Star", message: "Your Lunch & Learn session on React patterns was incredibly valuable. The whole team benefited from your expertise!", timestamp: "3d ago", likes: 16, companyValue: "Service" },
-  { id: "k11", sender: { name: "Rachel Foster", initials: "RF" }, recipient: { name: "David Kim", initials: "DK" }, type: KUDOS_TYPES.creative, title: "Innovative Solution Award", message: "Your hackathon project solving the data pipeline issue was incredibly creative. Already being implemented in production!", timestamp: "4d ago", likes: 35, companyValue: "Innovation" },
-  { id: "k12", sender: { name: "Omar Hassan", initials: "OH" }, recipient: { name: "Tom Baker", initials: "TB" }, type: KUDOS_TYPES.above, title: "Client Relations Master", message: "The client specifically requested to work with you again after your exceptional presentation. You represent our values perfectly!", timestamp: "4d ago", likes: 26, companyValue: "Excellence" },
-];
-
-// ─── Mock Leaderboard ─────────────────────────────────────────────
-const TOP_SENDERS: LeaderboardEntry[] = [
-  { rank: 1, name: "Lisa Park", initials: "LP", count: 42, department: "Marketing", trend: "up" },
-  { rank: 2, name: "Mark Williams", initials: "MW", count: 38, department: "Engineering", trend: "up" },
-  { rank: 3, name: "Dr. Sarah Chen", initials: "SC", count: 35, department: "Engineering", trend: "same" },
-  { rank: 4, name: "Tom Baker", initials: "TB", count: 29, department: "HR", trend: "down" },
-  { rank: 5, name: "Emily Watson", initials: "EW", count: 27, department: "Sales", trend: "up" },
-  { rank: 6, name: "Aisha Johnson", initials: "AJ", count: 24, department: "Finance", trend: "up" },
-  { rank: 7, name: "David Kim", initials: "DK", count: 21, department: "Engineering", trend: "same" },
-  { rank: 8, name: "James Rodriguez", initials: "JR", count: 18, department: "Operations", trend: "down" },
-  { rank: 9, name: "Rachel Foster", initials: "RF", count: 15, department: "Marketing", trend: "up" },
-  { rank: 10, name: "Nina Patel", initials: "NP", count: 12, department: "HR", trend: "same" },
-];
-
-const TOP_RECIPIENTS: LeaderboardEntry[] = [
-  { rank: 1, name: "Omar Hassan", initials: "OH", count: 47, department: "Engineering", trend: "up" },
-  { rank: 2, name: "Dr. Sarah Chen", initials: "SC", count: 41, department: "Engineering", trend: "up" },
-  { rank: 3, name: "Mark Williams", initials: "MW", count: 36, department: "Engineering", trend: "same" },
-  { rank: 4, name: "Emily Watson", initials: "EW", count: 32, department: "Sales", trend: "up" },
-  { rank: 5, name: "Lisa Park", initials: "LP", count: 28, department: "Marketing", trend: "down" },
-  { rank: 6, name: "Carlos Mendez", initials: "CM", count: 25, department: "Operations", trend: "up" },
-  { rank: 7, name: "Aisha Johnson", initials: "AJ", count: 23, department: "Finance", trend: "same" },
-  { rank: 8, name: "David Kim", initials: "DK", count: 20, department: "Engineering", trend: "down" },
-  { rank: 9, name: "James Rodriguez", initials: "JR", count: 17, department: "Operations", trend: "up" },
-  { rank: 10, name: "Rachel Foster", initials: "RF", count: 14, department: "Marketing", trend: "same" },
-];
+// Employee names loaded from API
+const DEPARTMENTS_STATIC = ["Maintenance/Support & Service", "Centre of Excellence & Innovation", "Accounting", "Administrative Staff/Department Directors", "Marketing", "Professional Services Unit", "Graduate Programmes", "Office of the Executive Director", "Human Resources", "Documentation Centre"];
 
 // ─── Component ────────────────────────────────────────────────────
 export function KudosView() {
   const [activeTab, setActiveTab] = useState("give");
-  const [kudosFeed, setKudosFeed] = useState<KudosEntry[]>(MOCK_KUDOS);
+  const { employees } = useAppStore();
+  const [kudosFeed, setKudosFeed] = useState<KudosEntry[]>([]);
+  const [topSenders, setTopSenders] = useState<LeaderboardEntry[]>([]);
+  const [topRecipients, setTopRecipients] = useState<LeaderboardEntry[]>([]);
+
+  // Fetch kudos from API on mount
+  useEffect(() => {
+    // Kudos API not yet fully wired — show empty state
+    // When API is ready: fetch('/api/kudos').then(...)
+  }, []);
+
+  const employeeNames = useMemo(() => {
+    return employees.map((e: any) => `${e.firstName || e.first_name || ''} ${e.lastName || e.last_name || ''}`).filter(Boolean);
+  }, [employees]);
   const [selectedType, setSelectedType] = useState("star");
   const [recipient, setRecipient] = useState("");
   const [title, setTitle] = useState("");
@@ -155,7 +121,7 @@ export function KudosView() {
 
   // ─── Computed ──────────────────────────────────────────────────
   const wallOfFame = useMemo(() => {
-    let filtered = [...MOCK_KUDOS].sort((a, b) => b.likes - a.likes).slice(0, 12);
+    let filtered = [...kudosFeed].sort((a, b) => b.likes - a.likes).slice(0, 12);
     return filtered;
   }, []);
 
@@ -306,7 +272,7 @@ export function KudosView() {
                   <Select value={recipient} onValueChange={setRecipient}>
                     <SelectTrigger><SelectValue placeholder="Select a colleague" /></SelectTrigger>
                     <SelectContent>
-                      {EMPLOYEE_NAMES.map((name) => <SelectItem key={name} value={name}>{name}</SelectItem>)}
+                      {employeeNames.length > 0 ? employeeNames.map((name: string) => <SelectItem key={name} value={name}>{name}</SelectItem>) : <SelectItem value="" disabled>No employees loaded</SelectItem>}
                     </SelectContent>
                   </Select>
                 </div>
@@ -413,7 +379,7 @@ export function KudosView() {
               <SelectTrigger className="w-full sm:w-48"><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Departments</SelectItem>
-                {DEPARTMENTS.map((d) => <SelectItem key={d} value={d}>{d}</SelectItem>)}
+                {DEPARTMENTS_STATIC.map((d) => <SelectItem key={d} value={d}>{d}</SelectItem>)}
               </SelectContent>
             </Select>
           </div>
@@ -487,7 +453,8 @@ export function KudosView() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {TOP_SENDERS.map((entry) => (
+                  {topSenders.length === 0 && <p className="text-sm text-muted-foreground text-center py-8">No kudos data yet. Send some kudos to see the leaderboard!</p>}
+                  {topSenders.map((entry) => (
                     <div key={entry.rank} className={`flex items-center gap-3 p-3 rounded-xl transition-colors hover:bg-accent/30 ${entry.rank <= 3 ? "bg-gradient-to-r from-amber-50/50 to-transparent dark:from-amber-950/10 dark:to-transparent" : ""}`}>
                       {rankBadge(entry.rank)}
                       <Avatar className="h-8 w-8">
@@ -520,7 +487,8 @@ export function KudosView() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {TOP_RECIPIENTS.map((entry) => (
+                  {topRecipients.length === 0 && <p className="text-sm text-muted-foreground text-center py-8">No recognition data yet. Start recognizing your colleagues!</p>}
+                  {topRecipients.map((entry) => (
                     <div key={entry.rank} className={`flex items-center gap-3 p-3 rounded-xl transition-colors hover:bg-accent/30 ${entry.rank <= 3 ? "bg-gradient-to-r from-amber-50/50 to-transparent dark:from-amber-950/10 dark:to-transparent" : ""}`}>
                       {rankBadge(entry.rank)}
                       <Avatar className="h-8 w-8">

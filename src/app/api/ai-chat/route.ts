@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
+import { createClient } from "@/lib/supabase/server";
 
 // POST /api/ai-chat - Send a message to AI chat
 export async function POST(request: NextRequest) {
@@ -11,30 +11,39 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "userId and message are required" }, { status: 400 });
     }
 
+    const supabase = await createClient();
+
     // Save user message
-    const userMessage = await db.chatMessage.create({
-      data: {
-        sessionId: sessionId || crypto.randomUUID(),
-        userId,
+    const { data: userMessage, error: msgError } = await supabase
+      .from("chat_messages")
+      .insert({
+        session_id: sessionId || crypto.randomUUID(),
+        user_id: userId,
         role: "user",
         content: message,
-        agentType: agentType || "hr_assistant",
-      },
-    });
+        agent_type: agentType || "hr_assistant",
+      })
+      .select()
+      .single();
 
-    // Generate AI response (using z-ai-web-dev-sdk would happen here in production)
-    // For now, generate a contextual response
-    const aiResponse = await generateAIResponse(userId, message, agentType);
+    if (msgError) throw msgError;
 
-    const assistantMessage = await db.chatMessage.create({
-      data: {
-        sessionId: userMessage.sessionId,
-        userId,
+    // Generate AI response
+    const aiResponse = await generateAIResponse(supabase, userId, message, agentType);
+
+    const { data: assistantMessage, error: aiMsgError } = await supabase
+      .from("chat_messages")
+      .insert({
+        session_id: userMessage.session_id,
+        user_id: userId,
         role: "assistant",
         content: aiResponse.content,
-        agentType: aiResponse.agentType || agentType || "hr_assistant",
-      },
-    });
+        agent_type: aiResponse.agentType || agentType || "hr_assistant",
+      })
+      .select()
+      .single();
+
+    if (aiMsgError) throw aiMsgError;
 
     return NextResponse.json({
       userMessage,
@@ -57,12 +66,19 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "sessionId is required" }, { status: 400 });
     }
 
-    const messages = await db.chatMessage.findMany({
-      where: { sessionId, ...(userId && { userId }) },
-      orderBy: { createdAt: "asc" },
-    });
+    const supabase = await createClient();
 
-    return NextResponse.json({ messages });
+    let query = supabase
+      .from("chat_messages")
+      .select("*")
+      .eq("session_id", sessionId)
+      .order("created_at");
+
+    if (userId) query = query.eq("user_id", userId);
+
+    const { data: messages, error } = await query;
+    if (error) throw error;
+    return NextResponse.json({ messages: messages || [] });
   } catch (error) {
     console.error("Error fetching chat messages:", error);
     return NextResponse.json({ error: "Failed to fetch chat messages" }, { status: 500 });
@@ -70,47 +86,49 @@ export async function GET(request: NextRequest) {
 }
 
 async function generateAIResponse(
+  supabase: any,
   userId: string,
   message: string,
   agentType?: string
 ): Promise<{ content: string; agentType: string }> {
   // Get employee context
-  const employee = await db.employee.findUnique({
-    where: { id: userId },
-    include: {
-      department: true,
-      workLocation: true,
-    },
-  });
+  const { data: employee } = await supabase
+    .from("employees")
+    .select("*, department:departments(name), work_location:geofences(name)")
+    .eq("id", userId)
+    .single();
 
-  const name = employee ? `${employee.firstName} ${employee.lastName}` : "there";
+  const name = employee ? `${employee.first_name} ${employee.last_name}` : "there";
   const dept = employee?.department?.name || "N/A";
   const role = employee?.role || "employee";
-  const hireDate = employee?.hireDate
-    ? new Date(employee.hireDate).toLocaleDateString()
+  const hireDate = employee?.hire_date
+    ? new Date(employee.hire_date).toLocaleDateString()
     : "N/A";
-  const payType = employee?.payType || "N/A";
-  const payRate = employee?.payRate || 0;
+  const payType = employee?.pay_type || "N/A";
+  const payRate = employee?.pay_rate || 0;
 
   const lowerMessage = message.toLowerCase();
 
   // Route to appropriate agent based on message content
   if (lowerMessage.includes("pto") || lowerMessage.includes("time off") || lowerMessage.includes("vacation") || lowerMessage.includes("leave")) {
     const year = new Date().getFullYear();
-    const balance = await db.pTOBalance.findUnique({
-      where: { employeeId_year: { employeeId: userId, year } },
-    });
+    const { data: balance } = await supabase
+      .from("pto_balances")
+      .select("*")
+      .eq("employee_id", userId)
+      .eq("year", year)
+      .single();
 
     const available = balance
-      ? balance.totalAllocated - balance.usedSick - balance.usedVacation - balance.usedPersonal - balance.usedOther
+      ? balance.total_allocated - balance.used_sick - balance.used_vacation - balance.used_personal - balance.used_other
       : 20;
 
     return {
       content: `**PTO Fairy Agent** 🧚\n\nHi ${name}! Here's your PTO balance for ${year}:\n\n` +
-        `- **Total Allocated:** ${balance?.totalAllocated || 20} days\n` +
-        `- **Sick Leave Used:** ${balance?.usedSick || 0} days\n` +
-        `- **Vacation Used:** ${balance?.usedVacation || 0} days\n` +
-        `- **Personal Days Used:** ${balance?.usedPersonal || 0} days\n` +
+        `- **Total Allocated:** ${balance?.total_allocated || 20} days\n` +
+        `- **Sick Leave Used:** ${balance?.used_sick || 0} days\n` +
+        `- **Vacation Used:** ${balance?.used_vacation || 0} days\n` +
+        `- **Personal Days Used:** ${balance?.used_personal || 0} days\n` +
         `- **Available Balance:** ${available} days\n\n` +
         `Would you like to submit a PTO request? Just tell me the type, start date, and end date!`,
       agentType: "pto_fairy",
@@ -124,37 +142,38 @@ async function generateAIResponse(
         `- **Pay Rate:** $${payRate}/hr\n` +
         `- **Department:** ${dept}\n` +
         `- **Hire Date:** ${hireDate}\n\n` +
-        `Pay stubs are available in the Payroll section of your dashboard. If you notice any discrepancies in your pay, I can help investigate. Just let me know!`,
+        `Pay stubs are available in the Payroll section of your dashboard. If you notice any discrepancies in your pay, I can help investigate.`,
       agentType: "payroll_detective",
     };
   }
 
   if (lowerMessage.includes("compliance") || lowerMessage.includes("policy") || lowerMessage.includes("regulation") || lowerMessage.includes("labor")) {
     return {
-      content: `**Compliance Agent (Border Buddy)** 🌍\n\nHi ${name}! I monitor labor law and compliance changes that may affect your workplace.\n\n` +
-        `**Recent Compliance Alerts:**\n` +
-        `1. 📋 Federal overtime threshold updated to $43,888/year (effective July 2024)\n` +
-        `2. 📋 New state leave requirements - check your local jurisdiction\n` +
-        `3. 📋 I-9 verification reminder: Ensure all employees have verified documents\n\n` +
+      content: `**Compliance Agent (Border Buddy)** 🌍\n\nHi ${name}! I monitor labor law and compliance changes.\n\n` +
+        `**JA Statutory Deductions:**\n` +
+        `1. 📋 NIS: Employee 3% / Employer 3.75% (ceiling: J$32,400/wk)\n` +
+        `2. 📋 NHT: Employee 2% / Employer 3% (ceiling: J$1.5M/mo)\n` +
+        `3. 📋 Education Tax: 2.5% of gross (no ceiling)\n` +
+        `4. 📋 PAYE: 25% above threshold (varies by code)\n\n` +
         `For specific compliance questions, feel free to ask!`,
       agentType: "compliance_agent",
     };
   }
 
   if (lowerMessage.includes("clock") || lowerMessage.includes("attendance") || lowerMessage.includes("hours")) {
-    // Get recent attendance
-    const recentAttendance = await db.attendance.findMany({
-      where: { employeeId: userId },
-      orderBy: { clockIn: "desc" },
-      take: 5,
-    });
+    const { data: recentAttendance } = await supabase
+      .from("attendance")
+      .select("*")
+      .eq("employee_id", userId)
+      .order("clock_in", { ascending: false })
+      .limit(5);
 
     let attendanceSummary = "";
-    if (recentAttendance.length > 0) {
+    if (recentAttendance && recentAttendance.length > 0) {
       attendanceSummary = recentAttendance
-        .map((a) => {
-          const date = new Date(a.clockIn).toLocaleDateString();
-          const hours = a.totalHours || "In progress";
+        .map((a: any) => {
+          const date = new Date(a.clock_in).toLocaleDateString();
+          const hours = a.total_hours || "In progress";
           return `- ${date}: ${hours} hours (${a.status})`;
         })
         .join("\n");
@@ -164,18 +183,18 @@ async function generateAIResponse(
 
     return {
       content: `**HR Assistant** 💼\n\nHi ${name}! Here's your recent attendance:\n\n${attendanceSummary}\n\n` +
-        `Remember, clock-in requires GPS verification within your designated work zone. If you have issues clocking in, please contact HR.`,
+        `Clock-in requires GPS verification within your designated work zone.`,
       agentType: "hr_assistant",
     };
   }
 
   // Default HR Assistant response
   return {
-    content: `**HR Assistant** 💼\n\nHi ${name}! How can I help you today?\n\nI can assist you with:\n` +
-      `- 🕐 **Attendance** - Check your clock-in/out history\n` +
-      `- 💰 **Payroll** - View pay information and stubs\n` +
-      `- 🏖️ **PTO** - Check balances and submit requests\n` +
-      `- 📋 **Policies** - Company policies and compliance\n` +
+    content: `**HR Assistant** 💼\n\nHi ${name}! How can I help you today?\n\nI can assist with:\n` +
+      `- 🕐 **Attendance** - Clock-in/out history\n` +
+      `- 💰 **Payroll** - Pay information and stubs\n` +
+      `- 🏖️ **PTO** - Balances and requests\n` +
+      `- 📋 **Compliance** - JA regulatory info\n` +
       `- ❓ **General** - Any HR-related questions\n\n` +
       `Just ask away!`,
     agentType: "hr_assistant",

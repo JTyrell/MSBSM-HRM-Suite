@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
+import { useAppStore } from "@/store/app";
 import {
   Card,
   CardContent,
@@ -109,51 +110,7 @@ const FEEDBACK_TYPE_STYLES: Record<FeedbackType, { className: string; icon: Reac
   Concern: { className: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300", icon: AlertCircle },
 };
 
-// ─── Mock Data ──────────────────────────────────────────────────────
-
-const MOCK_EMPLOYEES = [
-  "Dr. Sarah Chen",
-  "Mark Williams",
-  "Lisa Park",
-  "James Rodriguez",
-  "Aisha Johnson",
-  "David Kim",
-  "Tom Baker",
-  "Nina Patel",
-  "Rachel Foster",
-  "Michael Brown",
-  "Angela Davis",
-  "Chris Thompson",
-];
-
-const MOCK_SURVEYS: Survey[] = [
-  { id: "s1", title: "Employee Satisfaction Q2", description: "Quarterly survey measuring overall employee satisfaction, workplace environment, and team dynamics.", status: "Active", responses: 23, totalTarget: 45, createdAt: "2025-05-15", deadline: "2025-06-30", type: "Satisfaction" },
-  { id: "s2", title: "Workplace Safety Audit", description: "Comprehensive safety audit covering office hazards, emergency protocols, and equipment maintenance.", status: "Active", responses: 38, totalTarget: 40, createdAt: "2025-05-01", deadline: "2025-06-15", type: "Audit" },
-  { id: "s3", title: "Remote Work Experience", description: "Feedback on remote working arrangements, technology tools, and work-life balance.", status: "Closed", responses: 52, totalTarget: 52, createdAt: "2025-03-01", deadline: "2025-04-15", type: "Assessment" },
-  { id: "s4", title: "Training Needs Assessment", description: "Identify skill gaps and training preferences to plan next quarter's professional development programme.", status: "Closed", responses: 41, totalTarget: 50, createdAt: "2025-02-10", deadline: "2025-03-20", type: "Assessment" },
-  { id: "s5", title: "Benefits Review", description: "Annual review of employee benefits package including health insurance, pension, and wellness perks.", status: "Closed", responses: 48, totalTarget: 48, createdAt: "2025-01-05", deadline: "2025-02-28", type: "Review" },
-  { id: "s6", title: "Culture & Engagement", description: "Assess organisational culture, team cohesion, and employee engagement levels across departments.", status: "Draft", responses: 0, totalTarget: 60, createdAt: "2025-06-10", deadline: "2025-08-31", type: "Engagement" },
-];
-
-const MOCK_FEEDBACK: FeedbackEntry[] = [
-  { id: "f1", from: "Dr. Sarah Chen", to: "Mark Williams", type: "Appreciation", rating: 5, date: "2025-06-11", comment: "Outstanding leadership during the Q2 planning session. Your strategic thinking helped the team align on key priorities.", anonymous: false },
-  { id: "f2", from: "Anonymous", to: "Lisa Park", type: "Suggestion", rating: 4, date: "2025-06-10", comment: "Consider using shared project boards to improve visibility across team workstreams and reduce duplicate effort.", anonymous: true },
-  { id: "f3", from: "James Rodriguez", to: "David Kim", type: "Appreciation", rating: 5, date: "2025-06-09", comment: "Thank you for mentoring the new hires. Your patience and guidance made their onboarding experience seamless.", anonymous: false },
-  { id: "f4", from: "Aisha Johnson", to: "Tom Baker", type: "Concern", rating: 3, date: "2025-06-08", comment: "The new deadline for the compliance report seems unrealistic given the current resource constraints. Suggest revisiting the timeline.", anonymous: false },
-  { id: "f5", from: "Anonymous", to: "Nina Patel", type: "Appreciation", rating: 5, date: "2025-06-07", comment: "Your presentation at the all-hands was incredibly insightful. The data visualisation made complex metrics easy to understand.", anonymous: true },
-  { id: "f6", from: "Rachel Foster", to: "Michael Brown", type: "Suggestion", rating: 4, date: "2025-06-06", comment: "Implementing a weekly knowledge-sharing session could help distribute expertise across the department more effectively.", anonymous: false },
-  { id: "f7", from: "Chris Thompson", to: "Angela Davis", type: "Appreciation", rating: 4, date: "2025-06-05", comment: "Great coordination on the cross-departmental project. Your communication kept everyone aligned and on schedule.", anonymous: false },
-  { id: "f8", from: "David Kim", to: "Dr. Sarah Chen", type: "Concern", rating: 3, date: "2025-06-04", comment: "The increased meeting frequency is impacting deep work time. Could we consolidate some of the recurring meetings?", anonymous: false },
-];
-
-const MOCK_MY_FEEDBACK: MyFeedbackItem[] = [
-  { id: "mf1", from: "Mark Williams", type: "Appreciation", rating: 5, date: "2025-06-12", comment: "Your guidance on the database migration was invaluable. The project was completed ahead of schedule thanks to your expertise and clear communication.", anonymous: false },
-  { id: "mf2", from: "Anonymous", type: "Appreciation", rating: 4, date: "2025-06-10", comment: "Consistently delivering high-quality work. Your attention to detail on the financial reports has been noticed and appreciated by leadership.", anonymous: true },
-  { id: "mf3", from: "Lisa Park", type: "Suggestion", rating: 4, date: "2025-06-08", comment: "Consider sharing your documentation templates with the wider team — they could benefit from your structured approach to technical writing.", anonymous: false },
-  { id: "mf4", from: "James Rodriguez", type: "Appreciation", rating: 5, date: "2025-06-05", comment: "Excellent problem-solving during the system outage. Your calm approach and quick resolution minimised downtime for the entire campus.", anonymous: false },
-  { id: "mf5", from: "Anonymous", type: "Suggestion", rating: 3, date: "2025-06-03", comment: "Response times to support tickets could be improved. Setting up automated triage might help prioritise urgent requests more efficiently.", anonymous: true },
-  { id: "mf6", from: "Aisha Johnson", type: "Concern", rating: 3, date: "2025-06-01", comment: "Some stakeholders have raised concerns about the timeline for the new feature rollout. Recommend a review meeting to realign expectations.", anonymous: false },
-];
+// ─── Data from API (empty until wired) ──────────────────────────────
 
 // ─── Helper Functions ──────────────────────────────────────────────
 
@@ -178,9 +135,13 @@ function StarRating({ rating }: { rating: number }) {
 // ─── Main Component ─────────────────────────────────────────────────
 
 export function FeedbackView() {
+  const { employees } = useAppStore();
   const [activeTab, setActiveTab] = useState("surveys");
   const [surveyDialogOpen, setSurveyDialogOpen] = useState(false);
   const [feedbackFilter, setFeedbackFilter] = useState("All");
+  const [surveys, setSurveys] = useState<Survey[]>([]);
+  const [feedbackEntries, setFeedbackEntries] = useState<FeedbackEntry[]>([]);
+  const [myFeedback, setMyFeedback] = useState<MyFeedbackItem[]>([]);
   const [newSurvey, setNewSurvey] = useState({ title: "", description: "", deadline: "", type: "Satisfaction" as SurveyType });
   const [feedbackForm, setFeedbackForm] = useState({
     employee: "",
@@ -190,53 +151,58 @@ export function FeedbackView() {
     anonymous: false,
   });
 
+  const employeeNames = useMemo(() => {
+    return employees.map((e: any) => `${e.firstName || e.first_name || ''} ${e.lastName || e.last_name || ''}`).filter(Boolean);
+  }, [employees]);
+
   // ─── Computed Stats ────────────────────────────────────────────
   const stats = useMemo(() => {
-    const active = MOCK_SURVEYS.filter((s) => s.status === "Active").length;
-    const closed = MOCK_SURVEYS.filter((s) => s.status === "Closed").length;
-    const avgRating = 4.2;
-    const totalFeedback = MOCK_FEEDBACK.length + MOCK_MY_FEEDBACK.length;
+    const active = surveys.filter((s) => s.status === "Active").length;
+    const totalFeedback = feedbackEntries.length + myFeedback.length;
+    const avgRating = myFeedback.length > 0
+      ? Math.round(myFeedback.reduce((sum, f) => sum + f.rating, 0) / myFeedback.length * 10) / 10
+      : 0;
     return [
       { label: "Total Feedback", value: totalFeedback, icon: MessageCircle, color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40" },
-      { label: "Average Rating", value: `${avgRating}/5`, icon: Star, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/40" },
-      { label: "Response Rate", value: "67%", icon: TrendingUp, color: "text-violet-600 dark:text-violet-400", bg: "bg-violet-50 dark:bg-violet-950/40" },
+      { label: "Average Rating", value: avgRating > 0 ? `${avgRating}/5` : "—", icon: Star, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/40" },
+      { label: "Response Rate", value: "—", icon: TrendingUp, color: "text-violet-600 dark:text-violet-400", bg: "bg-violet-50 dark:bg-violet-950/40" },
       { label: "Active Surveys", value: active, icon: ClipboardList, color: "text-rose-600 dark:text-rose-400", bg: "bg-rose-50 dark:bg-rose-950/40" },
     ];
-  }, []);
+  }, [surveys, feedbackEntries, myFeedback]);
 
   // ─── Survey Stats ─────────────────────────────────────────────
   const surveyStats = useMemo(() => {
-    const active = MOCK_SURVEYS.filter((s) => s.status === "Active").length;
-    const closed = MOCK_SURVEYS.filter((s) => s.status === "Closed").length;
-    const draft = MOCK_SURVEYS.filter((s) => s.status === "Draft").length;
-    const avgRate = Math.round(
-      MOCK_SURVEYS.filter((s) => s.status !== "Draft").reduce((sum, s) => sum + (s.totalTarget > 0 ? (s.responses / s.totalTarget) * 100 : 0), 0) /
-      MOCK_SURVEYS.filter((s) => s.status !== "Draft").length
-    );
+    const active = surveys.filter((s) => s.status === "Active").length;
+    const closed = surveys.filter((s) => s.status === "Closed").length;
+    const draft = surveys.filter((s) => s.status === "Draft").length;
+    const nonDraft = surveys.filter((s) => s.status !== "Draft");
+    const avgRate = nonDraft.length > 0 ? Math.round(
+      nonDraft.reduce((sum, s) => sum + (s.totalTarget > 0 ? (s.responses / s.totalTarget) * 100 : 0), 0) / nonDraft.length
+    ) : 0;
     return [
       { label: "Active", value: active, color: "text-emerald-600 dark:text-emerald-400" },
       { label: "Closed", value: closed, color: "text-slate-600 dark:text-slate-400" },
       { label: "Draft", value: draft, color: "text-amber-600 dark:text-amber-400" },
       { label: "Avg Response Rate", value: `${avgRate}%`, color: "text-violet-600 dark:text-violet-400" },
     ];
-  }, []);
+  }, [surveys]);
 
   // ─── Filtered Feedback ────────────────────────────────────────
   const filteredFeedback = useMemo(() => {
-    if (feedbackFilter === "All") return MOCK_FEEDBACK;
-    return MOCK_FEEDBACK.filter((f) => f.type === feedbackFilter);
-  }, [feedbackFilter]);
+    if (feedbackFilter === "All") return feedbackEntries;
+    return feedbackEntries.filter((f) => f.type === feedbackFilter);
+  }, [feedbackFilter, feedbackEntries]);
 
   // ─── My Feedback Stats ────────────────────────────────────────
   const myFeedbackStats = useMemo(() => {
-    const avgRating = Math.round(
-      MOCK_MY_FEEDBACK.reduce((sum, f) => sum + f.rating, 0) / MOCK_MY_FEEDBACK.length * 10
-    ) / 10;
-    const positive = MOCK_MY_FEEDBACK.filter((f) => f.type === "Appreciation").length;
-    const neutral = MOCK_MY_FEEDBACK.filter((f) => f.type === "Suggestion").length;
-    const needsAttention = MOCK_MY_FEEDBACK.filter((f) => f.type === "Concern").length;
+    const avgRating = myFeedback.length > 0 ? Math.round(
+      myFeedback.reduce((sum, f) => sum + f.rating, 0) / myFeedback.length * 10
+    ) / 10 : 0;
+    const positive = myFeedback.filter((f) => f.type === "Appreciation").length;
+    const neutral = myFeedback.filter((f) => f.type === "Suggestion").length;
+    const needsAttention = myFeedback.filter((f) => f.type === "Concern").length;
     return { avgRating, positive, neutral, needsAttention };
-  }, []);
+  }, [myFeedback]);
 
   // ─── Handlers ─────────────────────────────────────────────────
   const handleCreateSurvey = () => {
@@ -330,7 +296,8 @@ export function FeedbackView() {
 
           {/* Survey Cards */}
           <div className="space-y-3">
-            {MOCK_SURVEYS.map((survey) => {
+            {surveys.length === 0 && <p className="text-sm text-muted-foreground text-center py-8">No surveys yet. Create one to get started!</p>}
+            {surveys.map((survey) => {
               const statusCfg = SURVEY_STATUS_STYLES[survey.status];
               const StatusIcon = statusCfg.icon;
               const progress = survey.totalTarget > 0 ? Math.round((survey.responses / survey.totalTarget) * 100) : 0;
@@ -423,9 +390,9 @@ export function FeedbackView() {
                     <Select value={feedbackForm.employee} onValueChange={(v) => setFeedbackForm((p) => ({ ...p, employee: v }))}>
                       <SelectTrigger><SelectValue placeholder="Choose an employee" /></SelectTrigger>
                       <SelectContent>
-                        {MOCK_EMPLOYEES.map((emp) => (
-                          <SelectItem key={emp} value={emp}>{emp}</SelectItem>
-                        ))}
+                        {employeeNames.length > 0
+                          ? employeeNames.map((name: string) => <SelectItem key={name} value={name}>{name}</SelectItem>)
+                          : <SelectItem value="" disabled>No employees loaded</SelectItem>}
                       </SelectContent>
                     </Select>
                   </div>
@@ -589,7 +556,8 @@ export function FeedbackView() {
 
           {/* Feedback List */}
           <div className="space-y-3">
-            {MOCK_MY_FEEDBACK.map((item) => {
+            {myFeedback.length === 0 && <p className="text-sm text-muted-foreground text-center py-8">No feedback received yet.</p>}
+            {myFeedback.map((item) => {
               const typeCfg = FEEDBACK_TYPE_STYLES[item.type];
               const TypeIcon = typeCfg.icon;
 

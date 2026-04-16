@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import {
   DoorOpen,
   LayoutDashboard,
@@ -165,29 +166,41 @@ export default function HomePage() {
 
   const { theme, setTheme, resolvedTheme } = useTheme();
 
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileEditorOpen, setProfileEditorOpen] = useState(false);
-  const [isSeeding, setIsSeeding] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
   const currentUser = employees.find((e) => e.id === currentUserId);
 
-  // Load data on mount
+  // Auth + data initialization
   useEffect(() => {
     async function initialize() {
       try {
-        // Seed if needed
-        const seedRes = await fetch("/api/seed", { method: "POST" });
-        const seedData = await seedRes.json();
+        // Check authentication
+        const meRes = await fetch("/api/auth/me");
+        const meData = await meRes.json();
 
-        if (seedData.employees) {
-          setEmployees(seedData.employees);
-          // Default to first employee (admin)
-          setCurrentUserId(seedData.employees[0].id);
+        if (!meData.user || !meData.employee) {
+          // Not authenticated — redirect to login
+          router.push("/login");
+          return;
         }
+
+        // Set current user from auth
+        setCurrentUserId(meData.employee.id);
+
+        // Load all employees
+        const empRes = await fetch("/api/employees");
+        const empData = await empRes.json();
+        if (empData.employees) {
+          setEmployees(empData.employees);
+        }
+
         setIsInitialized(true);
       } catch (err) {
         console.error("Initialization error:", err);
+        // If Supabase isn't configured yet, still initialize (dev mode)
         setIsInitialized(true);
       }
     }
@@ -204,24 +217,7 @@ export default function HomePage() {
     }
   }, [currentUserId]);
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
-
-  const unreadCount2 = (notifications || []).filter((n: { isRead: boolean }) => !n.isRead).length;
-
-  const handleReseed = async () => {
-    setIsSeeding(true);
-    try {
-      const res = await fetch("/api/seed", { method: "POST" });
-      const data = await res.json();
-      if (data.employees) {
-        setEmployees(data.employees);
-        setCurrentUserId(data.employees[0].id);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-    setIsSeeding(false);
-  };
+  const unreadCount = (notifications || []).filter((n: any) => !n.is_read && !n.isRead).length;
 
   const switchUser = (emp: Employee) => {
     setCurrentUserId(emp.id);
@@ -602,9 +598,9 @@ function SidebarContent({
   ROLE_LABELS: Record<string, string>;
 }) {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full overflow-hidden">
       {/* Decorative gradient banner */}
-      <div className="h-24 -mx-4 -mt-4 mb-4 bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-700 relative overflow-hidden">
+      <div className="h-24 shrink-0 bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-700 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.1),transparent_60%)]" />
         <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-card to-transparent" />
         <div className="relative z-10 flex flex-col items-center justify-center h-full gap-2 pt-6">
@@ -628,7 +624,7 @@ function SidebarContent({
       </div>
 
       {/* Navigation */}
-      <ScrollArea className="flex-1 px-3 py-3">
+      <ScrollArea className="flex-1 min-h-0 px-3 py-3">
         <div className="space-y-1">
           <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3 mb-2">
             Main Menu

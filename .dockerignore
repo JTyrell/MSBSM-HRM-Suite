@@ -1,0 +1,38 @@
+# ─── Docker ──────────────────────────────────
+.dockerignore
+Dockerfile
+railway.toml
+
+# ─── Dependencies ────────────────────────────
+node_modules/
+
+# ─── Build artifacts ─────────────────────────
+.next/
+out/
+
+# ─── Dev/Test ────────────────────────────────
+src/__tests__/
+src/test/
+vitest.config.ts
+*.test.ts
+*.test.tsx
+
+# ─── Environment ─────────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ─── Prisma (legacy — being removed) ────────
+prisma/
+
+# ─── Git ─────────────────────────────────────
+.git/
+.gitignore
+
+# ─── IDE/OS ──────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

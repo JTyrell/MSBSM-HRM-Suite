@@ -29,6 +29,25 @@ beforeEach(() => {
   });
 
   mockFetch.mockImplementation((url: string) => {
+    if (url.includes("/api/auth/me")) {
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({
+          user: { id: "auth-1", email: "jane@test.com" },
+          employee: { id: "user-1", employeeId: "EMP001", firstName: "Jane", lastName: "Doe", email: "jane@test.com", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
+        }),
+      });
+    }
+    if (url.includes("/api/employees")) {
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({
+          employees: [
+            { id: "user-1", employeeId: "EMP001", firstName: "Jane", lastName: "Doe", email: "jane@test.com", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
+          ],
+        }),
+      });
+    }
     if (url.includes("/api/seed")) {
       return Promise.resolve({
         ok: true,

@@ -52,3 +52,16 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# Bun lockfile (project uses npm)
+bun.lock
+
+# Prisma (legacy — removed)
+prisma/
+
+# SQLite database (legacy — removed)
+db/
+
+# Dev documentation (not deployed)
+worklog.md
+msbm_hr_suite_feature_walkthrough.md

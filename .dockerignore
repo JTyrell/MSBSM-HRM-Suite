@@ -22,8 +22,9 @@ vitest.config.ts
 .env.local
 .env.*.local
 
-# ─── Prisma (legacy — being removed) ────────
+# ─── Legacy (removed) ────────────────────────
 prisma/
+db/
 
 # ─── Git ─────────────────────────────────────
 .git/
@@ -36,3 +37,11 @@ prisma/
 *.swo
 .DS_Store
 Thumbs.db
+
+# ─── Unused config files ─────────────────────
+Caddyfile
+bun.lock
+
+# ─── Documentation ───────────────────────────
+*.md
+!README.md

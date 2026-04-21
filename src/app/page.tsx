@@ -170,6 +170,22 @@ export default function HomePage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileEditorOpen, setProfileEditorOpen] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
+  const [isSeeding, setIsSeeding] = useState(false);
+
+  const handleReseed = useCallback(async () => {
+    setIsSeeding(true);
+    try {
+      await fetch("/api/seed", { method: "POST" });
+      // Reload employees after reseed
+      const empRes = await fetch("/api/employees");
+      const empData = await empRes.json();
+      if (empData.employees) setEmployees(empData.employees);
+    } catch (err) {
+      console.error("Reseed failed:", err);
+    } finally {
+      setIsSeeding(false);
+    }
+  }, [setEmployees]);
 
   const currentUser = employees.find((e) => e.id === currentUserId);
 
@@ -268,7 +284,7 @@ export default function HomePage() {
           setMobileMenuOpen={() => {}}
           switchUser={switchUser}
           employees={employees}
-          unreadCount={unreadCount2}
+          unreadCount={unreadCount}
           ROLE_COLORS={ROLE_COLORS}
           ROLE_LABELS={ROLE_LABELS}
         />
@@ -297,7 +313,7 @@ export default function HomePage() {
           setMobileMenuOpen={setMobileMenuOpen}
           switchUser={switchUser}
           employees={employees}
-          unreadCount={unreadCount2}
+          unreadCount={unreadCount}
           ROLE_COLORS={ROLE_COLORS}
           ROLE_LABELS={ROLE_LABELS}
         />

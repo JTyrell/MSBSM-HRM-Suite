@@ -108,19 +108,19 @@ describe("DashboardView", () => {
   it("should display 4 timezone cities", async () => {
     render(<DashboardView />);
     await screen.findByText("World Clock");
+    expect(screen.getByText("Kingston")).toBeInTheDocument();
     expect(screen.getByText("New York")).toBeInTheDocument();
     expect(screen.getByText("London")).toBeInTheDocument();
-    expect(screen.getByText("Tokyo")).toBeInTheDocument();
-    expect(screen.getByText("Sydney")).toBeInTheDocument();
+    expect(screen.getByText("Toronto")).toBeInTheDocument();
   });
 
   it("should display timezone labels", async () => {
     render(<DashboardView />);
     await screen.findByText("World Clock");
-    expect(screen.getByText("Company HQ")).toBeInTheDocument();
-    expect(screen.getByText("EMEA Office")).toBeInTheDocument();
-    expect(screen.getByText("APAC Office")).toBeInTheDocument();
-    expect(screen.getByText("ANZ Office")).toBeInTheDocument();
+    expect(screen.getByText("MSBM HQ")).toBeInTheDocument();
+    expect(screen.getByText("USA East")).toBeInTheDocument();
+    expect(screen.getByText("UK/Europe")).toBeInTheDocument();
+    expect(screen.getByText("Canada")).toBeInTheDocument();
   });
 
   it("should show Live indicator on World Clock", async () => {

@@ -14,9 +14,9 @@ beforeEach(() => {
   vi.clearAllMocks();
   useAppStore.setState({
     employees: [
-      { id: "1", employeeId: "EMP001", firstName: "Jane", lastName: "Doe", email: "jane@test.com", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
-      { id: "2", employeeId: "EMP002", firstName: "John", lastName: "Smith", email: "john@test.com", role: "employee", status: "active", hireDate: "2025-06-01", departmentId: "d2", payType: "hourly", payRate: 25, overtimeRate: 1.5 },
-      { id: "3", employeeId: "EMP003", firstName: "Alice", lastName: "Brown", email: "alice@test.com", role: "manager", status: "on_leave", hireDate: "2023-03-10", departmentId: "d1", payType: "salary", payRate: 65000, overtimeRate: 1.5 },
+      { id: "1", employeeId: "620123456", firstName: "Jane", lastName: "Doe", email: "jane@uwi.edu", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
+      { id: "2", employeeId: "620123457", firstName: "John", lastName: "Smith", email: "john@uwi.edu", role: "employee", status: "active", hireDate: "2025-06-01", departmentId: "d2", payType: "hourly", payRate: 25, overtimeRate: 1.5 },
+      { id: "3", employeeId: "620123458", firstName: "Alice", lastName: "Brown", email: "alice@uwi.edu", role: "manager", status: "on_leave", hireDate: "2023-03-10", departmentId: "d1", payType: "salary", payRate: 65000, overtimeRate: 1.5 },
     ],
     attendance: [
       { id: "a1", employeeId: "1", geofenceId: "g1", clockIn: new Date().toISOString(), clockInLat: 18.0, clockInLng: -76.8, status: "active", totalHours: 4 },

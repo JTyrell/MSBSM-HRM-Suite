@@ -90,18 +90,18 @@ interface CompanySettings {
 
 // ─── Simulated Audit Log Data ─────────────────────────────────────
 const AUDIT_LOG = [
-  { id: 1, timestamp: "2025-01-15 14:32:08", user: "admin@msbm.com", action: "Employee Created", details: "Created employee profile for Grace Park", severity: "info" },
-  { id: 2, timestamp: "2025-01-15 13:15:44", user: "john.doe@msbm.com", action: "Payroll Processed", details: "Processed payroll for period Jan 1-15, 2025", severity: "success" },
-  { id: 3, timestamp: "2025-01-15 11:22:17", user: "admin@msbm.com", action: "Settings Updated", details: "Updated overtime threshold to 40 hours/week", severity: "info" },
-  { id: 4, timestamp: "2025-01-14 16:48:31", user: "sarah.jones@msbm.com", action: "PTO Approved", details: "Approved 3-day vacation for Alice Chen", severity: "success" },
-  { id: 5, timestamp: "2025-01-14 10:05:22", user: "mike.wilson@msbm.com", action: "Geofence Modified", details: "Updated HQ Office geofence radius to 300m", severity: "warning" },
-  { id: 6, timestamp: "2025-01-14 09:12:55", user: "admin@msbm.com", action: "User Login", details: "Successful login from IP 192.168.1.105", severity: "info" },
+  { id: 1, timestamp: "2025-01-15 14:32:08", user: "admin@uwi.edu", action: "Employee Created", details: "Created employee profile for Grace Park", severity: "info" },
+  { id: 2, timestamp: "2025-01-15 13:15:44", user: "john.doe@uwi.edu", action: "Payroll Processed", details: "Processed payroll for period Jan 1-15, 2025", severity: "success" },
+  { id: 3, timestamp: "2025-01-15 11:22:17", user: "admin@uwi.edu", action: "Settings Updated", details: "Updated overtime threshold to 40 hours/week", severity: "info" },
+  { id: 4, timestamp: "2025-01-14 16:48:31", user: "sarah.jones@uwi.edu", action: "PTO Approved", details: "Approved 3-day vacation for Alice Chen", severity: "success" },
+  { id: 5, timestamp: "2025-01-14 10:05:22", user: "mike.wilson@uwi.edu", action: "Geofence Modified", details: "Updated HQ Office geofence radius to 300m", severity: "warning" },
+  { id: 6, timestamp: "2025-01-14 09:12:55", user: "admin@uwi.edu", action: "User Login", details: "Successful login from IP 192.168.1.105", severity: "info" },
   { id: 7, timestamp: "2025-01-13 15:33:19", user: "unknown@external.com", action: "Failed Login", details: "Failed login attempt (invalid credentials)", severity: "error" },
-  { id: 8, timestamp: "2025-01-13 14:20:41", user: "hr.manager@msbm.com", action: "Employee Updated", details: "Updated department for Bob Martinez to Sales", severity: "info" },
-  { id: 9, timestamp: "2025-01-13 09:45:07", user: "admin@msbm.com", action: "Security Settings", details: "Enabled two-factor authentication requirement", severity: "success" },
-  { id: 10, timestamp: "2025-01-12 17:08:53", user: "john.doe@msbm.com", action: "Report Exported", details: "Exported attendance report for Q4 2024", severity: "info" },
-  { id: 11, timestamp: "2025-01-12 11:30:15", user: "admin@msbm.com", action: "Role Changed", details: "Promoted Eva Thompson to Senior Software Engineer", severity: "warning" },
-  { id: 12, timestamp: "2025-01-11 16:22:38", user: "sarah.jones@msbm.com", action: "PTO Denied", details: "Denied PTO request from Frank Lopez (insufficient balance)", severity: "error" },
+  { id: 8, timestamp: "2025-01-13 14:20:41", user: "hr.manager@uwi.edu", action: "Employee Updated", details: "Updated department for Bob Martinez to Sales", severity: "info" },
+  { id: 9, timestamp: "2025-01-13 09:45:07", user: "admin@uwi.edu", action: "Security Settings", details: "Enabled two-factor authentication requirement", severity: "success" },
+  { id: 10, timestamp: "2025-01-12 17:08:53", user: "john.doe@uwi.edu", action: "Report Exported", details: "Exported attendance report for Q4 2024", severity: "info" },
+  { id: 11, timestamp: "2025-01-12 11:30:15", user: "admin@uwi.edu", action: "Role Changed", details: "Promoted Eva Thompson to Senior Software Engineer", severity: "warning" },
+  { id: 12, timestamp: "2025-01-11 16:22:38", user: "sarah.jones@uwi.edu", action: "PTO Denied", details: "Denied PTO request from Frank Lopez (insufficient balance)", severity: "error" },
 ];
 
 // ─── Severity Badge Helper ────────────────────────────────────────
@@ -264,8 +264,8 @@ export function SettingsView() {
   const [companyName, setCompanyName] = useState("MSBM Technologies Inc.");
   const [companyAddress, setCompanyAddress] = useState("1234 Innovation Drive, Suite 500, San Francisco, CA 94102");
   const [companyPhone, setCompanyPhone] = useState("(555) 100-1000");
-  const [companyEmail, setCompanyEmail] = useState("info@msbm.com");
-  const [companyWebsite, setCompanyWebsite] = useState("https://msbm.com");
+  const [companyEmail, setCompanyEmail] = useState("info@uwi.edu");
+  const [companyWebsite, setCompanyWebsite] = useState("https://msbm-uwi.org/");
 
   // ─── Attendance Settings State ──────────────────────────────
   const [attendanceGracePeriod, setAttendanceGracePeriod] = useState("5");
@@ -949,7 +949,7 @@ export function SettingsView() {
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
                   <div>
                     <p className="text-xs text-muted-foreground">User</p>
-                    <p className="font-medium">admin@msbm.com</p>
+                    <p className="font-medium">admin@uwi.edu</p>
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground">Time</p>

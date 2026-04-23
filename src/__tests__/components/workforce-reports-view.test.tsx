@@ -13,7 +13,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   useAppStore.setState({
     employees: [
-      { id: "1", employeeId: "EMP001", firstName: "Jane", lastName: "Doe", email: "jane@test.com", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
+      { id: "1", employeeId: "620123456", firstName: "Jane", lastName: "Doe", email: "jane@uwi.edu", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
     ],
     departments: [{ id: "d1", name: "Engineering", code: "ENG" }],
     attendance: [],

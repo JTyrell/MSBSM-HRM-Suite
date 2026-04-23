@@ -98,7 +98,7 @@ describe("useAppStore", () => {
   describe("data setters", () => {
     it("setEmployees should set the employees array", () => {
       const employees = [
-        { id: "1", employeeId: "EMP001", firstName: "John", lastName: "Doe", email: "j@test.com", role: "admin", status: "active", hireDate: "2024-01-01", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
+        { id: "1", employeeId: "620123456", firstName: "John", lastName: "Doe", email: "j@uwi.edu", role: "admin", status: "active", hireDate: "2024-01-01", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
       ];
       useAppStore.getState().setEmployees(employees as any);
       expect(useAppStore.getState().employees).toHaveLength(1);

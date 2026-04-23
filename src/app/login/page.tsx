@@ -138,7 +138,7 @@ export default function LoginPage() {
       setTimeout(() => {
         setMode("login");
         setSuccess("");
-        setEmployeeId("EMP-0001");
+        setEmployeeId("620123456");
       }, 2000);
     } catch {
       setError("Network error. Please try again.");
@@ -193,7 +193,7 @@ export default function LoginPage() {
                   <Input
                     id="employeeId"
                     type="text"
-                    placeholder="EMP-0001"
+                    placeholder="620123456"
                     value={employeeId}
                     onChange={(e) => setEmployeeId(e.target.value)}
                     className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50 focus:ring-emerald-500/20"
@@ -259,7 +259,7 @@ export default function LoginPage() {
                   <Input
                     id="resetEmail"
                     type="email"
-                    placeholder="your.email@msbm.edu.jm"
+                    placeholder="your.email@uwi.edu"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50 focus:ring-emerald-500/20"
@@ -324,7 +324,7 @@ export default function LoginPage() {
                   <Input
                     id="setupEmail"
                     type="email"
-                    placeholder="admin@msbm.edu.jm"
+                    placeholder="admin@uwi.edu"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50"

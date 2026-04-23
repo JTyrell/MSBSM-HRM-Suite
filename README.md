@@ -77,7 +77,7 @@ Open [http://localhost:3000](http://localhost:3000) to see the application.
 
 ---
 
-## 🚢 Production Deployment (Railway)
+## Production Deployment (Railway)
 
 This repository is pre-optimized for **Railway** using a multi-stage Docker configuration.
 
@@ -99,12 +99,12 @@ The project uses a three-stage Docker build:
 
 ---
 
-## 🛡 Security & Compliance
+##  Security & Compliance
 - **RBAC**: Role-Based Access Control enforced at the middleware and API layers.
 - **Data Privacy**: Encrypted communication via Supabase Auth and RLS (Row Level Security) policies.
 - **Audit Trails**: Built-in triggers for tracking critical data mutations.
 
 ---
 
-## 📄 License
+##  License
 Copyright © 2026 MSBM Group. All rights reserved.

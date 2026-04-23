@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
         role_tier: "executive",
         status: "active",
         hire_date: new Date().toISOString().split("T")[0],
-        department_id: "00000000-0000-0000-0000-000000000016", // Executive Office
+        department_id: "00000000-0000-0000-0000-000000000017", // Office of the Executive Director
         company_id: "00000000-0000-0000-0000-000000000001",
         pay_type: "salary",
         pay_rate: 0,

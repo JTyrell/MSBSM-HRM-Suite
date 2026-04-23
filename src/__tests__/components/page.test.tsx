@@ -17,7 +17,7 @@ beforeEach(() => {
     currentUserId: "user-1",
     currentView: "dashboard",
     employees: [
-      { id: "user-1", employeeId: "EMP001", firstName: "Jane", lastName: "Doe", email: "jane@test.com", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
+      { id: "user-1", employeeId: "620123456", firstName: "Jane", lastName: "Doe", email: "jane@uwi.edu", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
     ],
     departments: [],
     geofences: [],
@@ -33,8 +33,8 @@ beforeEach(() => {
       return Promise.resolve({
         ok: true,
         json: () => Promise.resolve({
-          user: { id: "auth-1", email: "jane@test.com" },
-          employee: { id: "user-1", employeeId: "EMP001", firstName: "Jane", lastName: "Doe", email: "jane@test.com", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
+          user: { id: "auth-1", email: "jane@uwi.edu" },
+          employee: { id: "user-1", employeeId: "620123456", firstName: "Jane", lastName: "Doe", email: "jane@uwi.edu", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
         }),
       });
     }
@@ -43,7 +43,7 @@ beforeEach(() => {
         ok: true,
         json: () => Promise.resolve({
           employees: [
-            { id: "user-1", employeeId: "EMP001", firstName: "Jane", lastName: "Doe", email: "jane@test.com", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
+            { id: "user-1", employeeId: "620123456", firstName: "Jane", lastName: "Doe", email: "jane@uwi.edu", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
           ],
         }),
       });
@@ -53,7 +53,7 @@ beforeEach(() => {
         ok: true,
         json: () => Promise.resolve({
           employees: [
-            { id: "user-1", employeeId: "EMP001", firstName: "Jane", lastName: "Doe", email: "jane@test.com", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
+            { id: "user-1", employeeId: "620123456", firstName: "Jane", lastName: "Doe", email: "jane@uwi.edu", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
           ],
         }),
       });

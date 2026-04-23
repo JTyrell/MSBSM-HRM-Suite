@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createAdminClient } from "@/lib/supabase/server";
 
 // POST /api/auth/login — Sign in with employee ID + password
 export async function POST(request: NextRequest) {
@@ -14,10 +14,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const supabase = await createClient();
+    // Use admin client for employee lookup — the user has no session yet,
+    // so the cookie-based client would be blocked by RLS.
+    const adminSupabase = createAdminClient();
 
     // Look up the employee's email by their employee_id
-    const { data: employee, error: lookupError } = await supabase
+    const { data: employee, error: lookupError } = await adminSupabase
       .from("employees")
       .select("email, first_name, last_name, role, status")
       .eq("employee_id", employee_id.toUpperCase())
@@ -36,6 +38,9 @@ export async function POST(request: NextRequest) {
         { status: 403 }
       );
     }
+
+    // Use cookie-based client for sign-in so the session gets persisted in cookies
+    const supabase = await createClient();
 
     // Sign in with Supabase Auth using the employee's email
     const { data: authData, error: authError } = await supabase.auth.signInWithPassword({

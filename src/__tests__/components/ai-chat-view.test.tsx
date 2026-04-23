@@ -2,7 +2,7 @@
 // Covers: 8-llm-chat (LLM-Powered AI Chat)
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AIChatView } from "@/components/hrm/ai-chat-view";
 import { useAppStore } from "@/store/app";
@@ -15,7 +15,7 @@ beforeEach(() => {
   useAppStore.setState({
     currentUserId: "user-1",
     employees: [
-      { id: "user-1", employeeId: "EMP001", firstName: "Jane", lastName: "Doe", email: "jane@test.com", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
+      { id: "user-1", employeeId: "620123456", firstName: "Jane", lastName: "Doe", email: "jane@uwi.edu", role: "admin", status: "active", hireDate: "2024-01-15", departmentId: "d1", payType: "salary", payRate: 50000, overtimeRate: 1.5 },
     ],
     chatMessages: [],
   });
@@ -114,10 +114,9 @@ describe("AIChatView", () => {
     const user = userEvent.setup();
     render(<AIChatView />);
 
-    const inputs = document.querySelectorAll("input[type='text'], input:not([type])");
-    const input = inputs[inputs.length - 1] as HTMLInputElement; // Get the last (chat) input
+    const input = screen.getByPlaceholderText(/Ask HR Assistant anything/i);
     await user.type(input, "What is my PTO balance?");
-    await user.keyboard("{Enter}");
+    fireEvent.submit(input.closest("form")!);
 
     await waitFor(() => {
       const llmCalls = mockFetch.mock.calls.filter(

@@ -516,6 +516,18 @@ export default function HomePage() {
                     <Settings className="mr-2 h-4 w-4" />
                     Reset Demo Data
                   </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    className="text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400"
+                    onClick={async () => {
+                      await fetch("/api/auth/logout", { method: "POST" });
+                      router.push("/login");
+                      router.refresh();
+                    }}
+                  >
+                    <DoorOpen className="mr-2 h-4 w-4" />
+                    Sign Out
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

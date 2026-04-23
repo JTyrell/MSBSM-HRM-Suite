@@ -186,6 +186,7 @@ function getAvatarColor(index: number) {
 
 export function PerformanceReviewsView() {
   const { employees, currentUserId } = useAppStore();
+  const currentUserRole = employees.find((e) => e.id === currentUserId)?.role || "employee";
   const [reviews, setReviews] = useState<ReviewWithNames[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
@@ -409,10 +410,12 @@ export function PerformanceReviewsView() {
             Manage employee evaluations, track review cycles, and monitor performance ratings.
           </p>
         </div>
-        <Button onClick={() => setCreateDialogOpen(true)} className="btn-gradient gap-2 self-start border-gradient-emerald">
-          <Plus className="w-4 h-4" />
-          Create Review
-        </Button>
+        {(currentUserRole === "admin" || currentUserRole === "hr" || currentUserRole === "manager") && (
+          <Button onClick={() => setCreateDialogOpen(true)} className="btn-gradient gap-2 self-start border-gradient-emerald">
+            <Plus className="w-4 h-4" />
+            Create Review
+          </Button>
+        )}
       </div>
 
       {/* Stat Cards */}

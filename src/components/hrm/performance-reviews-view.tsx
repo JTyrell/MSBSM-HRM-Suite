@@ -130,6 +130,8 @@ function StarRating({
             onMouseEnter={() => interactive && setHovered(star)}
             onMouseLeave={() => interactive && setHovered(0)}
             className={`transition-all duration-150 ${interactive ? "cursor-pointer hover:scale-125" : "cursor-default"}`}
+            title={`Rate ${star} star${star !== 1 ? 's' : ''}`}
+            aria-label={`Rate ${star} star${star !== 1 ? 's' : ''}`}
           >
             <Star
               className={`${sizeClass} ${filled ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30"}`}
@@ -148,7 +150,7 @@ function StatusBadge({ status }: { status: string }) {
   const config: Record<string, { label: string; className: string }> = {
     completed: {
       label: "Completed",
-      className: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+      className: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright",
     },
     in_progress: {
       label: "In Progress",
@@ -172,7 +174,7 @@ function StatusBadge({ status }: { status: string }) {
 
 function getAvatarColor(index: number) {
   const colors = [
-    "bg-emerald-500",
+    "bg-msbm-red/50",
     "bg-teal-500",
     "bg-cyan-500",
     "bg-amber-500",
@@ -299,7 +301,7 @@ export function PerformanceReviewsView() {
       completedCount: 5,
       inProgressCount: 0,
       pendingCount: 0,
-      startDate: "2025-10-01",
+      startDate: "2025-#ac1928",
       endDate: "2025-12-31",
       status: "completed",
     },
@@ -393,7 +395,7 @@ export function PerformanceReviewsView() {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-10 h-10 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin" />
+          <div className="w-10 h-10 rounded-full border-2 borshadow-msbm-red/20 border-t-transparent animate-spin" />
           <p className="text-sm text-muted-foreground">Loading reviews...</p>
         </div>
       </div>
@@ -411,7 +413,7 @@ export function PerformanceReviewsView() {
           </p>
         </div>
         {(currentUserRole === "admin" || currentUserRole === "hr" || currentUserRole === "manager") && (
-          <Button onClick={() => setCreateDialogOpen(true)} className="btn-gradient gap-2 self-start border-gradient-emerald">
+          <Button onClick={() => setCreateDialogOpen(true)} className="btn-gradient gap-2 self-start border-gradient-msbm-red">
             <Plus className="w-4 h-4" />
             Create Review
           </Button>
@@ -427,8 +429,8 @@ export function PerformanceReviewsView() {
                 <p className="stat-label">Total Reviews</p>
                 <p className="stat-value text-2xl">{totalReviews}</p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center icon-container-sm icon-container-emerald">
-                <BarChart3 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+              <div className="w-10 h-10 rounded-xl bg-msbm-red/10 dark:bg-msbm-red/20 flex items-center justify-center icon-container-sm icon-container-msbm-red">
+                <BarChart3 className="w-5 h-5 text-msbm-red dark:text-msbm-red-bright" />
               </div>
             </div>
             <p className="text-xs text-muted-foreground mt-2">Across all review cycles</p>
@@ -462,13 +464,13 @@ export function PerformanceReviewsView() {
                 <p className="stat-label">Completed</p>
                 <p className="stat-value text-2xl">{completedReviews.length}</p>
               </div>
-              <div className="w-10 h-10 rounded-xl bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center icon-container-sm icon-container-teal">
-                <CheckCircle2 className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+              <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900/30 flex items-center justify-center icon-container-sm icon-container-slate">
+                <CheckCircle2 className="w-5 h-5 text-slate-600 dark:text-slate-400" />
               </div>
             </div>
             <div className="flex items-center gap-2 mt-2">
               <Progress value={completedPercent} className="h-1.5 flex-1" />
-              <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">{completedPercent}%</span>
+              <span className="text-xs font-medium text-msbm-red dark:text-msbm-red-bright">{completedPercent}%</span>
             </div>
           </CardContent>
         </Card>
@@ -520,7 +522,7 @@ export function PerformanceReviewsView() {
             <Card className="lg:col-span-2 animate-fade-in-up">
               <CardHeader className="pb-3">
                 <CardTitle className="text-base flex items-center gap-2">
-                  <BarChart3 className="w-4 h-4 text-emerald-500" />
+                  <BarChart3 className="w-4 h-4 text-msbm-red" />
                   Average Rating by Department
                 </CardTitle>
                 <CardDescription>Performance scores grouped by department</CardDescription>
@@ -533,13 +535,12 @@ export function PerformanceReviewsView() {
                         <span className="text-xs font-medium text-muted-foreground w-28 truncate">
                           {d.name}
                         </span>
-                        <div className="flex-1 h-8 bg-muted/50 rounded-lg overflow-hidden">
-                          <div
-                            className="h-full rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 flex items-center justify-end pr-2 transition-all duration-500"
-                            style={{ width: `${(d.avg / 5) * 100}%` }}
-                          >
-                            <span className="text-xs font-bold text-white">{d.avg}</span>
-                          </div>
+                        <div className="flex-1 flex items-center gap-2">
+                          <Progress
+                            value={(d.avg / 5) * 100}
+                            className="h-2 flex-1"
+                          />
+                          <span className="text-xs font-bold text-muted-foreground w-8">{d.avg}</span>
                         </div>
                         <span className="text-xs text-muted-foreground w-16 text-right">
                           {d.count} review{d.count !== 1 ? "s" : ""}
@@ -572,10 +573,10 @@ export function PerformanceReviewsView() {
                         <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
                         <span className="text-xs font-medium">{d.star}.0</span>
                       </div>
-                      <div className="flex-1 h-5 bg-muted/50 rounded-full overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-500 transition-all duration-500"
-                          style={{ width: `${(d.count / maxDistCount) * 100}%` }}
+                      <div className="flex-1">
+                        <Progress
+                          value={(d.count / maxDistCount) * 100}
+                          className="h-2"
                         />
                       </div>
                       <span className="text-xs font-medium text-muted-foreground w-6 text-right">
@@ -595,7 +596,7 @@ export function PerformanceReviewsView() {
           <Card className="animate-fade-in-up">
             <CardHeader className="pb-3">
               <CardTitle className="text-base flex items-center gap-2">
-                <Clock className="w-4 h-4 text-teal-500" />
+                <Clock className="w-4 h-4 text-slate-500" />
                 Recent Reviews
               </CardTitle>
               <CardDescription>Latest performance evaluations</CardDescription>
@@ -609,7 +610,7 @@ export function PerformanceReviewsView() {
                     <button
                       key={review.id}
                       onClick={() => openDetail(review)}
-                      className="w-full flex items-center gap-3 p-3 rounded-lg border border-border/50 hover:border-emerald-200 dark:hover:border-emerald-800 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/20 transition-all duration-200 text-left"
+                      className="w-full flex items-center gap-3 p-3 rounded-lg border border-border/50 hover:border-msbm-red/20 dark:hover:border-msbm-red/20 hover:bg-msbm-red/5/50 dark:hover:bg-msbm-red/10 transition-all duration-200 text-left"
                     >
                       <Avatar className="h-9 w-9">
                         <AvatarFallback className={`text-xs font-semibold text-white ${getAvatarColor(i)}`}>
@@ -695,7 +696,7 @@ export function PerformanceReviewsView() {
               {filteredReviews.map((review, i) => (
                 <Card
                   key={review.id}
-                  className="card-glow animate-fade-in-up cursor-pointer hover:border-emerald-200 dark:hover:border-emerald-800 transition-all duration-200"
+                  className="card-glow animate-fade-in-up cursor-pointer hover:border-msbm-red/20 dark:hover:border-msbm-red/20 transition-all duration-200"
                   onClick={() => openDetail(review)}
                 >
                   <CardContent className="p-4">
@@ -780,7 +781,7 @@ export function PerformanceReviewsView() {
                 Reviews assigned to you as a reviewer
               </p>
             </div>
-            <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400">
+            <Badge variant="secondary" className="bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright">
               {myReviews.length} assigned
             </Badge>
           </div>
@@ -802,7 +803,7 @@ export function PerformanceReviewsView() {
               {myReviews.map((review, i) => (
                 <Card
                   key={review.id}
-                  className="card-glow animate-fade-in-up hover:border-emerald-200 dark:hover:border-emerald-800 transition-all duration-200"
+                  className="card-glow animate-fade-in-up hover:border-msbm-red/20 dark:hover:border-msbm-red/20 transition-all duration-200"
                 >
                   <CardContent className="p-4">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3">
@@ -850,7 +851,7 @@ export function PerformanceReviewsView() {
                       {review.status === "in_progress" && (
                         <Button
                           size="sm"
-                          className="text-xs gap-1 bg-emerald-600 hover:bg-emerald-700 text-white"
+                          className="text-xs gap-1 bg-msbm-red hover:bg-msbm-red/80 text-white"
                           onClick={(e) => {
                             e.stopPropagation();
                             handleCompleteReview(review);
@@ -899,7 +900,7 @@ export function PerformanceReviewsView() {
                         variant="secondary"
                         className={
                           cycle.status === "active"
-                            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
+                            ? "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright"
                             : "bg-slate-100 text-slate-600 dark:bg-slate-800/50 dark:text-slate-400"
                         }
                       >
@@ -917,7 +918,7 @@ export function PerformanceReviewsView() {
 
                       <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-border/50">
                         <div className="text-center">
-                          <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
+                          <p className="text-lg font-bold text-msbm-red dark:text-msbm-red-bright">
                             {cycle.completedCount}
                           </p>
                           <p className="text-[10px] text-muted-foreground">Done</p>
@@ -941,17 +942,17 @@ export function PerformanceReviewsView() {
                     <div className="mt-3 pt-3 border-t border-border/50">
                       <p className="text-[10px] text-muted-foreground mb-2">Timeline</p>
                       <div className="flex items-center gap-1">
-                        <div className="flex-1 h-1 rounded-full bg-emerald-500" />
+                        <div className="flex-1 h-1 rounded-full bg-msbm-red/50" />
                         {cycle.status === "active" && (
-                          <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                          <div className="w-2 h-2 rounded-full bg-msbm-red/50 animate-pulse" />
                         )}
                         <div
                           className={`flex-1 h-1 rounded-full ${
-                            cycle.status === "completed" ? "bg-emerald-500" : "bg-muted"
+                            cycle.status === "completed" ? "bg-msbm-red/50" : "bg-muted"
                           }`}
                         />
                         {cycle.status === "completed" && (
-                          <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                          <div className="w-2 h-2 rounded-full bg-msbm-red/50" />
                         )}
                       </div>
                       <div className="flex justify-between mt-1">
@@ -1113,7 +1114,7 @@ export function PerformanceReviewsView() {
                 <div className="flex flex-col sm:flex-row gap-4 p-4 rounded-lg bg-muted/30 border border-border/50">
                   <div className="flex items-center gap-3">
                     <Avatar className="h-10 w-10">
-                      <AvatarFallback className="text-sm font-semibold text-white bg-emerald-500">
+                      <AvatarFallback className="text-sm font-semibold text-white bg-msbm-red/50">
                         {getInitials(selectedReview.employee.firstName, selectedReview.employee.lastName)}
                       </AvatarFallback>
                     </Avatar>
@@ -1233,7 +1234,7 @@ export function PerformanceReviewsView() {
                 )}
                 {selectedReview.status === "in_progress" && (
                   <Button
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white gap-1"
+                    className="bg-msbm-red hover:bg-msbm-red/80 text-white gap-1"
                     onClick={() => handleCompleteReview(selectedReview)}
                   >
                     <CheckCircle2 className="w-3.5 h-3.5" />
@@ -1281,7 +1282,7 @@ function TruncatableText({
             e.stopPropagation();
             setExpanded(!expanded);
           }}
-          className="text-[10px] text-emerald-600 dark:text-emerald-400 hover:underline mt-0.5 flex items-center gap-0.5"
+          className="text-[10px] text-msbm-red dark:text-msbm-red-bright hover:underline mt-0.5 flex items-center gap-0.5"
         >
           {expanded ? (
             <>

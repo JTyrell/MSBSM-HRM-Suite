@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { cn } from "@/lib/utils";
 import {
   Card,
   CardContent,
@@ -272,7 +273,7 @@ export function DepartmentRolesView() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
-            <span className="text-emerald-600 dark:text-emerald-400">Department</span> Roles & Permissions
+            <span className="text-msbm-red dark:text-msbm-red-bright">Department</span> Roles & Permissions
           </h1>
           <p className="text-sm text-muted-foreground">
             Manage role definitions, grade levels, and permission assignments across departments
@@ -280,7 +281,7 @@ export function DepartmentRolesView() {
         </div>
         <Button
           onClick={openCreateDialog}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white"
+          className="bg-msbm-red hover:bg-msbm-red/80 text-white"
         >
           <Plus className="h-4 w-4 mr-2" />
           Create Role
@@ -289,11 +290,11 @@ export function DepartmentRolesView() {
 
       {/* Stats Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border-emerald-200/60 dark:border-emerald-800/40">
+        <Card className="border-msbm-red/20/60 dark:border-msbm-red/20/40">
           <CardContent className="pt-0">
             <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/40">
-                <Briefcase className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+              <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-msbm-red/5 dark:bg-emerald-950/40">
+                <Briefcase className="h-5 w-5 text-msbm-red dark:text-msbm-red-bright" />
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Total Roles</p>
@@ -306,11 +307,11 @@ export function DepartmentRolesView() {
           <CardContent className="pt-0">
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-teal-50 dark:bg-teal-950/40">
-                <Shield className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+                <Shield className="h-5 w-5 text-inner-blue dark:text-light-blue" />
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Management Roles</p>
-                <p className="text-xl font-bold text-teal-600 dark:text-teal-400">
+                <p className="text-xl font-bold text-inner-blue dark:text-light-blue">
                   {stats.management}
                 </p>
               </div>
@@ -406,7 +407,7 @@ export function DepartmentRolesView() {
                         <div className="flex items-center gap-2 flex-wrap">
                           <h3 className="text-sm font-semibold truncate">{role.title}</h3>
                           {role.isManagement && (
-                            <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 text-[10px]">
+                            <Badge className="bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright text-[10px]">
                               <Shield className="h-2.5 w-2.5 mr-0.5" />
                               Mgmt
                             </Badge>
@@ -422,7 +423,7 @@ export function DepartmentRolesView() {
                         className="opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8 p-0"
                         onClick={() => openEditDialog(role)}
                       >
-                        <Pencil className="h-3.5 w-3.5 text-emerald-600" />
+                        <Pencil className="h-3.5 w-3.5 text-msbm-red" />
                       </Button>
                     </div>
 
@@ -430,20 +431,19 @@ export function DepartmentRolesView() {
                     <div className="flex items-center gap-2 flex-wrap">
                       <Badge
                         variant="outline"
-                        className="text-[10px]"
-                        style={{
-                          borderColor: role.department?.color || "#059669",
-                          color: role.department?.color || "#059669",
-                        }}
+                        className={cn(
+                          "text-[10px]",
+                          `border-[${role.department?.color || "#059669"}] text-[${role.department?.color || "#059669"}]`
+                        )}
                       >
                         <Building2 className="h-2.5 w-2.5 mr-0.5" />
                         {role.department?.name || "Unassigned"}
                       </Badge>
-                      <Badge className="bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300 text-[10px]">
+                      <Badge className="bg-inner-blue/10 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300 text-[10px]">
                         {role.gradeLevel}
                       </Badge>
                       {role._count && (
-                        <Badge className="bg-emerald-50 text-emerald-600 dark:bg-emerald-950/40 dark:text-emerald-400 text-[10px]">
+                        <Badge className="bg-msbm-red/5 text-msbm-red dark:bg-emerald-950/40 dark:text-msbm-red-bright text-[10px]">
                           <Users className="h-2.5 w-2.5 mr-0.5" />
                           {role._count.employees} {role._count.employees === 1 ? "member" : "members"}
                         </Badge>
@@ -462,9 +462,9 @@ export function DepartmentRolesView() {
                         {reportsChain.map((name, idx) => (
                           <span key={idx} className="flex items-center gap-0.5">
                             {idx > 0 && (
-                              <ChevronRight className="h-2.5 w-2.5 text-emerald-400" />
+                              <ChevronRight className="h-2.5 w-2.5 text-msbm-red-bright" />
                             )}
-                            <span className="font-medium text-emerald-600 dark:text-emerald-400">
+                            <span className="font-medium text-msbm-red dark:text-msbm-red-bright">
                               {name}
                             </span>
                           </span>
@@ -500,7 +500,7 @@ export function DepartmentRolesView() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <Settings className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                  <Settings className="h-5 w-5 text-msbm-red dark:text-msbm-red-bright" />
                   Permission Matrix
                 </CardTitle>
                 <CardDescription>
@@ -511,7 +511,7 @@ export function DepartmentRolesView() {
                 <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
                   <Table>
                     <TableHeader className="sticky top-0 bg-background z-10">
-                      <TableRow className="bg-emerald-50 dark:bg-emerald-950/30">
+                      <TableRow className="bg-msbm-red/5 dark:bg-emerald-950/30">
                         <TableHead className="font-semibold min-w-[180px]">Role</TableHead>
                         <TableHead className="font-semibold min-w-[80px]">Grade</TableHead>
                         {PERMISSION_FLAGS.map((flag) => (
@@ -540,7 +540,7 @@ export function DepartmentRolesView() {
                             </span>
                           </TableCell>
                           <TableCell>
-                            <Badge className="text-[10px] bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300">
+                            <Badge className="text-[10px] bg-inner-blue/10 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300">
                               {role.gradeLevel}
                             </Badge>
                           </TableCell>
@@ -550,7 +550,7 @@ export function DepartmentRolesView() {
                                 <Switch
                                   checked={role[flag.key]}
                                   disabled
-                                  className="data-[state=checked]:bg-emerald-600 scale-75"
+                                  className="data-[state=checked]:bg-msbm-red scale-75"
                                 />
                               </div>
                             </TableCell>
@@ -584,12 +584,12 @@ export function DepartmentRolesView() {
             <DialogTitle className="text-lg font-semibold flex items-center gap-2">
               {editDialogOpen ? (
                 <>
-                  <Pencil className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                  <Pencil className="h-5 w-5 text-msbm-red dark:text-msbm-red-bright" />
                   Edit Role: {editingRole?.title}
                 </>
               ) : (
                 <>
-                  <Plus className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                  <Plus className="h-5 w-5 text-msbm-red dark:text-msbm-red-bright" />
                   Create New Role
                 </>
               )}
@@ -604,7 +604,7 @@ export function DepartmentRolesView() {
           <div className="space-y-6 py-4">
             {/* Basic Info */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+              <h3 className="text-sm font-semibold text-msbm-red dark:text-msbm-red-bright">
                 Basic Information
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -719,7 +719,7 @@ export function DepartmentRolesView() {
                       onCheckedChange={(v) =>
                         setFormData((p) => ({ ...p, isManagement: v }))
                       }
-                      className="data-[state=checked]:bg-emerald-600"
+                      className="data-[state=checked]:bg-msbm-red"
                     />
                     <Label className="text-xs font-medium">Management Role</Label>
                   </div>
@@ -731,7 +731,7 @@ export function DepartmentRolesView() {
 
             {/* Permission Flags */}
             <div className="space-y-4">
-              <h3 className="text-sm font-semibold text-teal-700 dark:text-teal-400 flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-teal-700 dark:text-light-blue flex items-center gap-2">
                 <Lock className="h-4 w-4" />
                 Permission Flags
               </h3>
@@ -744,7 +744,7 @@ export function DepartmentRolesView() {
                     <Switch
                       checked={formData[flag.key] as boolean}
                       onCheckedChange={() => togglePermission(flag.key)}
-                      className="data-[state=checked]:bg-emerald-600 mt-0.5"
+                      className="data-[state=checked]:bg-msbm-red mt-0.5"
                     />
                     <div>
                       <Label className="text-xs font-medium">{flag.label}</Label>
@@ -825,7 +825,7 @@ export function DepartmentRolesView() {
                 setEditDialogOpen(false);
                 setEditingRole(null);
               }}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="bg-msbm-red hover:bg-msbm-red/80 text-white"
               disabled={!formData.title.trim() || !formData.code.trim()}
             >
               {editDialogOpen ? "Save Changes" : "Create Role"}

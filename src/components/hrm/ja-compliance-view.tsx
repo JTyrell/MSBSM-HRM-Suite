@@ -130,8 +130,8 @@ const LABOR_LAW_SECTIONS = [
   {
     title: "Maximum Shift Length",
     icon: Clock,
-    color: "bg-emerald-50 dark:bg-emerald-950/40",
-    iconColor: "text-emerald-600 dark:text-emerald-400",
+    color: "bg-msbm-red/5 dark:bg-msbm-red/10",
+    iconColor: "text-msbm-red dark:text-msbm-red-bright",
     summary:
       "Ordinary working hours shall not exceed 8 hours per day or 40 hours per week for most employees.",
     details: [
@@ -144,8 +144,8 @@ const LABOR_LAW_SECTIONS = [
   {
     title: "Meal & Rest Breaks",
     icon: Heart,
-    color: "bg-teal-50 dark:bg-teal-950/40",
-    iconColor: "text-teal-600 dark:text-teal-400",
+    color: "bg-inner-blue/5 dark:bg-inner-blue/10",
+    iconColor: "text-inner-blue dark:text-light-blue",
     summary:
       "Employees working more than 6 hours are entitled to a meal break of at least 30 minutes.",
     details: [
@@ -457,14 +457,14 @@ export function JAComplianceView() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
-            <span className="text-emerald-600 dark:text-emerald-400">JA</span>{" "}
+            <span className="text-msbm-red">JA</span>{" "}
             Statutory Compliance Engine
           </h1>
           <p className="text-sm text-muted-foreground">
             Jamaican payroll deductions, tax rates, TRN/NIS validation, and labor law reference
           </p>
         </div>
-        <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
+        <Badge className="bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright hover:bg-msbm-red/20 border-0">
           <ShieldCheck className="h-3 w-3 mr-1" />
           Jamaica Statutory
         </Badge>
@@ -501,10 +501,10 @@ export function JAComplianceView() {
         <TabsContent value="calculator" className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Input Panel */}
-            <Card className="lg:col-span-1 border-emerald-200/60 dark:border-emerald-800/40">
+            <Card className="lg:col-span-1 border-msbm-red/20">
               <CardHeader>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <Calculator className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                  <Calculator className="h-5 w-5 text-msbm-red" />
                   Payroll Calculator
                 </CardTitle>
                 <CardDescription>
@@ -519,13 +519,13 @@ export function JAComplianceView() {
                     value={grossPay}
                     onChange={(e) => setGrossPay(e.target.value)}
                     placeholder="Enter gross pay amount"
-                    className="border-emerald-300 focus-visible:ring-emerald-400"
+                    className="border-msbm-red/30 focus-visible:ring-msbm-red/40"
                   />
                 </div>
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Pay Type</label>
                   <Select value={payType} onValueChange={setPayType}>
-                    <SelectTrigger className="w-full border-emerald-300">
+                    <SelectTrigger className="w-full border-msbm-red/30">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -539,7 +539,7 @@ export function JAComplianceView() {
                 <div className="space-y-2">
                   <label className="text-sm font-medium">PAYE Tax Code</label>
                   <Select value={payeCode} onValueChange={setPayeCode}>
-                    <SelectTrigger className="w-full border-emerald-300">
+                    <SelectTrigger className="w-full border-msbm-red/30">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -566,16 +566,16 @@ export function JAComplianceView() {
             </Card>
 
             {/* Results Panel */}
-            <Card className="lg:col-span-2 border-teal-200/60 dark:border-teal-800/40">
+            <Card className="lg:col-span-2 border-inner-blue/20">
               <CardHeader>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+                  <FileText className="h-5 w-5 text-inner-blue" />
                   Deduction Breakdown
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Net Pay Highlight */}
-                <div className="rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 p-6 text-white">
+                <div className="rounded-xl bg-gradient-to-r from-msbm-red to-inner-blue p-6 text-white">
                   <p className="text-sm font-medium opacity-90">Net Annual Pay</p>
                   <p className="text-3xl font-bold tracking-tight">
                     {formatJMD(result.netPay)}
@@ -588,7 +588,7 @@ export function JAComplianceView() {
 
                 {/* Employee Deductions */}
                 <div>
-                  <h3 className="text-sm font-semibold text-emerald-700 dark:text-emerald-400 mb-3">
+                  <h3 className="text-sm font-semibold text-msbm-red dark:text-msbm-red-bright mb-3">
                     Employee Deductions
                   </h3>
                   <div className="space-y-3">
@@ -619,7 +619,7 @@ export function JAComplianceView() {
 
                 {/* Employer Contributions */}
                 <div>
-                  <h3 className="text-sm font-semibold text-teal-700 dark:text-teal-400 mb-3">
+                  <h3 className="text-sm font-semibold text-inner-blue dark:text-light-blue mb-3">
                     Employer Contributions
                   </h3>
                   <div className="space-y-3">
@@ -675,7 +675,7 @@ export function JAComplianceView() {
           <Card>
             <CardHeader>
               <CardTitle className="text-base font-semibold flex items-center gap-2">
-                <BookOpen className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                <BookOpen className="h-5 w-5 text-msbm-red" />
                 Jamaican Statutory Deduction Rates (Current)
               </CardTitle>
               <CardDescription>
@@ -685,7 +685,7 @@ export function JAComplianceView() {
             <CardContent>
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-emerald-50 dark:bg-emerald-950/30">
+                  <TableRow className="bg-msbm-red/5">
                     <TableHead className="font-semibold">Deduction</TableHead>
                     <TableHead className="font-semibold">Employee Rate</TableHead>
                     <TableHead className="font-semibold">Employer Rate</TableHead>
@@ -697,12 +697,12 @@ export function JAComplianceView() {
                   <TableRow>
                     <TableCell className="font-medium">NIS (National Insurance)</TableCell>
                     <TableCell>
-                      <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
+                      <Badge className="bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-0">
                         {JA_RATES.nis.employee}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge className="bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300">
+                      <Badge className="bg-inner-blue/10 text-inner-blue dark:bg-inner-blue/20 dark:text-light-blue border-0">
                         {JA_RATES.nis.employer}
                       </Badge>
                     </TableCell>
@@ -712,12 +712,12 @@ export function JAComplianceView() {
                   <TableRow>
                     <TableCell className="font-medium">NHT (National Housing Trust)</TableCell>
                     <TableCell>
-                      <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
+                      <Badge className="bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-0">
                         {JA_RATES.nht.employee}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge className="bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300">
+                      <Badge className="bg-inner-blue/10 text-inner-blue dark:bg-inner-blue/20 dark:text-light-blue border-0">
                         {JA_RATES.nht.employer}
                       </Badge>
                     </TableCell>
@@ -742,7 +742,7 @@ export function JAComplianceView() {
                   <TableRow>
                     <TableCell className="font-medium">PAYE (Pay As You Earn)</TableCell>
                     <TableCell>
-                      <Badge className="bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300">
+                      <Badge className="bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-0">
                         {JA_RATES.paye.rate}
                       </Badge>
                     </TableCell>
@@ -760,7 +760,7 @@ export function JAComplianceView() {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge className="bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300">
+                      <Badge className="bg-inner-blue/10 text-inner-blue dark:bg-inner-blue/20 dark:text-light-blue border-0">
                         6.75%
                       </Badge>
                     </TableCell>
@@ -785,7 +785,7 @@ export function JAComplianceView() {
             <CardContent>
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-teal-50 dark:bg-teal-950/30">
+                  <TableRow className="bg-inner-blue/5">
                     <TableHead className="font-semibold w-24">Code</TableHead>
                     <TableHead className="font-semibold">Description</TableHead>
                     <TableHead className="font-semibold">Threshold Effect</TableHead>
@@ -808,7 +808,7 @@ export function JAComplianceView() {
                     return (
                       <TableRow key={code}>
                         <TableCell>
-                          <Badge className="font-mono bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
+                          <Badge className="font-mono bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-0">
                             {code}
                           </Badge>
                         </TableCell>
@@ -829,10 +829,10 @@ export function JAComplianceView() {
         <TabsContent value="validator" className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Single Validator */}
-            <Card className="border-emerald-200/60 dark:border-emerald-800/40">
+            <Card className="border-msbm-red/20">
               <CardHeader>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <BadgeCheck className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                  <BadgeCheck className="h-5 w-5 text-msbm-red" />
                   Single Validator
                 </CardTitle>
                 <CardDescription>
@@ -841,7 +841,7 @@ export function JAComplianceView() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <Select value={validationType} onValueChange={(v: "TRN" | "NIS") => setValidationType(v)}>
-                  <SelectTrigger className="w-full border-emerald-300">
+                  <SelectTrigger className="w-full border-msbm-red/30">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -858,11 +858,11 @@ export function JAComplianceView() {
                         ? "Enter TRN (e.g., 123-456-789)"
                         : "Enter NIS (e.g., 12-345678-9)"
                     }
-                    className="flex-1 border-emerald-300 focus-visible:ring-emerald-400"
+                    className="flex-1 border-msbm-red/30 focus-visible:ring-msbm-red/40"
                   />
                   <Button
                     onClick={handleValidateSingle}
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                    className="bg-msbm-red hover:bg-msbm-red-bright text-white"
                   >
                     <Search className="h-4 w-4" />
                   </Button>
@@ -871,13 +871,13 @@ export function JAComplianceView() {
                   <div
                     className={`p-4 rounded-xl border ${
                       validationResults[0].isValid
-                        ? "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-800"
+                        ? "bg-msbm-red/5 border-msbm-red/20"
                         : "bg-red-50 dark:bg-red-950/30 border-red-200 dark:border-red-800"
                     }`}
                   >
                     <div className="flex items-center gap-2">
                       {validationResults[0].isValid ? (
-                        <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                        <CheckCircle2 className="h-5 w-5 text-msbm-red" />
                       ) : (
                         <XCircle className="h-5 w-5 text-red-600 dark:text-red-400" />
                       )}
@@ -895,10 +895,10 @@ export function JAComplianceView() {
             </Card>
 
             {/* Batch Validator */}
-            <Card className="border-teal-200/60 dark:border-teal-800/40">
+            <Card className="border-inner-blue/20">
               <CardHeader>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <Users className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+                  <Users className="h-5 w-5 text-inner-blue" />
                   Batch Validator
                 </CardTitle>
                 <CardDescription>
@@ -907,7 +907,7 @@ export function JAComplianceView() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <Select value={batchType} onValueChange={(v: "TRN" | "NIS") => setBatchType(v)}>
-                  <SelectTrigger className="w-full border-teal-300">
+                  <SelectTrigger className="w-full border-inner-blue/30">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -924,12 +924,12 @@ export function JAComplianceView() {
                       : "12-345678-9\n23-456789-0\n34-567890-1"
                   }
                   rows={5}
-                  className="flex w-full rounded-md border border-teal-300 bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 focus-visible:ring-offset-2 resize-none"
+                  className="flex w-full rounded-md border border-inner-blue/30 bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inner-blue/40 focus-visible:ring-offset-2 resize-none"
                 />
                 <div className="flex gap-2">
                   <Button
                     onClick={handleBatchValidate}
-                    className="flex-1 bg-teal-600 hover:bg-teal-700 text-white"
+                    className="flex-1 bg-inner-blue hover:bg-inner-blue/80 text-white"
                   >
                     <Search className="h-4 w-4 mr-2" />
                     Validate All
@@ -967,12 +967,12 @@ export function JAComplianceView() {
                       key={i}
                       className={`flex items-center gap-3 p-3 rounded-lg border ${
                         v.isValid
-                          ? "bg-emerald-50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800"
+                          ? "bg-msbm-red/5 border-msbm-red/20"
                           : "bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800"
                       }`}
                     >
                       {v.isValid ? (
-                        <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                        <CheckCircle2 className="h-4 w-4 text-msbm-red shrink-0" />
                       ) : (
                         <XCircle className="h-4 w-4 text-red-600 dark:text-red-400 shrink-0" />
                       )}
@@ -981,10 +981,10 @@ export function JAComplianceView() {
                           <span className="text-sm font-medium font-mono">{v.value}</span>
                           <Badge
                             variant="outline"
-                            className={`text-[10px] ${
+                            className={`text-[10px] border-0 ${
                               v.type === "TRN"
-                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300"
-                                : "bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300"
+                                ? "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright"
+                                : "bg-inner-blue/10 text-inner-blue dark:bg-inner-blue/20 dark:text-light-blue"
                             }`}
                           >
                             {v.type}
@@ -994,9 +994,9 @@ export function JAComplianceView() {
                       </div>
                       <Badge
                         variant="outline"
-                        className={`shrink-0 text-[10px] ${
+                        className={`shrink-0 text-[10px] border-0 ${
                           v.isValid
-                            ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300"
+                            ? "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright"
                             : "bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300"
                         }`}
                       >
@@ -1016,11 +1016,11 @@ export function JAComplianceView() {
         <TabsContent value="reports" className="space-y-6">
           {/* Stats */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="border-emerald-200/60 dark:border-emerald-800/40">
+            <Card className="border-msbm-red/20">
               <CardContent className="pt-0">
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/40">
-                    <Users className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                  <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-msbm-red/5">
+                    <Users className="h-5 w-5 text-msbm-red" />
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground">Total Employees</p>
@@ -1029,15 +1029,15 @@ export function JAComplianceView() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-teal-200/60 dark:border-teal-800/40">
+            <Card className="border-inner-blue/20">
               <CardContent className="pt-0">
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-teal-50 dark:bg-teal-950/40">
-                    <CheckCircle2 className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+                  <div className="flex items-center justify-center h-10 w-10 rounded-xl bg-inner-blue/5">
+                    <CheckCircle2 className="h-5 w-5 text-inner-blue" />
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground">NHT Active</p>
-                    <p className="text-xl font-bold text-teal-600 dark:text-teal-400">
+                    <p className="text-xl font-bold text-inner-blue">
                       {complianceStats.active}
                     </p>
                   </div>
@@ -1088,7 +1088,7 @@ export function JAComplianceView() {
               <div className="max-h-96 overflow-y-auto">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-emerald-50 dark:bg-emerald-950/30">
+                    <TableRow className="bg-msbm-red/5">
                       <TableHead className="font-semibold">Employee</TableHead>
                       <TableHead className="font-semibold">Department</TableHead>
                       <TableHead className="font-semibold">TRN</TableHead>
@@ -1106,9 +1106,9 @@ export function JAComplianceView() {
                         <TableCell>
                           <Badge
                             variant="outline"
-                            className={`text-[10px] ${
+                            className={`text-[10px] border-0 ${
                               emp.nht === "Active"
-                                ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300"
+                                ? "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright"
                                 : emp.nht === "Pending"
                                 ? "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300"
                                 : "bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300"
@@ -1137,7 +1137,7 @@ export function JAComplianceView() {
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
-                    <TableRow className="bg-teal-50 dark:bg-teal-950/30">
+                    <TableRow className="bg-inner-blue/5">
                       <TableHead className="font-semibold">Month</TableHead>
                       <TableHead className="font-semibold text-right">NIS</TableHead>
                       <TableHead className="font-semibold text-right">NHT</TableHead>
@@ -1170,7 +1170,7 @@ export function JAComplianceView() {
                         </TableRow>
                       );
                     })}
-                    <TableRow className="bg-emerald-50 dark:bg-emerald-950/30 font-semibold">
+                    <TableRow className="bg-msbm-red/5 font-semibold">
                       <TableCell className="text-sm">6-Month Total</TableCell>
                       <TableCell className="text-right font-mono text-xs">
                         {formatJMD(REMITTANCE_DATA.reduce((s, r) => s + r.nis, 0))}
@@ -1184,7 +1184,7 @@ export function JAComplianceView() {
                       <TableCell className="text-right font-mono text-xs">
                         {formatJMD(REMITTANCE_DATA.reduce((s, r) => s + r.paye, 0))}
                       </TableCell>
-                      <TableCell className="text-right font-mono text-xs text-emerald-600 dark:text-emerald-400">
+                      <TableCell className="text-right font-mono text-xs text-msbm-red">
                         {formatJMD(complianceStats.totalRemittance)}
                       </TableCell>
                     </TableRow>
@@ -1202,7 +1202,7 @@ export function JAComplianceView() {
           <Card>
             <CardHeader>
               <CardTitle className="text-base font-semibold flex items-center gap-2">
-                <Scale className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                <Scale className="h-5 w-5 text-msbm-red" />
                 Jamaican Labour Law Quick Reference
               </CardTitle>
               <CardDescription>
@@ -1238,7 +1238,7 @@ export function JAComplianceView() {
                               key={idx}
                               className="text-xs text-muted-foreground flex items-start gap-2"
                             >
-                              <span className="text-emerald-500 mt-0.5 shrink-0">•</span>
+                              <span className="text-msbm-red mt-0.5 shrink-0">•</span>
                               <span>{detail}</span>
                             </li>
                           ))}

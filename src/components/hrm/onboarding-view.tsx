@@ -102,11 +102,11 @@ interface OnboardingTemplate {
 // ============ AVATAR COLORS ============
 
 const AVATAR_COLORS = [
-  "bg-emerald-500",
+  "bg-msbm-red/50",
   "bg-teal-500",
   "bg-cyan-500",
   "bg-green-600",
-  "bg-emerald-600",
+  "bg-msbm-red",
   "bg-teal-600",
   "bg-cyan-600",
 ];
@@ -192,11 +192,11 @@ function getOnboardingTemplates(): OnboardingTemplate[] {
       description:
         "Full comprehensive onboarding checklist covering all phases from pre-first day through the first month. Ideal for full-time office employees.",
       icon: ClipboardCheck,
-      colorClass: "text-emerald-600 dark:text-emerald-400",
-      bgColorClass: "bg-emerald-50 dark:bg-emerald-950/40",
-      borderColorClass: "border-emerald-200/60 dark:border-emerald-800/40",
+      colorClass: "text-msbm-red dark:text-msbm-red-bright",
+      bgColorClass: "bg-msbm-red/5 dark:bg-msbm-red/10",
+      borderColorClass: "border-msbm-red/20/60 dark:border-msbm-red/20/40",
       badgeText: "Full Checklist",
-      badgeClass: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300",
+      badgeClass: "bg-msbm-red/10 text-msbm-red dark:bg-emerald-900/50 dark:text-msbm-red-bright",
       sections: standard.sections,
     },
     {
@@ -619,7 +619,7 @@ export function OnboardingView() {
       if (!emp.hireDate) return { label: "Pending", class: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300" };
       const daysSinceHire = differenceInDays(new Date(), new Date(emp.hireDate));
       if (daysSinceHire < 0) return { label: "Pre-Start", class: "bg-slate-100 text-slate-600 dark:bg-slate-800/50 dark:text-slate-400" };
-      if (daysSinceHire >= 30) return { label: "Completed", class: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300" };
+      if (daysSinceHire >= 30) return { label: "Completed", class: "bg-msbm-red/10 text-msbm-red dark:bg-emerald-900/50 dark:text-msbm-red-bright" };
       return { label: "In Progress", class: "bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300" };
     },
     []
@@ -680,7 +680,7 @@ export function OnboardingView() {
         </div>
         <Button
           onClick={() => setAddDialogOpen(true)}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
+          className="bg-msbm-red hover:bg-msbm-red/80 text-white shadow-sm"
         >
           <UserPlus className="mr-2 h-4 w-4" />
           Add New Hire
@@ -692,11 +692,11 @@ export function OnboardingView() {
           ═══════════════════════════════════════════════════════════ */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* New Hires This Month */}
-        <Card className="group transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 border-emerald-200/60 dark:border-emerald-800/40">
+        <Card className="group transition-all duration-300 hover:shadow-md hover:-translate-y-0.5 border-msbm-red/20/60 dark:border-msbm-red/20/40">
           <CardContent className="pt-0">
             <div className="flex items-center gap-4">
-              <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 transition-transform duration-300 group-hover:scale-110">
-                <Users className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+              <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-msbm-red/5 dark:bg-msbm-red/10 transition-transform duration-300 group-hover:scale-110">
+                <Users className="h-6 w-6 text-msbm-red dark:text-msbm-red-bright" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-muted-foreground truncate">
@@ -709,7 +709,7 @@ export function OnboardingView() {
             </div>
             <div className="mt-3 flex items-center gap-1.5 text-xs">
               <ArrowUpRight className="h-3.5 w-3.5 text-emerald-500" />
-              <span className="font-medium text-emerald-600 dark:text-emerald-400">
+              <span className="font-medium text-msbm-red dark:text-msbm-red-bright">
                 +{Math.max(1, pipelineStats.newHiresThisMonth)}
               </span>
               <span className="text-muted-foreground">vs last month</span>
@@ -795,7 +795,7 @@ export function OnboardingView() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
               <CardTitle className="text-lg flex items-center gap-2">
-                <ClipboardCheck className="h-5 w-5 text-emerald-600" />
+                <ClipboardCheck className="h-5 w-5 text-msbm-red" />
                 Onboarding Checklist Builder
               </CardTitle>
               <CardDescription className="mt-1">
@@ -804,7 +804,7 @@ export function OnboardingView() {
             </div>
             <div className="flex items-center gap-3">
               <div className="text-right">
-                <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400">
+                <p className="text-sm font-semibold text-msbm-red dark:text-msbm-red-bright">
                   {checklistCompletion.percentage}%
                 </p>
                 <p className="text-xs text-muted-foreground">
@@ -814,7 +814,7 @@ export function OnboardingView() {
               <div className="w-24">
                 <Progress
                   value={checklistCompletion.percentage}
-                  className="h-2.5 [&>div]:bg-emerald-500"
+                  className="h-2.5 [&>div]:bg-msbm-red/50"
                 />
               </div>
             </div>
@@ -842,14 +842,14 @@ export function OnboardingView() {
                     <div
                       className={`flex items-center justify-center h-9 w-9 rounded-lg transition-colors duration-300 ${
                         sectionPercent === 100
-                          ? "bg-emerald-100 dark:bg-emerald-900/40"
+                          ? "bg-msbm-red/10 dark:bg-emerald-900/40"
                           : "bg-muted"
                       }`}
                     >
                       <SectionIcon
                         className={`h-4.5 w-4.5 transition-colors duration-300 ${
                           sectionPercent === 100
-                            ? "text-emerald-600 dark:text-emerald-400"
+                            ? "text-msbm-red dark:text-msbm-red-bright"
                             : "text-muted-foreground"
                         }`}
                       />
@@ -858,7 +858,7 @@ export function OnboardingView() {
                       <div className="flex items-center gap-2">
                         <span className="text-sm font-semibold">{section.title}</span>
                         {sectionPercent === 100 && (
-                          <Badge className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 text-[10px] px-1.5 py-0">
+                          <Badge className="bg-msbm-red/10 text-msbm-red dark:bg-emerald-900/50 dark:text-msbm-red-bright text-[10px] px-1.5 py-0">
                             Complete
                           </Badge>
                         )}
@@ -872,7 +872,7 @@ export function OnboardingView() {
                     <div className="hidden sm:flex items-center gap-2 w-20">
                       <Progress
                         value={sectionPercent}
-                        className="h-1.5 flex-1 [&>div]:bg-emerald-500"
+                        className="h-1.5 flex-1 [&>div]:bg-msbm-red/50"
                       />
                       <span className="text-xs font-medium text-muted-foreground w-8 text-right">
                         {sectionPercent}%
@@ -894,7 +894,7 @@ export function OnboardingView() {
                         key={item.id}
                         className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all duration-200 group ${
                           item.completed
-                            ? "bg-emerald-50/60 dark:bg-emerald-950/20 hover:bg-emerald-50 dark:hover:bg-emerald-950/30"
+                            ? "bg-msbm-red/5/60 dark:bg-emerald-950/20 hover:bg-msbm-red/5 dark:hover:bg-emerald-950/30"
                             : "hover:bg-muted/50"
                         }`}
                       >
@@ -905,21 +905,21 @@ export function OnboardingView() {
                           }
                           className={`transition-all duration-200 ${
                             item.completed
-                              ? "data-[state=checked]:bg-emerald-600 data-[state=checked]:border-emerald-600"
+                              ? "data-[state=checked]:bg-msbm-red data-[state=checked]:border-msbm-red/20"
                               : ""
                           }`}
                         />
                         <span
                           className={`text-sm flex-1 transition-all duration-200 ${
                             item.completed
-                              ? "text-emerald-700 dark:text-emerald-300 line-through decoration-emerald-400/60"
+                              ? "text-msbm-red dark:text-msbm-red-bright line-through decoration-msbm-red/60"
                               : "text-foreground"
                           }`}
                         >
                           {item.label}
                         </span>
                         {item.completed && (
-                          <CheckCircle2 className="h-4 w-4 text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+                          <CheckCircle2 className="h-4 w-4 text-msbm-red opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
                         )}
                       </label>
                     ))}
@@ -939,7 +939,7 @@ export function OnboardingView() {
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
             <div>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Users className="h-5 w-5 text-teal-600" />
+                <Users className="h-5 w-5 text-msbm-red" />
                 New Hire Profiles
               </CardTitle>
               <CardDescription className="mt-1">
@@ -966,7 +966,7 @@ export function OnboardingView() {
               <Button
                 variant="outline"
                 size="sm"
-                className="mt-4 border-emerald-300 text-emerald-600 hover:bg-emerald-50 dark:border-emerald-700 dark:text-emerald-400"
+                className="mt-4 border-msbm-red/30 text-msbm-red hover:bg-msbm-red/5 dark:border-msbm-red/30 dark:text-msbm-red-bright"
                 onClick={() => setAddDialogOpen(true)}
               >
                 <UserPlus className="mr-2 h-3.5 w-3.5" />
@@ -982,7 +982,7 @@ export function OnboardingView() {
                 return (
                   <div
                     key={emp.id}
-                    className="rounded-xl border border-border/60 p-4 transition-all duration-200 hover:shadow-md hover:border-emerald-300/60 dark:hover:border-emerald-700/60 cursor-pointer group"
+                    className="rounded-xl border border-border/60 p-4 transition-all duration-200 hover:shadow-md hover:border-msbm-red/20 dark:hover:border-msbm-red/40 cursor-pointer group"
                     onClick={() => {
                       setSelectedHire(emp);
                       setDetailOpen(true);
@@ -1023,13 +1023,13 @@ export function OnboardingView() {
                         <span className="text-xs font-medium text-muted-foreground">
                           Onboarding Progress
                         </span>
-                        <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                        <span className="text-xs font-semibold text-msbm-red dark:text-msbm-red-bright">
                           {progress}%
                         </span>
                       </div>
                       <Progress
                         value={progress}
-                        className="h-2 [&>div]:bg-emerald-500 transition-all duration-500"
+                        className="h-2 [&>div]:bg-msbm-red/50 transition-all duration-500"
                       />
                     </div>
                   </div>
@@ -1121,7 +1121,7 @@ export function OnboardingView() {
         <DialogContent className="sm:max-w-[540px] max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <UserPlus className="h-5 w-5 text-emerald-600" />
+              <UserPlus className="h-5 w-5 text-msbm-red" />
               Add New Hire
             </DialogTitle>
           </DialogHeader>
@@ -1300,7 +1300,7 @@ export function OnboardingView() {
             <Button
               onClick={handleSubmitNewHire}
               disabled={submitting}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="bg-msbm-red hover:bg-msbm-red/80 text-white"
             >
               {submitting ? (
                 <>
@@ -1395,15 +1395,15 @@ export function OnboardingView() {
                 {/* Onboarding Progress */}
                 <div>
                   <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-                    <ClipboardCheck className="h-4 w-4 text-emerald-600" />
+                    <ClipboardCheck className="h-4 w-4 text-msbm-red" />
                     Onboarding Progress
                   </h3>
                   <div className="flex items-center gap-3 mb-4">
                     <Progress
                       value={getNewHireProgress(selectedHire)}
-                      className="flex-1 h-3 [&>div]:bg-emerald-500"
+                      className="flex-1 h-3 [&>div]:bg-msbm-red/50"
                     />
-                    <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                    <span className="text-sm font-bold text-msbm-red dark:text-msbm-red-bright">
                       {getNewHireProgress(selectedHire)}%
                     </span>
                   </div>
@@ -1444,7 +1444,7 @@ export function OnboardingView() {
                                 <div
                                   className={`h-4 w-4 rounded-[4px] border flex items-center justify-center shrink-0 transition-colors duration-200 ${
                                     item.completed
-                                      ? "bg-emerald-500 border-emerald-500"
+                                      ? "bg-msbm-red/50 border-emerald-500"
                                       : "border-border bg-background"
                                   }`}
                                 >
@@ -1455,7 +1455,7 @@ export function OnboardingView() {
                                 <span
                                   className={`text-xs transition-colors duration-200 ${
                                     item.completed
-                                      ? "text-emerald-600 dark:text-emerald-400 line-through"
+                                      ? "text-msbm-red dark:text-msbm-red-bright line-through"
                                       : "text-muted-foreground"
                                   }`}
                                 >
@@ -1482,7 +1482,7 @@ export function OnboardingView() {
         <DialogContent className="sm:max-w-[440px]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <LayoutTemplate className="h-5 w-5 text-emerald-600" />
+              <LayoutTemplate className="h-5 w-5 text-msbm-red" />
               Apply Onboarding Template
             </DialogTitle>
           </DialogHeader>

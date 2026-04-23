@@ -18,7 +18,7 @@ export async function GET() {
         .from("company_settings")
         .insert({
           company_id: "00000000-0000-0000-0000-000000000001",
-          company_name: "MSBM Group",
+          company_name: "MSBM",
           company_address: "Mona School of Business and Management, UWI, Kingston 7, Jamaica",
         })
         .select()

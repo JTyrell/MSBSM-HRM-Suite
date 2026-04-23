@@ -135,14 +135,25 @@ interface PayrollRecordData {
 // ============ CHART COLORS ============
 
 const CHART_COLORS = [
-  "#10b981",
-  "#14b8a6",
+  "#ac1928",
+  "#2341a4",
   "#f59e0b",
   "#ec4899",
   "#8b5cf6",
   "#06b6d4",
   "#f97316",
   "#84cc16",
+];
+
+const CHART_COLOR_CLASSES = [
+  "bg-msbm-red",
+  "bg-inner-blue",
+  "bg-amber-500",
+  "bg-pink-500",
+  "bg-violet-500",
+  "bg-cyan-500",
+  "bg-orange-500",
+  "bg-lime-500",
 ];
 
 const tooltipStyle = {
@@ -519,11 +530,11 @@ export function TeamAnalyticsView() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 gap-1">
+          <Badge variant="outline" className="border-msbm-red/20 dark:border-msbm-red/20 text-msbm-red dark:text-msbm-red-bright gap-1">
             <UsersRound className="h-3 w-3" />
             {employees.length} Employees
           </Badge>
-          <Badge variant="outline" className="border-teal-200 dark:border-teal-800 text-teal-700 dark:text-teal-400 gap-1">
+          <Badge variant="outline" className="border-inner-blue/20 dark:border-inner-blue/20 text-inner-blue dark:text-light-blue gap-1">
             <Building2 className="h-3 w-3" />
             {departments.length} Departments
           </Badge>
@@ -535,17 +546,17 @@ export function TeamAnalyticsView() {
       {/* ═══════════════════════════════════════════════════════ */}
       <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4 card-pattern rounded-xl p-4 border border-border/50">
         {/* Total Headcount */}
-        <Card className="border-emerald-100 dark:border-emerald-900/30 overflow-hidden card-hover-lift hover:shadow-md transition-shadow">
+        <Card className="border-msbm-red/20 dark:border-msbm-red/20 overflow-hidden card-hover-lift hover:shadow-md transition-shadow">
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-muted-foreground font-medium">Total Headcount</p>
                 <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">{employees.length}</p>
-                <p className="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5">
+                <p className="text-[10px] text-msbm-red dark:text-msbm-red-bright flex items-center gap-0.5">
                   <TrendingUp className="h-3 w-3" /> +{(Math.random() * 3 + 1).toFixed(1)} this quarter
                 </p>
               </div>
-              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+              <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-msbm-red to-msbm-red flex items-center justify-center shadow-lg shadow-msbm-red/20">
                 <Users className="h-5 w-5 text-white" />
               </div>
             </div>
@@ -553,14 +564,14 @@ export function TeamAnalyticsView() {
         </Card>
 
         {/* Active vs On Leave */}
-        <Card className="border-teal-100 dark:border-teal-900/30 overflow-hidden card-hover-lift hover:shadow-md transition-shadow">
+        <Card className="border-inner-blue/20 dark:border-inner-blue/20 overflow-hidden card-hover-lift hover:shadow-md transition-shadow">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
               <div className="relative w-12 h-12 shrink-0">
                 <svg className="w-12 h-12 -rotate-90" viewBox="0 0 100 100">
-                  <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="8" className="text-teal-100 dark:text-teal-900/30" />
+                  <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="8" className="text-inner-blue/10 dark:text-inner-blue/20" />
                   <circle
-                    cx="50" cy="50" r="40" fill="none" stroke="#14b8a6" strokeWidth="8"
+                    cx="50" cy="50" r="40" fill="none" stroke="#2341a4" strokeWidth="8"
                     strokeLinecap="round"
                     strokeDasharray={2 * Math.PI * 40}
                     strokeDashoffset={2 * Math.PI * 40 * (1 - activePercentage / 100)}
@@ -568,7 +579,7 @@ export function TeamAnalyticsView() {
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xs font-bold text-teal-700 dark:text-teal-400">{activePercentage}%</span>
+                  <span className="text-xs font-bold text-inner-blue dark:text-light-blue">{activePercentage}%</span>
                 </div>
               </div>
               <div>
@@ -686,12 +697,12 @@ export function TeamAnalyticsView() {
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="text-base font-semibold flex items-center gap-2">
-                      <PieChartIcon className="h-4 w-4 text-emerald-600" />
+                      <PieChartIcon className="h-4 w-4 text-msbm-red" />
                       Department Distribution
                     </CardTitle>
                     <CardDescription>Employees per department</CardDescription>
                   </div>
-                  <Badge variant="secondary" className="bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 text-[10px]">
+                  <Badge variant="secondary" className="bg-msbm-red/5 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright text-[10px]">
                     {departments.length} teams
                   </Badge>
                 </div>
@@ -725,7 +736,7 @@ export function TeamAnalyticsView() {
                     <div className="flex flex-wrap gap-3 mt-2">
                       {departmentDistribution.map((d, idx) => (
                         <div key={d.name} className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                          <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: CHART_COLORS[idx % CHART_COLORS.length] }} />
+                          <span className={`h-2.5 w-2.5 rounded-full shrink-0 ${CHART_COLOR_CLASSES[idx % CHART_COLOR_CLASSES.length]}`} />
                           {d.name} ({d.value})
                         </div>
                       ))}
@@ -745,12 +756,12 @@ export function TeamAnalyticsView() {
                 <div className="flex items-center justify-between">
                   <div>
                     <CardTitle className="text-base font-semibold flex items-center gap-2">
-                      <Briefcase className="h-4 w-4 text-teal-600" />
+                      <Briefcase className="h-4 w-4 text-inner-blue" />
                       Role Distribution
                     </CardTitle>
                     <CardDescription>Headcount by role type</CardDescription>
                   </div>
-                  <Badge variant="secondary" className="bg-teal-50 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300 text-[10px]">
+                  <Badge variant="secondary" className="bg-inner-blue/5 text-inner-blue dark:bg-inner-blue/20 dark:text-light-blue text-[10px]">
                     {roleDistribution.length} roles
                   </Badge>
                 </div>
@@ -787,7 +798,7 @@ export function TeamAnalyticsView() {
             <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-emerald-600" />
+                  <TrendingUp className="h-4 w-4 text-msbm-red" />
                   Headcount Trend
                 </CardTitle>
                 <CardDescription>6-month workforce growth</CardDescription>
@@ -798,8 +809,8 @@ export function TeamAnalyticsView() {
                     <LineChart data={headcountTrend} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
                       <defs>
                         <linearGradient id="headcountGrad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.25} />
-                          <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                          <stop offset="5%" stopColor="#ac1928" stopOpacity={0.25} />
+                          <stop offset="95%" stopColor="#ac1928" stopOpacity={0} />
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" opacity={0.5} />
@@ -807,13 +818,13 @@ export function TeamAnalyticsView() {
                       <YAxis tickLine={false} axisLine={false} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} domain={["auto", "auto"]} allowDecimals={false} />
                       <Tooltip contentStyle={tooltipStyle} labelStyle={{ fontWeight: 600 }} />
                       <Area type="monotone" dataKey="headcount" stroke="transparent" fill="url(#headcountGrad)" />
-                      <Line type="monotone" dataKey="headcount" stroke="#10b981" strokeWidth={2.5} dot={{ fill: "#10b981", r: 4, strokeWidth: 2, stroke: "#fff" }} activeDot={{ r: 6 }} name="Headcount" />
+                      <Line type="monotone" dataKey="headcount" stroke="#ac1928" strokeWidth={2.5} dot={{ fill: "#ac1928", r: 4, strokeWidth: 2, stroke: "#fff" }} activeDot={{ r: 6 }} name="Headcount" />
                     </LineChart>
                   </ResponsiveContainer>
                 </div>
                 <div className="flex items-center gap-6 mt-3 text-xs text-muted-foreground">
                   <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: "#10b981" }} />
+                    <span className="h-2.5 w-2.5 rounded-full bg-msbm-red" />
                     Headcount
                   </div>
                 </div>
@@ -824,7 +835,7 @@ export function TeamAnalyticsView() {
             <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <UserCheck className="h-4 w-4 text-teal-600" />
+                  <UserCheck className="h-4 w-4 text-inner-blue" />
                   Workforce Status
                 </CardTitle>
                 <CardDescription>Active vs On Leave ratio</CardDescription>
@@ -843,7 +854,7 @@ export function TeamAnalyticsView() {
                         dataKey="value"
                         nameKey="name"
                       >
-                        <Cell fill="#10b981" />
+                        <Cell fill="#ac1928" />
                         <Cell fill="#f59e0b" />
                       </Pie>
                       <Tooltip contentStyle={tooltipStyle} formatter={(value: number, name: string) => [`${value}`, name]} />
@@ -852,11 +863,11 @@ export function TeamAnalyticsView() {
                   {/* Center text is tricky in recharts, use legend */}
                   <div className="flex justify-center gap-6 -mt-8 text-xs">
                     <div className="flex items-center gap-2">
-                      <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: "#10b981" }} />
+                      <span className="h-2.5 w-2.5 rounded-full bg-msbm-red" />
                       Active ({activeEmployees.length})
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: "#f59e0b" }} />
+                      <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
                       On Leave ({onLeaveEmployees.length})
                     </div>
                   </div>
@@ -887,7 +898,7 @@ export function TeamAnalyticsView() {
                           dataKey="value"
                           nameKey="name"
                         >
-                          <Cell fill="#14b8a6" />
+                          <Cell fill="#2341a4" />
                           <Cell fill="#f59e0b" />
                         </Pie>
                         <Tooltip contentStyle={tooltipStyle} formatter={(value: number, name: string) => [`${value}`, name]} />
@@ -899,7 +910,7 @@ export function TeamAnalyticsView() {
                       <div key={item.name}>
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-sm font-medium text-gray-900 dark:text-white">{item.name}</span>
-                          <span className="text-lg font-bold" style={{ color: idx === 0 ? "#14b8a6" : "#f59e0b" }}>
+                          <span className={`text-lg font-bold ${idx === 0 ? "text-inner-blue" : "text-amber-500"}`}>
                             {item.value}
                           </span>
                         </div>
@@ -967,11 +978,11 @@ export function TeamAnalyticsView() {
         <TabsContent value="attendance" className="space-y-6">
           {/* Attendance Stat Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="border-emerald-100 dark:border-emerald-900/30 hover:shadow-md transition-shadow">
+            <Card className="border-msbm-red/20 dark:border-msbm-red/20 hover:shadow-md transition-shadow">
               <CardContent className="pt-0">
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40">
-                    <Clock className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-msbm-red/5 dark:bg-msbm-red/10">
+                    <Clock className="h-6 w-6 text-msbm-red dark:text-msbm-red-bright" />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Avg Hours / Day</p>
@@ -980,11 +991,11 @@ export function TeamAnalyticsView() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-teal-100 dark:border-teal-900/30 hover:shadow-md transition-shadow">
+            <Card className="border-inner-blue/20 dark:border-inner-blue/20 hover:shadow-md transition-shadow">
               <CardContent className="pt-0">
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-teal-50 dark:bg-teal-950/40">
-                    <UserCheck className="h-6 w-6 text-teal-600 dark:text-teal-400" />
+                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-inner-blue/5 dark:bg-inner-blue/10">
+                    <UserCheck className="h-6 w-6 text-inner-blue dark:text-light-blue" />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Total Records</p>
@@ -1029,7 +1040,7 @@ export function TeamAnalyticsView() {
                   <CardTitle className="text-base font-semibold">30-Day Attendance Trends</CardTitle>
                   <CardDescription>Daily hours worked with overtime highlighting</CardDescription>
                 </div>
-                <Badge variant="secondary" className="bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 text-[10px]">
+                <Badge variant="secondary" className="bg-msbm-red/5 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright text-[10px]">
                   Last 30 days
                 </Badge>
               </div>
@@ -1040,8 +1051,8 @@ export function TeamAnalyticsView() {
                   <AreaChart data={attendanceTrends} margin={{ top: 8, right: 8, left: -16, bottom: 0 }}>
                     <defs>
                       <linearGradient id="attHoursGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
-                        <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                        <stop offset="5%" stopColor="#ac1928" stopOpacity={0.3} />
+                        <stop offset="95%" stopColor="#ac1928" stopOpacity={0} />
                       </linearGradient>
                       <linearGradient id="attOtGrad" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.3} />
@@ -1063,18 +1074,18 @@ export function TeamAnalyticsView() {
                       tickFormatter={(v) => `${v}h`}
                     />
                     <Tooltip contentStyle={tooltipStyle} labelStyle={{ fontWeight: 600 }} />
-                    <Area type="monotone" dataKey="hours" stroke="#10b981" fill="url(#attHoursGrad)" strokeWidth={2.5} name="Total Hours" />
+                    <Area type="monotone" dataKey="hours" stroke="#ac1928" fill="url(#attHoursGrad)" strokeWidth={2.5} name="Total Hours" />
                     <Area type="monotone" dataKey="overtime" stroke="#f59e0b" fill="url(#attOtGrad)" strokeWidth={1.5} strokeDasharray="4 2" name="Overtime" />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
               <div className="flex items-center gap-6 mt-3 text-xs text-muted-foreground">
                 <div className="flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: "#10b981" }} />
+                  <span className="h-2.5 w-2.5 rounded-full bg-msbm-red" />
                   Total Hours
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: "#f59e0b" }} />
+                  <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
                   Overtime
                 </div>
               </div>
@@ -1088,11 +1099,11 @@ export function TeamAnalyticsView() {
         <TabsContent value="compensation" className="space-y-6">
           {/* Compensation Stat Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="border-emerald-100 dark:border-emerald-900/30 hover:shadow-md transition-shadow">
+            <Card className="border-msbm-red/20 dark:border-msbm-red/20 hover:shadow-md transition-shadow">
               <CardContent className="pt-0">
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40">
-                    <DollarSign className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-msbm-red/5 dark:bg-msbm-red/10">
+                    <DollarSign className="h-6 w-6 text-msbm-red dark:text-msbm-red-bright" />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Avg Pay Rate</p>
@@ -1101,11 +1112,11 @@ export function TeamAnalyticsView() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-teal-100 dark:border-teal-900/30 hover:shadow-md transition-shadow">
+            <Card className="border-inner-blue/20 dark:border-inner-blue/20 hover:shadow-md transition-shadow">
               <CardContent className="pt-0">
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-teal-50 dark:bg-teal-950/40">
-                    <TrendingUp className="h-6 w-6 text-teal-600 dark:text-teal-400" />
+                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-inner-blue/5 dark:bg-inner-blue/10">
+                    <TrendingUp className="h-6 w-6 text-inner-blue dark:text-light-blue" />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Highest Rate</p>
@@ -1162,7 +1173,7 @@ export function TeamAnalyticsView() {
                   <CardTitle className="text-base font-semibold">Compensation by Department</CardTitle>
                   <CardDescription>Average, min, max pay per department</CardDescription>
                 </div>
-                <Badge variant="secondary" className="bg-teal-50 text-teal-700 dark:bg-teal-900/30 dark:text-teal-300 text-[10px]">
+                <Badge variant="secondary" className="bg-inner-blue/5 text-inner-blue dark:bg-inner-blue/20 dark:text-light-blue text-[10px]">
                   {compensationByDepartment.length} departments
                 </Badge>
               </div>
@@ -1196,8 +1207,8 @@ export function TeamAnalyticsView() {
                       />
                       <Legend />
                       <Bar dataKey="max" fill="#f59e0b" radius={[4, 4, 0, 0]} maxBarSize={28} fillOpacity={0.7} name="Max" />
-                      <Bar dataKey="avg" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={28} fillOpacity={0.85} name="Average" />
-                      <Bar dataKey="min" fill="#14b8a6" radius={[4, 4, 0, 0]} maxBarSize={28} fillOpacity={0.6} name="Min" />
+                      <Bar dataKey="avg" fill="#ac1928" radius={[4, 4, 0, 0]} maxBarSize={28} fillOpacity={0.85} name="Average" />
+                      <Bar dataKey="min" fill="#2341a4" radius={[4, 4, 0, 0]} maxBarSize={28} fillOpacity={0.6} name="Min" />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -1243,7 +1254,7 @@ export function TeamAnalyticsView() {
                       tickFormatter={(v) => `$${v}`}
                     />
                     <Tooltip contentStyle={tooltipStyle} labelStyle={{ fontWeight: 600 }} formatter={(value: number) => [formatCurrency(value), "Pay Rate"]} />
-                    <Bar dataKey="rate" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={20} fillOpacity={0.8} />
+                    <Bar dataKey="rate" fill="#ac1928" radius={[4, 4, 0, 0]} maxBarSize={20} fillOpacity={0.8} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -1257,11 +1268,11 @@ export function TeamAnalyticsView() {
         <TabsContent value="pto" className="space-y-6">
           {/* PTO Stat Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="border-emerald-100 dark:border-emerald-900/30 hover:shadow-md transition-shadow">
+            <Card className="border-msbm-red/20 dark:border-msbm-red/20 hover:shadow-md transition-shadow">
               <CardContent className="pt-0">
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40">
-                    <CalendarDays className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-msbm-red/5 dark:bg-msbm-red/10">
+                    <CalendarDays className="h-6 w-6 text-msbm-red dark:text-msbm-red-bright" />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Total Requests</p>
@@ -1270,11 +1281,11 @@ export function TeamAnalyticsView() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-teal-100 dark:border-teal-900/30 hover:shadow-md transition-shadow">
+            <Card className="border-inner-blue/20 dark:border-inner-blue/20 hover:shadow-md transition-shadow">
               <CardContent className="pt-0">
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-teal-50 dark:bg-teal-950/40">
-                    <UserCheck className="h-6 w-6 text-teal-600 dark:text-teal-400" />
+                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-inner-blue/5 dark:bg-inner-blue/10">
+                    <UserCheck className="h-6 w-6 text-inner-blue dark:text-light-blue" />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Approved</p>
@@ -1334,8 +1345,8 @@ export function TeamAnalyticsView() {
                     <Tooltip contentStyle={tooltipStyle} labelStyle={{ fontWeight: 600 }} />
                     <Legend />
                     <Bar dataKey="Sick" stackId="pto" fill="#f59e0b" radius={[0, 0, 0, 0]} maxBarSize={32} name="Sick" />
-                    <Bar dataKey="Vacation" stackId="pto" fill="#10b981" radius={[0, 0, 0, 0]} maxBarSize={32} name="Vacation" />
-                    <Bar dataKey="Personal" stackId="pto" fill="#14b8a6" radius={[0, 0, 0, 0]} maxBarSize={32} name="Personal" />
+                    <Bar dataKey="Vacation" stackId="pto" fill="#ac1928" radius={[0, 0, 0, 0]} maxBarSize={32} name="Vacation" />
+                    <Bar dataKey="Personal" stackId="pto" fill="#2341a4" radius={[0, 0, 0, 0]} maxBarSize={32} name="Personal" />
                     <Bar dataKey="Other" stackId="pto" fill="#8b5cf6" radius={[4, 4, 0, 0]} maxBarSize={32} name="Other" />
                   </BarChart>
                 </ResponsiveContainer>
@@ -1376,7 +1387,7 @@ export function TeamAnalyticsView() {
                     <div className="flex flex-wrap gap-3 mt-2">
                       {ptoTypeDistribution.map((d, idx) => (
                         <div key={d.name} className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                          <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: CHART_COLORS[idx % CHART_COLORS.length] }} />
+                          <span className={`h-2.5 w-2.5 rounded-full ${CHART_COLOR_CLASSES[idx % CHART_COLOR_CLASSES.length]}`} />
                           {d.name} ({d.value}d)
                         </div>
                       ))}
@@ -1412,7 +1423,7 @@ export function TeamAnalyticsView() {
                           className="flex items-center gap-3 p-2.5 rounded-lg hover:bg-muted/50 transition-colors"
                         >
                           <div className={`h-2 w-2 rounded-full shrink-0 ${
-                            r.status === "approved" ? "bg-emerald-500" : r.status === "pending" ? "bg-amber-500" : "bg-red-500"
+                            r.status === "approved" ? "bg-msbm-red/50" : r.status === "pending" ? "bg-amber-500" : "bg-red-500"
                           }`} />
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium truncate">{emp ? `${emp.firstName} ${emp.lastName}` : "Unknown"}</p>
@@ -1424,7 +1435,7 @@ export function TeamAnalyticsView() {
                             variant="outline"
                             className={`text-[10px] shrink-0 ${
                               r.status === "approved"
-                                ? "border-emerald-200 text-emerald-700 dark:border-emerald-800 dark:text-emerald-400"
+                                ? "border-msbm-red/20 text-msbm-red dark:border-msbm-red/20 dark:text-msbm-red-bright"
                                 : r.status === "pending"
                                   ? "border-amber-200 text-amber-700 dark:border-amber-800 dark:text-amber-400"
                                   : "border-red-200 text-red-700 dark:border-red-800 dark:text-red-400"
@@ -1449,12 +1460,12 @@ export function TeamAnalyticsView() {
           {/* Diversity Score Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Department Balance Score */}
-            <Card className="border-emerald-100 dark:border-emerald-900/30 overflow-hidden hover:shadow-md transition-shadow">
+            <Card className="border-msbm-red/20 dark:border-msbm-red/20 overflow-hidden hover:shadow-md transition-shadow">
               <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                   <div className="relative w-14 h-14 shrink-0">
                     <svg className="w-14 h-14 -rotate-90" viewBox="0 0 100 100">
-                      <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="8" className="text-emerald-100 dark:text-emerald-900/30" />
+                      <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="8" className="text-msbm-red/10 dark:text-msbm-red/20" />
                       <circle
                         cx="50" cy="50" r="40" fill="none"
                         stroke="url(#balanceGrad)"
@@ -1466,13 +1477,13 @@ export function TeamAnalyticsView() {
                       />
                       <defs>
                         <linearGradient id="balanceGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="#10b981" />
-                          <stop offset="100%" stopColor="#14b8a6" />
+                          <stop offset="0%" stopColor="#ac1928" />
+                          <stop offset="100%" stopColor="#2341a4" />
                         </linearGradient>
                       </defs>
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-sm font-bold text-emerald-700 dark:text-emerald-400">{diversityMetrics.balanceScore}</span>
+                      <span className="text-sm font-bold text-msbm-red dark:text-msbm-red-bright">{diversityMetrics.balanceScore}</span>
                     </div>
                   </div>
                   <div>
@@ -1487,7 +1498,7 @@ export function TeamAnalyticsView() {
             </Card>
 
             {/* New Hire Velocity */}
-            <Card className="border-teal-100 dark:border-teal-900/30 overflow-hidden hover:shadow-md transition-shadow">
+            <Card className="border-inner-blue/20 dark:border-inner-blue/20 overflow-hidden hover:shadow-md transition-shadow">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -1495,7 +1506,7 @@ export function TeamAnalyticsView() {
                     <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">{diversityMetrics.hireVelocity}/mo</p>
                     <p className="text-[10px] text-muted-foreground">{diversityMetrics.recentHires} in last 90 days</p>
                   </div>
-                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center shadow-lg shadow-teal-500/20">
+                  <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-inner-blue to-inner-blue flex items-center justify-center shadow-lg shadow-inner-blue/20">
                     <UserPlus className="h-5 w-5 text-white" />
                   </div>
                 </div>
@@ -1509,7 +1520,7 @@ export function TeamAnalyticsView() {
                   <div>
                     <p className="text-xs text-muted-foreground font-medium">Recent Hires (90d)</p>
                     <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">{diversityMetrics.recentHires}</p>
-                    <p className="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5">
+                    <p className="text-[10px] text-msbm-red dark:text-msbm-red-bright flex items-center gap-0.5">
                       <TrendingUp className="h-3 w-3" /> growing team
                     </p>
                   </div>
@@ -1543,7 +1554,7 @@ export function TeamAnalyticsView() {
             <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-emerald-600" />
+                  <Sparkles className="h-4 w-4 text-msbm-red" />
                   People Insights Radar
                 </CardTitle>
                 <CardDescription>Multi-dimensional workforce health</CardDescription>
@@ -1558,8 +1569,8 @@ export function TeamAnalyticsView() {
                       <Radar
                         name="Score"
                         dataKey="score"
-                        stroke="#10b981"
-                        fill="#10b981"
+                        stroke="#ac1928"
+                        fill="#ac1928"
                         fillOpacity={0.2}
                         strokeWidth={2}
                       />
@@ -1574,7 +1585,7 @@ export function TeamAnalyticsView() {
             <Card className="glass-card-enhanced hover:shadow-md transition-shadow">
               <CardHeader>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <Timer className="h-4 w-4 text-teal-600" />
+                  <Timer className="h-4 w-4 text-inner-blue" />
                   Role Seniority Distribution
                 </CardTitle>
                 <CardDescription>Employees grouped by tenure level</CardDescription>
@@ -1613,7 +1624,7 @@ export function TeamAnalyticsView() {
                   const deviationPct = idealPerDept > 0 ? Math.round((deviation / idealPerDept) * 100) : 0;
                   return (
                     <div key={dept.name} className="flex items-center gap-4">
-                      <div className="w-3 h-3 rounded-full shrink-0" style={{ backgroundColor: CHART_COLORS[idx % CHART_COLORS.length] }} />
+                      <div className={`w-3 h-3 rounded-full shrink-0 ${CHART_COLOR_CLASSES[idx % CHART_COLOR_CLASSES.length]}`} />
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-1">
                           <span className="text-sm font-medium text-gray-900 dark:text-white truncate">{dept.name}</span>
@@ -1622,8 +1633,7 @@ export function TeamAnalyticsView() {
                         <div className="relative">
                           <Progress value={dept.percentage} className="h-2" />
                           <div
-                            className="absolute top-0 left-0 h-2 rounded-full transition-all duration-500"
-                            style={{ width: `${dept.percentage}%`, backgroundColor: CHART_COLORS[idx % CHART_COLORS.length] }}
+                            className={`absolute top-0 left-0 h-2 rounded-full transition-all duration-500 ${CHART_COLOR_CLASSES[idx % CHART_COLOR_CLASSES.length]} w-[${Math.round(dept.percentage)}%]`}
                           />
                         </div>
                       </div>
@@ -1631,7 +1641,7 @@ export function TeamAnalyticsView() {
                         variant="outline"
                         className={`text-[10px] shrink-0 ${
                           deviationPct < 20
-                            ? "border-emerald-200 text-emerald-700 dark:border-emerald-800 dark:text-emerald-400"
+                            ? "border-msbm-red/20 text-msbm-red dark:border-msbm-red/20 dark:text-msbm-red-bright"
                             : deviationPct < 40
                               ? "border-amber-200 text-amber-700 dark:border-amber-800 dark:text-amber-400"
                               : "border-red-200 text-red-700 dark:border-red-800 dark:text-red-400"
@@ -1675,17 +1685,17 @@ export function TeamAnalyticsView() {
                     .map((emp) => {
                       const tenureMonths = differenceInMonths(new Date(), new Date(emp.hireDate));
                       const tenurePct = Math.min(100, (tenureMonths / 60) * 100);
-                      const color = tenureMonths > 36 ? "#10b981" : tenureMonths > 18 ? "#14b8a6" : tenureMonths > 6 ? "#f59e0b" : "#ec4899";
+                      const colorClass = tenureMonths > 36 ? "bg-msbm-red" : tenureMonths > 18 ? "bg-inner-blue" : tenureMonths > 6 ? "bg-amber-500" : "bg-pink-500";
                       return (
                         <div key={emp.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted/50 transition-colors">
-                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-white text-[10px] font-bold shrink-0">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-msbm-red to-inner-blue flex items-center justify-center text-white text-[10px] font-bold shrink-0">
                             {emp.firstName[0]}{emp.lastName[0]}
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium truncate">{emp.firstName} {emp.lastName}</p>
                             <div className="flex items-center gap-2 mt-0.5">
                               <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
-                                <div className="h-full rounded-full transition-all" style={{ width: `${tenurePct}%`, backgroundColor: color }} />
+                                <div className={`h-full rounded-full transition-all ${colorClass} w-[${Math.round(tenurePct)}%]`} />
                               </div>
                               <span className="text-[10px] text-muted-foreground shrink-0">{getTenureLabel(emp.hireDate)}</span>
                             </div>

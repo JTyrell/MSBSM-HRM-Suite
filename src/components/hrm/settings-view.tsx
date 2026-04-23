@@ -112,7 +112,7 @@ function SeverityBadge({ severity }: { severity: string }) {
       icon: FileText,
     },
     success: {
-      className: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800",
+      className: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-msbm-red/20 dark:border-msbm-red/20",
       icon: CheckCircle2,
     },
     warning: {
@@ -224,7 +224,7 @@ function SaveButton({ isSaving, onClick, label }: { isSaving: boolean; onClick: 
     <Button
       onClick={onClick}
       disabled={isSaving}
-      className="gap-2 bg-emerald-600 hover:bg-emerald-700 text-white disabled:opacity-60"
+      className="gap-2 bg-msbm-red hover:bg-msbm-red/80 text-white disabled:opacity-60"
     >
       {isSaving ? (
         <Loader2 className="h-4 w-4 animate-spin" />
@@ -456,7 +456,7 @@ export function SettingsView() {
             </p>
           )}
         </div>
-        <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 w-fit">
+        <Badge variant="secondary" className="bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright w-fit">
           <ShieldCheck className="h-3.5 w-3.5 mr-1" />
           Admin Access
         </Badge>
@@ -501,8 +501,8 @@ export function SettingsView() {
             <CardContent className="space-y-6">
               {/* Logo Placeholder */}
               <div className="flex items-center gap-6">
-                <div className="flex items-center justify-center h-20 w-20 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border-2 border-dashed border-emerald-200 dark:border-emerald-800 transition-colors hover:border-emerald-400">
-                  <ImageIcon className="h-8 w-8 text-emerald-400" />
+                <div className="flex items-center justify-center h-20 w-20 rounded-2xl bg-msbm-red/5 dark:bg-msbm-red/10 border-2 border-dashed border-msbm-red/20 dark:border-msbm-red/20 transition-colors hover:border-msbm-red-bright">
+                  <ImageIcon className="h-8 w-8 text-msbm-red-bright" />
                 </div>
                 <div className="space-y-1">
                   <p className="text-sm font-medium">Company Logo</p>
@@ -838,37 +838,37 @@ export function SettingsView() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div className={`p-4 rounded-xl border transition-colors ${emailNotifications ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-950/20" : "border-border bg-muted/30"}`}>
+                <div className={`p-4 rounded-xl border transition-colors ${emailNotifications ? "border-msbm-red/20 dark:border-msbm-red/20 bg-msbm-red/5/50 dark:bg-msbm-red/10" : "border-border bg-muted/30"}`}>
                   <div className="flex items-center gap-2 mb-1">
-                    <MonitorSmartphone className={`h-4 w-4 ${emailNotifications ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`} />
+                    <MonitorSmartphone className={`h-4 w-4 ${emailNotifications ? "text-msbm-red dark:text-msbm-red-bright" : "text-muted-foreground"}`} />
                     <span className="text-sm font-medium">Email</span>
                   </div>
                   <p className="text-xs text-muted-foreground">{emailNotifications ? "Active" : "Disabled"}</p>
                 </div>
-                <div className={`p-4 rounded-xl border transition-colors ${pushNotifications ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-950/20" : "border-border bg-muted/30"}`}>
+                <div className={`p-4 rounded-xl border transition-colors ${pushNotifications ? "border-msbm-red/20 dark:border-msbm-red/20 bg-msbm-red/5/50 dark:bg-msbm-red/10" : "border-border bg-muted/30"}`}>
                   <div className="flex items-center gap-2 mb-1">
-                    <Bell className={`h-4 w-4 ${pushNotifications ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`} />
+                    <Bell className={`h-4 w-4 ${pushNotifications ? "text-msbm-red dark:text-msbm-red-bright" : "text-muted-foreground"}`} />
                     <span className="text-sm font-medium">Push</span>
                   </div>
                   <p className="text-xs text-muted-foreground">{pushNotifications ? "Active" : "Disabled"}</p>
                 </div>
-                <div className={`p-4 rounded-xl border transition-colors ${ptoAlerts ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-950/20" : "border-border bg-muted/30"}`}>
+                <div className={`p-4 rounded-xl border transition-colors ${ptoAlerts ? "border-msbm-red/20 dark:border-msbm-red/20 bg-msbm-red/5/50 dark:bg-msbm-red/10" : "border-border bg-muted/30"}`}>
                   <div className="flex items-center gap-2 mb-1">
-                    <CalendarDays className={`h-4 w-4 ${ptoAlerts ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`} />
+                    <CalendarDays className={`h-4 w-4 ${ptoAlerts ? "text-msbm-red dark:text-msbm-red-bright" : "text-muted-foreground"}`} />
                     <span className="text-sm font-medium">PTO Alerts</span>
                   </div>
                   <p className="text-xs text-muted-foreground">{ptoAlerts ? "Active" : "Disabled"}</p>
                 </div>
-                <div className={`p-4 rounded-xl border transition-colors ${payrollAlerts ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-950/20" : "border-border bg-muted/30"}`}>
+                <div className={`p-4 rounded-xl border transition-colors ${payrollAlerts ? "border-msbm-red/20 dark:border-msbm-red/20 bg-msbm-red/5/50 dark:bg-msbm-red/10" : "border-border bg-muted/30"}`}>
                   <div className="flex items-center gap-2 mb-1">
-                    <DollarSign className={`h-4 w-4 ${payrollAlerts ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`} />
+                    <DollarSign className={`h-4 w-4 ${payrollAlerts ? "text-msbm-red dark:text-msbm-red-bright" : "text-muted-foreground"}`} />
                     <span className="text-sm font-medium">Payroll Alerts</span>
                   </div>
                   <p className="text-xs text-muted-foreground">{payrollAlerts ? "Active" : "Disabled"}</p>
                 </div>
-                <div className={`p-4 rounded-xl border transition-colors ${complianceAlerts ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-950/20" : "border-border bg-muted/30"}`}>
+                <div className={`p-4 rounded-xl border transition-colors ${complianceAlerts ? "border-msbm-red/20 dark:border-msbm-red/20 bg-msbm-red/5/50 dark:bg-msbm-red/10" : "border-border bg-muted/30"}`}>
                   <div className="flex items-center gap-2 mb-1">
-                    <ShieldCheck className={`h-4 w-4 ${complianceAlerts ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground"}`} />
+                    <ShieldCheck className={`h-4 w-4 ${complianceAlerts ? "text-msbm-red dark:text-msbm-red-bright" : "text-muted-foreground"}`} />
                     <span className="text-sm font-medium">Compliance</span>
                   </div>
                   <p className="text-xs text-muted-foreground">{complianceAlerts ? "Active" : "Disabled"}</p>
@@ -943,7 +943,7 @@ export function SettingsView() {
               {/* Last Login Info */}
               <div className="rounded-xl border border-border p-4 bg-muted/30">
                 <div className="flex items-center gap-2 mb-3">
-                  <Eye className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                  <Eye className="h-4 w-4 text-msbm-red dark:text-msbm-red-bright" />
                   <span className="text-sm font-semibold">Last Login Information</span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
@@ -976,7 +976,7 @@ export function SettingsView() {
                   <CardTitle className="text-base font-semibold">Audit Log</CardTitle>
                   <CardDescription>Recent system activity and changes</CardDescription>
                 </div>
-                <Badge variant="secondary" className="bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300">
+                <Badge variant="secondary" className="bg-inner-blue/10 text-inner-blue dark:bg-inner-blue/20 dark:text-light-blue">
                   {AUDIT_LOG.length} entries
                 </Badge>
               </div>

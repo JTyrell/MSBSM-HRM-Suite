@@ -90,15 +90,21 @@ interface DepartmentData {
 type GeofenceType = "office" | "remote_site" | "field";
 
 const GEOFENCE_TYPE_CONFIG: Record<GeofenceType, { label: string; icon: React.ElementType; color: string }> = {
-  office: { label: "Office", icon: Building2, color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400" },
+  office: { label: "Office", icon: Building2, color: "bg-msbm-red/10 text-msbm-red dark:bg-emerald-950/40 dark:text-msbm-red-bright" },
   remote_site: { label: "Remote Site", icon: Wifi, color: "bg-sky-100 text-sky-700 dark:bg-sky-950/40 dark:text-sky-400" },
   field: { label: "Field", icon: Mountain, color: "bg-amber-100 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400" },
 };
 
-const POLYGON_COLORS: Record<string, string> = {
-  office: "#10b981",
+const POLYGON_HEX: Record<string, string> = {
+  office: "#ac1928",
   remote_site: "#0ea5e9",
   field: "#f59e0b",
+};
+
+const POLYGON_CLASSES: Record<string, string> = {
+  office: "bg-msbm-red",
+  remote_site: "bg-sky-500",
+  field: "bg-amber-500",
 };
 
 // ─── Form defaults ───────────────────────────────────────────────────────────
@@ -119,7 +125,7 @@ function MapSkeleton() {
   return (
     <div className="w-full h-[500px] bg-muted rounded-lg flex items-center justify-center">
       <div className="flex flex-col items-center gap-3">
-        <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-msbm-red" />
         <p className="text-sm text-muted-foreground">Loading map...</p>
       </div>
     </div>
@@ -363,7 +369,7 @@ export function GeofenceView() {
           <Card className="glass-card">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
-                <MapIcon className="h-5 w-5 text-emerald-600" />
+                <MapIcon className="h-5 w-5 text-msbm-red" />
                 Interactive Map
               </CardTitle>
             </CardHeader>
@@ -378,7 +384,7 @@ export function GeofenceView() {
                         center={mapCenter}
                         zoom={geofences.length > 0 ? 12 : 4}
                         scrollWheelZoom={true}
-                        style={{ height: "100%", width: "100%" }}
+                        className="h-full w-full"
                       >
                         <TileLayer
                           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -387,7 +393,7 @@ export function GeofenceView() {
                         {geofences.map((geo) => {
                           const positions = getPolygonPositions(geo);
                           const isSelected = geo.id === selectedId;
-                          const color = POLYGON_COLORS[geo.type] || "#10b981";
+                          const color = POLYGON_HEX[geo.type] || "#ac1928";
                           const typeConfig = GEOFENCE_TYPE_CONFIG[geo.type as GeofenceType] || GEOFENCE_TYPE_CONFIG.office;
                           const TypeIcon = typeConfig.icon;
 
@@ -423,7 +429,7 @@ export function GeofenceView() {
                                       variant="outline"
                                       className={`text-xs ${
                                         geo.isActive
-                                          ? "border-emerald-500 text-emerald-700"
+                                          ? "border-emerald-500 text-msbm-red"
                                           : "border-gray-400 text-gray-500"
                                       }`}
                                     >
@@ -446,8 +452,7 @@ export function GeofenceView() {
                 {(Object.keys(GEOFENCE_TYPE_CONFIG) as GeofenceType[]).map((type) => (
                   <div key={type} className="flex items-center gap-2">
                     <div
-                      className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: POLYGON_COLORS[type] }}
+                      className={`w-3 h-3 rounded-full ${POLYGON_CLASSES[type]}`}
                     />
                     <span className="text-xs text-muted-foreground">
                       {GEOFENCE_TYPE_CONFIG[type].label}
@@ -463,10 +468,10 @@ export function GeofenceView() {
         <div className="space-y-4">
           {/* Selected detail */}
           {selectedGeofence && (
-            <Card className="border-emerald-200 dark:border-emerald-800 bg-gradient-to-br from-emerald-50/50 to-teal-50/50 dark:from-emerald-950/20 dark:to-teal-950/20">
+            <Card className="border-msbm-red/20 dark:border-msbm-red/20 bg-gradient-to-br from-emerald-50/50 to-teal-50/50 dark:from-emerald-950/20 dark:to-teal-950/20">
               <CardHeader className="pb-2">
                 <CardTitle className="text-base flex items-center gap-2">
-                  <Eye className="h-4 w-4 text-emerald-600" />
+                  <Eye className="h-4 w-4 text-msbm-red" />
                   Selected Zone
                 </CardTitle>
               </CardHeader>
@@ -483,7 +488,7 @@ export function GeofenceView() {
                     variant="outline"
                     className={
                       selectedGeofence.isActive
-                        ? "border-emerald-500 text-emerald-700 bg-emerald-50 dark:bg-emerald-950/30 dark:text-emerald-400"
+                        ? "border-msbm-red text-msbm-red bg-msbm-red/5 dark:bg-msbm-red/20 dark:text-msbm-red-bright"
                         : "border-gray-400 text-gray-500 bg-gray-50 dark:bg-gray-900/30"
                     }
                   >
@@ -534,7 +539,7 @@ export function GeofenceView() {
                           onClick={() => setSelectedId(isSelected ? null : geo.id)}
                           className={`w-full text-left p-3 rounded-lg border transition-all duration-200 ${
                             isSelected
-                              ? "border-emerald-300 dark:border-emerald-700 bg-emerald-50/50 dark:bg-emerald-950/20 shadow-sm"
+                              ? "border-emerald-300 dark:border-emerald-700 bg-msbm-red/5/50 dark:bg-emerald-950/20 shadow-sm"
                               : "border-transparent hover:bg-muted/50 hover:border-border"
                           }`}
                         >
@@ -617,12 +622,12 @@ export function GeofenceView() {
             <DialogTitle className="flex items-center gap-2">
               {editingId ? (
                 <>
-                  <Pencil className="h-5 w-5 text-emerald-600" />
+                  <Pencil className="h-5 w-5 text-msbm-red" />
                   Edit Geofence
                 </>
               ) : (
                 <>
-                  <Plus className="h-5 w-5 text-emerald-600" />
+                  <Plus className="h-5 w-5 text-msbm-red" />
                   Add Geofence
                 </>
               )}

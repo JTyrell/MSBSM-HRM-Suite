@@ -126,7 +126,7 @@ function getRoleBadgeClasses(role: string): string {
       return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200 dark:border-amber-800";
     case "employee":
     default:
-      return "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800";
+      return "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-msbm-red/20 dark:border-msbm-red/20";
   }
 }
 
@@ -189,14 +189,14 @@ function formatPayType(payType: string | undefined | null): string {
 // ============ DEPARTMENT COLORS ============
 
 const DEPT_COLORS = [
-  { bg: "bg-emerald-100 dark:bg-emerald-900/30", border: "border-emerald-300 dark:border-emerald-700", text: "text-emerald-700 dark:text-emerald-400", accent: "bg-emerald-500", gradient: "from-emerald-400 to-teal-500" },
+  { bg: "bg-msbm-red/10 dark:bg-msbm-red/20", border: "border-emerald-300 dark:border-emerald-700", text: "text-msbm-red dark:text-msbm-red-bright", accent: "bg-msbm-red/50", gradient: "from-emerald-400 to-teal-500" },
   { bg: "bg-violet-100 dark:bg-violet-900/30", border: "border-violet-300 dark:border-violet-700", text: "text-violet-700 dark:text-violet-400", accent: "bg-violet-500", gradient: "from-violet-400 to-purple-500" },
   { bg: "bg-amber-100 dark:bg-amber-900/30", border: "border-amber-300 dark:border-amber-700", text: "text-amber-700 dark:text-amber-400", accent: "bg-amber-500", gradient: "from-amber-400 to-orange-500" },
   { bg: "bg-rose-100 dark:bg-rose-900/30", border: "border-rose-300 dark:border-rose-700", text: "text-rose-700 dark:text-rose-400", accent: "bg-rose-500", gradient: "from-rose-400 to-pink-500" },
   { bg: "bg-cyan-100 dark:bg-cyan-900/30", border: "border-cyan-300 dark:border-cyan-700", text: "text-cyan-700 dark:text-cyan-400", accent: "bg-cyan-500", gradient: "from-cyan-400 to-sky-500" },
   { bg: "bg-lime-100 dark:bg-lime-900/30", border: "border-lime-300 dark:border-lime-700", text: "text-lime-700 dark:text-lime-400", accent: "bg-lime-500", gradient: "from-lime-400 to-green-500" },
   { bg: "bg-orange-100 dark:bg-orange-900/30", border: "border-orange-300 dark:border-orange-700", text: "text-orange-700 dark:text-orange-400", accent: "bg-orange-500", gradient: "from-orange-400 to-red-500" },
-  { bg: "bg-teal-100 dark:bg-teal-900/30", border: "border-teal-300 dark:border-teal-700", text: "text-teal-700 dark:text-teal-400", accent: "bg-teal-500", gradient: "from-teal-400 to-emerald-500" },
+  { bg: "bg-inner-blue/10 dark:bg-inner-blue/20", border: "border-teal-300 dark:border-teal-700", text: "text-teal-700 dark:text-light-blue", accent: "bg-teal-500", gradient: "from-teal-400 to-emerald-500" },
 ];
 
 function getDeptColor(deptId: string) {
@@ -210,11 +210,11 @@ function getDeptColor(deptId: string) {
 // ============ AVATAR COLORS ============
 
 const AVATAR_COLORS = [
-  "bg-emerald-500",
+  "bg-msbm-red/50",
   "bg-teal-500",
   "bg-cyan-500",
   "bg-green-600",
-  "bg-emerald-600",
+  "bg-msbm-red",
   "bg-teal-600",
   "bg-cyan-600",
 ];
@@ -392,7 +392,7 @@ function OrgChartView({
                   {deptEmps.map((emp) => (
                     <div
                       key={emp.id}
-                      className="relative flex items-center gap-3 p-3 rounded-lg bg-white dark:bg-gray-900 border border-border/50 cursor-pointer transition-all hover:shadow-sm hover:border-emerald-200 dark:hover:border-emerald-800"
+                      className="relative flex items-center gap-3 p-3 rounded-lg bg-white dark:bg-gray-900 border border-border/50 cursor-pointer transition-all hover:shadow-sm hover:border-msbm-red/20 dark:hover:border-msbm-red/20"
                       onClick={() => onEmployeeClick(emp)}
                     >
                       {/* Tree connector dot */}
@@ -464,7 +464,7 @@ function OrgChartView({
                 {unassignedEmps.map((emp) => (
                   <div
                     key={emp.id}
-                    className="relative flex items-center gap-3 p-3 rounded-lg bg-white dark:bg-gray-900 border border-border/50 cursor-pointer transition-all hover:shadow-sm hover:border-emerald-200 dark:hover:border-emerald-800"
+                    className="relative flex items-center gap-3 p-3 rounded-lg bg-white dark:bg-gray-900 border border-border/50 cursor-pointer transition-all hover:shadow-sm hover:border-msbm-red/20 dark:hover:border-msbm-red/20"
                     onClick={() => onEmployeeClick(emp)}
                   >
                     <div className="absolute -left-[22px] top-1/2 -translate-y-1/2 w-3 h-3 rounded-full bg-gray-300 dark:bg-gray-600 border-2 border-background" />
@@ -511,7 +511,7 @@ function EmployeeCard({
 
   return (
     <div
-      className="group relative flex flex-col rounded-xl border border-border/60 bg-white dark:bg-gray-950 overflow-hidden cursor-pointer transition-all hover:shadow-lg hover:-translate-y-0.5 hover:border-emerald-200 dark:hover:border-emerald-800"
+      className="group relative flex flex-col rounded-xl border border-border/60 bg-white dark:bg-gray-950 overflow-hidden cursor-pointer transition-all hover:shadow-lg hover:-translate-y-0.5 hover:border-msbm-red/20 dark:hover:border-msbm-red/20"
       onClick={onClick}
     >
       {/* Gradient top border based on department */}
@@ -561,7 +561,7 @@ function EmployeeCard({
           </Badge>
           <Badge
             variant="outline"
-            className={`text-[10px] ${emp.payType === "salary" ? "bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400 border-sky-200 dark:border-sky-800" : "bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400 border-teal-200 dark:border-teal-800"}`}
+            className={`text-[10px] ${emp.payType === "salary" ? "bg-sky-100 text-sky-700 dark:bg-sky-900/30 dark:text-sky-400 border-sky-200 dark:border-sky-800" : "bg-inner-blue/10 text-teal-700 dark:bg-inner-blue/20 dark:text-light-blue border-teal-200 dark:border-teal-800"}`}
           >
             {emp.payType === "salary" ? "Full-time" : "Part-time"}
           </Badge>
@@ -610,14 +610,14 @@ function ActivityTimeline({ employee }: { employee: Employee }) {
         icon: <MapPin className="h-3.5 w-3.5" />,
         title: "Clock in at Geofence HQ",
         time: "2 hours ago",
-        color: "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400",
+        color: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright",
       },
       {
         id: "2",
         icon: <CheckCircle2 className="h-3.5 w-3.5" />,
         title: "PTO request approved",
         time: "Yesterday",
-        color: "bg-teal-100 text-teal-600 dark:bg-teal-900/30 dark:text-teal-400",
+        color: "bg-inner-blue/10 text-inner-blue dark:bg-inner-blue/20 dark:text-light-blue",
       },
       {
         id: "3",
@@ -638,7 +638,7 @@ function ActivityTimeline({ employee }: { employee: Employee }) {
         icon: <Users className="h-3.5 w-3.5" />,
         title: "Joined the company",
         time: hireDateStr,
-        color: "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400",
+        color: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright",
       },
     ];
   }, [employee]);
@@ -682,7 +682,7 @@ function PayPeriodBreakdown({ employee }: { employee: Employee }) {
   return (
     <div className="rounded-lg border p-4">
       <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-        <TrendingUp className="h-4 w-4 text-teal-600" />
+        <TrendingUp className="h-4 w-4 text-inner-blue" />
         Last Pay Period
       </h4>
       <div className="grid grid-cols-3 gap-3">
@@ -1007,7 +1007,7 @@ export function EmployeesView() {
         </div>
         <Button
           onClick={() => setAddDialogOpen(true)}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
+          className="bg-msbm-red hover:bg-msbm-red/80 text-white shadow-sm"
         >
           <UserPlus className="mr-2 h-4 w-4" />
           Add Employee
@@ -1018,8 +1018,8 @@ export function EmployeesView() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <Card className="border-emerald-100 dark:border-emerald-900/30">
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
-              <UserCheck className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-msbm-red/10 dark:bg-msbm-red/20">
+              <UserCheck className="h-5 w-5 text-msbm-red dark:text-msbm-red-bright" />
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -1044,8 +1044,8 @@ export function EmployeesView() {
         </Card>
         <Card className="border-teal-100 dark:border-teal-900/30">
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-teal-100 dark:bg-teal-900/30">
-              <Users className="h-5 w-5 text-teal-600 dark:text-teal-400" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-inner-blue/10 dark:bg-inner-blue/20">
+              <Users className="h-5 w-5 text-inner-blue dark:text-light-blue" />
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -1061,7 +1061,7 @@ export function EmployeesView() {
       {deptWithCounts.length > 0 && (
         <div>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-            <Building2 className="h-5 w-5 text-emerald-600" />
+            <Building2 className="h-5 w-5 text-msbm-red" />
             Departments
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
@@ -1086,7 +1086,7 @@ export function EmployeesView() {
                     <div className="text-sm font-semibold text-gray-900 dark:text-white truncate">
                       {dept.name}
                     </div>
-                    <div className="mt-1 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                    <div className="mt-1 text-xs text-msbm-red dark:text-msbm-red-bright font-medium">
                       {(dept as DepartmentWithCount & { _count?: { employees: number } })._count
                         ?.employees || 0}{" "}
                       employees
@@ -1118,7 +1118,7 @@ export function EmployeesView() {
             <CardHeader className="pb-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <Users className="h-5 w-5 text-emerald-600" />
+                  <Users className="h-5 w-5 text-msbm-red" />
                   Employee Directory
                 </CardTitle>
                 <div className="flex items-center gap-2">
@@ -1129,7 +1129,7 @@ export function EmployeesView() {
                     variant={viewMode === "card" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setViewMode("card")}
-                    className={viewMode === "card" ? "bg-emerald-600 hover:bg-emerald-700 text-white h-8 w-8 p-0" : "h-8 w-8 p-0"}
+                    className={viewMode === "card" ? "bg-msbm-red hover:bg-msbm-red/80 text-white h-8 w-8 p-0" : "h-8 w-8 p-0"}
                   >
                     <LayoutGrid className="h-4 w-4" />
                   </Button>
@@ -1137,7 +1137,7 @@ export function EmployeesView() {
                     variant={viewMode === "table" ? "default" : "outline"}
                     size="sm"
                     onClick={() => setViewMode("table")}
-                    className={viewMode === "table" ? "bg-emerald-600 hover:bg-emerald-700 text-white h-8 w-8 p-0" : "h-8 w-8 p-0"}
+                    className={viewMode === "table" ? "bg-msbm-red hover:bg-msbm-red/80 text-white h-8 w-8 p-0" : "h-8 w-8 p-0"}
                   >
                     <LayoutList className="h-4 w-4" />
                   </Button>
@@ -1385,7 +1385,7 @@ export function EmployeesView() {
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Building2 className="h-5 w-5 text-emerald-600" />
+                <Building2 className="h-5 w-5 text-msbm-red" />
                 Organization Chart
               </CardTitle>
             </CardHeader>

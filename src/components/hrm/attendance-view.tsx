@@ -180,8 +180,8 @@ function GeofenceMap({
             key={`polygon-${i}`}
             positions={positions}
             pathOptions={{
-              color: "#10b981",
-              fillColor: "#10b981",
+              color: "#ac1928",
+              fillColor: "#ac1928",
               fillOpacity: 0.15,
               weight: 2,
             }}
@@ -194,8 +194,8 @@ function GeofenceMap({
             center={g.center}
             radius={Math.min(g.radius / 10, 40)}
             pathOptions={{
-              color: "#14b8a6",
-              fillColor: "#14b8a6",
+              color: "#2341a4",
+              fillColor: "#2341a4",
               fillOpacity: 0.12,
               weight: 2,
             }}
@@ -226,7 +226,7 @@ function StatusBadge({ status }: { status: string }) {
   switch (status) {
     case "completed":
       return (
-        <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 hover:bg-emerald-100">
+        <Badge className="bg-msbm-red/10 text-msbm-red border-msbm-red/20 hover:bg-msbm-red/10">
           Completed
         </Badge>
       );
@@ -519,13 +519,13 @@ export function AttendanceView() {
       {/* ===== CLOCK IN/OUT PANEL + GEOFENCE MAP ===== */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* --- Clock In/Out Panel --- */}
-        <Card className="relative overflow-hidden border-emerald-200/50">
+        <Card className="relative overflow-hidden border-msbm-red/20/50">
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-50 via-teal-50/50 to-transparent pointer-events-none" />
           <CardHeader className="relative pb-2">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="p-2 rounded-lg bg-emerald-100">
-                  <Clock className="h-5 w-5 text-emerald-600" />
+                <div className="p-2 rounded-lg bg-msbm-red/10">
+                  <Clock className="h-5 w-5 text-msbm-red" />
                 </div>
                 <div>
                   <CardTitle className="text-lg">Time Clock</CardTitle>
@@ -539,10 +539,10 @@ export function AttendanceView() {
                   {formatTime(currentTime)}
                 </div>
                 {isClockedIn && (
-                  <div className="text-xs text-emerald-600 font-medium mt-1 flex items-center justify-end gap-1">
+                  <div className="text-xs text-msbm-red font-medium mt-1 flex items-center justify-end gap-1">
                     <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-msbm-red/20 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-msbm-red/50" />
                     </span>
                     Clocked In
                   </div>
@@ -553,11 +553,11 @@ export function AttendanceView() {
 
           <CardContent className="relative space-y-6">
             {/* Status indicator */}
-            <div className="flex items-center gap-3 p-4 rounded-xl bg-white/80 border border-emerald-100">
+            <div className="flex items-center gap-3 p-4 rounded-xl bg-white/80 border border-msbm-red/20">
               <div
                 className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${
                   isClockedIn
-                    ? "bg-emerald-100 text-emerald-600"
+                    ? "bg-msbm-red/10 text-msbm-red"
                     : "bg-gray-100 text-gray-400"
                 }`}
               >
@@ -572,7 +572,7 @@ export function AttendanceView() {
                   {isClockedIn ? "Currently Clocked In" : "Not Clocked In"}
                 </p>
                 {isClockedIn ? (
-                  <p className="text-sm text-emerald-600 tabular-nums font-medium mt-0.5">
+                  <p className="text-sm text-msbm-red tabular-nums font-medium mt-0.5">
                     Elapsed: {formatElapsed(elapsedMs)}
                   </p>
                 ) : (
@@ -588,7 +588,7 @@ export function AttendanceView() {
               {isClockedIn ? (
                 <Button
                   size="lg"
-                  className="w-full max-w-xs h-16 text-lg font-bold rounded-2xl shadow-lg shadow-rose-200/50 bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-600 hover:to-rose-700 text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                  className="w-full max-w-xs h-16 text-lg font-bold rounded-2xl shadow-lg shadow-msbm-red/20 bg-gradient-to-r from-msbm-red to-msbm-red/90 hover:from-msbm-red/90 hover:to-msbm-red/80 text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                   onClick={handleClockOut}
                   disabled={clockingOut}
                 >
@@ -607,7 +607,7 @@ export function AttendanceView() {
               ) : (
                 <Button
                   size="lg"
-                  className="btn-gradient w-full max-w-xs h-16 text-lg font-bold rounded-2xl shadow-lg shadow-emerald-300/50 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+                  className="btn-gradient w-full max-w-xs h-16 text-lg font-bold rounded-2xl shadow-lg shadow-msbm-red/20 bg-gradient-to-r from-msbm-red to-msbm-red/90 hover:bg-msbm-red/80 hover:to-msbm-red/80 text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
                   onClick={handleClockIn}
                   disabled={clockingIn}
                 >
@@ -629,7 +629,7 @@ export function AttendanceView() {
             {/* Quick Stats */}
             <div className="grid grid-cols-3 gap-3">
               <div className="text-center p-3 rounded-lg bg-white/60 border border-emerald-50">
-                <div className="text-2xl font-bold text-emerald-600">
+                <div className="text-2xl font-bold text-msbm-red">
                   {formatHours(todayTotalHours)}
                 </div>
                 <p className="text-xs text-muted-foreground mt-1">Today</p>
@@ -651,7 +651,7 @@ export function AttendanceView() {
         </Card>
 
         {/* --- Geofence Map --- */}
-        <Card className="border-emerald-200/50">
+        <Card className="border-msbm-red/20/50">
           <CardHeader className="pb-2">
             <div className="flex items-center gap-2">
               <div className="p-2 rounded-lg bg-teal-100">
@@ -673,7 +673,7 @@ export function AttendanceView() {
             </div>
             <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground px-1">
               <div className="flex items-center gap-1.5">
-                <div className="h-3 w-3 rounded-sm bg-emerald-500/30 border border-emerald-500" />
+                <div className="h-3 w-3 rounded-sm bg-msbm-red/50/30 border border-emerald-500" />
                 Geofence Zone
               </div>
               <div className="flex items-center gap-1.5">
@@ -686,7 +686,7 @@ export function AttendanceView() {
       </div>
 
       {/* ===== WEEKLY HOURS SUMMARY ===== */}
-      <Card className="border-emerald-200/50">
+      <Card className="border-msbm-red/20/50">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -701,7 +701,7 @@ export function AttendanceView() {
               </div>
             </div>
             <div className="text-right">
-              <p className="text-2xl font-bold text-emerald-600">
+              <p className="text-2xl font-bold text-msbm-red">
                 {formatHours(weekTotalHours)}
               </p>
               <p className="text-xs text-muted-foreground">Total this week</p>
@@ -733,7 +733,7 @@ export function AttendanceView() {
                         <span className="font-medium text-foreground">
                           {payload?.[0]?.payload?.fullDate}
                         </span>
-                        <span className="ml-2 text-emerald-600 font-semibold">
+                        <span className="ml-2 text-msbm-red font-semibold">
                           {value}h
                         </span>
                       </div>
@@ -753,11 +753,11 @@ export function AttendanceView() {
       </Card>
 
       {/* ===== ATTENDANCE HISTORY TABLE ===== */}
-      <Card className="border-emerald-200/50">
+      <Card className="border-msbm-red/20/50">
         <CardHeader className="pb-2">
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-emerald-100">
-              <Users className="h-5 w-5 text-emerald-600" />
+            <div className="p-2 rounded-lg bg-msbm-red/10">
+              <Users className="h-5 w-5 text-msbm-red" />
             </div>
             <div>
               <CardTitle className="text-lg">Attendance History</CardTitle>
@@ -828,7 +828,7 @@ export function AttendanceView() {
                     <TableRow key={record.id}>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
+                          <div className="h-8 w-8 rounded-full bg-gradient-to-br from-emerald-400 to-inner-blue flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
                             {record.employee
                               ? `${record.employee.firstName?.[0] || ""}${record.employee.lastName?.[0] || ""}`
                               : "?"}

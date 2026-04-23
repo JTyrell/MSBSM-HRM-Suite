@@ -192,16 +192,16 @@ const PRIORITY_COLORS: Record<string, { badge: string; dot: string; bg: string; 
     text: "text-amber-600 dark:text-amber-400",
   },
   LOW: {
-    badge: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300",
-    dot: "bg-emerald-500",
-    bg: "bg-emerald-50 dark:bg-emerald-950/40",
-    text: "text-emerald-600 dark:text-emerald-400",
+    badge: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-0",
+    dot: "bg-msbm-red",
+    bg: "bg-msbm-red/5 dark:bg-msbm-red/10",
+    text: "text-msbm-red dark:text-msbm-red-bright",
   },
 };
 
 const STATUS_VARIANTS: Record<string, string> = {
   "Action Required": "bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300",
-  Compliant: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300",
+  Compliant: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-0",
   "Pending Review": "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300",
   Upcoming: "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300",
   "In Progress": "bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300",
@@ -209,7 +209,7 @@ const STATUS_VARIANTS: Record<string, string> = {
 };
 
 const AUDIT_STATUS_VARIANTS: Record<string, string> = {
-  completed: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300",
+  completed: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-0",
   pending: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300",
   failed: "bg-red-100 text-red-700 dark:bg-red-900/50 dark:text-red-300",
 };
@@ -220,7 +220,14 @@ function ComplianceScoreRing({ score }: { score: number }) {
   const radius = 60;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (score / 100) * circumference;
-  const color = score >= 90 ? "#059669" : score >= 70 ? "#d97706" : "#dc2626";
+  
+  const getStatusColor = () => {
+    if (score >= 90) return { text: "text-msbm-red", stroke: "stroke-msbm-red" };
+    if (score >= 70) return { text: "text-amber-600", stroke: "stroke-amber-600" };
+    return { text: "text-red-600", stroke: "stroke-red-600" };
+  };
+
+  const statusColors = getStatusColor();
 
   return (
     <div className="relative inline-flex items-center justify-center">
@@ -239,19 +246,18 @@ function ComplianceScoreRing({ score }: { score: number }) {
           cy="80"
           r={radius}
           fill="none"
-          stroke={color}
           strokeWidth="12"
           strokeLinecap="round"
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
-          className="transition-all duration-1000 ease-out"
-          style={{
-            filter: `drop-shadow(0 0 6px ${color}40)`,
-          }}
+          className={cn(
+            "transition-all duration-1000 ease-out",
+            statusColors.stroke
+          )}
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-3xl font-bold" style={{ color }}>
+        <span className={cn("text-3xl font-bold", statusColors.text)}>
           {score}%
         </span>
         <span className="text-xs text-muted-foreground">Compliance</span>
@@ -265,7 +271,7 @@ function ComplianceScoreRing({ score }: { score: number }) {
 function RiskLevelIndicator() {
   const riskLevel = "Low";
   const riskConfig = {
-    Low: { color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40", dot: "bg-emerald-500" },
+    Low: { color: "text-msbm-red dark:text-msbm-red-bright", bg: "bg-msbm-red/5 dark:bg-msbm-red/10", dot: "bg-msbm-red" },
     Medium: { color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/40", dot: "bg-amber-500" },
     High: { color: "text-red-600 dark:text-red-400", bg: "bg-red-50 dark:bg-red-950/40", dot: "bg-red-500" },
   }[riskLevel];
@@ -352,15 +358,13 @@ function ComplianceCalendar({
             return (
               <div
                 key={day.toISOString()}
-                className={`min-h-[72px] border-b border-r last:border-r-0 p-1.5 transition-colors hover:bg-muted/30 ${
-                  isToday ? "bg-emerald-50/50 dark:bg-emerald-950/20" : ""
-                }`}
+                className={`min-h-[72px] border-b border-r last:border-r-0 p-1.5 transition-colors hover:bg-muted/30 ${isToday ? "bg-msbm-red/5 dark:bg-msbm-red/10" : ""}`}
               >
                 <div className="flex items-center justify-between">
                   <span
                     className={`text-xs font-medium ${
                       isToday
-                        ? "bg-emerald-600 text-white h-5 w-5 rounded-full flex items-center justify-center"
+                        ? "bg-msbm-red text-white h-5 w-5 rounded-full flex items-center justify-center"
                         : "text-muted-foreground"
                     }`}
                   >
@@ -413,7 +417,7 @@ function ComplianceCalendar({
           <span>Medium Priority</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+          <div className="h-2.5 w-2.5 rounded-full bg-msbm-red" />
           <span>Low Priority</span>
         </div>
       </div>
@@ -525,7 +529,7 @@ export function ComplianceView() {
         <div className="flex items-center gap-2">
           <Badge
             variant="secondary"
-            className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300"
+            className="bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-0"
           >
             <Shield className="h-3 w-3 mr-1" />
             94% Compliant
@@ -560,11 +564,11 @@ export function ComplianceView() {
         <TabsContent value="dashboard" className="space-y-6">
           {/* Stat Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="border-emerald-200/60 dark:border-emerald-800/40 hover:shadow-md transition-shadow">
+            <Card className="border-msbm-red/20 hover:shadow-md transition-shadow">
               <CardContent className="pt-0">
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-emerald-50 dark:bg-emerald-950/40">
-                    <Globe className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-msbm-red/5">
+                    <Globe className="h-6 w-6 text-msbm-red" />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Active Regulations</p>
@@ -586,11 +590,11 @@ export function ComplianceView() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-teal-200/60 dark:border-teal-800/40 hover:shadow-md transition-shadow">
+            <Card className="border-inner-blue/20 hover:shadow-md transition-shadow">
               <CardContent className="pt-0">
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-teal-50 dark:bg-teal-950/40">
-                    <CheckCircle2 className="h-6 w-6 text-teal-600 dark:text-teal-400" />
+                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-inner-blue/5">
+                    <CheckCircle2 className="h-6 w-6 text-inner-blue" />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Compliance Score</p>
@@ -630,7 +634,7 @@ export function ComplianceView() {
                   </div>
                   <Badge
                     variant="secondary"
-                    className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300"
+                    className="bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-0"
                   >
                     <TrendingUp className="h-3 w-3 mr-1" />
                     +2%
@@ -698,7 +702,7 @@ export function ComplianceView() {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-xs text-muted-foreground">Low Priority Alerts</span>
-                      <Badge variant="outline" className="text-[10px] bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
+                      <Badge variant="outline" className="text-[10px] bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-0">
                         {alertStats.low}
                       </Badge>
                     </div>
@@ -716,8 +720,8 @@ export function ComplianceView() {
               <Card className="hover:shadow-md transition-shadow">
                 <CardContent className="pt-0">
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 flex items-center justify-center">
-                      <FileWarning className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                    <div className="h-10 w-10 rounded-xl bg-msbm-red/5 flex items-center justify-center">
+                      <FileWarning className="h-5 w-5 text-msbm-red" />
                     </div>
                     <div>
                       <p className="text-xs text-muted-foreground">Next Action Due</p>
@@ -759,13 +763,13 @@ export function ComplianceView() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-emerald-200/60 dark:border-emerald-800/40">
+            <Card className="border-msbm-red/20">
               <CardContent className="pt-0">
                 <div className="flex items-center gap-3">
                   <div className={`h-3 w-3 rounded-full ${PRIORITY_COLORS.LOW.dot}`} />
                   <div>
                     <p className="text-xs text-muted-foreground">Low Priority</p>
-                    <p className="text-xl font-bold text-emerald-600 dark:text-emerald-400">{alertStats.low}</p>
+                    <p className="text-xl font-bold text-msbm-red dark:text-msbm-red-bright">{alertStats.low}</p>
                   </div>
                 </div>
               </CardContent>
@@ -797,7 +801,7 @@ export function ComplianceView() {
                               ? "border-red-500 bg-red-100 dark:bg-red-900/50"
                               : alert.priority === "MEDIUM"
                               ? "border-amber-500 bg-amber-100 dark:bg-amber-900/50"
-                              : "border-emerald-500 bg-emerald-100 dark:bg-emerald-900/50"
+                              : "border-msbm-red bg-msbm-red/10"
                           }`}
                         />
                         {!isLast && (
@@ -931,10 +935,10 @@ export function ComplianceView() {
                 <p className="text-xl font-bold">{auditStats.total}</p>
               </CardContent>
             </Card>
-            <Card className="border-emerald-200/60 dark:border-emerald-800/40">
+            <Card className="border-msbm-red/20">
               <CardContent className="pt-0">
                 <p className="text-xs text-muted-foreground">Completed</p>
-                <p className="text-xl font-bold text-emerald-600 dark:text-emerald-400">
+                <p className="text-xl font-bold text-msbm-red dark:text-msbm-red-bright">
                   {auditStats.completed}
                 </p>
               </CardContent>

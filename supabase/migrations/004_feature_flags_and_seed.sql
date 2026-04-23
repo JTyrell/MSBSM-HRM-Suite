@@ -189,7 +189,7 @@ INSERT INTO company_settings (
   )
 VALUES (
     '00000000-0000-0000-0000-000000000001',
-    'MSBM Group',
+    'Mona School of Business and Management',
     'Mona School of Business and Management, UWI, Kingston 7, Jamaica',
     '+1 (876) 927-1234',
     'hr@uwi.edu',

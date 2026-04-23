@@ -71,25 +71,36 @@ import type {
 
 // ─── Color Palette (warm emerald/teal) ───────────────────────────
 const CHART_COLORS = [
-  "#059669", // emerald-600
-  "#0d9488", // teal-600
-  "#d97706", // amber-600
-  "#dc2626", // red-600
-  "#7c3aed", // violet-600
-  "#0891b2", // cyan-600
-  "#ca8a04", // yellow-600
-  "#e11d48", // rose-600
+  "#ac1928", // msbm-red
+  "#2341a4", // inner-blue
+  "#f59e0b", // amber-500
+  "#d11226", // msbm-red-bright
+  "#8b5cf6", // violet-500
+  "#06b6d4", // cyan-500
+  "#f97316", // orange-500
+  "#f43f5e", // rose-500
 ];
 
 const PIE_COLORS = [
-  "#059669",
-  "#0d9488",
-  "#d97706",
-  "#dc2626",
-  "#7c3aed",
-  "#0891b2",
-  "#ca8a04",
-  "#e11d48",
+  "#ac1928",
+  "#2341a4",
+  "#f59e0b",
+  "#d11226",
+  "#8b5cf6",
+  "#06b6d4",
+  "#f97316",
+  "#f43f5e",
+];
+
+const PIE_COLOR_CLASSES = [
+  "bg-msbm-red",
+  "bg-inner-blue",
+  "bg-amber-500",
+  "bg-msbm-red-bright",
+  "bg-violet-500",
+  "bg-cyan-500",
+  "bg-orange-500",
+  "bg-rose-500",
 ];
 
 // ─── Stat Card Data Shape ─────────────────────────────────────────
@@ -160,8 +171,8 @@ const UPCOMING_EVENTS = [
     date: "Jul 15",
     type: "social" as const,
     icon: PartyPopper,
-    colorClass: "text-emerald-600 dark:text-emerald-400",
-    bgColorClass: "bg-emerald-50 dark:bg-emerald-950/40",
+    colorClass: "text-msbm-red dark:text-msbm-red-bright",
+    bgColorClass: "bg-msbm-red/5 dark:bg-emerald-950/40",
   },
   {
     id: "evt-2",
@@ -169,7 +180,7 @@ const UPCOMING_EVENTS = [
     date: "Jul 20",
     type: "meeting" as const,
     icon: Building2,
-    colorClass: "text-teal-600 dark:text-teal-400",
+    colorClass: "text-inner-blue dark:text-light-blue",
     bgColorClass: "bg-teal-50 dark:bg-teal-950/40",
   },
   {
@@ -218,7 +229,7 @@ function WorldClockWidget() {
             <CardDescription className="mt-1">Global office timezones</CardDescription>
           </div>
           <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="inline-block h-2 w-2 rounded-full bg-msbm-red/50 animate-pulse" />
             Live
           </div>
         </div>
@@ -473,9 +484,9 @@ export function DashboardView() {
         direction: "up",
         label: "from last month",
       },
-      colorClass: "text-emerald-600 dark:text-emerald-400",
-      bgColorClass: "bg-emerald-50 dark:bg-emerald-950/40",
-      borderColorClass: "border-emerald-200/60 dark:border-emerald-800/40",
+      colorClass: "text-msbm-red dark:text-msbm-red-bright",
+      bgColorClass: "bg-msbm-red/5 dark:bg-emerald-950/40",
+      borderColorClass: "border-msbm-red/20/60 dark:border-msbm-red/20/40",
     },
     {
       label: "Clocked In Today",
@@ -486,7 +497,7 @@ export function DashboardView() {
         direction: "up",
         label: "attendance rate",
       },
-      colorClass: "text-teal-600 dark:text-teal-400",
+      colorClass: "text-inner-blue dark:text-light-blue",
       bgColorClass: "bg-teal-50 dark:bg-teal-950/40",
       borderColorClass: "border-teal-200/60 dark:border-teal-800/40",
     },
@@ -523,16 +534,16 @@ export function DashboardView() {
       icon: PlayCircle,
       view: "payroll",
       message: "Opening Payroll Module...",
-      colorClass: "text-emerald-600 dark:text-emerald-400",
-      bgColorClass: "bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/60",
+      colorClass: "text-msbm-red dark:text-msbm-red-bright",
+      bgColorClass: "bg-msbm-red/5 dark:bg-msbm-red/20 hover:bg-msbm-red/10 dark:hover:bg-msbm-red/60",
     },
     {
       label: "View Reports",
       icon: BarChart3,
       view: "reports",
       message: "Loading Reports...",
-      colorClass: "text-teal-600 dark:text-teal-400",
-      bgColorClass: "bg-teal-50 dark:bg-teal-950/40 hover:bg-teal-100 dark:hover:bg-teal-900/60",
+      colorClass: "text-inner-blue dark:text-light-blue",
+      bgColorClass: "bg-teal-50 dark:bg-teal-950/40 hover:bg-inner-blue/10 dark:hover:bg-teal-900/60",
     },
     {
       label: "Add Employee",
@@ -580,8 +591,8 @@ export function DashboardView() {
       label: "Total Active",
       value: totalEmployees,
       icon: Briefcase,
-      colorClass: "text-emerald-600 dark:text-emerald-400",
-      bgColorClass: "bg-emerald-50 dark:bg-emerald-950/40",
+      colorClass: "text-msbm-red dark:text-msbm-red-bright",
+      bgColorClass: "bg-msbm-red/5 dark:bg-emerald-950/40",
     },
     {
       label: "On Leave",
@@ -594,7 +605,7 @@ export function DashboardView() {
       label: "New Hires (Month)",
       value: newHiresThisMonth,
       icon: UserPlus,
-      colorClass: "text-teal-600 dark:text-teal-400",
+      colorClass: "text-inner-blue dark:text-light-blue",
       bgColorClass: "bg-teal-50 dark:bg-teal-950/40",
     },
     {
@@ -668,7 +679,7 @@ export function DashboardView() {
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Activity className="h-4 w-4 text-emerald-500" />
           <span>Live data</span>
-          <span className="inline-block h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+          <span className="inline-block h-2 w-2 rounded-full bg-msbm-red/50 animate-pulse" />
         </div>
       </div>
 
@@ -731,13 +742,13 @@ export function DashboardView() {
         </div>
         <div className="flex gap-3 overflow-x-auto pb-1">
           {[
-            { label: "Clock In", icon: Clock, view: "attendance", color: "text-emerald-600 dark:text-emerald-400" },
-            { label: "Request Time Off", icon: FileText, view: "pto", color: "text-teal-600 dark:text-teal-400" },
-            { label: "View Pay Stub", icon: DollarSign, view: "payroll", color: "text-emerald-600 dark:text-emerald-400" },
+            { label: "Clock In", icon: Clock, view: "attendance", color: "text-msbm-red dark:text-msbm-red-bright" },
+            { label: "Request Time Off", icon: FileText, view: "pto", color: "text-inner-blue dark:text-light-blue" },
+            { label: "View Pay Stub", icon: DollarSign, view: "payroll", color: "text-msbm-red dark:text-msbm-red-bright" },
             { label: "My Reviews", icon: Star, view: "performance", color: "text-amber-600 dark:text-amber-400" },
             { label: "Announcements", icon: Megaphone, view: "announcements", color: "text-violet-600 dark:text-violet-400" },
-            { label: "Reports", icon: BarChart3, view: "reports", color: "text-teal-600 dark:text-teal-400" },
-            { label: "Ask AI", icon: Bot, view: "ai-assistant", color: "text-emerald-600 dark:text-emerald-400" },
+            { label: "Reports", icon: BarChart3, view: "reports", color: "text-inner-blue dark:text-light-blue" },
+            { label: "Ask AI", icon: Bot, view: "ai-assistant", color: "text-msbm-red dark:text-msbm-red-bright" },
             { label: "Settings", icon: Settings, view: "settings", color: "text-muted-foreground" },
           ].map((action) => {
             const ActionIcon = action.icon;
@@ -776,9 +787,9 @@ export function DashboardView() {
                 datetime: "Tomorrow, 10:00 AM",
                 location: "Board Room A",
                 category: "Meeting",
-                dotColor: "bg-emerald-500",
-                accentBg: "bg-emerald-50 dark:bg-emerald-950/40",
-                badgeClass: "text-emerald-700 dark:text-emerald-400 bg-emerald-100 dark:bg-emerald-900/30 border-emerald-200 dark:border-emerald-800",
+                dotColor: "bg-msbm-red/50",
+                accentBg: "bg-msbm-red/5 dark:bg-emerald-950/40",
+                badgeClass: "text-msbm-red dark:text-msbm-red-bright bg-msbm-red/10 dark:bg-msbm-red/20 border-msbm-red/20 dark:border-msbm-red/20",
               },
               {
                 title: "Training: Leadership Workshop",
@@ -787,7 +798,7 @@ export function DashboardView() {
                 category: "Training",
                 dotColor: "bg-teal-500",
                 accentBg: "bg-teal-50 dark:bg-teal-950/40",
-                badgeClass: "text-teal-700 dark:text-teal-400 bg-teal-100 dark:bg-teal-900/30 border-teal-200 dark:border-teal-800",
+                badgeClass: "text-teal-700 dark:text-light-blue bg-inner-blue/10 dark:bg-inner-blue/20 border-teal-200 dark:border-teal-800",
               },
               {
                 title: "Payroll Submission Deadline",
@@ -1003,8 +1014,7 @@ export function DashboardView() {
               {departmentData.slice(0, 6).map((dept, idx) => (
                 <div key={dept.name} className="flex items-center gap-2 text-xs">
                   <span
-                    className="h-2.5 w-2.5 rounded-full shrink-0"
-                    style={{ backgroundColor: PIE_COLORS[idx % PIE_COLORS.length] }}
+                    className={`h-2.5 w-2.5 rounded-full shrink-0 ${PIE_COLOR_CLASSES[idx % PIE_COLOR_CLASSES.length]}`}
                   />
                   <span className="text-muted-foreground truncate">{dept.name}</span>
                   <span className="font-medium ml-auto">{dept.value}</span>
@@ -1070,8 +1080,8 @@ export function DashboardView() {
                       const typeConfig = {
                         attendance: {
                           borderColor: "border-l-emerald-500",
-                          bgColor: "bg-emerald-50 dark:bg-emerald-950/40",
-                          iconColor: "text-emerald-600 dark:text-emerald-400",
+                          bgColor: "bg-msbm-red/5 dark:bg-emerald-950/40",
+                          iconColor: "text-msbm-red dark:text-msbm-red-bright",
                           icon: Clock,
                         },
                         pto: {
@@ -1399,7 +1409,7 @@ export function DashboardView() {
                   <Clock className="h-4 w-4 text-emerald-500" />
                   <span className="text-sm font-medium">Today&apos;s Attendance Rate</span>
                 </div>
-                <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                <span className="text-sm font-bold text-msbm-red dark:text-msbm-red-bright">
                   {Math.round(
                     (activeEmployeesCount / Math.max(totalEmployees, 1)) * 100
                   )}

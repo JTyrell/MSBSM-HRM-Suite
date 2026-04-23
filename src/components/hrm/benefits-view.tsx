@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 import {
   Card,
@@ -404,7 +405,7 @@ export function BenefitsView() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant="outline" className="border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 gap-1">
+          <Badge variant="outline" className="border-msbm-red/20 dark:border-msbm-red/20 text-msbm-red dark:text-msbm-red-bright gap-1">
             <CheckCircle2 className="h-3 w-3" />
             {enrolledCount} Active Enrollments
           </Badge>
@@ -452,7 +453,7 @@ export function BenefitsView() {
               <div>
                 <p className="text-xs text-muted-foreground font-medium">Monthly Cost</p>
                 <p className="text-xl font-bold text-gray-900 dark:text-white mt-1">$1,234</p>
-                <p className="text-[10px] text-emerald-600 dark:text-emerald-400 flex items-center gap-0.5">
+                <p className="text-[10px] text-msbm-red dark:text-msbm-red-bright flex items-center gap-0.5">
                   <TrendingUp className="h-3 w-3" /> $342 employer paid
                 </p>
               </div>
@@ -495,12 +496,12 @@ export function BenefitsView() {
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400">92%</span>
+                  <span className="text-xs font-bold text-msbm-red dark:text-msbm-red-bright">92%</span>
                 </div>
               </div>
               <div>
                 <p className="text-xs text-muted-foreground font-medium">Coverage Score</p>
-                <p className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">Excellent</p>
+                <p className="text-sm font-semibold text-msbm-red dark:text-msbm-red-bright">Excellent</p>
               </div>
             </div>
           </CardContent>
@@ -576,7 +577,7 @@ export function BenefitsView() {
                           <Badge
                             className={
                               benefit.status === "enrolled"
-                                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800 text-[10px] badge-glow-emerald"
+                                ? "bg-msbm-red/5 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-msbm-red/20 dark:border-msbm-red/20 text-[10px] badge-glow-emerald"
                                 : "bg-gray-50 text-gray-500 dark:bg-gray-800/30 dark:text-gray-400 border-gray-200 dark:border-gray-700 text-[10px]"
                             }
                             variant="outline"
@@ -587,8 +588,8 @@ export function BenefitsView() {
                       </CardHeader>
                       <CardContent className="pt-0">
                         <p className="text-sm text-gray-700 dark:text-gray-300">{benefit.details}</p>
-                        <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400 mt-2">{benefit.value}</p>
-                        <div className="mt-3 flex items-center gap-1 text-xs text-muted-foreground group-hover:text-emerald-600 transition-colors">
+                        <p className="text-xs font-medium text-msbm-red dark:text-msbm-red-bright mt-2">{benefit.value}</p>
+                        <div className="mt-3 flex items-center gap-1 text-xs text-muted-foreground group-hover:text-msbm-red transition-colors">
                           <Eye className="h-3 w-3" />
                           <span>View details</span>
                           <ChevronRight className="h-3 w-3" />
@@ -627,7 +628,7 @@ export function BenefitsView() {
                           <Badge
                             className={
                               benefit.status === "enrolled"
-                                ? "bg-teal-50 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400 border-teal-200 dark:border-teal-800 text-[10px]"
+                                ? "bg-teal-50 text-teal-700 dark:bg-inner-blue/20 dark:text-light-blue border-teal-200 dark:border-teal-800 text-[10px]"
                                 : "bg-gray-50 text-gray-500 dark:bg-gray-800/30 dark:text-gray-400 border-gray-200 dark:border-gray-700 text-[10px]"
                             }
                             variant="outline"
@@ -638,8 +639,8 @@ export function BenefitsView() {
                       </CardHeader>
                       <CardContent className="pt-0">
                         <p className="text-sm text-gray-700 dark:text-gray-300">{benefit.details}</p>
-                        <p className="text-xs font-medium text-teal-600 dark:text-teal-400 mt-2">{benefit.value}</p>
-                        <div className="mt-3 flex items-center gap-1 text-xs text-muted-foreground group-hover:text-teal-600 transition-colors">
+                        <p className="text-xs font-medium text-inner-blue dark:text-light-blue mt-2">{benefit.value}</p>
+                        <div className="mt-3 flex items-center gap-1 text-xs text-muted-foreground group-hover:text-inner-blue transition-colors">
                           <Eye className="h-3 w-3" />
                           <span>View details</span>
                           <ChevronRight className="h-3 w-3" />
@@ -663,30 +664,25 @@ export function BenefitsView() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    {PTO_DATA.map((pto) => (
-                      <div key={pto.type} className="space-y-1.5">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium text-gray-900 dark:text-white">{pto.type}</span>
-                          <span className="text-xs text-muted-foreground">{pto.used}/{pto.total} days used</span>
+                    {PTO_DATA.map((pto) => {
+                      return (
+                        <div key={pto.type} className="space-y-1.5">
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-gray-900 dark:text-white">{pto.type}</span>
+                            <span className="text-xs text-muted-foreground">{pto.used}/{pto.total} days used</span>
+                          </div>
+                          <div className="relative">
+                            <Progress
+                              value={(pto.used / pto.total) * 100}
+                              className="h-2"
+                            />
+                          </div>
+                          <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                            <span>{pto.total - pto.used} days remaining</span>
+                          </div>
                         </div>
-                        <div className="relative">
-                          <Progress
-                            value={(pto.used / pto.total) * 100}
-                            className="h-2"
-                          />
-                          <div
-                            className="absolute top-0 left-0 h-2 rounded-full transition-all duration-500"
-                            style={{
-                              width: `${(pto.used / pto.total) * 100}%`,
-                              backgroundColor: pto.color,
-                            }}
-                          />
-                        </div>
-                        <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
-                          <span>{pto.total - pto.used} days remaining</span>
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </CardContent>
                 </Card>
 
@@ -772,7 +768,7 @@ export function BenefitsView() {
                               benefit.status === "enrolled"
                                 ? "bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200 dark:border-amber-800 text-[10px]"
                                 : benefit.status === "available"
-                                  ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800 text-[10px]"
+                                  ? "bg-msbm-red/5 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-msbm-red/20 dark:border-msbm-red/20 text-[10px]"
                                   : "bg-gray-50 text-gray-500 dark:bg-gray-800/30 dark:text-gray-400 border-gray-200 dark:border-gray-700 text-[10px]"
                             }
                             variant="outline"
@@ -803,7 +799,7 @@ export function BenefitsView() {
           <Card className="border-emerald-100 dark:border-emerald-900/30">
             <CardHeader className="pb-3">
               <CardTitle className="text-sm font-semibold flex items-center gap-2">
-                <Sparkles className="h-4 w-4 text-emerald-600" />
+                <Sparkles className="h-4 w-4 text-msbm-red" />
                 Benefits Health Score
               </CardTitle>
             </CardHeader>
@@ -836,7 +832,7 @@ export function BenefitsView() {
                   <span className="text-[10px] text-muted-foreground">out of 100</span>
                 </div>
               </div>
-              <p className="text-sm font-medium text-emerald-700 dark:text-emerald-400 mb-4">Excellent Coverage</p>
+              <p className="text-sm font-medium text-msbm-red dark:text-msbm-red-bright mb-4">Excellent Coverage</p>
               <Separator className="mb-4" />
               {/* Breakdown */}
               <div className="w-full space-y-3">
@@ -858,7 +854,7 @@ export function BenefitsView() {
                           />
                         </svg>
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-[9px] font-bold" style={{ color: item.color }}>{item.score}</span>
+                          <span className={cn("text-[9px] font-bold", `text-[${item.color}]`)}>{item.score}</span>
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
@@ -867,8 +863,7 @@ export function BenefitsView() {
                         </div>
                         <div className="h-1.5 bg-muted/50 rounded-full mt-1 overflow-hidden">
                           <div
-                            className="h-full rounded-full transition-all duration-700"
-                            style={{ width: `${item.score}%`, backgroundColor: item.color }}
+                            className={cn("h-full rounded-full transition-all duration-700", `bg-[${item.color}] w-[${item.score}%]`)}
                           />
                         </div>
                       </div>
@@ -885,7 +880,7 @@ export function BenefitsView() {
       <Card className="border-emerald-100 dark:border-emerald-900/30">
         <CardHeader className="pb-4">
           <CardTitle className="text-sm font-semibold flex items-center gap-2">
-            <Calendar className="h-4 w-4 text-emerald-600" />
+            <Calendar className="h-4 w-4 text-msbm-red" />
             Enrollment Timeline
           </CardTitle>
         </CardHeader>
@@ -901,14 +896,14 @@ export function BenefitsView() {
                     <div
                       className={`h-8 w-8 rounded-full flex items-center justify-center border-2 ${
                         event.isCurrent
-                          ? "bg-emerald-500 border-emerald-500 shadow-lg shadow-emerald-500/30"
+                          ? "bg-msbm-red/50 border-emerald-500 shadow-lg shadow-emerald-500/30"
                           : "bg-background border-emerald-300 dark:border-emerald-700"
                       }`}
                     >
                       {event.isCurrent ? (
                         <CheckCircle2 className="h-4 w-4 text-white" />
                       ) : idx < ENROLLMENT_TIMELINE.findIndex((e) => e.isCurrent) ? (
-                        <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                        <CheckCircle2 className="h-4 w-4 text-msbm-red dark:text-msbm-red-bright" />
                       ) : (
                         <div className="h-2 w-2 rounded-full bg-muted-foreground/40" />
                       )}
@@ -916,7 +911,7 @@ export function BenefitsView() {
                   </div>
                   {/* Content */}
                   <div className="sm:mt-2 sm:text-center min-w-0">
-                    <p className={`text-xs font-semibold ${event.isCurrent ? "text-emerald-700 dark:text-emerald-400" : "text-gray-900 dark:text-white"}`}>
+                    <p className={`text-xs font-semibold ${event.isCurrent ? "text-msbm-red dark:text-msbm-red-bright" : "text-gray-900 dark:text-white"}`}>
                       {event.label}
                     </p>
                     <p className="text-[10px] text-muted-foreground">{event.date}</p>
@@ -938,7 +933,7 @@ export function BenefitsView() {
             <div className="flex flex-wrap gap-2">
               <Button
                 size="sm"
-                className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs gap-1.5"
+                className="bg-msbm-red hover:bg-msbm-red/80 text-white text-xs gap-1.5"
                 onClick={() => setShowEnrollDialog(true)}
               >
                 <Plus className="h-3.5 w-3.5" />
@@ -947,7 +942,7 @@ export function BenefitsView() {
               <Button
                 size="sm"
                 variant="outline"
-                className="text-xs gap-1.5 border-teal-200 dark:border-teal-800 text-teal-700 dark:text-teal-400 hover:bg-teal-50 dark:hover:bg-teal-950/20"
+                className="text-xs gap-1.5 border-teal-200 dark:border-teal-800 text-teal-700 dark:text-light-blue hover:bg-teal-50 dark:hover:bg-teal-950/20"
                 onClick={() => setShowClaimDialog(true)}
               >
                 <FileText className="h-3.5 w-3.5" />
@@ -981,7 +976,7 @@ export function BenefitsView() {
         <DialogContent className="sm:max-w-[520px] max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Plus className="h-5 w-5 text-emerald-600" />
+              <Plus className="h-5 w-5 text-msbm-red" />
               Enroll in a Benefit
             </DialogTitle>
           </DialogHeader>
@@ -1055,7 +1050,7 @@ export function BenefitsView() {
             <Button
               onClick={handleEnrollSubmit}
               disabled={!selectedPlan}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="bg-msbm-red hover:bg-msbm-red/80 text-white"
             >
               Submit Enrollment
             </Button>
@@ -1068,7 +1063,7 @@ export function BenefitsView() {
         <DialogContent className="sm:max-w-[520px]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <FileText className="h-5 w-5 text-teal-600" />
+              <FileText className="h-5 w-5 text-inner-blue" />
               File a Claim
             </DialogTitle>
           </DialogHeader>
@@ -1126,7 +1121,7 @@ export function BenefitsView() {
             </Button>
             <Button
               onClick={handleClaimSubmit}
-              className="bg-teal-600 hover:bg-teal-700 text-white"
+              className="bg-inner-blue/10 hover:bg-inner-blue text-white"
             >
               Submit Claim
             </Button>

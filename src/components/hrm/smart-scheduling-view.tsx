@@ -76,32 +76,32 @@ const HOURS = Array.from({ length: 17 }, (_, i) => i + 6); // 6AM to 10PM
 const SHORT_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const DEPT_COLORS: Record<string, string> = {
-  ICT: 'bg-emerald-500/20 border-emerald-500 text-emerald-300',
+  ICT: 'bg-msbm-red/20 border-msbm-red text-msbm-red-bright',
   Maintenance: 'bg-amber-500/20 border-amber-500 text-amber-300',
   Admin: 'bg-violet-500/20 border-violet-500 text-violet-300',
   Faculty: 'bg-rose-500/20 border-rose-500 text-rose-300',
 };
 
 const DEPT_BLOCK_COLORS: Record<string, string> = {
-  ICT: 'bg-emerald-500/70',
+  ICT: 'bg-msbm-red/70',
   Maintenance: 'bg-amber-500/70',
   Admin: 'bg-violet-500/70',
   Faculty: 'bg-rose-500/70',
 };
 
 const DEPT_TEXT: Record<string, string> = {
-  ICT: 'text-emerald-400',
+  ICT: 'text-msbm-red-bright',
   Maintenance: 'text-amber-400',
   Admin: 'text-violet-400',
   Faculty: 'text-rose-400',
 };
 
 const TEMPLATES: ShiftTemplate[] = [
-  { id: 't1', name: 'Morning', startHour: 6, endHour: 14, color: 'bg-emerald-500', duration: '8 hours', description: 'Early morning shift covering peak operations' },
+  { id: 't1', name: 'Morning', startHour: 6, endHour: 14, color: 'bg-msbm-red', duration: '8 hours', description: 'Early morning shift covering peak operations' },
   { id: 't2', name: 'Afternoon', startHour: 14, endHour: 22, color: 'bg-amber-500', duration: '8 hours', description: 'Afternoon to evening coverage' },
   { id: 't3', name: 'Night', startHour: 22, endHour: 6, color: 'bg-slate-500', duration: '8 hours', description: 'Overnight security and maintenance shift' },
   { id: 't4', name: 'Standard Office', startHour: 8, endHour: 17, color: 'bg-blue-500', duration: '9 hours (8h + 1h lunch)', description: 'Standard business hours with lunch break' },
-  { id: 't5', name: 'Flex', startHour: 9, endHour: 17, color: 'bg-teal-500', duration: '8 hours', description: 'Flexible start time for admin staff' },
+  { id: 't5', name: 'Flex', startHour: 9, endHour: 17, color: 'bg-inner-blue', duration: '8 hours', description: 'Flexible start time for admin staff' },
   { id: 't6', name: 'Split', startHour: 7, endHour: 17, color: 'bg-orange-500', duration: '8 hours (4h+4h)', description: 'Split shift with mid-day break: 7-11 & 13-17' },
   { id: 't7', name: 'On-Call', startHour: 0, endHour: 24, color: 'bg-rose-500', duration: '24 hours (on-demand)', description: 'On-call availability for emergencies' },
   { id: 't8', name: 'Weekend', startHour: 8, endHour: 18, color: 'bg-purple-500', duration: '10 hours', description: 'Extended weekend coverage shift' },
@@ -304,7 +304,7 @@ export function SmartSchedulingView() {
   // ============ STATS CARDS ============
 
   const statsCards = [
-    { label: 'Scheduled Hours', value: totalScheduledHours, icon: Clock, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+    { label: 'Scheduled Hours', value: totalScheduledHours, icon: Clock, color: 'text-msbm-red-bright', bg: 'bg-msbm-red/10' },
     { label: 'Open Shifts', value: openShifts, icon: Calendar, color: 'text-amber-400', bg: 'bg-amber-500/10' },
     { label: 'Pending Swaps', value: pendingSwaps, icon: ArrowRightLeft, color: 'text-blue-400', bg: 'bg-blue-500/10' },
     { label: 'Active Conflicts', value: activeConflicts, icon: AlertTriangle, color: 'text-red-400', bg: 'bg-red-500/10' },
@@ -319,14 +319,14 @@ export function SmartSchedulingView() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
-            <CalendarDays className="h-7 w-7 text-emerald-400" />
+            <CalendarDays className="h-7 w-7 text-msbm-red-bright" />
             Smart Scheduling Engine
           </h2>
           <p className="text-muted-foreground mt-1">AI-powered shift scheduling, availability management, and conflict detection</p>
         </div>
         <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
           <DialogTrigger asChild>
-            <Button className="bg-emerald-600 hover:bg-emerald-700">
+            <Button className="bg-msbm-red hover:bg-msbm-red/80">
               <Plus className="h-4 w-4 mr-2" /> Create Assignment
             </Button>
           </DialogTrigger>
@@ -377,7 +377,7 @@ export function SmartSchedulingView() {
                   <Input placeholder="e.g. Supervisor" />
                 </div>
               </div>
-              <Button onClick={() => setShowCreateDialog(false)} className="w-full bg-emerald-600 hover:bg-emerald-700">
+              <Button onClick={() => setShowCreateDialog(false)} className="w-full bg-msbm-red hover:bg-msbm-red/80">
                 Create Assignment
               </Button>
             </div>
@@ -538,8 +538,7 @@ export function SmartSchedulingView() {
                     <div className="flex-1">
                       <div className="h-5 bg-muted/50 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full transition-all"
-                          style={{ width: `${(hours / maxWeeklyHours) * 100}%` }}
+                          className={`h-full bg-gradient-to-r from-msbm-red to-inner-blue rounded-full transition-all w-[${Math.round((hours / maxWeeklyHours) * 100)}%]`}
                         />
                       </div>
                     </div>
@@ -579,7 +578,7 @@ export function SmartSchedulingView() {
                                 key={hour}
                                 className={`w-8 h-6 rounded text-[9px] transition-colors ${
                                   isAvailable
-                                    ? 'bg-emerald-500/30 text-emerald-300 border border-emerald-500/50 hover:bg-emerald-500/50'
+                                    ? 'bg-msbm-red/30 text-msbm-red-bright border border-msbm-red/50 hover:bg-msbm-red/50'
                                     : 'bg-muted/30 text-muted-foreground border border-border/50 hover:bg-muted/50'
                                 }`}
                                 title={`${hour > 12 ? hour - 12 : hour}${hour >= 12 ? 'PM' : 'AM'} - ${isAvailable ? 'Available' : 'Unavailable'}`}
@@ -651,7 +650,7 @@ export function SmartSchedulingView() {
             {filteredSwaps.map(swap => {
               const statusBadge = {
                 pending: <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30">Pending</Badge>,
-                approved: <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">Approved</Badge>,
+                approved: <Badge className="bg-msbm-red/20 text-msbm-red-bright border-msbm-red/30">Approved</Badge>,
                 rejected: <Badge className="bg-red-500/20 text-red-400 border-red-500/30">Rejected</Badge>,
               };
               return (
@@ -673,7 +672,7 @@ export function SmartSchedulingView() {
                       </div>
                       {swap.status === 'pending' && (
                         <div className="flex gap-2">
-                          <Button size="sm" variant="outline" className="text-xs border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10"
+                          <Button size="sm" variant="outline" className="text-xs border-msbm-red/30 text-msbm-red-bright hover:bg-msbm-red/10"
                             onClick={() => handleSwapAction(swap.id, 'approved')}>
                             <CheckCircle2 className="h-3 w-3 mr-1" /> Approve
                           </Button>
@@ -694,37 +693,38 @@ export function SmartSchedulingView() {
         {/* ============ CONFLICTS TAB ============ */}
         <TabsContent value="conflicts" className="space-y-4">
           <div className="grid gap-3">
-            {mockConflicts.current.map(conflict => (
-              <Card key={conflict.id} className="border-l-4" style={{
-                borderLeftColor: conflict.severity === 'high' ? '#ef4444' : conflict.severity === 'medium' ? '#f59e0b' : '#3b82f6'
-              }}>
-                <CardContent className="p-4">
-                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
-                    <div className="flex items-start gap-3">
-                      <span className="text-xl mt-0.5">{conflictIcons[conflict.type]}</span>
-                      <div>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <h4 className="font-medium text-sm">{conflict.type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</h4>
-                          <Badge variant="outline" className={severityColors[conflict.severity]}>
-                            {conflict.severity}
-                          </Badge>
-                          <span className="text-xs text-muted-foreground">{conflict.date}</span>
+            {mockConflicts.current.map(conflict => {
+              const borderClass = conflict.severity === 'high' ? 'border-l-red-500' : conflict.severity === 'medium' ? 'border-l-amber-500' : 'border-l-blue-500';
+              return (
+                <Card key={conflict.id} className={`border-l-4 ${borderClass}`}>
+                  <CardContent className="p-4">
+                    <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                      <div className="flex items-start gap-3">
+                        <span className="text-xl mt-0.5">{conflictIcons[conflict.type]}</span>
+                        <div>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h4 className="font-medium text-sm">{conflict.type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}</h4>
+                            <Badge variant="outline" className={severityColors[conflict.severity]}>
+                              {conflict.severity}
+                            </Badge>
+                            <span className="text-xs text-muted-foreground">{conflict.date}</span>
+                          </div>
+                          <p className="text-sm text-muted-foreground mt-1">{conflict.description}</p>
+                          {conflict.employee !== 'N/A' && (
+                            <p className="text-xs text-muted-foreground mt-1">
+                              <Users className="h-3 w-3 inline mr-1" />{conflict.employee}
+                            </p>
+                          )}
                         </div>
-                        <p className="text-sm text-muted-foreground mt-1">{conflict.description}</p>
-                        {conflict.employee !== 'N/A' && (
-                          <p className="text-xs text-muted-foreground mt-1">
-                            <Users className="h-3 w-3 inline mr-1" />{conflict.employee}
-                          </p>
-                        )}
                       </div>
+                      <Button variant="outline" size="sm" className="text-xs whitespace-nowrap">
+                        Resolve
+                      </Button>
                     </div>
-                    <Button variant="outline" size="sm" className="text-xs whitespace-nowrap">
-                      Resolve
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </TabsContent>
       </Tabs>

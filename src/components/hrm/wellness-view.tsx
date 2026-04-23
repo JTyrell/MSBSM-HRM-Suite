@@ -92,8 +92,8 @@ interface WellnessResource {
 // ─── Constants ──────────────────────────────────────────────────────
 
 const MOOD_EMOJIS: Record<MoodType, { emoji: string; color: string }> = {
-  Great: { emoji: "😊", color: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300" },
-  Good: { emoji: "🙂", color: "bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300" },
+  Great: { emoji: "😊", color: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright" },
+  Good: { emoji: "🙂", color: "bg-inner-blue/10 text-inner-blue dark:bg-inner-blue/20 dark:text-light-blue" },
   Okay: { emoji: "😐", color: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300" },
   Low: { emoji: "😔", color: "bg-orange-100 text-orange-700 dark:bg-orange-900/50 dark:text-orange-300" },
   Stressed: { emoji: "😢", color: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300" },
@@ -110,7 +110,7 @@ const CATEGORY_ICONS: Record<ActivityCategory, React.ElementType> = {
 };
 
 const CATEGORY_COLORS: Record<ActivityCategory, string> = {
-  Exercise: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300",
+  Exercise: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright",
   Mindfulness: "bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300",
   Nutrition: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300",
   Medical: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300",
@@ -119,14 +119,14 @@ const CATEGORY_COLORS: Record<ActivityCategory, string> = {
 
 const RESOURCE_TYPE_COLORS: Record<string, string> = {
   Hotline: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300",
-  Guide: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300",
+  Guide: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright",
   Schedule: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300",
   Article: "bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300",
 };
 
 const RESOURCE_CATEGORY_COLORS: Record<string, string> = {
   "Mental Health": "bg-rose-50 text-rose-600 dark:bg-rose-950/30 dark:text-rose-400",
-  "Physical Health": "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400",
+  "Physical Health": "bg-msbm-red/5 text-msbm-red dark:bg-[#4a0a10]/30 dark:text-msbm-red-bright",
   Nutrition: "bg-amber-50 text-amber-600 dark:bg-amber-950/30 dark:text-amber-400",
   Workplace: "bg-violet-50 text-violet-600 dark:bg-violet-950/30 dark:text-violet-400",
 };
@@ -138,7 +138,7 @@ const WELLNESS_TIPS = [
   { icon: Heart, text: "A 20-minute walk can improve your mood for up to 12 hours.", color: "text-rose-500" },
   { icon: Apple, text: "Eating a balanced breakfast improves cognitive performance by 20%.", color: "text-amber-500" },
   { icon: Moon, text: "Consistent sleep schedules are more important than total sleep hours.", color: "text-slate-500" },
-  { icon: Dumbbell, text: "Even light stretching during breaks helps prevent muscle tension.", color: "text-emerald-500" },
+  { icon: Dumbbell, text: "Even light stretching during breaks helps prevent muscle tension.", color: "text-msbm-red" },
 ];
 
 const WEEKLY_TREND = [65, 72, 68, 78, 74, 80, 78];
@@ -158,7 +158,7 @@ function formatDateShort(dateStr: string): string {
 
 // ─── SVG Progress Ring ─────────────────────────────────────────────
 
-function ProgressRing({ score, size = 120, strokeWidth = 10, color = "#10b981" }: { score: number; size?: number; strokeWidth?: number; color?: string }) {
+function ProgressRing({ score, size = 120, strokeWidth = 10, strokeClass = "stroke-msbm-red" }: { score: number; size?: number; strokeWidth?: number; strokeClass?: string }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference - (score / 100) * circumference;
@@ -166,17 +166,17 @@ function ProgressRing({ score, size = 120, strokeWidth = 10, color = "#10b981" }
   return (
     <svg width={size} height={size} className="transform -rotate-90">
       <circle cx={size / 2} cy={size / 2} r={radius} stroke="currentColor" strokeWidth={strokeWidth} fill="none" className="text-muted/30" />
-      <circle cx={size / 2} cy={size / 2} r={radius} stroke={color} strokeWidth={strokeWidth} fill="none" strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={offset} style={{ transition: "stroke-dashoffset 0.6s ease" }} />
+      <circle cx={size / 2} cy={size / 2} r={radius} strokeWidth={strokeWidth} fill="none" strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={offset} className={`transition-all duration-700 ${strokeClass}`} />
     </svg>
   );
 }
 
-function MiniProgressRing({ score, label, color }: { score: number; label: string; color: string }) {
+function MiniProgressRing({ score, label, colorClass, textClass }: { score: number; label: string; colorClass: string; textClass: string }) {
   return (
     <div className="flex flex-col items-center gap-1.5">
       <div className="relative">
-        <ProgressRing score={score} size={56} strokeWidth={6} color={color} />
-        <span className="absolute inset-0 flex items-center justify-center text-xs font-bold" style={{ color }}>{score}</span>
+        <ProgressRing score={score} size={56} strokeWidth={6} strokeClass={colorClass} />
+        <span className={`absolute inset-0 flex items-center justify-center text-xs font-bold ${textClass}`}>{score}</span>
       </div>
       <span className="text-[10px] font-medium text-muted-foreground">{label}</span>
     </div>
@@ -197,7 +197,7 @@ export function WellnessView() {
 
   // ─── Computed Stats ────────────────────────────────────────────
   const stats = useMemo(() => [
-    { label: "Health Score", value: "--/100", icon: HeartPulse, color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40" },
+    { label: "Health Score", value: "--/100", icon: HeartPulse, color: "text-msbm-red dark:text-msbm-red-bright", bg: "bg-msbm-red/5 dark:bg-[#4a0a10]/40" },
     { label: "Mood Streak", value: `${moods.length} days`, icon: Flame, color: "text-rose-600 dark:text-rose-400", bg: "bg-rose-50 dark:bg-rose-950/40" },
     { label: "Activities This Week", value: String(activities.length), icon: Activity, color: "text-violet-600 dark:text-violet-400", bg: "bg-violet-50 dark:bg-violet-950/40" },
     { label: "Resources", value: String(resources.length), icon: BookOpen, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/40" },
@@ -300,9 +300,9 @@ export function WellnessView() {
             <Card className="lg:col-span-1 card-lift transition-all duration-300">
               <CardContent className="pt-6 flex flex-col items-center text-center">
                 <div className="relative">
-                  <ProgressRing score={78} size={140} strokeWidth={12} color="#10b981" />
+                  <ProgressRing score={78} size={140} strokeWidth={12} strokeClass="stroke-msbm-red" />
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <span className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">78</span>
+                    <span className="text-3xl font-bold text-msbm-red dark:text-msbm-red-bright">78</span>
                     <span className="text-[10px] text-muted-foreground">out of 100</span>
                   </div>
                 </div>
@@ -310,7 +310,7 @@ export function WellnessView() {
                 <p className="text-xs text-muted-foreground mt-1">Last Assessment: 3 days ago</p>
                 <Button
                   size="sm"
-                  className="mt-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700"
+                  className="mt-4 bg-gradient-to-r from-msbm-red to-inner-blue text-white hover:from-msbm-red-bright hover:to-inner-blue"
                   onClick={() => toast.info("Assessment feature coming soon!")}
                 >
                   <Zap className="h-4 w-4 mr-1.5" />Take Assessment
@@ -327,10 +327,10 @@ export function WellnessView() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex justify-around">
-                    <MiniProgressRing score={82} label="Physical" color="#10b981" />
-                    <MiniProgressRing score={71} label="Mental" color="#8b5cf6" />
-                    <MiniProgressRing score={85} label="Social" color="#f59e0b" />
-                    <MiniProgressRing score={74} label="Financial" color="#06b6d4" />
+                    <MiniProgressRing score={82} label="Physical" colorClass="stroke-msbm-red" textClass="text-msbm-red" />
+                    <MiniProgressRing score={71} label="Mental" colorClass="stroke-violet-500" textClass="text-violet-500" />
+                    <MiniProgressRing score={85} label="Social" colorClass="stroke-amber-500" textClass="text-amber-500" />
+                    <MiniProgressRing score={74} label="Financial" colorClass="stroke-cyan-500" textClass="text-cyan-500" />
                   </div>
                 </CardContent>
               </Card>
@@ -339,7 +339,7 @@ export function WellnessView() {
               <Card className="card-lift transition-all duration-300">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm flex items-center gap-1.5">
-                    <TrendingUp className="h-4 w-4 text-emerald-500" />
+                    <TrendingUp className="h-4 w-4 text-msbm-red" />
                     Weekly Trend
                   </CardTitle>
                 </CardHeader>
@@ -349,8 +349,7 @@ export function WellnessView() {
                       <div key={i} className="flex-1 flex flex-col items-center gap-1.5">
                         <span className="text-[10px] font-medium text-muted-foreground">{val}</span>
                         <div
-                          className="w-full rounded-t-md bg-gradient-to-t from-emerald-500 to-teal-400 transition-all duration-500 min-h-[4px]"
-                          style={{ height: `${(val / 100) * 100}%` }}
+                          className={`w-full rounded-t-md bg-gradient-to-t from-msbm-red to-inner-blue transition-all duration-500 min-h-[4px] h-[${Math.round((val / 100) * 100)}%]`}
                         />
                         <span className="text-[10px] text-muted-foreground">{DAY_LABELS[i]}</span>
                       </div>
@@ -360,7 +359,7 @@ export function WellnessView() {
               </Card>
 
               {/* Tips Card */}
-              <Card className="card-gradient-emerald">
+              <Card className="card-gradient-msbm">
                 <CardHeader className="pb-3">
                   <CardTitle className="text-sm flex items-center gap-1.5">
                     <Zap className="h-4 w-4 text-amber-500" />
@@ -410,7 +409,7 @@ export function WellnessView() {
                       onClick={() => setSelectedMood(mood)}
                       className={`flex flex-col items-center gap-1 p-2.5 rounded-xl transition-all duration-200 border-2 ${
                         selectedMood === mood
-                          ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30 scale-105"
+                          ? "border-msbm-red bg-msbm-red/5 dark:bg-[#4a0a10]/30 scale-105"
                           : "border-transparent hover:border-muted-foreground/20 hover:bg-muted/50"
                       }`}
                     >
@@ -422,7 +421,7 @@ export function WellnessView() {
                 <Button
                   onClick={handleLogMood}
                   disabled={!selectedMood}
-                  className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700"
+                  className="w-full bg-gradient-to-r from-msbm-red to-inner-blue text-white hover:from-msbm-red-bright hover:to-inner-blue"
                 >
                   <SmilePlus className="h-4 w-4 mr-1.5" />Log Mood
                 </Button>
@@ -467,8 +466,7 @@ export function WellnessView() {
                       <span className="text-xs font-medium w-16">{mood}</span>
                       <div className="flex-1 h-4 bg-muted rounded-full overflow-hidden">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-500"
-                          style={{ width: `${pct}%` }}
+                          className={`h-full rounded-full bg-gradient-to-r from-msbm-red to-inner-blue transition-all duration-500 w-[${pct}%]`}
                         />
                       </div>
                       <span className="text-[10px] text-muted-foreground w-10 text-right">{count} ({pct}%)</span>
@@ -484,9 +482,9 @@ export function WellnessView() {
         <TabsContent value="activities" className="mt-4 space-y-4">
           {/* Summary Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <Card className="stat-card-emerald">
+            <Card className="stat-card-msbm">
               <div className="flex items-center gap-3">
-                <Activity className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                <Activity className="h-5 w-5 text-msbm-red dark:text-msbm-red-bright" />
                 <div>
                   <p className="text-xl font-bold">{weeklySummary.totalActivities}</p>
                   <p className="text-[11px] text-muted-foreground">Total Activities</p>
@@ -521,7 +519,7 @@ export function WellnessView() {
                   key={cat}
                   variant={categoryFilter === cat ? "default" : "outline"}
                   size="sm"
-                  className={`text-xs h-7 ${categoryFilter === cat ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white" : ""}`}
+                  className={`text-xs h-7 ${categoryFilter === cat ? "bg-gradient-to-r from-msbm-red to-inner-blue text-white" : ""}`}
                   onClick={() => setCategoryFilter(cat)}
                 >
                   {cat}
@@ -530,7 +528,7 @@ export function WellnessView() {
             </div>
             <Button
               size="sm"
-              className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700 sm:ml-auto"
+              className="bg-gradient-to-r from-msbm-red to-inner-blue text-white hover:from-msbm-red-bright hover:to-inner-blue sm:ml-auto"
               onClick={() => setActivityDialogOpen(true)}
             >
               <Plus className="h-4 w-4 mr-1.5" />Log Activity
@@ -543,7 +541,7 @@ export function WellnessView() {
               {filteredActivities.map((activity) => {
                 const CatIcon = CATEGORY_ICONS[activity.category];
                 return (
-                  <Card key={activity.id} className="card-lift transition-all duration-300 hover:border-emerald-200/60 dark:hover:border-emerald-800/40">
+                  <Card key={activity.id} className="card-lift transition-all duration-300 hover:border-msbm-red/20 dark:hover:border-msbm-red/40">
                     <CardContent className="py-3">
                       <div className="flex items-center gap-3">
                         <div className={`flex items-center justify-center h-9 w-9 rounded-xl shrink-0 ${CATEGORY_COLORS[activity.category]}`}>
@@ -583,7 +581,7 @@ export function WellnessView() {
             {resources.map((resource) => {
               const ResIcon = resource.icon;
               return (
-                <Card key={resource.id} className="card-lift transition-all duration-300 hover:border-emerald-200/60 dark:hover:border-emerald-800/40 group">
+                <Card key={resource.id} className="card-lift transition-all duration-300 hover:border-msbm-red/20 dark:hover:border-msbm-red/40 group">
                   <CardContent className="pt-4">
                     <div className="flex items-start gap-3">
                       <div className={`flex items-center justify-center h-10 w-10 rounded-xl shrink-0 ${RESOURCE_TYPE_COLORS[resource.type]}`}>
@@ -618,7 +616,7 @@ export function WellnessView() {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Plus className="h-5 w-5 text-emerald-500" />
+              <Plus className="h-5 w-5 text-msbm-red" />
               Log Wellness Activity
             </DialogTitle>
           </DialogHeader>
@@ -657,7 +655,7 @@ export function WellnessView() {
           </div>
           <DialogFooter className="gap-2">
             <Button variant="outline" onClick={() => setActivityDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleLogActivity} className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700">
+            <Button onClick={handleLogActivity} className="bg-gradient-to-r from-msbm-red to-inner-blue text-white hover:from-msbm-red-bright hover:to-inner-blue">
               <Plus className="h-4 w-4 mr-1.5" />Log Activity
             </Button>
           </DialogFooter>

@@ -569,7 +569,7 @@ CREATE INDEX idx_dept_roles_sort ON department_roles(sort_order);
 CREATE TABLE company_settings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   company_id UUID NOT NULL UNIQUE REFERENCES companies(id) ON DELETE CASCADE,
-  company_name TEXT NOT NULL DEFAULT 'MSBM Group',
+  company_name TEXT NOT NULL DEFAULT 'MSBM',
   company_address TEXT NOT NULL DEFAULT '',
   company_phone TEXT NOT NULL DEFAULT '',
   company_email TEXT NOT NULL DEFAULT '',

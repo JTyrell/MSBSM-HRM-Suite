@@ -181,7 +181,7 @@ describe("HomePage", () => {
   it("should show copyright info", async () => {
     render(<HomePage />);
     await waitFor(() => {
-      const copyright = screen.getAllByText(/© 2026 MSBM Group/);
+      const copyright = screen.getAllByText(/© 2026 MSBM/);
       expect(copyright.length).toBeGreaterThan(0);
     }, { timeout: 5000 });
   });

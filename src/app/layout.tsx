@@ -18,9 +18,9 @@ export const metadata: Metadata = {
   title: "MSBM-HR Suite | AI-Powered Human Resource Management",
   description: "Next-generation AI-agentic HRM suite with geofenced attendance, automated payroll, and intelligent compliance monitoring.",
   keywords: ["HRM", "Human Resources", "Payroll", "Attendance", "Geofence", "AI", "MSBM"],
-  authors: [{ name: "MSBM Group" }],
+  authors: [{ name: "MSBM" }],
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: "/MSBM-icon.png",
   },
   openGraph: {
     title: "MSBM-HR Suite",

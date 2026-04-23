@@ -255,7 +255,7 @@ export function TeamHubView() {
   const categoryColors: Record<string, string> = {
     General: 'bg-slate-500/20 text-slate-300',
     Policy: 'bg-violet-500/20 text-violet-300',
-    Event: 'bg-emerald-500/20 text-emerald-300',
+    Event: 'bg-msbm-red/20 text-msbm-red-bright',
     Celebration: 'bg-amber-500/20 text-amber-300',
     Urgent: 'bg-red-500/20 text-red-300',
   };
@@ -263,7 +263,7 @@ export function TeamHubView() {
   const statusColors: Record<string, string> = {
     'not-started': 'bg-slate-500/20 text-slate-400 border-slate-500/30',
     'in-progress': 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-    'completed': 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+    'completed': 'bg-msbm-red/20 text-msbm-red-bright border-msbm-red/30',
   };
 
   return (
@@ -271,7 +271,7 @@ export function TeamHubView() {
       {/* Header */}
       <div>
         <h2 className="text-2xl font-bold flex items-center gap-2">
-          <MessageCircle className="h-7 w-7 text-emerald-400" />
+          <MessageCircle className="h-7 w-7 text-msbm-red-bright" />
           Team Communication Hub
         </h2>
         <p className="text-muted-foreground mt-1">Chat, announcements, tasks, and shift coordination</p>
@@ -306,13 +306,13 @@ export function TeamHubView() {
                     <button
                       key={c.id}
                       className={`w-full text-left px-3 py-2.5 flex items-center gap-3 hover:bg-muted/50 transition-colors ${
-                        selectedConversation.id === c.id ? 'bg-emerald-500/10 border-r-2 border-emerald-500' : ''
+                        selectedConversation.id === c.id ? 'bg-msbm-red/10 border-r-2 border-msbm-red' : ''
                       }`}
                       onClick={() => setSelectedConversation(c)}
                     >
                       <div className="relative">
                         <Avatar className="h-8 w-8">
-                          <AvatarFallback className="text-xs bg-gradient-to-br from-emerald-500 to-teal-600 text-white">{c.initials}</AvatarFallback>
+                          <AvatarFallback className="text-xs bg-gradient-to-br from-msbm-red to-inner-blue text-white">{c.initials}</AvatarFallback>
                         </Avatar>
                         {c.isOnline && <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-card" />}
                       </div>
@@ -324,7 +324,7 @@ export function TeamHubView() {
                         <p className="text-xs text-muted-foreground truncate">{c.lastMessage}</p>
                       </div>
                       {c.unread > 0 && (
-                        <Badge className="bg-emerald-500 text-white text-[10px] h-5 min-w-[20px] flex items-center justify-center px-1">{c.unread}</Badge>
+                        <Badge className="bg-msbm-red text-white text-[10px] h-5 min-w-[20px] flex items-center justify-center px-1">{c.unread}</Badge>
                       )}
                     </button>
                   ))}
@@ -335,7 +335,7 @@ export function TeamHubView() {
                     <button
                       key={c.id}
                       className={`w-full text-left px-3 py-2.5 flex items-center gap-3 hover:bg-muted/50 transition-colors ${
-                        selectedConversation.id === c.id ? 'bg-emerald-500/10 border-r-2 border-emerald-500' : ''
+                        selectedConversation.id === c.id ? 'bg-msbm-red/10 border-r-2 border-msbm-red' : ''
                       }`}
                       onClick={() => setSelectedConversation(c)}
                     >
@@ -353,7 +353,7 @@ export function TeamHubView() {
                         <p className="text-xs text-muted-foreground truncate">{c.lastMessage}</p>
                       </div>
                       {c.unread > 0 && (
-                        <Badge className="bg-violet-500 text-white text-[10px] h-5 min-w-[20px] flex items-center justify-center px-1">{c.unread}</Badge>
+                        <Badge className="bg-msbm-red text-white text-[10px] h-5 min-w-[20px] flex items-center justify-center px-1">{c.unread}</Badge>
                       )}
                     </button>
                   ))}
@@ -366,13 +366,13 @@ export function TeamHubView() {
               {/* Chat Header */}
               <div className="px-4 py-3 border-b border-border flex items-center justify-between bg-card">
                 <div className="flex items-center gap-3">
-                  <Button variant="ghost" size="sm" className="md:hidden" onClick={() => setSidebarOpen(!sidebarOpen)}>
+                  <Button variant="ghost" size="sm" className="md:hidden" onClick={() => setSidebarOpen(!sidebarOpen)} title="Toggle Sidebar" aria-label="Toggle Sidebar">
                     <ChevronLeft className="h-4 w-4" />
                   </Button>
                   {selectedConversation.type === 'dm' ? (
                     <div className="flex items-center gap-2">
                       <Avatar className="h-8 w-8">
-                        <AvatarFallback className="text-xs bg-gradient-to-br from-emerald-500 to-teal-600 text-white">{selectedConversation.initials}</AvatarFallback>
+                        <AvatarFallback className="text-xs bg-gradient-to-br from-msbm-red to-inner-blue text-white">{selectedConversation.initials}</AvatarFallback>
                       </Avatar>
                       <div>
                         <p className="text-sm font-medium">{selectedConversation.name}</p>
@@ -391,7 +391,7 @@ export function TeamHubView() {
                     </div>
                   )}
                 </div>
-                <Button variant="ghost" size="sm"><MoreHorizontal className="h-4 w-4" /></Button>
+                <Button variant="ghost" size="sm" title="More options" aria-label="More options"><MoreHorizontal className="h-4 w-4" /></Button>
               </div>
 
               {/* Messages */}
@@ -400,7 +400,7 @@ export function TeamHubView() {
                   {convoMessages.map((msg) => (
                     <div key={msg.id} className={`flex gap-3 ${msg.isMe ? 'flex-row-reverse' : ''}`}>
                       <Avatar className="h-7 w-7 mt-0.5 shrink-0">
-                        <AvatarFallback className={`text-[10px] ${msg.isMe ? 'bg-gradient-to-br from-emerald-500 to-teal-600 text-white' : 'bg-gradient-to-br from-slate-500 to-slate-600 text-white'}`}>
+                        <AvatarFallback className={`text-[10px] ${msg.isMe ? 'bg-gradient-to-br from-msbm-red to-inner-blue text-white' : 'bg-gradient-to-br from-slate-500 to-slate-600 text-white'}`}>
                           {msg.senderInitials}
                         </AvatarFallback>
                       </Avatar>
@@ -411,7 +411,7 @@ export function TeamHubView() {
                         </div>
                         <div className={`inline-block px-3 py-2 rounded-xl text-sm ${
                           msg.isMe
-                            ? 'bg-emerald-600 text-white rounded-br-sm'
+                            ? 'bg-msbm-red-bright text-white rounded-br-sm'
                             : 'bg-muted/80 text-foreground rounded-bl-sm'
                         }`}>
                           {msg.content}
@@ -429,9 +429,9 @@ export function TeamHubView() {
                       </Avatar>
                       <div className="inline-block px-4 py-2 rounded-xl rounded-bl-sm bg-muted/80">
                         <div className="flex gap-1">
-                          <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                          <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                          <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                          <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce [animation-delay:0ms]" />
+                          <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce [animation-delay:150ms]" />
+                          <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce [animation-delay:300ms]" />
                         </div>
                       </div>
                     </div>
@@ -443,7 +443,7 @@ export function TeamHubView() {
               {/* Message Input */}
               <div className="p-3 border-t border-border bg-card">
                 <div className="flex gap-2">
-                  <Button variant="ghost" size="sm" className="shrink-0"><SmilePlus className="h-5 w-5 text-muted-foreground" /></Button>
+                  <Button variant="ghost" size="sm" className="shrink-0" title="Add emoji" aria-label="Add emoji"><SmilePlus className="h-5 w-5 text-muted-foreground" /></Button>
                   <Input
                     placeholder={`Message ${selectedConversation.name}...`}
                     value={messageInput}
@@ -451,7 +451,7 @@ export function TeamHubView() {
                     onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
                     className="flex-1"
                   />
-                  <Button size="sm" className="shrink-0 bg-emerald-600 hover:bg-emerald-700" onClick={handleSendMessage}>
+                  <Button size="sm" className="shrink-0 bg-msbm-red hover:bg-msbm-red/80" onClick={handleSendMessage} title="Send message" aria-label="Send message">
                     <Send className="h-4 w-4" />
                   </Button>
                 </div>
@@ -488,7 +488,7 @@ export function TeamHubView() {
                     <div className="flex-1">
                       <div className="flex items-center gap-2 flex-wrap mb-1">
                         <Avatar className="h-6 w-6">
-                          <AvatarFallback className="text-[9px] bg-gradient-to-br from-emerald-500 to-teal-600 text-white">{ann.authorInitials}</AvatarFallback>
+                          <AvatarFallback className="text-[9px] bg-gradient-to-br from-msbm-red to-inner-blue text-white">{ann.authorInitials}</AvatarFallback>
                         </Avatar>
                         <span className="text-xs font-medium">{ann.author}</span>
                         <span className="text-[10px] text-muted-foreground">{ann.date}</span>
@@ -503,7 +503,7 @@ export function TeamHubView() {
                           <button
                             key={r.emoji}
                             className={`flex items-center gap-1 px-2 py-0.5 rounded-full text-xs border transition-colors ${
-                              r.hasReacted ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300' : 'bg-muted/50 border-border/50 text-muted-foreground hover:bg-muted'
+                              r.hasReacted ? 'bg-msbm-red/20 border-msbm-red/50 text-msbm-red-bright' : 'bg-muted/50 border-border/50 text-muted-foreground hover:bg-muted'
                             }`}
                             onClick={() => handleReaction(ann.id, r.emoji)}
                           >
@@ -514,6 +514,8 @@ export function TeamHubView() {
                         <button
                           className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs border border-dashed border-border/50 text-muted-foreground hover:bg-muted/50 transition-colors"
                           onClick={() => handleReaction(ann.id, '👍')}
+                          title="Like announcement"
+                          aria-label="Like announcement"
                         >
                           <SmilePlus className="h-3 w-3" />
                         </button>
@@ -524,6 +526,8 @@ export function TeamHubView() {
                       size="sm"
                       className="shrink-0"
                       onClick={() => handleTogglePin(ann.id)}
+                      title={ann.isPinned ? "Unpin announcement" : "Pin announcement"}
+                      aria-label={ann.isPinned ? "Unpin announcement" : "Pin announcement"}
                     >
                       {ann.isPinned ? <PinOff className="h-4 w-4 text-muted-foreground" /> : <Pin className="h-4 w-4 text-muted-foreground" />}
                     </Button>
@@ -560,7 +564,7 @@ export function TeamHubView() {
                       <div className="flex items-center justify-between mt-3">
                         <div className="flex items-center gap-1.5">
                           <Avatar className="h-5 w-5">
-                            <AvatarFallback className="text-[8px] bg-gradient-to-br from-emerald-500 to-teal-600 text-white">{task.assigneeInitials}</AvatarFallback>
+                            <AvatarFallback className="text-[8px] bg-gradient-to-br from-msbm-red to-inner-blue text-white">{task.assigneeInitials}</AvatarFallback>
                           </Avatar>
                           <span className="text-[10px] text-muted-foreground">{task.assignee}</span>
                         </div>
@@ -611,7 +615,7 @@ export function TeamHubView() {
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold text-sm flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-msbm-red-bright" />
                   Completed
                   <Badge variant="outline" className="text-xs">{completedTasks.length}</Badge>
                 </h3>
@@ -632,7 +636,7 @@ export function TeamHubView() {
                       <div className="flex items-center justify-between mt-2">
                         <div className="flex items-center gap-1.5">
                           <Avatar className="h-5 w-5">
-                            <AvatarFallback className="text-[8px] bg-gradient-to-br from-emerald-500 to-teal-600 text-white">{task.assigneeInitials}</AvatarFallback>
+                            <AvatarFallback className="text-[8px] bg-gradient-to-br from-msbm-red to-inner-blue text-white">{task.assigneeInitials}</AvatarFallback>
                           </Avatar>
                           <span className="text-[10px] text-muted-foreground">{task.assignee}</span>
                         </div>

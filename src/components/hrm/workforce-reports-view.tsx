@@ -32,20 +32,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 // ─── Mock Data ───────────────────────────────────────────────────────────────
 
 const DEPARTMENT_HEADCOUNT = [
-  { name: "Engineering", count: 12, color: "#10b981" },
-  { name: "Marketing", count: 8, color: "#14b8a6" },
-  { name: "Sales", count: 10, color: "#06b6d4" },
-  { name: "Human Resources", count: 5, color: "#0d9488" },
-  { name: "Finance", count: 6, color: "#059669" },
-  { name: "Operations", count: 9, color: "#047857" },
+  { name: "Engineering", count: 12, bgClass: "bg-msbm-red" },
+  { name: "Marketing", count: 8, bgClass: "bg-inner-blue" },
+  { name: "Sales", count: 10, bgClass: "bg-light-blue" },
+  { name: "Human Resources", count: 5, bgClass: "bg-msbm-red-bright" },
+  { name: "Finance", count: 6, bgClass: "bg-slate-900" },
+  { name: "Operations", count: 9, bgClass: "bg-msbm-red" },
 ];
 
 const ROLE_TIERS = [
-  { tier: "Executive", count: 4, color: "#059669", pct: 7 },
-  { tier: "Senior Management", count: 8, color: "#10b981", pct: 14 },
-  { tier: "Management", count: 12, color: "#14b8a6", pct: 21 },
-  { tier: "Professional", count: 22, color: "#2dd4bf", pct: 38 },
-  { tier: "Associate", count: 11, color: "#5eead4", pct: 19 },
+  { tier: "Executive", count: 4, strokeClass: "stroke-msbm-red", bgClass: "bg-msbm-red", pct: 7 },
+  { tier: "Senior Management", count: 8, strokeClass: "stroke-inner-blue", bgClass: "bg-inner-blue", pct: 14 },
+  { tier: "Management", count: 12, strokeClass: "stroke-msbm-red-bright", bgClass: "bg-msbm-red-bright", pct: 21 },
+  { tier: "Professional", count: 22, strokeClass: "stroke-light-blue", bgClass: "bg-light-blue", pct: 38 },
+  { tier: "Associate", count: 11, strokeClass: "stroke-slate-900", bgClass: "bg-slate-900", pct: 19 },
 ];
 
 const MONTHLY_TREND = [
@@ -67,12 +67,12 @@ const STATUTORY_DATA = [
 ];
 
 const OVERTIME_HISTOGRAM = [
-  { range: "0-2 hrs", count: 18, color: "#10b981" },
-  { range: "2-4 hrs", count: 12, color: "#14b8a6" },
-  { range: "4-6 hrs", count: 8, color: "#2dd4bf" },
-  { range: "6-8 hrs", count: 5, color: "#f59e0b" },
-  { range: "8-10 hrs", count: 3, color: "#f97316" },
-  { range: "10+ hrs", count: 2, color: "#ef4444" },
+  { range: "0-2 hrs", count: 18, bgClass: "bg-msbm-red" },
+  { range: "2-4 hrs", count: 12, bgClass: "bg-inner-blue" },
+  { range: "4-6 hrs", count: 8, bgClass: "bg-msbm-red-bright" },
+  { range: "6-8 hrs", count: 5, bgClass: "bg-amber-500" },
+  { range: "8-10 hrs", count: 3, bgClass: "bg-orange-500" },
+  { range: "10+ hrs", count: 2, bgClass: "bg-red-500" },
 ];
 
 const SHIFT_COVERAGE: Record<string, Record<string, number>> = {
@@ -144,7 +144,7 @@ const EXPORT_CARDS = [
 // ─── Module Color Map ────────────────────────────────────────────────────────
 
 const MODULE_COLORS: Record<string, string> = {
-  payroll: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800",
+  payroll: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-msbm-red/20 dark:border-msbm-red/40",
   employee: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border-blue-200 dark:border-blue-800",
   attendance: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200 dark:border-amber-800",
   pto: "bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-400 border-violet-200 dark:border-violet-800",
@@ -153,14 +153,14 @@ const MODULE_COLORS: Record<string, string> = {
 };
 
 const FORMAT_COLORS: Record<string, string> = {
-  CSV: "bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400",
-  "MyHR+": "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+  CSV: "bg-inner-blue/10 text-inner-blue dark:bg-inner-blue/20 dark:text-light-blue",
+  "MyHR+": "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright",
   HRplus: "bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400",
   Sling: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
 };
 
 const STATUS_BADGES: Record<string, { label: string; cls: string }> = {
-  filed: { label: "Filed", cls: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400" },
+  filed: { label: "Filed", cls: "bg-inner-blue/10 text-inner-blue dark:bg-inner-blue/20 dark:text-light-blue" },
   pending: { label: "Pending", cls: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400" },
   overdue: { label: "Overdue", cls: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400" },
 };
@@ -207,7 +207,7 @@ export function WorkforceReportsView() {
             Comprehensive workforce analytics, statutory compliance, and export center
           </p>
         </div>
-        <Badge className="w-fit bg-gradient-to-r from-emerald-500 to-teal-500 text-white border-0 px-3 py-1">
+        <Badge className="w-fit bg-gradient-to-r from-msbm-red to-inner-blue text-white border-0 px-3 py-1">
           <BarChart3 className="w-3.5 h-3.5 mr-1.5" />Live Dashboard
         </Badge>
       </div>
@@ -215,19 +215,19 @@ export function WorkforceReportsView() {
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="bg-muted/50 p-1 h-auto flex flex-wrap gap-1">
-          <TabsTrigger value="headcount" className="text-xs sm:text-sm gap-1.5 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-500 data-[state=active]:text-white">
+          <TabsTrigger value="headcount" className="text-xs sm:text-sm gap-1.5 data-[state=active]:bg-gradient-to-r data-[state=active]:from-msbm-red data-[state=active]:to-inner-blue data-[state=active]:text-white">
             <Users className="w-4 h-4" />Headcount
           </TabsTrigger>
-          <TabsTrigger value="statutory" className="text-xs sm:text-sm gap-1.5 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-500 data-[state=active]:text-white">
+          <TabsTrigger value="statutory" className="text-xs sm:text-sm gap-1.5 data-[state=active]:bg-gradient-to-r data-[state=active]:from-msbm-red data-[state=active]:to-inner-blue data-[state=active]:text-white">
             <DollarSign className="w-4 h-4" />Statutory
           </TabsTrigger>
-          <TabsTrigger value="labor" className="text-xs sm:text-sm gap-1.5 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-500 data-[state=active]:text-white">
+          <TabsTrigger value="labor" className="text-xs sm:text-sm gap-1.5 data-[state=active]:bg-gradient-to-r data-[state=active]:from-msbm-red data-[state=active]:to-inner-blue data-[state=active]:text-white">
             <Activity className="w-4 h-4" />Labor
           </TabsTrigger>
-          <TabsTrigger value="audit" className="text-xs sm:text-sm gap-1.5 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-500 data-[state=active]:text-white">
+          <TabsTrigger value="audit" className="text-xs sm:text-sm gap-1.5 data-[state=active]:bg-gradient-to-r data-[state=active]:from-msbm-red data-[state=active]:to-inner-blue data-[state=active]:text-white">
             <ShieldCheck className="w-4 h-4" />Audit Trail
           </TabsTrigger>
-          <TabsTrigger value="export" className="text-xs sm:text-sm gap-1.5 data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-teal-500 data-[state=active]:text-white">
+          <TabsTrigger value="export" className="text-xs sm:text-sm gap-1.5 data-[state=active]:bg-gradient-to-r data-[state=active]:from-msbm-red data-[state=active]:to-inner-blue data-[state=active]:text-white">
             <FileDown className="w-4 h-4" />Export Center
           </TabsTrigger>
         </TabsList>
@@ -237,8 +237,8 @@ export function WorkforceReportsView() {
           {/* Stats Cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { label: "Total Staff", value: 57, icon: Users, color: "from-emerald-500 to-teal-500", delta: "+5 this month" },
-              { label: "Active", value: 52, icon: UserCheck, color: "from-teal-500 to-cyan-500", delta: "91% of total" },
+              { label: "Total Staff", value: 57, icon: Users, color: "from-msbm-red to-inner-blue", delta: "+5 this month" },
+              { label: "Active", value: 52, icon: UserCheck, color: "from-inner-blue to-light-blue", delta: "91% of total" },
               { label: "On Leave", value: 3, icon: UserX, color: "from-amber-500 to-orange-500", delta: "-2 vs last month" },
               { label: "New Hires", value: 5, icon: UserPlus, color: "from-violet-500 to-purple-500", delta: "This quarter" },
             ].map((stat) => (
@@ -248,11 +248,11 @@ export function WorkforceReportsView() {
                     <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${stat.color} flex items-center justify-center`}>
                       <stat.icon className="w-5 h-5 text-white" />
                     </div>
-                    <TrendingUp className="w-4 h-4 text-emerald-500" />
+                    <TrendingUp className="w-4 h-4 text-msbm-red" />
                   </div>
                   <p className="text-2xl font-bold">{stat.value}</p>
                   <p className="text-xs text-muted-foreground mt-0.5">{stat.label}</p>
-                  <p className="text-[10px] text-emerald-600 dark:text-emerald-400 mt-1">{stat.delta}</p>
+                  <p className="text-[10px] text-msbm-red dark:text-msbm-red-bright mt-1">{stat.delta}</p>
                 </CardContent>
               </Card>
             ))}
@@ -274,8 +274,7 @@ export function WorkforceReportsView() {
                     </div>
                     <div className="h-3 bg-muted rounded-full overflow-hidden">
                       <div
-                        className="h-full rounded-full transition-all duration-700"
-                        style={{ width: `${(dept.count / maxDeptCount) * 100}%`, backgroundColor: dept.color }}
+                        className={`h-full rounded-full transition-all duration-700 ${dept.bgClass} w-[${Math.round((dept.count / maxDeptCount) * 100)}%]`}
                       />
                     </div>
                   </div>
@@ -300,11 +299,10 @@ export function WorkforceReportsView() {
                             key={tier.tier}
                             cx="18" cy="18" r="14"
                             fill="none"
-                            stroke={tier.color}
                             strokeWidth="4"
                             strokeDasharray={`${tier.pct} ${100 - tier.pct}`}
                             strokeDashoffset={-offset}
-                            className="transition-all duration-700"
+                            className={`transition-all duration-700 ${tier.strokeClass}`}
                           />
                         );
                         acc.offset += tier.pct;
@@ -321,7 +319,7 @@ export function WorkforceReportsView() {
                 <div className="space-y-2 flex-1 min-w-0">
                   {ROLE_TIERS.map((tier) => (
                     <div key={tier.tier} className="flex items-center gap-2 text-sm">
-                      <div className="w-3 h-3 rounded-sm shrink-0" style={{ backgroundColor: tier.color }} />
+                      <div className={`w-3 h-3 rounded-sm shrink-0 ${tier.bgClass}`} />
                       <span className="flex-1 truncate">{tier.tier}</span>
                       <span className="font-medium">{tier.count}</span>
                       <span className="text-xs text-muted-foreground">({tier.pct}%)</span>
@@ -344,8 +342,7 @@ export function WorkforceReportsView() {
                   <div key={m.month} className="flex-1 flex flex-col items-center gap-1">
                     <span className="text-xs font-medium">{m.count}</span>
                     <div
-                      className="w-full bg-gradient-to-t from-emerald-500 to-teal-400 rounded-t-lg transition-all duration-700 min-h-[8px]"
-                      style={{ height: `${(m.count / maxTrendCount) * 100}%` }}
+                      className={`w-full bg-gradient-to-t from-msbm-red to-inner-blue rounded-t-lg transition-all duration-700 min-h-[8px] h-[${Math.round((m.count / maxTrendCount) * 100)}%]`}
                     />
                     <span className="text-xs text-muted-foreground">{m.month}</span>
                   </div>
@@ -368,7 +365,7 @@ export function WorkforceReportsView() {
               <Card key={s.label} className="card-lift">
                 <CardContent className="p-4">
                   <div className="flex items-center gap-2 mb-1">
-                    <s.icon className="w-4 h-4 text-emerald-500" />
+                    <s.icon className="w-4 h-4 text-msbm-red" />
                     <span className="text-xs text-muted-foreground">{s.label}</span>
                   </div>
                   <p className="text-lg font-bold">{s.value}</p>
@@ -451,8 +448,7 @@ export function WorkforceReportsView() {
                     <span className="text-xs text-muted-foreground w-16 shrink-0 text-right">{bin.range}</span>
                     <div className="flex-1 h-7 bg-muted rounded overflow-hidden">
                       <div
-                        className="h-full rounded transition-all duration-700 flex items-center pl-2"
-                        style={{ width: `${(bin.count / maxOTCount) * 100}%`, backgroundColor: bin.color }}
+                        className={`h-full rounded transition-all duration-700 flex items-center pl-2 ${bin.bgClass} w-[${Math.round((bin.count / maxOTCount) * 100)}%]`}
                       >
                         <span className="text-[10px] font-bold text-white drop-shadow">{bin.count}</span>
                       </div>
@@ -489,10 +485,10 @@ export function WorkforceReportsView() {
                             const bg = val === 0
                               ? "bg-muted/50"
                               : intensity > 0.7
-                                ? "bg-emerald-500 text-white"
+                                ? "bg-msbm-red text-white"
                                 : intensity > 0.4
-                                  ? "bg-emerald-300 dark:bg-emerald-700 text-emerald-900 dark:text-emerald-100"
-                                  : "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300";
+                                  ? "bg-msbm-red/60 dark:bg-msbm-red/70 text-white"
+                                  : "bg-msbm-red/10 dark:bg-msbm-red/20 text-msbm-red dark:text-msbm-red-bright";
                             return (
                               <td key={s} className="py-1.5 px-2">
                                 <div className={`text-center text-xs font-bold rounded py-1 ${bg}`}>
@@ -535,7 +531,7 @@ export function WorkforceReportsView() {
                           <td className="py-2 px-3 text-right">{row.avg}h</td>
                           <td className="py-2 px-3 text-right">{row.budget}h</td>
                           <td className="py-2 px-3 text-right">
-                            <span className={`font-medium ${row.variance > 0 ? "text-amber-600 dark:text-amber-400" : "text-emerald-600 dark:text-emerald-400"}`}>
+                            <span className={`font-medium ${row.variance > 0 ? "text-amber-600 dark:text-amber-400" : "text-msbm-red dark:text-msbm-red-bright"}`}>
                               {row.variance > 0 ? "+" : ""}{row.variance}%
                             </span>
                           </td>
@@ -561,16 +557,15 @@ export function WorkforceReportsView() {
                     <div key={item.dept} className="space-y-1">
                       <div className="flex items-center justify-between text-xs">
                         <span className="font-medium">{item.dept}</span>
-                        <span className={overBudget ? "text-amber-600 dark:text-amber-400 font-medium" : "text-emerald-600 dark:text-emerald-400"}>
+                        <span className={overBudget ? "text-amber-600 dark:text-amber-400 font-medium" : "text-msbm-red dark:text-msbm-red-bright"}>
                           {overBudget ? "Over" : "Under"} budget
                         </span>
                       </div>
                       <div className="relative h-4 bg-muted rounded-full overflow-hidden">
                         <div
-                          className={`absolute inset-y-0 left-0 rounded-full transition-all duration-700 ${overBudget ? "bg-amber-400" : "bg-emerald-500"}`}
-                          style={{ width: `${Math.min(pct, 100)}%` }}
+                          className={`absolute inset-y-0 left-0 rounded-full transition-all duration-700 ${overBudget ? "bg-amber-400" : "bg-msbm-red"} w-[${Math.round(Math.min(pct, 100))}%]`}
                         />
-                        <div className="absolute inset-y-0 right-0 w-[2px] bg-foreground/30" style={{ left: "100%" }} />
+                        <div className="absolute inset-y-0 right-0 w-[2px] bg-foreground/30 left-[100%]" />
                       </div>
                       <div className="flex justify-between text-[10px] text-muted-foreground">
                         <span>{formatJMD(item.actual)}</span>
@@ -604,6 +599,8 @@ export function WorkforceReportsView() {
                     value={auditModule}
                     onChange={(e) => setAuditModule(e.target.value)}
                     className="h-9 rounded-md border border-input bg-background px-3 text-sm"
+                    aria-label="Filter by module"
+                    title="Filter by module"
                   >
                     <option value="all">All Modules</option>
                     <option value="payroll">Payroll</option>
@@ -619,6 +616,8 @@ export function WorkforceReportsView() {
                     onChange={(e) => setAuditDateFrom(e.target.value)}
                     className="h-9 w-auto"
                     placeholder="From"
+                    aria-label="Filter from date"
+                    title="Filter from date"
                   />
                   <Input
                     type="date"
@@ -626,6 +625,8 @@ export function WorkforceReportsView() {
                     onChange={(e) => setAuditDateTo(e.target.value)}
                     className="h-9 w-auto"
                     placeholder="To"
+                    aria-label="Filter to date"
+                    title="Filter to date"
                   />
                 </div>
               </div>
@@ -673,7 +674,7 @@ export function WorkforceReportsView() {
         {/* ── Tab 5: Export Center ────────────────────────────────────── */}
         <TabsContent value="export" className="space-y-4">
           <div className="flex items-center gap-2 mb-2">
-            <FileDown className="w-5 h-5 text-emerald-500" />
+            <FileDown className="w-5 h-5 text-msbm-red" />
             <p className="text-sm text-muted-foreground">
               {EXPORT_CARDS.length} export templates available in multiple formats
             </p>
@@ -683,7 +684,7 @@ export function WorkforceReportsView() {
               <Card key={card.title} className="card-lift">
                 <CardContent className="p-4 flex flex-col gap-3">
                   <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-msbm-red to-inner-blue flex items-center justify-center shrink-0">
                       <FileText className="w-5 h-5 text-white" />
                     </div>
                     <div className="min-w-0">
@@ -698,7 +699,7 @@ export function WorkforceReportsView() {
                       </Badge>
                     ))}
                   </div>
-                  <Button size="sm" className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white mt-auto">
+                  <Button size="sm" className="w-full bg-gradient-to-r from-msbm-red to-inner-blue hover:from-msbm-red-bright hover:to-inner-blue text-white mt-auto">
                     <Download className="w-3.5 h-3.5 mr-1.5" />
                     Download
                   </Button>

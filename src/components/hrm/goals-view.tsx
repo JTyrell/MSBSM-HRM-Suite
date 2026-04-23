@@ -98,23 +98,23 @@ interface CheckIn {
 const PRIORITY_STYLES: Record<Priority, string> = {
   High: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300",
   Medium: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300",
-  Low: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300",
+  Low: "bg-msbm-red/10 text-msbm-red dark:bg-emerald-900/50 dark:text-emerald-300",
 };
 
 const OKR_STATUS_STYLES: Record<OKRStatus, { className: string; icon: React.ElementType }> = {
-  "On Track": { className: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300", icon: CheckCircle2 },
+  "On Track": { className: "bg-msbm-red/10 text-msbm-red dark:bg-emerald-900/50 dark:text-emerald-300", icon: CheckCircle2 },
   "At Risk": { className: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300", icon: AlertTriangle },
   "Behind": { className: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300", icon: XCircle },
 };
 
 function getProgressColor(progress: number): string {
-  if (progress > 70) return "bg-emerald-500";
+  if (progress > 70) return "bg-msbm-red/50";
   if (progress >= 30) return "bg-amber-500";
   return "bg-rose-500";
 }
 
 function getProgressTextColor(progress: number): string {
-  if (progress > 70) return "text-emerald-600 dark:text-emerald-400";
+  if (progress > 70) return "text-msbm-red dark:text-msbm-red-bright";
   if (progress >= 30) return "text-amber-600 dark:text-amber-400";
   return "text-rose-600 dark:text-rose-400";
 }
@@ -144,7 +144,7 @@ function formatDate(dateStr: string): string {
 
 function CheckInDot({ rating }: { rating: CheckInRating }) {
   const colors: Record<CheckInRating, string> = {
-    "On Track": "bg-emerald-500",
+    "On Track": "bg-msbm-red/50",
     "At Risk": "bg-amber-500",
     "Behind": "bg-rose-500",
   };
@@ -171,8 +171,8 @@ export function GoalsView() {
     const atRisk = objectives.filter((o) => o.status === "At Risk").length;
     const avgProgress = active > 0 ? Math.round(objectives.reduce((sum, o) => sum + o.progress, 0) / active * 10) / 10 : 0;
     return [
-      { label: "Active OKRs", value: active, icon: Target, color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40" },
-      { label: "On Track", value: onTrack, icon: CheckCircle2, color: "text-teal-600 dark:text-teal-400", bg: "bg-teal-50 dark:bg-teal-950/40" },
+      { label: "Active OKRs", value: active, icon: Target, color: "text-msbm-red dark:text-msbm-red-bright", bg: "bg-msbm-red/5 dark:bg-purple-950/40" },
+      { label: "On Track", value: onTrack, icon: CheckCircle2, color: "text-inner-blue dark:text-light-blue", bg: "bg-inner-blue/10 dark:bg-inner-blue/20" },
       { label: "At Risk", value: atRisk, icon: AlertTriangle, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/40" },
       { label: "Avg. Progress", value: `${avgProgress}%`, icon: BarChart3, color: "text-rose-600 dark:text-rose-400", bg: "bg-rose-50 dark:bg-rose-950/40" },
     ];
@@ -246,13 +246,13 @@ export function GoalsView() {
               const completedKRs = obj.keyResults.filter((kr) => kr.completed).length;
 
               return (
-                <Card key={obj.id} className="card-lift transition-all duration-300 hover:border-emerald-200/60 dark:hover:border-emerald-800/40">
+                <Card key={obj.id} className="card-lift transition-all duration-300 hover:border-msbm-red/20/60 dark:hover:border-msbm-red/20/40">
                   <CardContent className="pt-4">
                     {/* Objective Header */}
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
                       <div className="flex items-start gap-3 flex-1">
-                        <div className="flex items-center justify-center h-9 w-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 shrink-0 mt-0.5">
-                          <Target className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                        <div className="flex items-center justify-center h-9 w-9 rounded-xl bg-msbm-red/5 dark:bg-purple-950/40 shrink-0 mt-0.5">
+                          <Target className="h-4 w-4 text-msbm-red dark:text-msbm-red-bright" />
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
@@ -287,7 +287,7 @@ export function GoalsView() {
                       {obj.keyResults.map((kr) => (
                         <div key={kr.id} className="flex items-center gap-2.5 py-1">
                           {kr.completed ? (
-                            <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />
+                            <CheckCircle2 className="h-4 w-4 text-purple-500 shrink-0" />
                           ) : (
                             <Circle className="h-4 w-4 text-muted-foreground/50 shrink-0" />
                           )}
@@ -317,7 +317,7 @@ export function GoalsView() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {teamGoals.length === 0 && <div className="text-center py-12 text-muted-foreground col-span-full"><Users className="h-10 w-10 mx-auto mb-2 opacity-40" /><p>No team goals configured yet.</p></div>}
             {teamGoals.map((goal) => (
-              <Card key={goal.id} className="card-lift transition-all duration-300 hover:border-emerald-200/60 dark:hover:border-emerald-800/40">
+              <Card key={goal.id} className="card-lift transition-all duration-300 hover:border-msbm-red/20/60 dark:hover:border-msbm-red/20/40">
                 <CardContent className="pt-4">
                   <div className="flex items-center gap-2 mb-2">
                     <Badge variant="outline" className="text-[10px] px-1.5 py-0 bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300">
@@ -401,7 +401,7 @@ export function GoalsView() {
                             <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Action Items</p>
                             {ci.actionItems.map((item, i) => (
                               <div key={i} className="flex items-center gap-1.5 text-xs">
-                                <ChevronRight className="h-3 w-3 text-emerald-500 shrink-0" />
+                                <ChevronRight className="h-3 w-3 text-purple-500 shrink-0" />
                                 <span>{item}</span>
                               </div>
                             ))}
@@ -422,7 +422,7 @@ export function GoalsView() {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Pencil className="h-5 w-5 text-emerald-500" />
+              <Pencil className="h-5 w-5 text-purple-500" />
               Edit Objective
             </DialogTitle>
           </DialogHeader>
@@ -444,7 +444,9 @@ export function GoalsView() {
                   max={100}
                   value={editForm.progress}
                   onChange={(e) => setEditForm((p) => ({ ...p, progress: Number(e.target.value) }))}
-                  className="flex-1 h-2 rounded-full appearance-none bg-muted cursor-pointer accent-emerald-500"
+                  className="flex-1 h-2 rounded-full appearance-none bg-muted cursor-pointer accent-purple-500"
+                  aria-label="Progress"
+                  title="Progress"
                 />
                 <span className={`text-sm font-bold w-12 text-right ${getProgressTextColor(editForm.progress)}`}>
                   {editForm.progress}%
@@ -469,7 +471,7 @@ export function GoalsView() {
           </div>
           <DialogFooter className="gap-2">
             <Button variant="outline" onClick={() => setEditDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleSaveEdit} className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700">
+            <Button onClick={handleSaveEdit} className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white hover:bg-msbm-red/80 hover:to-indigo-700">
               <CheckCircle2 className="h-4 w-4 mr-1.5" />Save Changes
             </Button>
           </DialogFooter>

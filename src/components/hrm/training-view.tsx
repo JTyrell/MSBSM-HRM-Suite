@@ -334,7 +334,7 @@ const COURSES: TrainingCourse[] = [
 ];
 
 const DIFFICULTY_STYLES: Record<Difficulty, string> = {
-  Beginner: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+  Beginner: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright",
   Intermediate: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
   Advanced: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400",
 };
@@ -342,7 +342,7 @@ const DIFFICULTY_STYLES: Record<Difficulty, string> = {
 const CATEGORY_COLORS: Record<Category, string> = {
   Compliance: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
   Leadership: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
-  "Soft Skills": "bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400",
+  "Soft Skills": "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright",
   Technical: "bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400",
   Wellness: "bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400",
 };
@@ -436,8 +436,8 @@ export function TrainingView() {
   };
 
   const statCards = [
-    { label: "Total Courses", value: totalCourses, icon: BookOpen, color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-100 dark:bg-emerald-900/30" },
-    { label: "Completed", value: completedCourses, icon: CheckCircle2, color: "text-teal-600 dark:text-teal-400", bg: "bg-teal-100 dark:bg-teal-900/30" },
+    { label: "Total Courses", value: totalCourses, icon: BookOpen, color: "text-msbm-red dark:text-msbm-red-bright", bg: "bg-msbm-red/10 dark:bg-msbm-red/20" },
+    { label: "Completed", value: completedCourses, icon: CheckCircle2, color: "text-msbm-red dark:text-msbm-red-bright", bg: "bg-msbm-red/10 dark:bg-msbm-red/20" },
     { label: "In Progress", value: inProgressCourses, icon: PlayCircle, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-100 dark:bg-amber-900/30" },
     { label: "Learning Hours", value: totalLearningHours.toFixed(1), icon: Clock, color: "text-purple-600 dark:text-purple-400", bg: "bg-purple-100 dark:bg-purple-900/30" },
   ];
@@ -448,7 +448,7 @@ export function TrainingView() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-msbm-red to-msbm-red flex items-center justify-center">
               <GraduationCap className="w-4.5 h-4.5 text-white" />
             </div>
             Training & Learning
@@ -561,7 +561,7 @@ export function TrainingView() {
                             {course.difficulty}
                           </Badge>
                         </div>
-                        <CardTitle className="text-base leading-snug group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                        <CardTitle className="text-base leading-snug group-hover:text-msbm-red dark:group-hover:text-msbm-red-bright transition-colors">
                           {course.title}
                         </CardTitle>
                       </div>
@@ -593,7 +593,7 @@ export function TrainingView() {
                         </div>
                         <Progress value={enrollment.progress} className="h-2" />
                         {enrollment.status === "Completed" && (
-                          <div className="flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                          <div className="flex items-center gap-1 text-xs text-msbm-red dark:text-msbm-red-bright font-medium">
                             <CheckCircle2 className="w-3.5 h-3.5" />
                             Completed
                           </div>
@@ -634,7 +634,7 @@ export function TrainingView() {
                 </div>
                 <div className="flex items-center gap-4 text-sm">
                   <div className="text-center">
-                    <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">{completedCourses}</p>
+                    <p className="text-lg font-bold text-msbm-red dark:text-msbm-red-bright">{completedCourses}</p>
                     <p className="text-xs text-muted-foreground">Completed</p>
                   </div>
                   <Separator orientation="vertical" className="h-8" />
@@ -655,7 +655,7 @@ export function TrainingView() {
           {/* Enrolled Courses */}
           <div className="space-y-3">
             <h2 className="text-lg font-semibold flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+              <TrendingUp className="w-5 h-5 text-msbm-red dark:text-msbm-red-bright" />
               In Progress
             </h2>
             {enrollments
@@ -682,8 +682,8 @@ export function TrainingView() {
                             </div>
                           )}
                           {course.category === "Soft Skills" && (
-                            <div className="w-full h-full rounded-xl bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
-                              <Target className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+                            <div className="w-full h-full rounded-xl bg-msbm-red/10 dark:bg-msbm-red/20 flex items-center justify-center">
+                              <Target className="w-5 h-5 text-msbm-red dark:text-msbm-red-bright" />
                             </div>
                           )}
                           {course.category === "Technical" && (
@@ -700,7 +700,7 @@ export function TrainingView() {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
                             <h3
-                              className="font-semibold text-sm cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                              className="font-semibold text-sm cursor-pointer hover:text-msbm-red dark:hover:text-msbm-red-bright transition-colors"
                               onClick={() => setSelectedCourse(course)}
                             >
                               {course.title}
@@ -714,14 +714,14 @@ export function TrainingView() {
                           </p>
                           <div className="flex items-center gap-3">
                             <Progress value={enrollment.progress} className="h-2 flex-1" />
-                            <span className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 w-12 text-right">
+                            <span className="text-sm font-semibold text-msbm-red dark:text-msbm-red-bright w-12 text-right">
                               {enrollment.progress}%
                             </span>
                           </div>
                         </div>
                         <Button
                           size="sm"
-                          className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white shrink-0"
+                          className="bg-gradient-to-r from-msbm-red to-msbm-red hover:from-msbm-red-bright hover:to-msbm-red text-white shrink-0"
                           onClick={() => handleContinueLearning(course.id)}
                         >
                           <PlayCircle className="w-4 h-4 mr-1.5" />
@@ -757,7 +757,7 @@ export function TrainingView() {
           {enrollments.filter((e) => e.status === "Completed").length > 0 && (
             <div className="space-y-3">
               <h2 className="text-lg font-semibold flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                <CheckCircle2 className="w-5 h-5 text-msbm-red dark:text-msbm-red-bright" />
                 Completed
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -770,8 +770,8 @@ export function TrainingView() {
                       <Card key={enrollment.courseId} className="card-elevated">
                         <CardContent className="p-4">
                           <div className="flex items-start gap-3">
-                            <div className="w-10 h-10 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center shrink-0">
-                              <Award className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                            <div className="w-10 h-10 rounded-lg bg-msbm-red/10 dark:bg-msbm-red/20 flex items-center justify-center shrink-0">
+                              <Award className="w-5 h-5 text-msbm-red dark:text-msbm-red-bright" />
                             </div>
                             <div className="flex-1 min-w-0">
                               <h3 className="font-semibold text-sm">{course.title}</h3>
@@ -779,7 +779,7 @@ export function TrainingView() {
                                 Completed {enrollment.completedAt} • {enrollment.learningHours}h
                               </p>
                               <div className="flex items-center gap-2 mt-2">
-                                <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-xs">
+                                <Badge variant="secondary" className="bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright text-xs">
                                   <CheckCircle2 className="w-3 h-3 mr-1" />
                                   Certified
                                 </Badge>
@@ -821,7 +821,7 @@ export function TrainingView() {
                         key={entry.employeeId}
                         className={`flex items-center gap-4 p-3 rounded-xl transition-all ${
                           isTop3
-                            ? "bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border border-amber-200/50 dark:border-amber-800/30"
+                            ? "bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border border-msbm-red/20 dark:border-msbm-red/20"
                             : "hover:bg-accent/50"
                         }`}
                       >
@@ -909,13 +909,13 @@ export function TrainingView() {
                   {/* Learning Objectives */}
                   <div>
                     <h3 className="text-sm font-semibold mb-3 flex items-center gap-1.5">
-                      <Target className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <Target className="w-4 h-4 text-msbm-red dark:text-msbm-red-bright" />
                       Learning Objectives
                     </h3>
                     <ul className="space-y-2">
                       {selectedCourse.objectives.map((obj, idx) => (
                         <li key={idx} className="flex items-start gap-2 text-sm text-muted-foreground">
-                          <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" />
+                          <CheckCircle2 className="w-4 h-4 text-msbm-red mt-0.5 shrink-0" />
                           {obj}
                         </li>
                       ))}
@@ -945,7 +945,7 @@ export function TrainingView() {
                   {/* Curriculum */}
                   <div>
                     <h3 className="text-sm font-semibold mb-3 flex items-center gap-1.5">
-                      <BookOpen className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                      <BookOpen className="w-4 h-4 text-msbm-red dark:text-msbm-red-bright" />
                       Curriculum ({selectedCourse.modules.length} modules)
                     </h3>
                     <div className="space-y-2">
@@ -954,7 +954,7 @@ export function TrainingView() {
                           key={mod.id}
                           className="flex items-center gap-3 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
                         >
-                          <div className="w-7 h-7 rounded-full bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xs font-bold shrink-0">
+                          <div className="w-7 h-7 rounded-full bg-msbm-red/10 dark:bg-msbm-red/20 text-msbm-red dark:text-msbm-red-bright flex items-center justify-center text-xs font-bold shrink-0">
                             {idx + 1}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -1008,7 +1008,7 @@ export function TrainingView() {
                         </div>
                         <Progress value={enrollment.progress} className="h-2" />
                         <Button
-                          className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white"
+                          className="w-full bg-gradient-to-r from-msbm-red to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white"
                           onClick={() => handleContinueLearning(selectedCourse.id)}
                         >
                           <PlayCircle className="w-4 h-4 mr-2" />
@@ -1019,7 +1019,7 @@ export function TrainingView() {
                   }
                   return (
                     <Button
-                      className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white"
+                      className="w-full bg-gradient-to-r from-msbm-red to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white"
                       onClick={() => handleEnroll(selectedCourse.id)}
                     >
                       <GraduationCap className="w-4 h-4 mr-2" />

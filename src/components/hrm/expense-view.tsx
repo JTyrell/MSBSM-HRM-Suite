@@ -202,13 +202,13 @@ const EXPENSE_TYPE_COLORS: Record<ExpenseType, string> = {
   Meals: "bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400",
   "Office Supplies": "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
   "Software/Tools": "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
-  Training: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+  Training: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright",
   Miscellaneous: "bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400",
 };
 
 const STATUS_STYLES: Record<ExpenseStatus, string> = {
   Pending: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
-  Approved: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+  Approved: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright",
   Rejected: "bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-rose-400",
   Processing: "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400",
 };
@@ -376,8 +376,8 @@ export function ExpenseView() {
       label: "Total Submitted",
       value: formatCurrency(totalSubmitted),
       icon: DollarSign,
-      color: "text-emerald-600 dark:text-emerald-400",
-      bg: "bg-emerald-100 dark:bg-emerald-900/30",
+      color: "text-msbm-red dark:text-msbm-red-bright",
+      bg: "bg-msbm-red/10 dark:bg-msbm-red/20",
       trend: <ArrowUpRight className="w-3.5 h-3.5" />,
       trendText: "14 expenses",
     },
@@ -394,8 +394,8 @@ export function ExpenseView() {
       label: "Approved",
       value: formatCurrency(totalApproved),
       icon: CheckCircle2,
-      color: "text-teal-600 dark:text-teal-400",
-      bg: "bg-teal-100 dark:bg-teal-900/30",
+      color: "text-inner-blue dark:text-light-blue",
+      bg: "bg-inner-blue/10 dark:bg-inner-blue/20",
       trend: <ArrowUpRight className="w-3.5 h-3.5" />,
       trendText: "Approved",
     },
@@ -416,7 +416,7 @@ export function ExpenseView() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-msbm-red to-inner-blue flex items-center justify-center">
               <Receipt className="w-4.5 h-4.5 text-white" />
             </div>
             Expense Reimbursement
@@ -424,7 +424,7 @@ export function ExpenseView() {
           <p className="text-sm text-muted-foreground mt-1">Submit and track expense reimbursements</p>
         </div>
         <Button
-          className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white"
+          className="bg-gradient-to-r from-msbm-red to-inner-blue hover:from-msbm-red-bright hover:to-light-blue text-white"
           onClick={() => setSubmitDialogOpen(true)}
         >
           <Plus className="w-4 h-4 mr-2" />
@@ -569,7 +569,7 @@ export function ExpenseView() {
                           </TableCell>
                           <TableCell>
                             <div className="flex items-center gap-1">
-                              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setDetailExpense(expense)}>
+                              <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setDetailExpense(expense)} aria-label="View expense details" title="View Details">
                                 <Eye className="w-4 h-4" />
                               </Button>
                               {activeTab === "approvals" && expense.status === "Pending" && isAdminOrManager && (
@@ -577,8 +577,10 @@ export function ExpenseView() {
                                   <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="h-8 w-8 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/30"
+                                    className="h-8 w-8 text-msbm-red hover:text-msbm-red hover:bg-msbm-red/5 dark:hover:bg-msbm-red/20"
                                     onClick={() => handleApproveReject(expense.id, "approve")}
+                                    aria-label="Approve expense"
+                                    title="Approve"
                                   >
                                     <CheckCircle2 className="w-4 h-4" />
                                   </Button>
@@ -587,6 +589,8 @@ export function ExpenseView() {
                                     size="icon"
                                     className="h-8 w-8 text-rose-600 hover:text-rose-700 hover:bg-rose-50 dark:hover:bg-rose-950/30"
                                     onClick={() => handleApproveReject(expense.id, "reject")}
+                                    aria-label="Reject expense"
+                                    title="Reject"
                                   >
                                     <XCircle className="w-4 h-4" />
                                   </Button>
@@ -643,7 +647,7 @@ export function ExpenseView() {
                             <Button
                               variant="outline"
                               size="sm"
-                              className="text-xs h-8 text-emerald-600 border-emerald-300 hover:bg-emerald-50"
+                              className="text-xs h-8 text-msbm-red border-msbm-red/20 hover:bg-msbm-red/5"
                               onClick={() => handleApproveReject(expense.id, "approve")}
                             >
                               <CheckCircle2 className="w-3.5 h-3.5 mr-1" />
@@ -687,7 +691,7 @@ export function ExpenseView() {
                     </p>
                     <div className="flex items-center gap-4 text-sm">
                       <span className="text-muted-foreground">Total:</span>
-                      <span className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
+                      <span className="text-lg font-bold text-msbm-red dark:text-msbm-red-bright">
                         {formatCurrency(filteredExpenses.reduce((sum, e) => sum + e.amount, 0))}
                       </span>
                     </div>
@@ -704,7 +708,7 @@ export function ExpenseView() {
         <DialogContent className="max-w-lg">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-msbm-red to-inner-blue flex items-center justify-center">
                 <Plus className="w-4 h-4 text-white" />
               </div>
               Submit Expense
@@ -775,17 +779,19 @@ export function ExpenseView() {
             {/* Receipt Upload (visual only) */}
             <div className="space-y-2">
               <label className="text-sm font-medium">Receipt</label>
-              <div className="border-2 border-dashed border-border rounded-xl p-6 text-center hover:border-emerald-400 dark:hover:border-emerald-600 transition-colors cursor-pointer group">
-                <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2 group-hover:text-emerald-500 transition-colors" />
+              <div className="border-2 border-dashed border-border rounded-xl p-6 text-center hover:border-msbm-red dark:hover:border-msbm-red-bright transition-colors cursor-pointer group">
+                <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-2 group-hover:text-msbm-red transition-colors" />
                 <p className="text-sm font-medium">Click to upload or drag and drop</p>
                 <p className="text-xs text-muted-foreground mt-1">PDF, JPG, or PNG (max 10MB)</p>
                 {newExpense.receiptName && (
-                  <div className="mt-3 flex items-center justify-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
+                  <div className="mt-3 flex items-center justify-center gap-2 text-sm text-msbm-red dark:text-msbm-red-bright">
                     <FileText className="w-4 h-4" />
                     {newExpense.receiptName}
                     <button
                       className="text-muted-foreground hover:text-rose-500"
                       onClick={() => setNewExpense((prev) => ({ ...prev, receiptName: "" }))}
+                      title="Remove receipt"
+                      aria-label="Remove receipt"
                     >
                       <XCircle className="w-4 h-4" />
                     </button>
@@ -858,7 +864,7 @@ export function ExpenseView() {
                       <p className="text-xs text-muted-foreground">Receipt</p>
                       <p className="text-sm font-medium">
                         {detailExpense.receiptName ? (
-                          <span className="text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+                          <span className="text-msbm-red dark:text-msbm-red-bright flex items-center gap-1">
                             <FileText className="w-3.5 h-3.5" />
                             {detailExpense.receiptName}
                           </span>

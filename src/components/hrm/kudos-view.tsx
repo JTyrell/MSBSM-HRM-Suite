@@ -82,9 +82,9 @@ interface LeaderboardEntry {
 // ─── Kudos Types Config ───────────────────────────────────────────
 const KUDOS_TYPES: Record<string, KudosType> = {
   star: { emoji: "🌟", label: "Star Performer", color: "text-amber-600 dark:text-amber-400", bgColor: "bg-amber-50 dark:bg-amber-950/30", icon: Star },
-  team: { emoji: "💪", label: "Team Player", color: "text-emerald-600 dark:text-emerald-400", bgColor: "bg-emerald-50 dark:bg-emerald-950/30", icon: Heart },
+  team: { emoji: "💪", label: "Team Player", color: "text-msbm-red dark:text-msbm-red-bright", bgColor: "bg-msbm-red/5 dark:bg-msbm-red/20", icon: Heart },
   goal: { emoji: "🎯", label: "Goal Crusher", color: "text-rose-600 dark:text-rose-400", bgColor: "bg-rose-50 dark:bg-rose-950/30", icon: Target },
-  helpful: { emoji: "🤝", label: "Helpful Hero", color: "text-teal-600 dark:text-teal-400", bgColor: "bg-teal-50 dark:bg-teal-950/30", icon: Handshake },
+  helpful: { emoji: "🤝", label: "Helpful Hero", color: "text-blue-600 dark:text-blue-400", bgColor: "bg-blue-50 dark:bg-blue-950/30", icon: Handshake },
   creative: { emoji: "🎨", label: "Creative Spark", color: "text-violet-600 dark:text-violet-400", bgColor: "bg-violet-50 dark:bg-violet-950/30", icon: Palette },
   above: { emoji: "🔥", label: "Going Above & Beyond", color: "text-orange-600 dark:text-orange-400", bgColor: "bg-orange-50 dark:bg-orange-950/30", icon: Flame },
 };
@@ -123,22 +123,22 @@ export function KudosView() {
   const wallOfFame = useMemo(() => {
     let filtered = [...kudosFeed].sort((a, b) => b.likes - a.likes).slice(0, 12);
     return filtered;
-  }, []);
+  }, [kudosFeed]);
 
   const rankBadge = (rank: number) => {
-    if (rank === 1) return <span className="flex items-center justify-center h-7 w-7 rounded-full text-xs font-bold" style={{ backgroundColor: "#FFD700", color: "#7C5800" }}><Crown className="h-3.5 w-3.5" /></span>;
-    if (rank === 2) return <span className="flex items-center justify-center h-7 w-7 rounded-full text-xs font-bold" style={{ backgroundColor: "#C0C0C0", color: "#4A4A4A" }}><Medal className="h-3.5 w-3.5" /></span>;
-    if (rank === 3) return <span className="flex items-center justify-center h-7 w-7 rounded-full text-xs font-bold" style={{ backgroundColor: "#CD7F32", color: "#FFF" }}><Award className="h-3.5 w-3.5" /></span>;
+    if (rank === 1) return <span className="flex items-center justify-center h-7 w-7 rounded-full text-xs font-bold bg-yellow-400 text-yellow-900"><Crown className="h-3.5 w-3.5" /></span>;
+    if (rank === 2) return <span className="flex items-center justify-center h-7 w-7 rounded-full text-xs font-bold bg-gray-300 text-gray-800"><Medal className="h-3.5 w-3.5" /></span>;
+    if (rank === 3) return <span className="flex items-center justify-center h-7 w-7 rounded-full text-xs font-bold bg-amber-600 text-white"><Award className="h-3.5 w-3.5" /></span>;
     return <span className="flex items-center justify-center h-7 w-7 rounded-full text-xs font-medium bg-muted text-muted-foreground">#{rank}</span>;
   };
 
   const trendIcon = (trend: string) => {
-    if (trend === "up") return <TrendingUp className="h-3.5 w-3.5 text-emerald-500" />;
+    if (trend === "up") return <TrendingUp className="h-3.5 w-3.5 text-blue-500" />;
     if (trend === "down") return <TrendingDown className="h-3.5 w-3.5 text-red-500" />;
     return <Minus className="h-3.5 w-3.5 text-muted-foreground" />;
   };
 
-  const avatarColors = ["from-emerald-400 to-teal-500", "from-amber-400 to-orange-500", "from-violet-400 to-purple-500", "from-rose-400 to-pink-500", "from-cyan-400 to-blue-500", "from-teal-400 to-emerald-500"];
+  const avatarColors = ["from-blue-400 to-indigo-500", "from-amber-400 to-orange-500", "from-violet-400 to-purple-500", "from-rose-400 to-pink-500", "from-cyan-400 to-blue-500", "from-indigo-400 to-blue-500"];
 
   const getAvatarGradient = (name: string) => {
     let hash = 0;
@@ -181,8 +181,8 @@ export function KudosView() {
 
   // ─── Stats ──────────────────────────────────────────────────────
   const stats = [
-    { label: "Total Kudos Given", value: 247, icon: Star, color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40" },
-    { label: "This Month", value: 34, icon: TrendingUp, color: "text-teal-600 dark:text-teal-400", bg: "bg-teal-50 dark:bg-teal-950/40" },
+    { label: "Total Kudos Given", value: 247, icon: Star, color: "text-msbm-red dark:text-msbm-red-bright", bg: "bg-msbm-red/5 dark:bg-msbm-red/20" },
+    { label: "This Month", value: 34, icon: TrendingUp, color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-50 dark:bg-blue-950/40" },
     { label: "Unique Participants", value: 89, icon: Users, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/40" },
     { label: "Streak", value: "12 days", icon: Flame, color: "text-rose-600 dark:text-rose-400", bg: "bg-rose-50 dark:bg-rose-950/40" },
   ];
@@ -197,7 +197,7 @@ export function KudosView() {
           <p className="text-sm text-muted-foreground">Recognize and celebrate your colleagues&apos; achievements</p>
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <MessageSquareHeart className="h-4 w-4 text-emerald-500" />
+          <MessageSquareHeart className="h-4 w-4 text-blue-500" />
           <span>Building a culture of appreciation</span>
         </div>
       </div>
@@ -239,7 +239,7 @@ export function KudosView() {
             <Card className="lg:col-span-1">
               <CardHeader>
                 <CardTitle className="text-base font-semibold flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-emerald-500" />
+                  <Sparkles className="h-4 w-4 text-blue-500" />
                   Send Kudos
                 </CardTitle>
               </CardHeader>
@@ -255,8 +255,8 @@ export function KudosView() {
                           onClick={() => setSelectedType(key)}
                           className={`flex items-center gap-2 p-2.5 rounded-lg border text-left text-xs font-medium transition-all cursor-pointer ${
                             selectedType === key
-                              ? `border-emerald-300 dark:border-emerald-700 ${type.bgColor} ${type.color} shadow-sm`
-                              : "border-border hover:border-emerald-200 dark:hover:border-emerald-800"
+                              ? `border-blue-300 dark:border-blue-700 ${type.bgColor} ${type.color} shadow-sm`
+                              : "border-border hover:border-msbm-red/20 dark:hover:border-msbm-red/20"
                           }`}
                         >
                           <span className="text-base">{type.emoji}</span>
@@ -300,7 +300,7 @@ export function KudosView() {
                   </Select>
                 </div>
 
-                <Button onClick={handleSendKudos} className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700">
+                <Button onClick={handleSendKudos} className="w-full bg-gradient-to-r from-msbm-red to-inner-blue text-white hover:bg-msbm-red/80 hover:to-blue-700">
                   <Send className="h-4 w-4 mr-2" />Send Kudos
                 </Button>
               </CardContent>
@@ -329,7 +329,7 @@ export function KudosView() {
                           <div className="flex items-center gap-2 flex-wrap">
                             <span className="text-sm font-medium">{kudos.sender.name}</span>
                             <span className="text-xs text-muted-foreground">→</span>
-                            <span className="text-sm font-medium text-emerald-700 dark:text-emerald-400">{kudos.recipient.name}</span>
+                            <span className="text-sm font-medium text-msbm-red dark:text-msbm-red-bright">{kudos.recipient.name}</span>
                           </div>
                           <div className="flex items-center gap-2 mt-1">
                             <Badge variant="outline" className={`text-[10px] px-1.5 py-0 border-0 ${kudos.type.bgColor} ${kudos.type.color}`}>
@@ -347,7 +347,7 @@ export function KudosView() {
                           <button
                             onClick={() => likeKudos(kudos.id)}
                             className={`flex items-center gap-1.5 mt-2 text-xs transition-colors cursor-pointer ${
-                              kudos.liked ? "text-emerald-600 dark:text-emerald-400" : "text-muted-foreground hover:text-emerald-600 dark:hover:text-emerald-400"
+                              kudos.liked ? "text-msbm-red dark:text-msbm-red-bright" : "text-muted-foreground hover:text-msbm-red dark:hover:text-msbm-red-bright"
                             }`}
                           >
                             <ThumbsUp className={`h-3.5 w-3.5 ${kudos.liked ? "fill-emerald-500" : ""}`} />
@@ -387,7 +387,7 @@ export function KudosView() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {wallOfFame.map((kudos, idx) => {
               const gradients = [
-                "from-emerald-500/20 to-teal-500/20",
+                "from-msbm-red/20 to-teal-500/20",
                 "from-amber-500/20 to-orange-500/20",
                 "from-violet-500/20 to-purple-500/20",
                 "from-rose-500/20 to-pink-500/20",
@@ -413,7 +413,7 @@ export function KudosView() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-xs text-muted-foreground">
-                          <span className="font-medium text-foreground">{kudos.sender.name}</span> → <span className="font-medium text-emerald-600 dark:text-emerald-400">{kudos.recipient.name}</span>
+                          <span className="font-medium text-foreground">{kudos.sender.name}</span> → <span className="font-medium text-msbm-red dark:text-msbm-red-bright">{kudos.recipient.name}</span>
                         </p>
                         <div className="flex items-center gap-1.5 mt-0.5">
                           <span className="text-sm">{kudos.type.emoji}</span>

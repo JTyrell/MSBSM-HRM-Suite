@@ -47,7 +47,7 @@ function getInitials(firstName: string, lastName: string): string {
 
 function getAvatarGradient(id: string): string {
   const gradients = [
-    "from-emerald-500 to-teal-600",
+    "from-msbm-red to-teal-600",
     "from-teal-500 to-cyan-600",
     "from-cyan-500 to-emerald-600",
     "from-green-500 to-emerald-600",
@@ -253,14 +253,14 @@ export function EmployeeProfileEditor({
         {/* Header with avatar */}
         <div className="relative">
           {/* Gradient banner */}
-          <div className="h-28 bg-gradient-to-br from-emerald-500 via-teal-500 to-emerald-600 relative overflow-hidden">
+          <div className="h-28 bg-gradient-to-br from-msbm-red via-teal-500 to-emerald-600 relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.12),transparent_60%)]" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(255,255,255,0.08),transparent_40%)]" />
           </div>
 
           {/* Avatar overlapping the banner */}
           <div className="absolute -bottom-10 left-6">
-            <div className="h-20 w-20 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center border-4 border-background shadow-lg">
+            <div className="h-20 w-20 rounded-2xl bg-gradient-to-br from-msbm-red to-teal-600 flex items-center justify-center border-4 border-background shadow-lg">
               <span className="text-2xl font-bold text-white">
                 {initials}
               </span>
@@ -284,8 +284,8 @@ export function EmployeeProfileEditor({
           {/* ============ Personal Information Section ============ */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-emerald-100 dark:bg-emerald-900/30">
-                <User className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-msbm-red/10 dark:bg-msbm-red/20">
+                <User className="h-3.5 w-3.5 text-msbm-red dark:text-msbm-red-bright" />
               </div>
               <h3 className="text-sm font-semibold text-foreground">Personal Information</h3>
             </div>
@@ -492,7 +492,7 @@ export function EmployeeProfileEditor({
             <Button
               onClick={handleSave}
               disabled={isSaving}
-              className="flex-1 sm:flex-none bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="flex-1 sm:flex-none bg-msbm-red hover:bg-msbm-red/80 text-white"
             >
               {isSaving ? (
                 <>

@@ -99,13 +99,13 @@ interface MyFeedbackItem {
 // ─── Constants ──────────────────────────────────────────────────────
 
 const SURVEY_STATUS_STYLES: Record<SurveyStatus, { className: string; icon: React.ElementType }> = {
-  Active: { className: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300", icon: CheckCircle2 },
+  Active: { className: "bg-msbm-red/10 text-msbm-red dark:bg-emerald-900/50 dark:text-emerald-300", icon: CheckCircle2 },
   Closed: { className: "bg-slate-100 text-slate-700 dark:bg-slate-900/50 dark:text-slate-300", icon: Clock },
   Draft: { className: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300", icon: FileText },
 };
 
 const FEEDBACK_TYPE_STYLES: Record<FeedbackType, { className: string; icon: React.ElementType }> = {
-  Appreciation: { className: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300", icon: ThumbsUp },
+  Appreciation: { className: "bg-msbm-red/10 text-msbm-red dark:bg-emerald-900/50 dark:text-emerald-300", icon: ThumbsUp },
   Suggestion: { className: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300", icon: Lightbulb },
   Concern: { className: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300", icon: AlertCircle },
 };
@@ -163,7 +163,7 @@ export function FeedbackView() {
       ? Math.round(myFeedback.reduce((sum, f) => sum + f.rating, 0) / myFeedback.length * 10) / 10
       : 0;
     return [
-      { label: "Total Feedback", value: totalFeedback, icon: MessageCircle, color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40" },
+      { label: "Total Feedback", value: totalFeedback, icon: MessageCircle, color: "text-msbm-red dark:text-msbm-red-bright", bg: "bg-msbm-red/5 dark:bg-emerald-950/40" },
       { label: "Average Rating", value: avgRating > 0 ? `${avgRating}/5` : "—", icon: Star, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/40" },
       { label: "Response Rate", value: "—", icon: TrendingUp, color: "text-violet-600 dark:text-violet-400", bg: "bg-violet-50 dark:bg-violet-950/40" },
       { label: "Active Surveys", value: active, icon: ClipboardList, color: "text-rose-600 dark:text-rose-400", bg: "bg-rose-50 dark:bg-rose-950/40" },
@@ -180,7 +180,7 @@ export function FeedbackView() {
       nonDraft.reduce((sum, s) => sum + (s.totalTarget > 0 ? (s.responses / s.totalTarget) * 100 : 0), 0) / nonDraft.length
     ) : 0;
     return [
-      { label: "Active", value: active, color: "text-emerald-600 dark:text-emerald-400" },
+      { label: "Active", value: active, color: "text-msbm-red dark:text-msbm-red-bright" },
       { label: "Closed", value: closed, color: "text-slate-600 dark:text-slate-400" },
       { label: "Draft", value: draft, color: "text-amber-600 dark:text-amber-400" },
       { label: "Avg Response Rate", value: `${avgRate}%`, color: "text-violet-600 dark:text-violet-400" },
@@ -287,7 +287,7 @@ export function FeedbackView() {
           <div className="flex justify-end">
             <Button
               size="sm"
-              className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700"
+              className="bg-gradient-to-r from-msbm-red to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700"
               onClick={() => setSurveyDialogOpen(true)}
             >
               <Plus className="h-4 w-4 mr-1.5" />Create Survey
@@ -303,7 +303,7 @@ export function FeedbackView() {
               const progress = survey.totalTarget > 0 ? Math.round((survey.responses / survey.totalTarget) * 100) : 0;
 
               return (
-                <Card key={survey.id} className="card-lift transition-all duration-300 hover:border-emerald-200/60 dark:hover:border-emerald-800/40">
+                <Card key={survey.id} className="card-lift transition-all duration-300 hover:border-msbm-red/20/60 dark:hover:border-msbm-red/20/40">
                   <CardContent className="pt-4">
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                       <div className="flex-1 min-w-0">
@@ -339,7 +339,7 @@ export function FeedbackView() {
                           </div>
                           <Button
                             size="sm"
-                            className="w-full bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700 text-xs"
+                            className="w-full bg-gradient-to-r from-msbm-red to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700 text-xs"
                             onClick={() => toast.info("Survey response form coming soon!")}
                           >
                             Take Survey
@@ -417,6 +417,8 @@ export function FeedbackView() {
                         key={star}
                         onClick={() => setFeedbackForm((p) => ({ ...p, rating: star }))}
                         className="p-0.5 transition-transform hover:scale-110"
+                        aria-label={`Rate ${star} stars`}
+                        title={`Rate ${star} stars`}
                       >
                         <Star
                           className={`h-6 w-6 transition-colors ${
@@ -453,7 +455,7 @@ export function FeedbackView() {
                   </label>
                   <Button
                     onClick={handleSubmitFeedback}
-                    className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700"
+                    className="bg-gradient-to-r from-msbm-red to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700"
                   >
                     <Send className="h-4 w-4 mr-1.5" />Submit Feedback
                   </Button>
@@ -469,7 +471,7 @@ export function FeedbackView() {
                 key={type}
                 variant={feedbackFilter === type ? "default" : "outline"}
                 size="sm"
-                className={`text-xs h-7 ${feedbackFilter === type ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white" : ""}`}
+                className={`text-xs h-7 ${feedbackFilter === type ? "bg-gradient-to-r from-msbm-red to-teal-600 text-white" : ""}`}
                 onClick={() => setFeedbackFilter(type)}
               >
                 {type}
@@ -485,13 +487,13 @@ export function FeedbackView() {
                 const TypeIcon = typeCfg.icon;
 
                 return (
-                  <Card key={entry.id} className="card-lift transition-all duration-300 hover:border-emerald-200/60 dark:hover:border-emerald-800/40">
+                  <Card key={entry.id} className="card-lift transition-all duration-300 hover:border-msbm-red/20/60 dark:hover:border-msbm-red/20/40">
                     <CardContent className="py-3">
                       <div className="flex items-start justify-between gap-2 mb-2">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="text-xs font-medium">{entry.from}</span>
                           <span className="text-[10px] text-muted-foreground">→</span>
-                          <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">{entry.to}</span>
+                          <span className="text-xs font-semibold text-msbm-red dark:text-msbm-red-bright">{entry.to}</span>
                         </div>
                         <div className="flex items-center gap-2 shrink-0">
                           <Badge variant="outline" className={`text-[10px] px-1.5 py-0 gap-0.5 ${typeCfg.className}`}>
@@ -529,7 +531,7 @@ export function FeedbackView() {
               <div className="flex items-center gap-2">
                 <ThumbsUp className="h-5 w-5 text-emerald-500" />
                 <div>
-                  <p className="text-xl font-bold text-emerald-600 dark:text-emerald-400">{myFeedbackStats.positive}</p>
+                  <p className="text-xl font-bold text-msbm-red dark:text-msbm-red-bright">{myFeedbackStats.positive}</p>
                   <p className="text-[10px] text-muted-foreground">Positive</p>
                 </div>
               </div>
@@ -562,7 +564,7 @@ export function FeedbackView() {
               const TypeIcon = typeCfg.icon;
 
               return (
-                <Card key={item.id} className="card-lift transition-all duration-300 hover:border-emerald-200/60 dark:hover:border-emerald-800/40">
+                <Card key={item.id} className="card-lift transition-all duration-300 hover:border-msbm-red/20/60 dark:hover:border-msbm-red/20/40">
                   <CardContent className="pt-4">
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <div className="flex items-center gap-2">
@@ -630,7 +632,7 @@ export function FeedbackView() {
           </div>
           <DialogFooter className="gap-2">
             <Button variant="outline" onClick={() => setSurveyDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleCreateSurvey} className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700">
+            <Button onClick={handleCreateSurvey} className="bg-gradient-to-r from-msbm-red to-teal-600 text-white hover:from-emerald-600 hover:to-teal-700">
               <Plus className="h-4 w-4 mr-1.5" />Create Survey
             </Button>
           </DialogFooter>

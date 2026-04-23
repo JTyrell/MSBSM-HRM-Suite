@@ -93,16 +93,16 @@ const PTO_TYPE_CONFIG: Record<
   sick: {
     label: "Sick Leave",
     icon: BriefcaseMedical,
-    color: "text-rose-600 dark:text-rose-400",
+    color: "text-rose-600 dark:text-light-blue",
     bg: "bg-rose-50 dark:bg-rose-950/40",
     calendarColor: "bg-rose-400",
   },
   vacation: {
     label: "Vacation",
     icon: Palmtree,
-    color: "text-emerald-600 dark:text-emerald-400",
-    bg: "bg-emerald-50 dark:bg-emerald-950/40",
-    calendarColor: "bg-emerald-400",
+    color: "text-msbm-red dark:text-msbm-red-bright",
+    bg: "bg-msbm-red/5 dark:bg-msbm-red/10",
+    calendarColor: "bg-sky-400",
   },
   personal: {
     label: "Personal",
@@ -121,8 +121,8 @@ const PTO_TYPE_CONFIG: Record<
 };
 
 const STATUS_CONFIG: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "outline"; className: string }> = {
-  pending: { label: "Pending", variant: "outline", className: "border-amber-300 text-amber-700 bg-amber-50 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-700" },
-  approved: { label: "Approved", variant: "default", className: "bg-emerald-600 text-white hover:bg-emerald-700" },
+  pending: { label: "Pending", variant: "outline", className: "border-inner-blue/20 text-amber-700 bg-amber-50 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-700" },
+  approved: { label: "Approved", variant: "default", className: "bg-msbm-red text-white hover:bg-msbm-red/80" },
   rejected: { label: "Rejected", variant: "destructive", className: "" },
   cancelled: { label: "Cancelled", variant: "secondary", className: "bg-muted text-muted-foreground" },
 };
@@ -320,7 +320,7 @@ export function PTOView() {
         </div>
         <Button
           onClick={() => setRequestDialogOpen(true)}
-          className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-emerald-500/25"
+          className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-lg shadow-msbm-red/205"
         >
           <Plus className="h-4 w-4 mr-2" />
           Request Time Off
@@ -330,10 +330,10 @@ export function PTOView() {
       {/* Balance Overview */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Total */}
-        <Card className="bg-gradient-to-br from-emerald-500/5 to-teal-500/5 border-emerald-200/50 dark:border-emerald-800/50">
+        <Card className="bg-gradient-to-br from-emerald-500/5 tobg-inner-blue/205 border-msbm-red/20/50 dark:border-msbm-red/20/50">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-emerald-600" />
+              <TrendingUp className="h-4 w-4 text-msbm-red" />
               Total PTO
             </CardTitle>
           </CardHeader>
@@ -342,7 +342,7 @@ export function PTOView() {
               <div className="h-8 bg-muted animate-pulse rounded w-20" />
             ) : (
               <>
-                <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-400">
+                <div className="text-2xl font-bold text-msbm-red dark:text-msbm-red-bright">
                   {totalAllocated - totalUsed}
                   <span className="text-sm font-normal text-muted-foreground ml-1">
                     / {totalAllocated} days
@@ -386,7 +386,7 @@ export function PTOView() {
                     </div>
                     <Progress
                       value={totalAllocated > 0 ? (used / totalAllocated) * 100 : 0}
-                      className={`mt-2 h-2 [&>div]:${type === "sick" ? "bg-rose-500" : type === "vacation" ? "bg-emerald-500" : type === "personal" ? "bg-amber-500" : "bg-sky-500"}`}
+                      className={`mt-2 h-2 [&>div]:${type === "sick" ? "bg-rose-500" : type === "vacation" ? "bg-msbm-red/50" : type === "personal" ? "bg-amber-500" : "bg-sky-500"}`}
                     />
                     <p className="text-xs text-muted-foreground mt-1">
                       {used} used
@@ -402,11 +402,11 @@ export function PTOView() {
       {/* Tabs */}
       <Tabs defaultValue="requests" className="space-y-4">
         <TabsList className="bg-muted/50">
-          <TabsTrigger value="requests" className="data-[state=active]:bg-emerald-600 data-[state=active]:text-white">
+          <TabsTrigger value="requests" className="data-[state=active]:bg-msbm-red data-[state=active]:text-white">
             <CalendarRange className="h-4 w-4 mr-2" />
             Requests
           </TabsTrigger>
-          <TabsTrigger value="calendar" className="data-[state=active]:bg-emerald-600 data-[state=active]:text-white">
+          <TabsTrigger value="calendar" className="data-[state=active]:bg-msbm-red data-[state=active]:text-white">
             <CalendarDays className="h-4 w-4 mr-2" />
             Company Calendar
           </TabsTrigger>
@@ -496,7 +496,7 @@ export function PTOView() {
                                   <Button
                                     size="icon"
                                     variant="ghost"
-                                    className="h-8 w-8 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
+                                    className="h-8 w-8 text-msbm-red hover:text-msbm-red hover:bg-msbm-red/5 dark:hover:bg-msbm-red/10"
                                     onClick={() => handleStatusChange(req.id, "approved")}
                                   >
                                     <Check className="h-4 w-4" />
@@ -531,7 +531,7 @@ export function PTOView() {
           <Card>
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <CalendarDays className="h-5 w-5 text-emerald-600" />
+                <CalendarDays className="h-5 w-5 text-msbm-red" />
                 Company Calendar
               </CardTitle>
             </CardHeader>
@@ -575,7 +575,7 @@ export function PTOView() {
                   }}
                   modifiersClassNames={{
                     ptoSick: "relative [&>button]:bg-rose-100 dark:[&>button]:bg-rose-950/60 [&>button]:text-rose-700 dark:[&>button]:text-rose-300 [&>button]:font-semibold [&>button]:after:content-[''] [&>button]:after:absolute [&>button]:after:bottom-0.5 [&>button]:after:left-1/2 [&>button]:after:-translate-x-1/2 [&>button]:after:w-1.5 [&>button]:after:h-1.5 [&>button]:after:rounded-full [&>button]:after:bg-rose-400",
-                    ptoVacation: "relative [&>button]:bg-emerald-100 dark:[&>button]:bg-emerald-950/60 [&>button]:text-emerald-700 dark:[&>button]:text-emerald-300 [&>button]:font-semibold [&>button]:after:content-[''] [&>button]:after:absolute [&>button]:after:bottom-0.5 [&>button]:after:left-1/2 [&>button]:after:-translate-x-1/2 [&>button]:after:w-1.5 [&>button]:after:h-1.5 [&>button]:after:rounded-full [&>button]:after:bg-emerald-400",
+                    ptoVacation: "relative [&>button]:bg-msbm-red/10 dark:[&>button]:bg-msbm-red/20 [&>button]:text-msbm-red dark:[&>button]:text-msbm-red-bright [&>button]:font-semibold [&>button]:after:content-[''] [&>button]:after:absolute [&>button]:after:bottom-0.5 [&>button]:after:left-1/2 [&>button]:after:-translate-x-1/2 [&>button]:after:w-1.5 [&>button]:after:h-1.5 [&>button]:after:rounded-full [&>button]:after:bg-emerald-400",
                     ptoPersonal: "relative [&>button]:bg-amber-100 dark:[&>button]:bg-amber-950/60 [&>button]:text-amber-700 dark:[&>button]:text-amber-300 [&>button]:font-semibold [&>button]:after:content-[''] [&>button]:after:absolute [&>button]:after:bottom-0.5 [&>button]:after:left-1/2 [&>button]:after:-translate-x-1/2 [&>button]:after:w-1.5 [&>button]:after:h-1.5 [&>button]:after:rounded-full [&>button]:after:bg-amber-400",
                     ptoOther: "relative [&>button]:bg-sky-100 dark:[&>button]:bg-sky-950/60 [&>button]:text-sky-700 dark:[&>button]:text-sky-300 [&>button]:font-semibold [&>button]:after:content-[''] [&>button]:after:absolute [&>button]:after:bottom-0.5 [&>button]:after:left-1/2 [&>button]:after:-translate-x-1/2 [&>button]:after:w-1.5 [&>button]:after:h-1.5 [&>button]:after:rounded-full [&>button]:after:bg-sky-400",
                   }}
@@ -643,7 +643,7 @@ export function PTOView() {
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Plus className="h-5 w-5 text-emerald-600" />
+              <Plus className="h-5 w-5 text-msbm-red" />
               Request Time Off
             </DialogTitle>
           </DialogHeader>
@@ -689,7 +689,7 @@ export function PTOView() {
                 />
               </div>
               {formDateRange?.from && formDateRange?.to && (
-                <p className="text-sm text-emerald-600 dark:text-emerald-400 font-medium">
+                <p className="text-sm text-msbm-red dark:text-msbm-red-bright font-medium">
                   {calcBusinessDays(formDateRange.from, formDateRange.to)} business day(s) selected
                 </p>
               )}

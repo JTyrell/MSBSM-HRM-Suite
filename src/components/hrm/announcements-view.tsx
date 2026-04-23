@@ -95,9 +95,9 @@ interface AnnouncementForm {
 const CATEGORY_CONFIG: Record<string, { label: string; color: string; bgColor: string; darkBgColor: string; icon: React.ElementType }> = {
   general: {
     label: "General",
-    color: "text-emerald-700 dark:text-emerald-400",
-    bgColor: "bg-emerald-100 dark:bg-emerald-900/30",
-    darkBgColor: "bg-emerald-900/30",
+    color: "text-msbm-red dark:text-msbm-red-bright",
+    bgColor: "bg-msbm-red/10 dark:bg-msbm-red/20",
+    darkBgColor: "bg-msbm-red/20",
     icon: BookOpen,
   },
   event: {
@@ -132,7 +132,7 @@ const CATEGORY_CONFIG: Record<string, { label: string; color: string; bgColor: s
 
 const PRIORITY_CONFIG: Record<string, { label: string; color: string; dotColor: string; badgeClass?: string }> = {
   low: { label: "Low", color: "text-gray-500 dark:text-gray-400", dotColor: "bg-gray-400" },
-  normal: { label: "Normal", color: "text-emerald-600 dark:text-emerald-400", dotColor: "bg-emerald-500", badgeClass: "badge-gradient-emerald" },
+  normal: { label: "Normal", color: "text-msbm-red dark:text-msbm-red-bright", dotColor: "bg-msbm-red/50", badgeClass: "badge-gradient-emerald" },
   high: { label: "High", color: "text-amber-600 dark:text-amber-400", dotColor: "bg-amber-500", badgeClass: "badge-gradient-amber" },
   urgent: { label: "Urgent", color: "text-red-600 dark:text-red-400", dotColor: "bg-red-500", badgeClass: "badge-gradient-rose" },
 };
@@ -232,16 +232,16 @@ function HolidaysCalendar() {
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                    <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-400 to-inner-blue flex items-center justify-center shadow-lg shadow-emerald-500/20">
                       <Sparkles className="h-5 w-5 text-white" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">Next Holiday</p>
+                      <p className="text-[10px] font-semibold text-msbm-red dark:text-msbm-red-bright uppercase tracking-wider">Next Holiday</p>
                       <h3 className="text-lg font-bold text-gray-900 dark:text-white">{nextHoliday.name}</h3>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 mt-2">
-                    <Badge variant="outline" className="text-[10px] bg-white/80 dark:bg-gray-900/50 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800">
+                    <Badge variant="outline" className="text-[10px] bg-white/80 dark:bg-gray-900/50 text-msbm-red dark:text-emerald-300 border-msbm-red/20 dark:border-msbm-red/20">
                       {nextHoliday.type}
                     </Badge>
                     <span className="text-sm text-muted-foreground">
@@ -249,9 +249,9 @@ function HolidaysCalendar() {
                     </span>
                   </div>
                 </div>
-                <div className="flex flex-col items-center justify-center px-6 py-3 rounded-2xl bg-white/60 dark:bg-gray-900/40 border border-emerald-200 dark:border-emerald-800">
-                  <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">{daysUntilNext}</p>
-                  <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium uppercase tracking-wider">Days Left</p>
+                <div className="flex flex-col items-center justify-center px-6 py-3 rounded-2xl bg-white/60 dark:bg-gray-900/40 border border-msbm-red/20 dark:border-msbm-red/20">
+                  <p className="text-3xl font-bold text-msbm-red dark:text-msbm-red-bright">{daysUntilNext}</p>
+                  <p className="text-[10px] text-msbm-red dark:text-msbm-red-bright font-medium uppercase tracking-wider">Days Left</p>
                 </div>
               </div>
             </CardContent>
@@ -278,7 +278,7 @@ function HolidaysCalendar() {
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-xs text-muted-foreground">Upcoming</span>
-                <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{upcomingHolidays.length}</span>
+                <span className="text-sm font-bold text-msbm-red dark:text-msbm-red-bright">{upcomingHolidays.length}</span>
               </div>
             </div>
           </CardContent>
@@ -328,9 +328,9 @@ function HolidaysCalendar() {
                   key={idx}
                   className={`min-h-[60px] sm:min-h-[72px] rounded-lg border p-1 transition-colors ${
                     isCurrentDay
-                      ? "border-emerald-400 dark:border-emerald-600 bg-emerald-50/50 dark:bg-emerald-950/20"
+                      ? "border-emerald-400 dark:border-emerald-600 bg-msbm-red/5/50 dark:bg-emerald-950/20"
                       : isToday
-                        ? "border-emerald-200 dark:border-emerald-800 bg-emerald-50/30 dark:bg-emerald-950/10"
+                        ? "border-msbm-red/20 dark:border-msbm-red/20 bg-msbm-red/5/30 dark:bg-emerald-950/10"
                         : "border-transparent bg-muted/20"
                   }`}
                 >
@@ -338,7 +338,7 @@ function HolidaysCalendar() {
                     <>
                       <p className={`text-[11px] font-medium text-right mb-0.5 ${
                         isCurrentDay
-                          ? "text-emerald-700 dark:text-emerald-300"
+                          ? "text-msbm-red dark:text-emerald-300"
                           : isPast
                             ? "text-muted-foreground/50"
                             : "text-gray-700 dark:text-gray-300"
@@ -354,7 +354,7 @@ function HolidaysCalendar() {
                               key={holiday.name}
                               className={`text-[8px] sm:text-[9px] px-1 py-0.5 rounded truncate leading-tight ${
                                 isHolidayToday
-                                  ? "bg-emerald-500 text-white font-semibold"
+                                  ? "bg-msbm-red/50 text-white font-semibold"
                                   : isHolidayPast
                                     ? "bg-gray-100 text-gray-500 dark:bg-gray-800/50 dark:text-gray-400"
                                     : "bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400"
@@ -391,13 +391,13 @@ function HolidaysCalendar() {
                   className={`transition-all ${
                     isToday
                       ? "border-2 border-emerald-400 dark:border-emerald-600 bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20"
-                      : "hover:border-emerald-200 dark:hover:border-emerald-800"
+                      : "hover:border-msbm-red/20 dark:hover:border-msbm-red/20"
                   }`}
                 >
                   <CardContent className="p-3 flex items-center gap-3">
                     <div className={`h-10 w-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
                       isToday
-                        ? "bg-gradient-to-br from-emerald-400 to-teal-500 shadow-lg shadow-emerald-500/20"
+                        ? "bg-gradient-to-br from-emerald-400 to-inner-blue shadow-lg shadow-emerald-500/20"
                         : "bg-muted"
                     }`}>
                       {isToday ? (
@@ -407,7 +407,7 @@ function HolidaysCalendar() {
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-sm font-medium truncate ${isToday ? "text-emerald-700 dark:text-emerald-300" : "text-gray-900 dark:text-white"}`}>
+                      <p className={`text-sm font-medium truncate ${isToday ? "text-msbm-red dark:text-emerald-300" : "text-gray-900 dark:text-white"}`}>
                         {holiday.name}
                       </p>
                       <div className="flex items-center gap-2 mt-0.5">
@@ -754,7 +754,7 @@ export function AnnouncementsView() {
         className={`group card-hover-lift transition-all duration-200 card-neu-light ${
           isPinned
             ? "border-2 border-emerald-300 dark:border-emerald-700 bg-gradient-to-r from-emerald-50/50 to-teal-50/50 dark:from-emerald-950/20 dark:to-teal-950/20"
-            : "hover:border-emerald-200 dark:hover:border-emerald-800"
+            : "hover:border-msbm-red/20 dark:hover:border-msbm-red/20"
         }`}
       >
         <CardContent className="p-4 sm:p-5">
@@ -764,7 +764,7 @@ export function AnnouncementsView() {
               {/* Pin indicator */}
               {isPinned && (
                 <div className="shrink-0 mt-0.5">
-                  <Pin className="h-5 w-5 text-emerald-600 dark:text-emerald-400 fill-emerald-600 dark:fill-emerald-400" />
+                  <Pin className="h-5 w-5 text-msbm-red dark:text-msbm-red-bright fill-emerald-600 dark:fill-emerald-400" />
                 </div>
               )}
 
@@ -802,7 +802,7 @@ export function AnnouncementsView() {
                       tabIndex={0}
                       onClick={() => toggleExpand(announcement.id)}
                       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") toggleExpand(announcement.id); }}
-                      className="flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium mt-1.5 transition-colors cursor-pointer"
+                      className="flex items-center gap-1 text-xs text-msbm-red dark:text-msbm-red-bright hover:text-msbm-red dark:hover:text-emerald-300 font-medium mt-1.5 transition-colors cursor-pointer"
                     >
                       {isExpanded ? (
                         <>
@@ -822,7 +822,7 @@ export function AnnouncementsView() {
                 {/* Footer */}
                 <div className="flex items-center gap-3 mt-3 flex-wrap">
                   <div className="flex items-center gap-1.5">
-                    <div className="h-5 w-5 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center">
+                    <div className="h-5 w-5 rounded-full bg-gradient-to-br from-emerald-400 to-inner-blue flex items-center justify-center">
                       <span className="text-[8px] font-bold text-white">
                         {getAuthorInitials(announcement.authorId)}
                       </span>
@@ -852,7 +852,7 @@ export function AnnouncementsView() {
                         onClick={() => toggleReaction(announcement.id, reaction.emoji)}
                         className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-sm border transition-colors cursor-pointer ${
                           reaction.hasReacted
-                            ? "bg-emerald-50 border-emerald-200 dark:bg-emerald-950/30 dark:border-emerald-800 hover:bg-emerald-100 dark:hover:bg-emerald-950/50"
+                            ? "bg-msbm-red/5 border-msbm-red/20 dark:bg-emerald-950/30 dark:border-msbm-red/20 hover:bg-msbm-red/10 dark:hover:bg-emerald-950/50"
                             : "hover:bg-accent/50"
                         }`}
                       >
@@ -928,7 +928,7 @@ export function AnnouncementsView() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 text-muted-foreground hover:text-emerald-600"
+                  className="h-8 w-8 text-muted-foreground hover:text-msbm-red"
                   onClick={() => openEdit(announcement)}
                 >
                   <Edit className="h-4 w-4" />
@@ -966,7 +966,7 @@ export function AnnouncementsView() {
         {isAdmin && (
           <Button
             onClick={openCreate}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
+            className="bg-msbm-red hover:bg-msbm-red/80 text-white shadow-sm"
           >
             <Plus className="mr-2 h-4 w-4" />
             New Announcement
@@ -1053,11 +1053,11 @@ export function AnnouncementsView() {
       {pinnedAnnouncements.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-3">
-            <Pin className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            <Pin className="h-4 w-4 text-msbm-red dark:text-msbm-red-bright" />
             <h2 className="text-sm font-semibold text-gray-900 dark:text-white">
               Pinned Announcements
             </h2>
-            <Badge variant="outline" className="text-[10px] bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800">
+            <Badge variant="outline" className="text-[10px] bg-msbm-red/5 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-msbm-red/20 dark:border-msbm-red/20">
               {pinnedAnnouncements.length}
             </Badge>
           </div>
@@ -1126,7 +1126,7 @@ export function AnnouncementsView() {
         <DialogContent className="sm:max-w-[560px] max-h-[85vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Megaphone className="h-5 w-5 text-emerald-600" />
+              <Megaphone className="h-5 w-5 text-msbm-red" />
               {editingAnnouncement ? "Edit Announcement" : "New Announcement"}
             </DialogTitle>
           </DialogHeader>
@@ -1273,7 +1273,7 @@ export function AnnouncementsView() {
             <Button
               onClick={() => handleSubmit(!!editingAnnouncement)}
               disabled={submitting}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="bg-msbm-red hover:bg-msbm-red/80 text-white"
             >
               {submitting ? (
                 <div className="flex items-center gap-2">

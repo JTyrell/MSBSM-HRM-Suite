@@ -147,7 +147,7 @@ const ROLE_COLORS: Record<string, string> = {
   admin: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
   hr: "bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400",
   manager: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
-  employee: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+  employee: "bg-[#ac19281a] text-[#ac1928] dark:bg-[#ac192833] dark:text-[#d11226]",
 };
 
 export default function HomePage() {
@@ -254,9 +254,7 @@ export default function HomePage() {
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
           <div className="relative">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
-              <Building2 className="w-8 h-8 text-white" />
-            </div>
+            <img src="/MSBM-icon.png" alt="MSBM" className="w-auto h-16 object-contain rounded-2xl" />
             <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-amber-400 rounded-full border-2 border-background animate-pulse" />
           </div>
           <div className="text-center">
@@ -264,7 +262,7 @@ export default function HomePage() {
             <p className="text-sm text-muted-foreground mt-1">Initializing system...</p>
           </div>
           <div className="w-48 h-1.5 bg-muted rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full animate-[pulse_1.5s_ease-in-out_infinite]" />
+            <div className="h-full bg-gradient-to-r from-msbm-red to-inner-blue rounded-full animate-[pulse_1.5s_ease-in-out_infinite]" />
           </div>
         </div>
       </div>
@@ -323,7 +321,7 @@ export default function HomePage() {
       <main className="flex-1 lg:pl-64 flex flex-col min-h-screen bg-dot-pattern">
         {/* Top Bar */}
         <header className="sticky top-0 z-30 bg-card/80 backdrop-blur-xl border-b border-border px-4 lg:px-6 py-3 relative card-elevated">
-          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-emerald-500 to-teal-500 rounded-r-full" />
+          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-msbm-red to-inner-blue rounded-r-full" />
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Button
@@ -336,9 +334,7 @@ export default function HomePage() {
               </Button>
               <div className="flex items-center gap-2">
                 <div className="lg:hidden">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
-                    <Building2 className="w-4 h-4 text-white" />
-                  </div>
+                  <img src="/MSBM-icon.png" alt="MSBM" className="w-auto h-8 object-contain rounded-lg" />
                 </div>
                 <div className="hidden lg:block">
                   <h2 className="text-lg font-semibold">
@@ -379,7 +375,7 @@ export default function HomePage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-xs text-emerald-600 hover:text-emerald-700 dark:text-emerald-400"
+                        className="text-xs text-msbm-red hover:text-msbm-red-bright dark:text-msbm-red-bright"
                         onClick={() => {
                           setNotifications(
                             notifications.map((n) => ({ ...n, isRead: true }))
@@ -406,7 +402,7 @@ export default function HomePage() {
                             key={notif.id}
                             className={`w-full text-left px-4 py-3 transition-colors hover:bg-accent/50 ${
                               !notif.isRead
-                                ? "border-l-2 border-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20"
+                                ? "border-l-2 border-msbm-red bg-msbm-red/5 dark:bg-msbm-red/10"
                                 : ""
                             }`}
                           >
@@ -426,7 +422,7 @@ export default function HomePage() {
                                 </p>
                               </div>
                               {!notif.isRead && (
-                                <div className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
+                                <div className="w-2 h-2 rounded-full bg-msbm-red mt-1.5 shrink-0" />
                               )}
                             </div>
                           </button>
@@ -453,7 +449,7 @@ export default function HomePage() {
                     {currentUser && (
                       <>
                         <Avatar className="h-8 w-8">
-                          <AvatarFallback className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white text-xs font-semibold">
+                          <AvatarFallback className="bg-gradient-to-br from-msbm-red to-inner-blue text-white text-xs font-semibold">
                             {getInitials(`${currentUser.firstName} ${currentUser.lastName}`)}
                           </AvatarFallback>
                         </Avatar>
@@ -579,10 +575,10 @@ export default function HomePage() {
         </div>
 
         {/* Footer */}
-        <footer className="border-t border-border bg-gradient-to-r from-card via-card to-emerald-50/30 dark:from-card dark:via-card dark:to-emerald-950/10 px-4 lg:px-6 py-4 mt-auto section-divider">
+        <footer className="border-t border-border bg-gradient-to-r from-card via-card to-msbm-red/5 dark:from-card dark:via-card dark:to-[#4a0a10]/10 px-4 lg:px-6 py-4 mt-auto section-divider">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
             <div className="flex items-center gap-2">
-              <div className="w-5 h-5 rounded-md bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+              <div className="w-5 h-5 rounded-md bg-gradient-to-br from-msbm-red to-inner-blue flex items-center justify-center">
                 <Shield className="w-3 h-3 text-white" />
               </div>
               <span className="font-medium">MSBM-HR Suite v13.0</span>
@@ -590,7 +586,7 @@ export default function HomePage() {
             <div className="flex items-center gap-3">
               <span>AI-Powered Human Resource Management</span>
               <span className="hidden sm:inline">•</span>
-              <span className="hidden sm:inline">© 2026 MSBM Group</span>
+              <span className="hidden sm:inline">© 2026 MSBM</span>
             </div>
           </div>
         </footer>
@@ -628,16 +624,14 @@ function SidebarContent({
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {/* Decorative gradient banner */}
-      <div className="h-24 shrink-0 bg-gradient-to-br from-emerald-600 via-teal-600 to-emerald-700 relative overflow-hidden">
+      <div className="h-24 shrink-0 bg-gradient-to-br from-msbm-red via-inner-blue to-[#4a0a10] relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.1),transparent_60%)]" />
         <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-card to-transparent" />
         <div className="relative z-10 flex flex-col items-center justify-center h-full gap-2 pt-6">
-          <div className="w-14 h-14 rounded-2xl bg-white/15 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/20">
-            <Building2 className="w-7 h-7 text-white" />
-          </div>
+          <img src="/MSBM-icon.png" alt="MSBM" className="w-auto h-14 object-contain rounded-2xl shadow-lg border border-white/20 bg-white/10" />
           <div className="text-center">
             <h1 className="text-base font-bold text-white tracking-tight">MSBM-HR</h1>
-            <p className="text-[10px] text-emerald-100 font-medium uppercase tracking-[0.2em]">AI Suite v13.0</p>
+            <p className="text-[10px] text-white/80 font-medium uppercase tracking-[0.2em]">AI Suite v13.0</p>
           </div>
         </div>
         {/* Mobile close button overlay */}
@@ -666,18 +660,18 @@ function SidebarContent({
                 onClick={() => setCurrentView(item.id)}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? "sidebar-nav-indicator bg-gradient-to-r from-emerald-500/10 to-teal-500/10 text-emerald-700 dark:text-emerald-400 shadow-sm"
+                    ? "sidebar-nav-indicator bg-gradient-to-r from-msbm-red/10 to-inner-blue/10 text-msbm-red dark:text-msbm-red-bright shadow-sm"
                     : "text-muted-foreground hover:text-foreground hover:bg-accent"
                 }`}
               >
-                <Icon className={`h-4.5 w-4.5 ${isActive ? "text-emerald-600 dark:text-emerald-400" : ""}`} />
+                <Icon className={`h-4.5 w-4.5 ${isActive ? "text-msbm-red dark:text-msbm-red-bright" : ""}`} />
                 <span className="flex-1 text-left">{item.label}</span>
                 {item.badge && (
                   <Badge
                     variant="secondary"
                     className={`text-[10px] px-1.5 py-0 ${
                       isActive
-                        ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400"
+                        ? "bg-msbm-red/20 text-msbm-red dark:text-msbm-red-bright"
                         : ""
                     }`}
                   >
@@ -692,9 +686,9 @@ function SidebarContent({
       </ScrollArea>
 
       {/* Active view indicator */}
-      <div className="mx-3 mt-4 mb-2 px-3 py-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/50 border-gradient-emerald">
-        <p className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold uppercase tracking-wider">Active</p>
-        <p className="text-sm font-medium text-emerald-700 dark:text-emerald-300 truncate">
+      <div className="mx-3 mt-4 mb-2 px-3 py-2 rounded-lg bg-msbm-red/5 dark:bg-[#4a0a10]/30 border border-msbm-red/20 dark:border-msbm-red/40 border-gradient-emerald">
+        <p className="text-[10px] text-msbm-red dark:text-msbm-red-bright font-semibold uppercase tracking-wider">Active</p>
+        <p className="text-sm font-medium text-msbm-red dark:text-msbm-red-bright truncate">
           {NAV_ITEMS.find((n) => n.id === currentView)?.label || "Dashboard"}
         </p>
       </div>
@@ -734,7 +728,7 @@ function SidebarContent({
                   </p>
                 </div>
                 {emp.id === (currentUser?.id || "") && (
-                  <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                  <div className="w-2 h-2 rounded-full bg-msbm-red" />
                 )}
               </button>
             ))}
@@ -751,8 +745,8 @@ function NotificationIcon({ type }: { type: string }) {
 
   if (t.includes("success") || t.includes("approved") || t.includes("complete")) {
     return (
-      <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-        <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+      <div className="w-8 h-8 rounded-full bg-msbm-red/10 dark:bg-msbm-red/20 flex items-center justify-center">
+        <CheckCircle2 className="h-4 w-4 text-msbm-red dark:text-msbm-red-bright" />
       </div>
     );
   }
@@ -765,8 +759,8 @@ function NotificationIcon({ type }: { type: string }) {
   }
   if (t.includes("payroll") || t.includes("salary") || t.includes("payment")) {
     return (
-      <div className="w-8 h-8 rounded-full bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
-        <DollarSign className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+      <div className="w-8 h-8 rounded-full bg-inner-blue/10 dark:bg-inner-blue/20 flex items-center justify-center">
+        <DollarSign className="h-4 w-4 text-inner-blue dark:text-light-blue" />
       </div>
     );
   }

@@ -139,20 +139,20 @@ const CATEGORY_BADGE_COLORS: Record<DocCategory, string> = {
   Identification: "bg-slate-100 text-slate-700 dark:bg-slate-900/50 dark:text-slate-300",
   Certifications: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300",
   Education: "bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300",
-  Training: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300",
+  Training: "bg-msbm-red/10 text-msbm-red dark:bg-emerald-900/50 dark:text-emerald-300",
   Employment: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300",
   Other: "bg-gray-100 text-gray-700 dark:bg-gray-900/50 dark:text-gray-300",
 };
 
 const STATUS_BADGE: Record<DocStatus, { className: string; icon: React.ElementType }> = {
-  Valid: { className: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300", icon: CheckCircle2 },
+  Valid: { className: "bg-msbm-red/10 text-msbm-red dark:bg-emerald-900/50 dark:text-emerald-300", icon: CheckCircle2 },
   "Expiring Soon": { className: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300", icon: AlertTriangle },
   Expired: { className: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300", icon: XCircle },
 };
 
 const REQUEST_STATUS_BADGE: Record<RequestStatus, { className: string; icon: React.ElementType }> = {
   Pending: { className: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300", icon: Clock },
-  Approved: { className: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300", icon: CheckCircle2 },
+  Approved: { className: "bg-msbm-red/10 text-msbm-red dark:bg-emerald-900/50 dark:text-emerald-300", icon: CheckCircle2 },
   Completed: { className: "bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300", icon: CheckCircle2 },
   Rejected: { className: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300", icon: XCircle },
 };
@@ -182,22 +182,27 @@ function formatDate(dateStr: string): string {
 
 function ProgressRing({ days, maxDays }: { days: number; maxDays: number }) {
   const percentage = Math.min(100, Math.max(0, (days / maxDays) * 100));
-  const ringColor = days <= 30 ? (days <= 0 ? "#f43f5e" : "#f59e0b") : "#10b981";
+  const ringColorHex = days <= 30 ? (days <= 0 ? "#f43f5e" : "#f59e0b") : "#10b981";
+  const ringColorClass = days <= 30 ? (days <= 0 ? "text-rose-500" : "text-amber-500") : "text-emerald-500";
 
   return (
-    <div className="relative flex items-center justify-center" style={{ width: 56, height: 56 }}>
-      <svg className="transform -rotate-90" width="56" height="56">
-        <circle cx="28" cy="28" r="22" fill="none" stroke="currentColor" strokeWidth="4" className="text-muted/50" />
+    <div className="relative flex items-center justify-center w-14 h-14">
+      <svg className="transform -rotate-90 w-14 h-14" viewBox="0 0 56 56">
+        <circle cx="28" cy="28" r="24" stroke="currentColor" strokeWidth="4" fill="transparent" className="text-muted/20" />
         <circle
-          cx="28" cy="28" r="22" fill="none" stroke={ringColor}
-          strokeWidth="4" strokeLinecap="round"
-          strokeDasharray={`${2 * Math.PI * 22}`}
-          strokeDashoffset={`${2 * Math.PI * 22 * (1 - percentage / 100)}`}
-          className="transition-all duration-500"
+          cx="28"
+          cy="28"
+          r="24"
+          stroke={ringColorHex}
+          strokeWidth="4"
+          fill="transparent"
+          strokeDasharray={2 * Math.PI * 24}
+          strokeDashoffset={2 * Math.PI * 24 - (percentage / 100) * (2 * Math.PI * 24)}
+          className="transition-all duration-1000 ease-out"
         />
       </svg>
-      <span className="absolute text-[10px] font-bold" style={{ color: ringColor }}>
-        {days > 0 ? `${days}d` : "!"}
+      <span className={`absolute text-[10px] font-bold ${ringColorClass}`}>
+        {days > 0 ? `${days}d` : "Exp"}
       </span>
     </div>
   );
@@ -225,7 +230,7 @@ export function MyDocumentsView() {
     const expiring = documents.filter((d) => d.status === "Expiring Soon").length;
     const expired = documents.filter((d) => d.status === "Expired").length;
     return [
-      { label: "Total Documents", value: total, icon: FolderOpen, color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50 dark:bg-emerald-950/40" },
+      { label: "Total Documents", value: total, icon: FolderOpen, color: "text-msbm-red dark:text-msbm-red-bright", bg: "bg-msbm-red/5 dark:bg-msbm-red/10" },
       { label: "Valid", value: valid, icon: CheckCircle2, color: "text-teal-600 dark:text-teal-400", bg: "bg-teal-50 dark:bg-teal-950/40" },
       { label: "Expiring Soon", value: expiring, icon: AlertTriangle, color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50 dark:bg-amber-950/40" },
       { label: "Expired", value: expired, icon: XCircle, color: "text-rose-600 dark:text-rose-400", bg: "bg-rose-50 dark:bg-rose-950/40" },
@@ -246,7 +251,7 @@ export function MyDocumentsView() {
     if (sortBy === "date") result.sort((a, b) => new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime());
     if (sortBy === "expiry") result.sort((a, b) => new Date(a.expiryDate).getTime() - new Date(b.expiryDate).getTime());
     return result;
-  }, [searchQuery, categoryFilter, sortBy]);
+  }, [searchQuery, categoryFilter, sortBy, documents]);
 
   // ─── Handlers ──────────────────────────────────────────────────
   const handleUpload = () => {
@@ -360,7 +365,7 @@ export function MyDocumentsView() {
               const StatusIcon = statusConfig.icon;
 
               return (
-                <Card key={doc.id} className="card-lift group transition-all duration-300 hover:border-emerald-200/60 dark:hover:border-emerald-800/40">
+                <Card key={doc.id} className="card-lift group transition-all duration-300 hover:border-msbm-red/20/60 dark:hover:border-msbm-red/20/40">
                   <CardContent className="pt-4">
                     <div className="flex items-start gap-3 mb-3">
                       <div className={`flex items-center justify-center h-10 w-10 rounded-xl ${fileTypeStyle.bg} shrink-0 transition-transform group-hover:scale-110`}>
@@ -413,7 +418,7 @@ export function MyDocumentsView() {
                 const statusCfg = STATUS_BADGE[cert.status];
 
                 return (
-                  <Card key={cert.id} className="card-lift transition-all duration-300 hover:border-emerald-200/60 dark:hover:border-emerald-800/40">
+                  <Card key={cert.id} className="card-lift transition-all duration-300 hover:border-msbm-red/20/60 dark:hover:border-msbm-red/20/40">
                     <CardContent className="pt-4">
                       <div className="flex items-start gap-4">
                         <ProgressRing days={Math.max(0, daysRemaining)} maxDays={1095} />

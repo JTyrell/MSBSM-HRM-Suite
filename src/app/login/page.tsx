@@ -26,6 +26,7 @@ export default function LoginPage() {
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [setupEmployeeId, setSetupEmployeeId] = useState("");
 
   // Check if setup is required on mount
   useEffect(() => {
@@ -123,6 +124,7 @@ export default function LoginPage() {
           email,
           password,
           phone: phone || undefined,
+          employee_id: setupEmployeeId,
         }),
       });
 
@@ -138,7 +140,7 @@ export default function LoginPage() {
       setTimeout(() => {
         setMode("login");
         setSuccess("");
-        setEmployeeId("620123456");
+        setEmployeeId(setupEmployeeId);
       }, 2000);
     } catch {
       setError("Network error. Please try again.");
@@ -148,19 +150,17 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-[#4a0a10] to-slate-950 p-4">
       {/* Background pattern */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(16,185,129,0.08),transparent_50%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(20,184,166,0.06),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(172,25,40,0.08),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(35,65,164,0.06),transparent_50%)]" />
 
       <div className="relative w-full max-w-md">
         {/* Logo */}
         <div className="flex flex-col items-center mb-8">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/25 mb-4">
-            <Building2 className="w-8 h-8 text-white" />
-          </div>
+          <img src="/MSBM-icon.png" alt="MSBM" className="w-32 md:w-40 h-auto rounded-2xl shadow-lg shadow-msbm-red/25 mb-4 bg-white p-1" />
           <h1 className="text-2xl font-bold text-white tracking-tight">MSBM-HR Suite</h1>
-          <p className="text-sm text-emerald-200/60 mt-1">
+          <p className="text-sm text-white/60 mt-1">
             {mode === "setup" ? "Initial Administrator Setup" :
              mode === "reset" ? "Reset Your Password" :
              "AI-Powered Human Resource Management"}
@@ -177,7 +177,7 @@ export default function LoginPage() {
             </div>
           )}
           {success && (
-            <div className="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 px-4 py-3 rounded-lg mb-4 text-sm">
+            <div className="flex items-center gap-2 bg-msbm-red/10 border border-msbm-red/20 text-msbm-red-bright px-4 py-3 rounded-lg mb-4 text-sm">
               <CheckCircle2 className="h-4 w-4 shrink-0" />
               <span>{success}</span>
             </div>
@@ -196,7 +196,7 @@ export default function LoginPage() {
                     placeholder="620123456"
                     value={employeeId}
                     onChange={(e) => setEmployeeId(e.target.value)}
-                    className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50 focus:ring-emerald-500/20"
+                    className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-msbm-red/50 focus:ring-msbm-red/20"
                     required
                   />
                 </div>
@@ -212,7 +212,7 @@ export default function LoginPage() {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50 focus:ring-emerald-500/20"
+                    className="pl-10 pr-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-msbm-red/50 focus:ring-msbm-red/20"
                     required
                   />
                   <button
@@ -228,7 +228,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg shadow-emerald-500/25"
+                className="w-full bg-gradient-to-r from-msbm-red to-inner-blue hover:from-msbm-red-bright hover:to-inner-blue text-white shadow-lg shadow-msbm-red/25"
               >
                 {isLoading ? "Signing in..." : "Sign In"}
                 {!isLoading && <ArrowRight className="ml-2 h-4 w-4" />}
@@ -237,7 +237,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => { setMode("reset"); setError(""); setSuccess(""); }}
-                className="w-full text-sm text-emerald-300/60 hover:text-emerald-300 transition-colors"
+                className="w-full text-sm text-light-blue/60 hover:text-light-blue transition-colors"
               >
                 <KeyRound className="inline h-3.5 w-3.5 mr-1" />
                 Forgot password? Reset via magic link
@@ -262,7 +262,7 @@ export default function LoginPage() {
                     placeholder="your.email@uwi.edu"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50 focus:ring-emerald-500/20"
+                    className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-msbm-red/50 focus:ring-msbm-red/20"
                     required
                   />
                 </div>
@@ -271,7 +271,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white"
+                className="w-full bg-gradient-to-r from-msbm-red to-inner-blue hover:from-msbm-red-bright hover:to-inner-blue text-white"
               >
                 {isLoading ? "Sending..." : "Send Reset Link"}
               </Button>
@@ -279,7 +279,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => { setMode("login"); setError(""); setSuccess(""); }}
-                className="w-full text-sm text-emerald-300/60 hover:text-emerald-300 transition-colors"
+                className="w-full text-sm text-light-blue/60 hover:text-light-blue transition-colors"
               >
                 ← Back to login
               </button>
@@ -294,6 +294,25 @@ export default function LoginPage() {
                 <p className="text-amber-300/70 mt-1">Create the initial administrator account. This can only be done once.</p>
               </div>
 
+              <div className="space-y-2">
+                <Label htmlFor="setupEmployeeId" className="text-white/70 text-sm">Employee ID</Label>
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
+                  <Input
+                    id="setupEmployeeId"
+                    type="text"
+                    placeholder="620123456"
+                    value={setupEmployeeId}
+                    onChange={(e) => setSetupEmployeeId(e.target.value.replace(/\D/g, "").slice(0, 9))}
+                    className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-msbm-red/50"
+                    required
+                    pattern="[0-9]{9}"
+                    title="Enter a 9-digit employee ID number"
+                    maxLength={9}
+                  />
+                </div>
+              </div>
+
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
                   <Label htmlFor="firstName" className="text-white/70 text-sm">First Name</Label>
@@ -301,7 +320,7 @@ export default function LoginPage() {
                     id="firstName"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-msbm-red/50"
                     required
                   />
                 </div>
@@ -311,7 +330,7 @@ export default function LoginPage() {
                     id="lastName"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50"
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-msbm-red/50"
                     required
                   />
                 </div>
@@ -327,7 +346,7 @@ export default function LoginPage() {
                     placeholder="admin@uwi.edu"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50"
+                    className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-msbm-red/50"
                     required
                   />
                 </div>
@@ -341,7 +360,7 @@ export default function LoginPage() {
                   placeholder="+1 (876) 555-1234"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-msbm-red/50"
                 />
               </div>
 
@@ -355,7 +374,7 @@ export default function LoginPage() {
                     placeholder="Min 8 characters"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50"
+                    className="pl-10 pr-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-msbm-red/50"
                     required
                     minLength={8}
                   />
@@ -379,7 +398,7 @@ export default function LoginPage() {
                     placeholder="Confirm password"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-emerald-500/50"
+                    className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/20 focus:border-msbm-red/50"
                     required
                     minLength={8}
                   />
@@ -389,7 +408,7 @@ export default function LoginPage() {
               <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg shadow-emerald-500/25"
+                className="w-full bg-gradient-to-r from-msbm-red to-inner-blue hover:from-msbm-red-bright hover:to-inner-blue text-white shadow-lg shadow-msbm-red/25"
               >
                 {isLoading ? "Creating Account..." : "Create Admin Account"}
               </Button>
@@ -399,7 +418,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <p className="text-center text-xs text-white/20 mt-6">
-          MSBM-HR Suite v13.0 • © 2026 MSBM Group
+          MSBM-HR Suite v13.0 • © 2026 MSBM
         </p>
       </div>
     </div>

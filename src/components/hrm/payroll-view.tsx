@@ -84,21 +84,21 @@ function getStatusBadge(status: string) {
   switch (status?.toLowerCase()) {
     case "approved":
       return (
-        <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-0">
+        <Badge className="bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright hover:bg-msbm-red/20 border-0">
           <CheckCircle2 className="size-3 mr-1" />
           Approved
         </Badge>
       );
     case "paid":
       return (
-        <Badge className="bg-sky-100 text-sky-700 hover:bg-sky-100 border-0">
+        <Badge className="bg-inner-blue/10 text-inner-blue dark:bg-inner-blue/20 dark:text-light-blue hover:bg-inner-blue/20 border-0">
           <Banknote className="size-3 mr-1" />
           Paid
         </Badge>
       );
     case "flagged":
       return (
-        <Badge className="bg-amber-100 text-amber-700 hover:bg-amber-100 border-0">
+        <Badge className="bg-amber-100 text-amber-700 hover:bg-msbm-red/80 border-0">
           <AlertTriangle className="size-3 mr-1" />
           Flagged
         </Badge>
@@ -118,13 +118,13 @@ function getPeriodStatusBadge(status: string) {
   switch (status?.toLowerCase()) {
     case "completed":
       return (
-        <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-0">
+        <Badge className="bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright hover:bg-msbm-red/20 border-0">
           Completed
         </Badge>
       );
     case "processing":
       return (
-        <Badge className="bg-sky-100 text-sky-700 hover:bg-sky-100 border-0">
+        <Badge className="bg-inner-blue/10 text-inner-blue dark:bg-inner-blue/20 dark:text-light-blue hover:bg-inner-blue/20 border-0">
           <Loader2 className="size-3 mr-1 animate-spin" />
           Processing
         </Badge>
@@ -137,7 +137,7 @@ function getPeriodStatusBadge(status: string) {
       );
     case "approved":
       return (
-        <Badge className="bg-teal-100 text-teal-700 hover:bg-teal-100 border-0">
+        <Badge className="bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright hover:bg-msbm-red/20 border-0">
           Approved
         </Badge>
       );
@@ -156,17 +156,17 @@ function SummaryCards({ summary }: { summary: PayrollSummary }) {
       title: "Total Gross Pay",
       value: formatCurrency(summary.totalGrossPay),
       icon: DollarSign,
-      color: "text-emerald-600",
-      bg: "bg-emerald-50",
-      border: "border-emerald-200",
+      color: "text-msbm-red",
+      bg: "bg-msbm-red/5",
+      border: "border-msbm-red/20",
     },
     {
       title: "Total Net Pay",
       value: formatCurrency(summary.totalNetPay),
       icon: Wallet,
-      color: "text-teal-600",
-      bg: "bg-teal-50",
-      border: "border-teal-200",
+      color: "text-inner-blue",
+      bg: "bg-inner-blue/5",
+      border: "border-inner-blue/20",
     },
     {
       title: "Total Deductions",
@@ -287,8 +287,8 @@ function PayrollRunWizard({ onRunComplete }: { onRunComplete: () => void }) {
     <Card>
       <CardHeader>
         <div className="flex items-center gap-3">
-          <div className="bg-emerald-50 p-2 rounded-lg">
-            <Play className="size-5 text-emerald-600" />
+          <div className="bg-msbm-red/5 p-2 rounded-lg">
+            <Play className="size-5 text-msbm-red" />
           </div>
           <div>
             <CardTitle className="text-lg">Payroll Run Wizard</CardTitle>
@@ -313,7 +313,7 @@ function PayrollRunWizard({ onRunComplete }: { onRunComplete: () => void }) {
             </div>
             <Button
               onClick={() => setShowForm(true)}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
+              className="bg-msbm-red hover:bg-msbm-red-bright text-white shadow-sm"
             >
               <Play className="size-4 mr-2" />
               Run New Payroll
@@ -366,7 +366,7 @@ function PayrollRunWizard({ onRunComplete }: { onRunComplete: () => void }) {
                   <span className="text-muted-foreground">
                     Processing payroll...
                   </span>
-                  <span className="font-medium text-emerald-600">
+                  <span className="font-medium text-msbm-red">
                     {Math.round(progress)}%
                   </span>
                 </div>
@@ -378,7 +378,7 @@ function PayrollRunWizard({ onRunComplete }: { onRunComplete: () => void }) {
               <Button
                 onClick={handleRunPayroll}
                 disabled={isRunning}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
+                className="bg-msbm-red hover:bg-msbm-red-bright text-white shadow-sm"
               >
                 {isRunning ? (
                   <>
@@ -405,40 +405,40 @@ function PayrollRunWizard({ onRunComplete }: { onRunComplete: () => void }) {
 
         {result && (
           <div className="space-y-4">
-            <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+            <div className="bg-msbm-red/5 border border-msbm-red/20 rounded-lg p-4">
               <div className="flex items-center gap-2 mb-3">
-                <BadgeCheck className="size-5 text-emerald-600" />
-                <p className="font-semibold text-emerald-700">
+                <BadgeCheck className="size-5 text-msbm-red" />
+                <p className="font-semibold text-msbm-red-bright">
                   Payroll Run Complete
                 </p>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div>
-                  <p className="text-xs text-emerald-600/70 font-medium">
+                  <p className="text-xs text-msbm-red/70 font-medium">
                     Employees Processed
                   </p>
-                  <p className="text-lg font-bold text-emerald-700">
+                  <p className="text-lg font-bold text-msbm-red">
                     {result.totalEmployees}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-emerald-600/70 font-medium">
+                  <p className="text-xs text-msbm-red/70 font-medium">
                     Total Gross Pay
                   </p>
-                  <p className="text-lg font-bold text-emerald-700">
+                  <p className="text-lg font-bold text-msbm-red">
                     {formatCurrency(result.totalGrossPay)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-emerald-600/70 font-medium">
+                  <p className="text-xs text-msbm-red/70 font-medium">
                     Total Net Pay
                   </p>
-                  <p className="text-lg font-bold text-emerald-700">
+                  <p className="text-lg font-bold text-msbm-red">
                     {formatCurrency(result.totalNetPay)}
                   </p>
                 </div>
                 <div>
-                  <p className="text-xs text-emerald-600/70 font-medium">
+                  <p className="text-xs text-msbm-red/70 font-medium">
                     Flagged Records
                   </p>
                   <p className="text-lg font-bold text-amber-600">
@@ -526,7 +526,7 @@ function PayrollPeriodsTable({
                     <TableRow
                       className={`cursor-pointer transition-colors ${
                         selectedPeriodId === period.id
-                          ? "bg-emerald-50/60 hover:bg-emerald-50/80"
+                          ? "bg-msbm-red/5 hover:bg-msbm-red/10"
                           : "hover:bg-muted/50"
                       }`}
                       onClick={() => onSelectPeriod(period)}
@@ -567,10 +567,10 @@ function PayrollPeriodsTable({
                       <TableCell className="text-right font-medium">
                         {empCount}
                       </TableCell>
-                      <TableCell className="text-right font-medium text-emerald-700">
+                      <TableCell className="text-right font-medium text-msbm-red">
                         {formatCurrency(totalGross)}
                       </TableCell>
-                      <TableCell className="text-right font-medium text-teal-700">
+                      <TableCell className="text-right font-medium text-inner-blue">
                         {formatCurrency(totalNet)}
                       </TableCell>
                       <TableCell>
@@ -628,7 +628,7 @@ function PayrollPeriodsTable({
                                     <TableCell className="text-right text-sm text-orange-600">
                                       {formatCurrency(record.totalDeductions)}
                                     </TableCell>
-                                    <TableCell className="text-right text-sm font-medium text-teal-700">
+                                    <TableCell className="text-right text-sm font-medium text-inner-blue">
                                       {formatCurrency(record.netPay)}
                                     </TableCell>
                                     <TableCell className="text-center">
@@ -761,7 +761,7 @@ function PayrollDetailView({
             <Button
               variant="outline"
               size="sm"
-              className="gap-1.5 text-emerald-700 border-emerald-300 hover:bg-emerald-50"
+              className="gap-1.5 text-msbm-red border-msbm-red/30 hover:bg-msbm-red/5"
               onClick={() => exportPayrollToCSV([period])}
             >
               <Download className="h-3.5 w-3.5" />
@@ -772,10 +772,10 @@ function PayrollDetailView({
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Totals bar */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 p-4 bg-emerald-50/60 border border-emerald-100 rounded-lg">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 p-4 bg-msbm-red/5 border border-msbm-red/10 rounded-lg">
           <div>
             <p className="text-xs text-muted-foreground font-medium">Employees</p>
-            <p className="font-bold text-emerald-700">{records.length}</p>
+            <p className="font-bold text-msbm-red">{records.length}</p>
           </div>
           <div>
             <p className="text-xs text-muted-foreground font-medium">Reg Hours</p>
@@ -789,13 +789,13 @@ function PayrollDetailView({
           </div>
           <div>
             <p className="text-xs text-muted-foreground font-medium">Gross Pay</p>
-            <p className="font-bold text-emerald-700 tabular-nums">
+            <p className="font-bold text-msbm-red tabular-nums">
               {formatCurrency(totalGross)}
             </p>
           </div>
           <div>
             <p className="text-xs text-muted-foreground font-medium">Net Pay</p>
-            <p className="font-bold text-teal-700 tabular-nums">
+            <p className="font-bold text-inner-blue tabular-nums">
               {formatCurrency(totalNet)}
             </p>
           </div>
@@ -849,13 +849,13 @@ function PayrollDetailView({
                       <TableCell className="text-right tabular-nums text-amber-600">
                         {record.overtimeHours.toFixed(1)}
                       </TableCell>
-                      <TableCell className="text-right font-medium tabular-nums text-emerald-700">
+                      <TableCell className="text-right font-medium tabular-nums text-msbm-red">
                         {formatCurrency(record.grossPay)}
                       </TableCell>
                       <TableCell className="text-right tabular-nums text-orange-600">
                         {formatCurrency(record.totalDeductions)}
                       </TableCell>
-                      <TableCell className="text-right font-medium tabular-nums text-teal-700">
+                      <TableCell className="text-right font-medium tabular-nums text-inner-blue">
                         {formatCurrency(record.netPay)}
                       </TableCell>
                       <TableCell className="text-center">
@@ -866,7 +866,7 @@ function PayrollDetailView({
                           <Button
                             size="sm"
                             variant="outline"
-                            className="h-7 text-xs border-emerald-300 text-emerald-700 hover:bg-emerald-50"
+                            className="h-7 text-xs text-msbm-red-bright text-msbm-red hover:bg-msbm-red/5"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleApprove(record.id);
@@ -892,7 +892,7 @@ function PayrollDetailView({
                           <div className="ml-8">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                               <div className="bg-white border rounded-lg p-4">
-                                <p className="text-xs font-semibold text-emerald-700 uppercase tracking-wide mb-2">
+                                <p className="text-xs font-semibold text-msbm-red uppercase tracking-wide mb-2">
                                   Earnings
                                 </p>
                                 <div className="space-y-1.5">
@@ -924,7 +924,7 @@ function PayrollDetailView({
                                   <Separator />
                                   <div className="flex justify-between text-sm font-semibold">
                                     <span>Gross Pay</span>
-                                    <span className="text-emerald-700 tabular-nums">
+                                    <span className="text-msbm-red tabular-nums">
                                       {formatCurrency(record.grossPay)}
                                     </span>
                                   </div>
@@ -933,11 +933,11 @@ function PayrollDetailView({
                               <DeductionBreakdown record={record} />
                             </div>
                             <Separator className="my-3" />
-                            <div className="flex justify-between items-center p-3 bg-teal-50 rounded-lg">
-                              <span className="font-semibold text-teal-800">
+                            <div className="flex justify-between items-center p-3 bg-inner-blue/10 rounded-lg">
+                              <span className="font-semibold text-inner-blue">
                                 Net Pay
                               </span>
-                              <span className="text-xl font-bold text-teal-700 tabular-nums">
+                              <span className="text-xl font-bold text-inner-blue tabular-nums">
                                 {formatCurrency(record.netPay)}
                               </span>
                             </div>
@@ -1069,13 +1069,13 @@ function PayrollAnalyticsChart({ periods }: { periods: PayrollPeriod[] }) {
                 <Bar
                   dataKey="gross"
                   name="Gross Pay"
-                  fill="#10b981"
+                  fill="#ac1928"
                   radius={[4, 4, 0, 0]}
                 />
                 <Bar
                   dataKey="net"
                   name="Net Pay"
-                  fill="#14b8a6"
+                  fill="#2341a4"
                   radius={[4, 4, 0, 0]}
                 />
               </BarChart>
@@ -1176,18 +1176,18 @@ function EmployeePayStubView() {
 
         return (
           <Card key={period.id} className="overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-emerald-50 to-teal-50 border-b">
+            <CardHeader className="bg-gradient-to-r from-msbm-red to-inner-blue border-b">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div>
                   <CardTitle className="text-base">{period.name}</CardTitle>
-                  <CardDescription>
+                  <CardDescription className="text-white/80">
                     {period.startDate
                       ? `${format(parseISO(period.startDate), "MMM d, yyyy")} — ${format(parseISO(period.endDate), "MMM d, yyyy")}`
                       : "No dates"}
                   </CardDescription>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Receipt className="size-4 text-emerald-600" />
+                  <Receipt className="size-4 text-white" />
                   {getStatusBadge(record.status)}
                 </div>
               </div>
@@ -1195,10 +1195,10 @@ function EmployeePayStubView() {
             <CardContent className="p-6 space-y-4">
               {/* Earnings Section */}
               <div>
-                <p className="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-2">
+                <p className="text-xs font-bold text-msbm-red uppercase tracking-wider mb-2">
                   Earnings
                 </p>
-                <div className="bg-emerald-50/40 rounded-lg p-3 space-y-1.5">
+                <div className="bg-msbm-red/5/40 rounded-lg p-3 space-y-1.5">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">
                       Regular ({record.regularHours.toFixed(1)} hrs)
@@ -1223,7 +1223,7 @@ function EmployeePayStubView() {
                   <Separator />
                   <div className="flex justify-between text-sm font-bold">
                     <span>Gross Pay</span>
-                    <span className="text-emerald-700 tabular-nums">
+                    <span className="text-msbm-red tabular-nums">
                       {formatCurrency(record.grossPay)}
                     </span>
                   </div>
@@ -1305,10 +1305,10 @@ function EmployeePayStubView() {
               )}
 
               {/* Net Pay */}
-              <div className="bg-gradient-to-r from-teal-600 to-emerald-600 rounded-lg p-4 text-white">
+              <div className="bg-gradient-to-r from-inner-blue to-msbm-red rounded-lg p-4 text-white">
                 <div className="flex justify-between items-center">
                   <div>
-                    <p className="text-teal-100 text-sm font-medium">Net Pay</p>
+                    <p className="text-inner-blue-light/80 text-sm font-medium">Net Pay</p>
                     <p className="text-2xl font-bold tabular-nums">
                       {formatCurrency(record.netPay)}
                     </p>
@@ -1442,8 +1442,8 @@ export function PayrollView() {
       {/* Page Header */}
       <div>
         <div className="flex items-center gap-3 mb-1">
-          <div className="bg-emerald-100 p-2 rounded-lg">
-            <FileText className="size-6 text-emerald-700" />
+          <div className="bg-msbm-red/10 p-2 rounded-lg">
+            <FileText className="size-6 text-msbm-red" />
           </div>
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Payroll</h1>
@@ -1459,7 +1459,7 @@ export function PayrollView() {
 
       {/* Main Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="bg-emerald-50/80 p-1">
+        <TabsList className="bg-msbm-red/5/80 p-1">
           <TabsTrigger value="payroll" className="data-[state=active]:bg-white data-[state=active]:shadow-sm">
             <Users className="size-4 mr-1.5" />
             Payroll Management

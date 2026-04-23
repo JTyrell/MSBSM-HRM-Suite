@@ -69,12 +69,21 @@ import { format, subMonths, startOfMonth, differenceInMonths } from "date-fns";
 
 // ─── Color Palette ─────────────────────────────────────────────────
 const COLORS = [
-  "#10b981",
-  "#14b8a6",
-  "#f59e0b",
-  "#ef4444",
-  "#8b5cf6",
-  "#ec4899",
+  "#ac1928", // msbm-red
+  "#2341a4", // inner-blue
+  "#f59e0b", // amber-500
+  "#d11226", // msbm-red-bright
+  "#8b5cf6", // violet-500
+  "#697ec1", // light-blue
+];
+
+const COLOR_CLASSES = [
+  "bg-msbm-red",
+  "bg-inner-blue",
+  "bg-amber-500",
+  "bg-msbm-red-bright",
+  "bg-violet-500",
+  "bg-light-blue",
 ];
 
 // ─── Reusable tooltip style ────────────────────────────────────────
@@ -473,11 +482,11 @@ export function ReportsView() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-teal-200/60 dark:border-teal-800/40 hover:shadow-md transition-shadow">
+            <Card className="border-inner-blue/20 dark:border-inner-blue/20 hover:shadow-md transition-shadow">
               <CardContent className="pt-0">
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-teal-50 dark:bg-teal-950/40">
-                    <UserCheck className="h-6 w-6 text-teal-600 dark:text-teal-400" />
+                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-inner-blue/5 dark:bg-inner-blue/10">
+                    <UserCheck className="h-6 w-6 text-inner-blue dark:text-light-blue" />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Attendance Rate</p>
@@ -564,11 +573,11 @@ export function ReportsView() {
                 </div>
                 <div className="flex items-center gap-6 mt-3 text-xs text-muted-foreground">
                   <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: COLORS[0] }} />
+                    <span className="h-2.5 w-2.5 rounded-full bg-msbm-red" />
                     Attendance Rate
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: COLORS[1] }} />
+                    <span className="h-2.5 w-2.5 rounded-full bg-inner-blue" />
                     Avg Hours
                   </div>
                 </div>
@@ -727,11 +736,11 @@ export function ReportsView() {
                 </div>
               </CardContent>
             </Card>
-            <Card className="border-teal-200/60 dark:border-teal-800/40 hover:shadow-md transition-shadow">
+            <Card className="border-inner-blue/20 dark:border-inner-blue/20 hover:shadow-md transition-shadow">
               <CardContent className="pt-0">
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-teal-50 dark:bg-teal-950/40">
-                    <FileDown className="h-6 w-6 text-teal-600 dark:text-teal-400" />
+                  <div className="flex items-center justify-center h-12 w-12 rounded-xl bg-inner-blue/5 dark:bg-inner-blue/10">
+                    <FileDown className="h-6 w-6 text-inner-blue dark:text-light-blue" />
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Total Net Pay</p>
@@ -789,11 +798,11 @@ export function ReportsView() {
                 </div>
                 <div className="flex items-center gap-6 mt-3 text-xs text-muted-foreground">
                   <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: COLORS[0] }} />
+                    <span className="h-2.5 w-2.5 rounded-full bg-msbm-red" />
                     Gross Pay
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: COLORS[1] }} />
+                    <span className="h-2.5 w-2.5 rounded-full bg-inner-blue" />
                     Net Pay
                   </div>
                 </div>
@@ -930,7 +939,7 @@ export function ReportsView() {
                 <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5">
                   {headcountPieData.slice(0, 6).map((dept, idx) => (
                     <div key={dept.name} className="flex items-center gap-2 text-xs">
-                      <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
+                      <span className={`h-2.5 w-2.5 rounded-full shrink-0 ${COLOR_CLASSES[idx % COLOR_CLASSES.length]}`} />
                       <span className="text-muted-foreground truncate">{dept.name}</span>
                       <span className="font-medium ml-auto">{dept.value}</span>
                     </div>
@@ -973,7 +982,7 @@ export function ReportsView() {
                 <div className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5">
                   {rolePieData.slice(0, 6).map((role, idx) => (
                     <div key={role.name} className="flex items-center gap-2 text-xs">
-                      <span className="h-2.5 w-2.5 rounded-full shrink-0" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
+                      <span className={`h-2.5 w-2.5 rounded-full shrink-0 ${COLOR_CLASSES[idx % COLOR_CLASSES.length]}`} />
                       <span className="text-muted-foreground truncate">{role.name}</span>
                       <span className="font-medium ml-auto">{role.value}</span>
                     </div>
@@ -1143,11 +1152,11 @@ export function ReportsView() {
                 </div>
                 <div className="flex items-center gap-6 mt-3 text-xs text-muted-foreground">
                   <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: COLORS[0] }} />
+                    <span className="h-2.5 w-2.5 rounded-full bg-msbm-red" />
                     Days Used
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: COLORS[2] }} />
+                    <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
                     Employees
                   </div>
                 </div>
@@ -1201,7 +1210,7 @@ export function ReportsView() {
                   <CardTitle className="text-base font-semibold">PTO Balance Summary</CardTitle>
                   <CardDescription>Remaining and used PTO across employees</CardDescription>
                 </div>
-                <Badge variant="secondary" className="bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300">
+                <Badge variant="secondary" className="bg-inner-blue/10 text-inner-blue dark:bg-inner-blue/20 dark:text-light-blue">
                   {ptoBalanceSummary.length} employees
                 </Badge>
               </div>
@@ -1236,11 +1245,7 @@ export function ReportsView() {
                             <div className="flex items-center gap-2">
                               <div className="h-2 w-20 rounded-full bg-muted overflow-hidden">
                                 <div
-                                  className="h-full rounded-full transition-all"
-                                  style={{
-                                    width: `${utilization}%`,
-                                    backgroundColor: utilization > 80 ? COLORS[3] : utilization > 50 ? COLORS[2] : COLORS[0],
-                                  }}
+                                  className={`h-full rounded-full transition-all ${utilization > 80 ? COLOR_CLASSES[3] : utilization > 50 ? COLOR_CLASSES[2] : COLOR_CLASSES[0]} w-[${utilization}%]`}
                                 />
                               </div>
                               <span className="text-xs text-muted-foreground w-8">{utilization}%</span>

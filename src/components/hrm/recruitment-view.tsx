@@ -60,6 +60,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
+import { Progress } from "@/components/ui/progress";
 import {
   BarChart,
   Bar,
@@ -104,14 +105,14 @@ interface PipelineCandidate {
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
   draft: { label: "Draft", color: "text-slate-600 dark:text-slate-400", bg: "bg-slate-100 dark:bg-slate-800" },
-  open: { label: "Open", color: "text-emerald-700 dark:text-emerald-400", bg: "bg-emerald-100 dark:bg-emerald-900/30" },
+  open: { label: "Open", color: "text-msbm-red dark:text-msbm-red-bright", bg: "bg-msbm-red/10 dark:bg-msbm-red/20" },
   closed: { label: "Closed", color: "text-red-600 dark:text-red-400", bg: "bg-red-100 dark:bg-red-900/30" },
-  filled: { label: "Filled", color: "text-teal-600 dark:text-teal-400", bg: "bg-teal-100 dark:bg-teal-900/30" },
+  filled: { label: "Filled", color: "text-inner-blue dark:text-light-blue", bg: "bg-inner-blue/10 dark:bg-inner-blue/20" },
   archived: { label: "Archived", color: "text-zinc-500 dark:text-zinc-400", bg: "bg-zinc-100 dark:bg-zinc-800" },
 };
 
 const TYPE_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-  "full-time": { label: "Full-Time", color: "text-teal-700 dark:text-teal-400", bg: "bg-teal-100 dark:bg-teal-900/30" },
+  "full-time": { label: "Full-Time", color: "text-inner-blue dark:text-light-blue", bg: "bg-inner-blue/10 dark:bg-inner-blue/20" },
   "part-time": { label: "Part-Time", color: "text-amber-700 dark:text-amber-400", bg: "bg-amber-100 dark:bg-amber-900/30" },
   contract: { label: "Contract", color: "text-orange-700 dark:text-orange-400", bg: "bg-orange-100 dark:bg-orange-900/30" },
   remote: { label: "Remote", color: "text-cyan-700 dark:text-cyan-400", bg: "bg-cyan-100 dark:bg-cyan-900/30" },
@@ -123,11 +124,11 @@ const PIPELINE_STAGES = [
   { id: "applied", label: "Applied", color: "from-slate-400 to-slate-500", dotColor: "bg-slate-400" },
   { id: "screening", label: "Screening", color: "from-amber-400 to-amber-500", dotColor: "bg-amber-400" },
   { id: "interview", label: "Interview", color: "from-teal-400 to-teal-500", dotColor: "bg-teal-400" },
-  { id: "offer", label: "Offer", color: "from-emerald-400 to-emerald-500", dotColor: "bg-emerald-400" },
+  { id: "offer", label: "Offer", color: "from-msbm-red to-msbm-red-bright", dotColor: "bg-msbm-red" },
 ] as const;
 
 const AVATAR_COLORS = [
-  "bg-emerald-500",
+  "bg-msbm-red",
   "bg-teal-500",
   "bg-amber-500",
   "bg-rose-500",
@@ -184,7 +185,7 @@ function StatCard({
             <Icon className="w-5 h-5 text-white" />
           </div>
           {trend && (
-            <div className={`flex items-center gap-1 text-xs font-medium ${trend === "up" ? "text-emerald-600 dark:text-emerald-400" : "text-red-500"}`}>
+            <div className={`flex items-center gap-1 text-xs font-medium ${trend === "up" ? "text-msbm-red dark:text-msbm-red-bright" : "text-red-500"}`}>
               {trend === "up" ? <ArrowUpRight className="w-3.5 h-3.5" /> : <ArrowDownRight className="w-3.5 h-3.5" />}
               {trendValue}
             </div>
@@ -515,7 +516,7 @@ export function RecruitmentView() {
               <CardContent className="p-5">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-semibold text-sm truncate group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    <h3 className="font-semibold text-sm truncate group-hover:text-msbm-red dark:group-hover:text-msbm-red-bright transition-colors">
                       {job.title}
                     </h3>
                     <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1.5">
@@ -563,8 +564,8 @@ export function RecruitmentView() {
                 <div className="flex items-center justify-between pt-3 border-t border-border/60">
                   {job.salaryMin && job.salaryMax ? (
                     <div className="flex items-center gap-1.5 text-xs font-medium">
-                      <DollarSign className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                      <span className="text-emerald-700 dark:text-emerald-400">
+                      <DollarSign className="w-3.5 h-3.5 text-msbm-red dark:text-msbm-red-bright" />
+                      <span className="text-msbm-red dark:text-msbm-red-bright">
                         {formatSalary(job.salaryMin)} - {formatSalary(job.salaryMax)}
                       </span>
                     </div>
@@ -654,11 +655,8 @@ export function RecruitmentView() {
                     <span className="text-xs text-muted-foreground">{stage.label}</span>
                     <span className="text-xs font-semibold">{pct}%</span>
                   </div>
-                  <div className="h-2 bg-muted rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full bg-gradient-to-r ${stage.color} transition-all duration-700`}
-                      style={{ width: `${pct}%` }}
-                    />
+                  <div className="h-2">
+                    <Progress value={pct} className="h-2" />
                   </div>
                 </div>
               );
@@ -678,8 +676,8 @@ export function RecruitmentView() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
-                <Briefcase className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <div className="w-8 h-8 rounded-lg bg-msbm-red/10 dark:bg-msbm-red/20 flex items-center justify-center">
+                <Briefcase className="w-4 h-4 text-msbm-red dark:text-msbm-red-bright" />
               </div>
             </div>
             <p className="text-2xl font-bold">{jobs.length}</p>
@@ -689,8 +687,8 @@ export function RecruitmentView() {
         <Card>
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-lg bg-teal-100 dark:bg-teal-900/30 flex items-center justify-center">
-                <TrendingUp className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+              <div className="w-8 h-8 rounded-lg bg-inner-blue/10 dark:bg-inner-blue/20 flex items-center justify-center">
+                <TrendingUp className="w-4 h-4 text-inner-blue dark:text-light-blue" />
               </div>
             </div>
             <p className="text-2xl font-bold">{totalApplicants}</p>
@@ -727,7 +725,7 @@ export function RecruitmentView() {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
-              <Users className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <Users className="w-4 h-4 text-msbm-red dark:text-msbm-red-bright" />
               Applicants by Department
             </CardTitle>
           </CardHeader>
@@ -775,7 +773,7 @@ export function RecruitmentView() {
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-semibold flex items-center gap-2">
-              <GitBranch className="w-4 h-4 text-teal-600 dark:text-teal-400" />
+              <GitBranch className="w-4 h-4 text-inner-blue dark:text-light-blue" />
               Status Breakdown
             </CardTitle>
           </CardHeader>
@@ -789,7 +787,7 @@ export function RecruitmentView() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <span className={`w-2.5 h-2.5 rounded-full ${
-                          status === "open" ? "bg-emerald-500" :
+                          status === "open" ? "bg-msbm-red" :
                           status === "closed" ? "bg-red-500" :
                           status === "draft" ? "bg-slate-400" :
                           status === "filled" ? "bg-teal-500" :
@@ -799,17 +797,8 @@ export function RecruitmentView() {
                       </div>
                       <span className="text-xs text-muted-foreground">{count} ({pct}%)</span>
                     </div>
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div
-                        className={`h-full rounded-full transition-all duration-700 ${
-                          status === "open" ? "bg-emerald-500" :
-                          status === "closed" ? "bg-red-500" :
-                          status === "draft" ? "bg-slate-400" :
-                          status === "filled" ? "bg-teal-500" :
-                          "bg-zinc-400"
-                        }`}
-                        style={{ width: `${pct}%` }}
-                      />
+                    <div className="h-2">
+                      <Progress value={pct} className="h-2" />
                     </div>
                   </div>
                 );
@@ -1053,12 +1042,12 @@ export function RecruitmentView() {
               <div className="flex items-center gap-2 flex-wrap">
                 <TypeBadge type={selectedJob.type} />
                 {selectedJob.salaryMin && selectedJob.salaryMax && (
-                  <Badge variant="secondary" className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-0">
+                  <Badge variant="secondary" className="bg-msbm-red/10 dark:bg-msbm-red/20 text-msbm-red dark:text-msbm-red-bright border-0">
                     <DollarSign className="w-3 h-3 mr-1" />
                     {formatSalary(selectedJob.salaryMin)} - {formatSalary(selectedJob.salaryMax)}
                   </Badge>
                 )}
-                <Badge variant="secondary" className="bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-400 border-0">
+                <Badge variant="secondary" className="bg-inner-blue/10 dark:bg-inner-blue/20 text-inner-blue dark:text-light-blue border-0">
                   <Users className="w-3 h-3 mr-1" />
                   {selectedJob.applicantCount} applicants
                 </Badge>

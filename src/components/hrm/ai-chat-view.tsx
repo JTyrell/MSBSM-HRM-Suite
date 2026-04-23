@@ -48,7 +48,7 @@ const AI_AGENTS: AIAgent[] = [
     name: "HR Assistant",
     emoji: "\uD83D\uDCBC",
     description: "General questions, policy help, onboarding guidance",
-    gradient: "from-emerald-500 to-teal-600",
+    gradient: "from-msbm-red to-teal-600",
     icon: Bot,
     tagLine: "Ask HR",
   },
@@ -133,9 +133,9 @@ function TypingIndicator({ agent, isAI }: { agent: AIAgent; isAI: boolean }) {
       <div className="space-y-1">
         <div className="rounded-2xl rounded-tl-sm bg-muted px-4 py-3 shadow-sm">
           <div className="flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:0ms]" />
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:150ms]" />
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-bounce [animation-delay:300ms]" />
+            <span className="h-2 w-2 rounded-full bg-msbm-red/50 animate-bounce [animation-delay:0ms]" />
+            <span className="h-2 w-2 rounded-full bg-msbm-red/50 animate-bounce [animation-delay:150ms]" />
+            <span className="h-2 w-2 rounded-full bg-msbm-red/50 animate-bounce [animation-delay:300ms]" />
           </div>
         </div>
         {isAI && (
@@ -220,7 +220,7 @@ function MessageBubble({
           {isUser ? (
             <p className="whitespace-pre-wrap">{message.content}</p>
           ) : (
-            <div className="prose prose-sm max-w-none prose-p:my-1 prose-li:my-0.5 prose-strong:text-emerald-700 dark:prose-strong:text-emerald-400 prose-ul:my-1 prose-ol:my-1 prose-headings:text-emerald-700 dark:prose-headings:text-emerald-400 [&_li]:marker:text-emerald-500 [&_table]:text-xs [&_th]:px-2 [&_th]:py-1 [&_td]:px-2 [&_td]:py-1 [&_blockquote]:border-l-emerald-500">
+            <div className="prose prose-sm max-w-none prose-p:my-1 prose-li:my-0.5 prose-strong:text-msbm-red dark:prose-strong:text-msbm-red-bright prose-ul:my-1 prose-ol:my-1 prose-headings:text-msbm-red dark:prose-headings:text-msbm-red-bright [&_li]:marker:text-emerald-500 [&_table]:text-xs [&_th]:px-2 [&_th]:py-1 [&_td]:px-2 [&_td]:py-1 [&_blockquote]:border-l-emerald-500">
               <ReactMarkdown>{message.content}</ReactMarkdown>
             </div>
           )}
@@ -245,7 +245,7 @@ function AgentSelectorMobile({
     <div className="lg:hidden mb-4">
       <Button
         variant="outline"
-        className="w-full justify-between border-emerald-200 dark:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/30"
+        className="w-full justify-between border-msbm-red/20 dark:border-msbm-red/20 hover:bg-msbm-red/5 dark:hover:bg-emerald-950/30"
         onClick={() => setOpen(!open)}
       >
         <span className="flex items-center gap-2">
@@ -277,8 +277,8 @@ function AgentSelectorMobile({
                   }}
                   className={`shrink-0 flex items-center gap-2 px-3 py-2 rounded-xl border text-sm transition-all duration-200 ${
                     activeAgent.id === agent.id
-                      ? "border-emerald-300 dark:border-emerald-700 bg-emerald-50 dark:bg-emerald-950/30 shadow-sm"
-                      : "border-border hover:border-emerald-200 dark:hover:border-emerald-800 hover:bg-accent/50"
+                      ? "border-emerald-300 dark:border-emerald-700 bg-msbm-red/5 dark:bg-emerald-950/30 shadow-sm"
+                      : "border-border hover:border-msbm-red/20 dark:hover:border-msbm-red/20 hover:bg-accent/50"
                   }`}
                 >
                   <span className="text-lg">{agent.emoji}</span>
@@ -330,7 +330,7 @@ function AgentSelectorSidebar({
               className={`cursor-pointer transition-all duration-300 overflow-hidden group ${
                 isActive
                   ? "border-emerald-300 dark:border-emerald-700 shadow-md shadow-emerald-500/10"
-                  : "hover:border-emerald-200 dark:hover:border-emerald-800 hover:shadow-sm"
+                  : "hover:border-msbm-red/20 dark:hover:border-msbm-red/20 hover:shadow-sm"
               }`}
               onClick={() => onSelect(agent)}
             >
@@ -355,7 +355,7 @@ function AgentSelectorSidebar({
                         <motion.div
                           initial={{ scale: 0 }}
                           animate={{ scale: 1 }}
-                          className="w-2 h-2 rounded-full bg-emerald-500"
+                          className="w-2 h-2 rounded-full bg-msbm-red/50"
                         />
                       )}
                     </div>
@@ -378,7 +378,7 @@ function AgentSelectorSidebar({
                   className={`w-full mt-3 text-xs h-8 transition-all duration-200 ${
                     isActive
                       ? "bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-sm"
-                      : "group-hover:border-emerald-300 group-hover:text-emerald-700 dark:group-hover:border-emerald-700 dark:group-hover:text-emerald-400"
+                      : "group-hover:border-emerald-300 group-hover:text-msbm-red dark:group-hover:border-emerald-700 dark:group-hover:text-msbm-red-bright"
                   }`}
                 >
                   <AgentIcon className="h-3.5 w-3.5 mr-1.5" />
@@ -662,7 +662,7 @@ export function AIChatView() {
       {/* Page header */}
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+          <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-msbm-red to-rose-600 flex items-center justify-center shadow-lg shadow-red-500/20">
             <MessageSquare className="h-5 w-5 text-white" />
           </div>
           <div>
@@ -703,9 +703,9 @@ export function AIChatView() {
                 <h3 className="font-semibold text-sm truncate">{activeAgent.name}</h3>
                 <Badge
                   variant="secondary"
-                  className="text-[10px] px-1.5 py-0 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400"
+                  className="text-[10px] px-1.5 py-0 bg-msbm-red/10 text-msbm-red dark:bg-emerald-900/40 dark:text-msbm-red-bright"
                 >
-                  <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full bg-msbm-red/50 animate-pulse" />
                   Online
                 </Badge>
                 {isAIPowered && (
@@ -726,7 +726,7 @@ export function AIChatView() {
             <Button
               size="sm"
               variant="ghost"
-              className="text-xs text-muted-foreground hover:text-emerald-600"
+              className="text-xs text-muted-foreground hover:text-msbm-red"
               onClick={() => {
                 setSessionId("");
                 setShowSuggestions(true);
@@ -783,7 +783,7 @@ export function AIChatView() {
                             key={s.label}
                             variant="outline"
                             size="sm"
-                            className="text-xs border-emerald-200 dark:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 hover:text-emerald-700 dark:hover:text-emerald-400 hover:border-emerald-300 dark:hover:border-emerald-700"
+                            className="text-xs border-msbm-red/20 dark:border-msbm-red/20 hover:bg-msbm-red/5 dark:hover:bg-emerald-950/30 hover:text-msbm-red dark:hover:text-msbm-red-bright hover:border-emerald-300 dark:hover:border-emerald-700"
                             onClick={() => handleSuggestionClick(s)}
                           >
                             <Icon className="h-3 w-3 mr-1.5" />
@@ -839,7 +839,7 @@ export function AIChatView() {
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={() => handleSuggestionClick(suggestion)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border bg-background hover:bg-emerald-50 dark:hover:bg-emerald-950/30 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors text-xs text-muted-foreground hover:text-emerald-700 dark:hover:text-emerald-400"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border bg-background hover:bg-msbm-red/5 dark:hover:bg-emerald-950/30 hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors text-xs text-muted-foreground hover:text-msbm-red dark:hover:text-msbm-red-bright"
                       >
                         <Icon className="h-3 w-3" />
                         {suggestion.label}
@@ -872,7 +872,7 @@ export function AIChatView() {
                       : `Message ${activeAgent.name}...`
                   }
                   disabled={isTyping}
-                  className="pr-4 rounded-xl border-emerald-200 dark:border-emerald-800 focus-visible:ring-emerald-400 dark:focus-visible:ring-emerald-600 h-11 bg-muted/30 focus-ring-emerald"
+                  className="pr-4 rounded-xl border-msbm-red/20 dark:border-msbm-red/20 focus-visible:ring-emerald-400 dark:focus-visible:ring-emerald-600 h-11 bg-muted/30 focus-ring-emerald"
                 />
               </div>
               <Button

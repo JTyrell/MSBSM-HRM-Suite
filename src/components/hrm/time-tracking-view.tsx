@@ -63,12 +63,12 @@ interface LaborDept {
 // ============ LABOR COST DATA (computed from API in future) ============
 
 const LABOR_DEPTS: LaborDept[] = [
-  { name: 'CEI/ICT', budget: 24000, actual: 0, overtime: 0, color: 'bg-emerald-500' },
+  { name: 'CEI/ICT', budget: 24000, actual: 0, overtime: 0, color: 'bg-msbm-red' },
   { name: 'Admin/Directors', budget: 18000, actual: 0, overtime: 0, color: 'bg-violet-500' },
   { name: 'Maintenance', budget: 16000, actual: 0, overtime: 0, color: 'bg-amber-500' },
   { name: 'Graduate Prog.', budget: 32000, actual: 0, overtime: 0, color: 'bg-rose-500' },
   { name: 'HR', budget: 12000, actual: 0, overtime: 0, color: 'bg-blue-500' },
-  { name: 'Accounting', budget: 14000, actual: 0, overtime: 0, color: 'bg-teal-500' },
+  { name: 'Accounting', budget: 14000, actual: 0, overtime: 0, color: 'bg-inner-blue' },
 ];
 
 // ============ MAIN COMPONENT ============
@@ -209,7 +209,7 @@ export function TimeTrackingView() {
   const totalActual = LABOR_DEPTS.reduce((s, d) => s + d.actual, 0);
 
   const statCards = [
-    { label: 'Hours This Week', value: `${stats.weekHours}h`, icon: Clock, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+    { label: 'Hours This Week', value: `${stats.weekHours}h`, icon: Clock, color: 'text-msbm-red-bright', bg: 'bg-msbm-red/10' },
     { label: 'Overtime Hours', value: `${stats.otHours}h`, icon: TrendingUp, color: 'text-amber-400', bg: 'bg-amber-500/10' },
     { label: 'Avg Daily Hours', value: `${stats.avgDaily}h`, icon: Timer, color: 'text-blue-400', bg: 'bg-blue-500/10' },
     { label: 'Compliance Rate', value: `${stats.complianceRate}%`, icon: Shield, color: 'text-violet-400', bg: 'bg-violet-500/10' },
@@ -220,7 +220,7 @@ export function TimeTrackingView() {
       {/* Header */}
       <div>
         <h2 className="text-2xl font-bold flex items-center gap-2">
-          <Clock className="h-7 w-7 text-emerald-400" />
+          <Clock className="h-7 w-7 text-msbm-red-bright" />
           Time Tracking
         </h2>
         <p className="text-muted-foreground mt-1">Clock in/out, manage timesheets, and track labor costs</p>
@@ -269,9 +269,9 @@ export function TimeTrackingView() {
                 </p>
 
                 {isClockedIn && (
-                  <div className="mt-4 p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/30 w-full">
-                    <p className="text-xs text-emerald-400 font-medium">Session Duration</p>
-                    <p className="text-2xl font-mono font-bold text-emerald-400 mt-1">
+                  <div className="mt-4 p-3 bg-msbm-red/10 rounded-lg border border-msbm-red/30 w-full">
+                    <p className="text-xs text-msbm-red-bright font-medium">Session Duration</p>
+                    <p className="text-2xl font-mono font-bold text-msbm-red-bright mt-1">
                       {formatSessionTime(sessionSeconds)}
                     </p>
                   </div>
@@ -279,7 +279,7 @@ export function TimeTrackingView() {
 
                 <Button
                   size="lg"
-                  className={`mt-6 w-full ${isClockedIn ? 'bg-red-600 hover:bg-red-700' : 'bg-emerald-600 hover:bg-emerald-700'}`}
+                  className={`mt-6 w-full ${isClockedIn ? 'bg-red-600 hover:bg-red-700' : 'bg-msbm-red hover:bg-msbm-red/80'}`}
                   onClick={isClockedIn ? handleClockOut : handleClockIn}
                 >
                   {isClockedIn ? <><Square className="h-5 w-5 mr-2" /> Clock Out</> : <><Play className="h-5 w-5 mr-2" /> Clock In</>}
@@ -291,13 +291,13 @@ export function TimeTrackingView() {
             <Card>
               <CardHeader>
                 <CardTitle className="text-base flex items-center gap-2">
-                  <MapPin className="h-5 w-5 text-emerald-400" />
+                  <MapPin className="h-5 w-5 text-msbm-red-bright" />
                   Geofence Status
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center gap-3 p-3 bg-emerald-500/10 rounded-lg border border-emerald-500/30">
-                  <div className="w-3 h-3 rounded-full bg-emerald-500 animate-pulse" />
+                <div className="flex items-center gap-3 p-3 bg-msbm-red/10 rounded-lg border border-msbm-red/30">
+                  <div className="w-3 h-3 rounded-full bg-msbm-red animate-pulse" />
                   <div>
                     <p className="text-sm font-medium">UWI Mona Campus</p>
                     <p className="text-xs text-muted-foreground">Kingston 7, Jamaica</p>
@@ -306,7 +306,7 @@ export function TimeTrackingView() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Status</span>
-                    <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">Within Geofence</Badge>
+                    <Badge className="bg-msbm-red/20 text-msbm-red-bright border-msbm-red/30">Within Geofence</Badge>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Latitude</span>
@@ -322,7 +322,7 @@ export function TimeTrackingView() {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Accuracy</span>
-                    <span className="text-emerald-400">±8m</span>
+                    <span className="text-msbm-red-bright">±8m</span>
                   </div>
                 </div>
               </CardContent>
@@ -336,7 +336,7 @@ export function TimeTrackingView() {
             <CardHeader className="pb-2">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base">Weekly Timesheet — Jan 13–19, 2025</CardTitle>
-                <Button className="bg-emerald-600 hover:bg-emerald-700 text-sm" onClick={() => setShowConfirmDialog(true)}>
+                <Button className="bg-msbm-red hover:bg-msbm-red/80 text-sm" onClick={() => setShowConfirmDialog(true)}>
                   <FileText className="h-4 w-4 mr-2" /> Submit Timesheet
                 </Button>
               </div>
@@ -365,10 +365,10 @@ export function TimeTrackingView() {
                       <TableCell className="font-mono text-sm">{entry.clockOut}</TableCell>
                       <TableCell className="font-semibold">{entry.hours > 0 ? `${entry.hours}h` : '—'}</TableCell>
                       <TableCell>
-                        {entry.status === 'complete' && <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">Complete</Badge>}
+                        {entry.status === 'complete' && <Badge className="bg-msbm-red/20 text-msbm-red-bright border-msbm-red/30">Complete</Badge>}
                         {entry.status === 'incomplete' && <Badge className="bg-muted text-muted-foreground border-border">Incomplete</Badge>}
                         {entry.status === 'submitted' && <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">Submitted</Badge>}
-                        {entry.status === 'approved' && <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30">Approved</Badge>}
+                        {entry.status === 'approved' && <Badge className="bg-msbm-red/20 text-msbm-red-bright border-msbm-red/30">Approved</Badge>}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -402,7 +402,7 @@ export function TimeTrackingView() {
                         <span className="font-medium text-sm">{pt.employeeName}</span>
                         <Badge variant="outline" className="text-xs">{pt.department}</Badge>
                         {currentStatus === 'pending' && <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 text-xs">Pending</Badge>}
-                        {currentStatus === 'approved' && <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30 text-xs">Approved</Badge>}
+                        {currentStatus === 'approved' && <Badge className="bg-msbm-red/20 text-msbm-red-bright border-msbm-red/30 text-xs">Approved</Badge>}
                         {currentStatus === 'rejected' && <Badge className="bg-red-500/20 text-red-400 border-red-500/30 text-xs">Rejected</Badge>}
                       </div>
                       <div className="flex gap-4 mt-1 text-xs text-muted-foreground">
@@ -414,7 +414,7 @@ export function TimeTrackingView() {
                     </div>
                     {currentStatus === 'pending' && (
                       <div className="flex gap-2">
-                        <Button size="sm" variant="outline" className="text-xs border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/10"
+                        <Button size="sm" variant="outline" className="text-xs border-msbm-red/30 text-msbm-red-bright hover:bg-msbm-red/10"
                           onClick={() => handlePendingAction(pt.id, 'approved')}>
                           <CheckCircle2 className="h-3 w-3 mr-1" /> Approve
                         </Button>
@@ -496,7 +496,7 @@ export function TimeTrackingView() {
                         <TableCell className="font-semibold text-sm">{entry.hours}h</TableCell>
                         <TableCell className="text-sm">{entry.overtime > 0 ? <span className="text-amber-400">{entry.overtime}h</span> : '—'}</TableCell>
                         <TableCell>
-                          {entry.status === 'approved' && <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30 text-xs">Approved</Badge>}
+                          {entry.status === 'approved' && <Badge className="bg-msbm-red/20 text-msbm-red-bright border-msbm-red/30 text-xs">Approved</Badge>}
                           {entry.status === 'pending' && <Badge className="bg-amber-500/20 text-amber-400 border-amber-500/30 text-xs">Pending</Badge>}
                           {entry.status === 'rejected' && <Badge className="bg-red-500/20 text-red-400 border-red-500/30 text-xs">Rejected</Badge>}
                         </TableCell>
@@ -532,7 +532,7 @@ export function TimeTrackingView() {
             <Card>
               <CardContent className="p-4 text-center">
                 <p className="text-xs text-muted-foreground">Total Actual</p>
-                <p className={`text-2xl font-bold ${totalActual > totalBudget ? 'text-red-400' : 'text-emerald-400'}`}>
+                <p className={`text-2xl font-bold ${totalActual > totalBudget ? 'text-red-400' : 'text-msbm-red-bright'}`}>
                   ${totalActual.toLocaleString()}
                 </p>
               </CardContent>
@@ -565,13 +565,13 @@ export function TimeTrackingView() {
                       </div>
                       <div className="flex gap-4 text-xs">
                         <span className="text-muted-foreground">Budget: ${dept.budget.toLocaleString()}</span>
-                        <span className={overBudget ? 'text-red-400 font-medium' : 'text-emerald-400 font-medium'}>Actual: ${dept.actual.toLocaleString()}</span>
+                        <span className={overBudget ? 'text-red-400 font-medium' : 'text-msbm-red-bright font-medium'}>Actual: ${dept.actual.toLocaleString()}</span>
                       </div>
                     </div>
                     <div className="h-4 bg-muted/30 rounded-full overflow-hidden relative">
-                      <div className={`h-full rounded-full transition-all ${dept.color}`} style={{ width: `${Math.min(pct, 100)}%` }} />
+                      <div className={`h-full rounded-full transition-all ${dept.color} w-[${Math.round(Math.min(pct, 100))}%]`} />
                       {overBudget && (
-                        <div className="absolute inset-0 h-full bg-red-500/20 rounded-full" style={{ width: `${pct}%` }} />
+                        <div className="absolute inset-0 h-full bg-red-500/20 rounded-full w-[${Math.round(Math.min(pct, 150))}%] max-w-full" />
                       )}
                     </div>
                     <div className="flex justify-between text-xs text-muted-foreground">
@@ -630,7 +630,7 @@ export function TimeTrackingView() {
             </div>
             <div className="flex gap-3 justify-end">
               <Button variant="outline" onClick={() => setShowConfirmDialog(false)}>Cancel</Button>
-              <Button className="bg-emerald-600 hover:bg-emerald-700" onClick={() => setShowConfirmDialog(false)}>
+              <Button className="bg-msbm-red hover:bg-msbm-red/80" onClick={() => setShowConfirmDialog(false)}>
                 Confirm Submit
               </Button>
             </div>

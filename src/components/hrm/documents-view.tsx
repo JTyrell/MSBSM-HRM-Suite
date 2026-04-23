@@ -205,9 +205,9 @@ const FILE_TYPE_CONFIG: Record<
     icon: File,
   },
   XLSX: {
-    color: "text-emerald-600 dark:text-emerald-400",
-    bgColor: "bg-emerald-50 dark:bg-emerald-950/40",
-    borderColor: "border-emerald-200/60 dark:border-emerald-800/40",
+    color: "text-msbm-red dark:text-msbm-red-bright",
+    bgColor: "bg-msbm-red/5 dark:bg-emerald-950/40",
+    borderColor: "border-msbm-red/20/60 dark:border-msbm-red/20/40",
     icon: File,
   },
 };
@@ -216,7 +216,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   "HR Policies": "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300",
   Templates: "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300",
   Training: "bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300",
-  Finance: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300",
+  Finance: "bg-msbm-red/10 text-msbm-red dark:bg-emerald-900/50 dark:text-emerald-300",
   Legal: "bg-rose-100 text-rose-700 dark:bg-rose-900/50 dark:text-rose-300",
 };
 
@@ -327,7 +327,7 @@ export function DocumentsView() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Badge variant="secondary" className="bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-300">
+          <Badge variant="secondary" className="bg-inner-blue/10 text-inner-blue dark:bg-inner-blue/20 dark:text-blue-300">
             {DOCUMENTS.length} documents
           </Badge>
           <Badge variant="outline" className="text-xs">
@@ -422,7 +422,7 @@ export function DocumentsView() {
                       </div>
                       {/* Info */}
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold truncate group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+                        <p className="text-sm font-semibold truncate group-hover:text-msbm-red dark:group-hover:text-msbm-red-bright transition-colors">
                           {doc.name}
                         </p>
                         <div className="flex items-center gap-2 mt-1.5 flex-wrap">
@@ -521,7 +521,7 @@ export function DocumentsView() {
                   className={`transition-all duration-300 hover:shadow-md cursor-pointer border ${
                     isExpanded
                       ? "border-emerald-300 dark:border-emerald-700 ring-1 ring-emerald-200 dark:ring-emerald-800"
-                      : "hover:border-emerald-200/60 dark:hover:border-emerald-800/40"
+                      : "hover:border-msbm-red/20/60 dark:hover:border-msbm-red/20/40"
                   }`}
                   onClick={() => setExpandedEmployee(isExpanded ? null : emp.id)}
                 >
@@ -540,7 +540,7 @@ export function DocumentsView() {
                       </div>
                       <Badge
                         variant="secondary"
-                        className="bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300 text-xs shrink-0"
+                        className="bg-msbm-red/10 text-msbm-red dark:bg-emerald-900/50 dark:text-emerald-300 text-xs shrink-0"
                       >
                         {emp.documents.length} files
                       </Badge>
@@ -603,7 +603,7 @@ export function DocumentsView() {
         <TabsContent value="upload" className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Upload Form */}
-            <Card className="border-emerald-200/60 dark:border-emerald-800/40">
+            <Card className="border-msbm-red/20/60 dark:border-msbm-red/20/40">
               <CardHeader>
                 <CardTitle className="text-base font-semibold">Upload New Document</CardTitle>
                 <CardDescription>
@@ -703,7 +703,7 @@ export function DocumentsView() {
                 {/* Submit */}
                 <Button
                   onClick={handleUpload}
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 text-white"
+                  className="w-full bg-msbm-red hover:bg-msbm-red/80 text-white"
                 >
                   <Upload className="h-4 w-4 mr-2" />
                   Upload Document
@@ -714,11 +714,11 @@ export function DocumentsView() {
             {/* Drag & Drop Zone + Recent Uploads */}
             <div className="space-y-6">
               {/* Drag & Drop Zone */}
-              <Card className="border-dashed-2 border-emerald-300 dark:border-emerald-700 bg-emerald-50/30 dark:bg-emerald-950/10">
+              <Card className="border-dashed-2 border-emerald-300 dark:border-emerald-700 bg-msbm-red/5/30 dark:bg-emerald-950/10">
                 <CardContent className="pt-0">
                   <div className="flex flex-col items-center justify-center py-10 text-center">
-                    <div className="h-16 w-16 rounded-2xl bg-emerald-100 dark:bg-emerald-900/40 flex items-center justify-center mb-4">
-                      <Upload className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+                    <div className="h-16 w-16 rounded-2xl bg-msbm-red/10 dark:bg-emerald-900/40 flex items-center justify-center mb-4">
+                      <Upload className="h-8 w-8 text-msbm-red dark:text-msbm-red-bright" />
                     </div>
                     <p className="text-sm font-semibold">Drag & Drop Files Here</p>
                     <p className="text-xs text-muted-foreground mt-1 max-w-[240px]">
@@ -898,7 +898,7 @@ export function DocumentsView() {
             </Button>
             <Button
               size="sm"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              className="bg-msbm-red hover:bg-msbm-red/80 text-white"
               onClick={() => {
                 toast({
                   title: "Download Started",

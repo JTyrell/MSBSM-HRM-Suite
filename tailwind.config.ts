@@ -1,12 +1,21 @@
 import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
 
-const config: Config = {
+const config: any = {
     darkMode: "class",
     content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  safelist: [
+    {
+      pattern: /^(w|h)-\[[0-9]+%\]$/,
+    },
+    {
+      pattern: /^translate-x-\[-?[0-9]+%\]$/,
+    },
+    {
+      pattern: /^bg-\[.*\]$/,
+    },
   ],
   theme: {
   	extend: {

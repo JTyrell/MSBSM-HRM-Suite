@@ -101,14 +101,14 @@ function getRoleBadgeClasses(role: string): string {
       return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200 dark:border-amber-800";
     case "employee":
     default:
-      return "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800";
+      return "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-msbm-red/20 dark:border-msbm-red/20";
   }
 }
 
 function getStatusBadgeClasses(status: string): string {
   switch (status) {
     case "active":
-      return "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800";
+      return "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright border-msbm-red/20 dark:border-msbm-red/20";
     case "inactive":
     case "terminated":
       return "bg-gray-100 text-gray-600 dark:bg-gray-800/30 dark:text-gray-400 border-gray-200 dark:border-gray-700";
@@ -141,7 +141,7 @@ function formatRoleLabel(role: string): string {
 
 function getStatusDotColor(status: string): string {
   switch (status) {
-    case "active": return "bg-emerald-500";
+    case "active": return "bg-msbm-red/50";
     case "on_leave": return "bg-amber-500";
     case "inactive":
     case "terminated":
@@ -150,10 +150,10 @@ function getStatusDotColor(status: string): string {
 }
 
 const AVATAR_GRADIENTS = [
-  "from-emerald-400 to-teal-500",
+  "from-emerald-400 to-inner-blue",
   "from-teal-400 to-cyan-500",
   "from-cyan-400 to-sky-500",
-  "from-emerald-500 to-green-600",
+  "from-msbm-red to-green-600",
   "from-teal-500 to-emerald-600",
   "from-cyan-500 to-teal-600",
   "from-green-400 to-emerald-500",
@@ -171,7 +171,7 @@ function getAvatarGradient(id: string): string {
 
 function StatCard({ label, value, color }: { label: string; value: string; color: string }) {
   const colorMap: Record<string, string> = {
-    emerald: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400",
+    emerald: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright",
     teal: "bg-teal-100 text-teal-700 dark:bg-teal-900/30 dark:text-teal-400",
     amber: "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
     red: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
@@ -193,7 +193,7 @@ function StatCard({ label, value, color }: { label: string; value: string; color
 function InfoItem({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/30">
-      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex-shrink-0">
+      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-msbm-red/10 dark:bg-msbm-red/20 text-msbm-red dark:text-msbm-red-bright flex-shrink-0">
         {icon}
       </div>
       <div className="min-w-0">
@@ -212,11 +212,11 @@ function ActivityTimeline({ employee }: { employee: Employee }) {
     : "Date unknown";
 
   const activities = [
-    { icon: <MapPin className="h-3.5 w-3.5" />, title: "Clock in at Geofence HQ", time: "2 hours ago", color: "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400" },
+    { icon: <MapPin className="h-3.5 w-3.5" />, title: "Clock in at Geofence HQ", time: "2 hours ago", color: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright" },
     { icon: <CheckCircle2 className="h-3.5 w-3.5" />, title: "PTO request approved", time: "Yesterday", color: "bg-teal-100 text-teal-600 dark:bg-teal-900/30 dark:text-teal-400" },
     { icon: <DollarSign className="h-3.5 w-3.5" />, title: "Payroll processed", time: "5 days ago", color: "bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400" },
     { icon: <UserCheck className="h-3.5 w-3.5" />, title: "Profile updated", time: "2 weeks ago", color: "bg-violet-100 text-violet-600 dark:bg-violet-900/30 dark:text-violet-400" },
-    { icon: <Users className="h-3.5 w-3.5" />, title: "Joined the company", time: hireDateStr, color: "bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400" },
+    { icon: <Users className="h-3.5 w-3.5" />, title: "Joined the company", time: hireDateStr, color: "bg-msbm-red/10 text-msbm-red dark:bg-msbm-red/20 dark:text-msbm-red-bright" },
   ];
 
   return (
@@ -250,10 +250,10 @@ function DirectoryCard({
 
   return (
     <div
-      className="group relative flex flex-col rounded-xl border border-border/60 bg-white dark:bg-gray-950 overflow-hidden cursor-pointer transition-all hover:shadow-lg hover:-translate-y-0.5 hover:border-emerald-200 dark:hover:border-emerald-800"
+      className="group relative flex flex-col rounded-xl border border-border/60 bg-white dark:bg-gray-950 overflow-hidden cursor-pointer transition-all hover:shadow-lg hover:-translate-y-0.5 hover:border-msbm-red/20 dark:hover:border-msbm-red/20"
       onClick={onClick}
     >
-      <div className="h-1.5 w-full bg-gradient-to-r from-emerald-400 to-teal-500 flex-shrink-0" />
+      <div className="h-1.5 w-full bg-gradient-to-r from-emerald-400 to-inner-blue flex-shrink-0" />
       <CardContent className="p-4 flex-1 flex flex-col">
         {/* Avatar + Name */}
         <div className="flex items-start gap-3">
@@ -330,7 +330,7 @@ function DirectoryListItem({
 
   return (
     <div
-      className="flex items-center gap-4 p-4 rounded-xl border border-border/60 bg-white dark:bg-gray-950 cursor-pointer transition-all hover:shadow-md hover:border-emerald-200 dark:hover:border-emerald-800"
+      className="flex items-center gap-4 p-4 rounded-xl border border-border/60 bg-white dark:bg-gray-950 cursor-pointer transition-all hover:shadow-md hover:border-msbm-red/20 dark:hover:border-msbm-red/20"
       onClick={onClick}
     >
       <div className="relative flex-shrink-0">
@@ -656,8 +656,8 @@ export function EmployeeDirectoryView() {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <Card className="border-emerald-100 dark:border-emerald-900/30">
           <CardContent className="p-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 dark:bg-emerald-900/30">
-              <Users className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-msbm-red/10 dark:bg-msbm-red/20">
+              <Users className="h-5 w-5 text-msbm-red dark:text-msbm-red-bright" />
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-900 dark:text-white">{sortedEmployees.length}</p>
@@ -721,6 +721,8 @@ export function EmployeeDirectoryView() {
                 <button
                   onClick={() => setSearchQuery("")}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  aria-label="Clear search"
+                  title="Clear search"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -731,7 +733,9 @@ export function EmployeeDirectoryView() {
                 variant={viewMode === "grid" ? "default" : "outline"}
                 size="icon"
                 onClick={() => setViewMode("grid")}
-                className={viewMode === "grid" ? "bg-emerald-600 hover:bg-emerald-700 text-white" : ""}
+                className={viewMode === "grid" ? "bg-msbm-red hover:bg-msbm-red/80 text-white" : ""}
+                aria-label="Grid view"
+                title="Grid view"
               >
                 <LayoutGrid className="h-4 w-4" />
               </Button>
@@ -739,7 +743,9 @@ export function EmployeeDirectoryView() {
                 variant={viewMode === "list" ? "default" : "outline"}
                 size="icon"
                 onClick={() => setViewMode("list")}
-                className={viewMode === "list" ? "bg-emerald-600 hover:bg-emerald-700 text-white" : ""}
+                className={viewMode === "list" ? "bg-msbm-red hover:bg-msbm-red/80 text-white" : ""}
+                aria-label="List view"
+                title="List view"
               >
                 <LayoutList className="h-4 w-4" />
               </Button>
@@ -951,7 +957,7 @@ export function EmployeeDirectoryView() {
                 <TabsContent value="activity" className="mt-4">
                   <div className="p-4 rounded-lg border bg-gray-50/50 dark:bg-gray-900/30">
                     <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-                      <Activity className="h-4 w-4 text-emerald-600" />
+                      <Activity className="h-4 w-4 text-msbm-red" />
                       Recent Activity
                     </h4>
                     <ActivityTimeline employee={selectedEmployee} />
@@ -959,9 +965,9 @@ export function EmployeeDirectoryView() {
                 </TabsContent>
 
                 <TabsContent value="compensation" className="mt-4 space-y-4">
-                  <div className="rounded-lg border p-4 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 border-emerald-200 dark:border-emerald-800">
+                  <div className="rounded-lg border p-4 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 border-msbm-red/20 dark:border-msbm-red/20">
                     <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-                      <DollarSign className="h-4 w-4 text-emerald-600" />
+                      <DollarSign className="h-4 w-4 text-msbm-red" />
                       Pay Breakdown
                     </h4>
                     <div className="grid grid-cols-2 gap-3">
@@ -987,7 +993,7 @@ export function EmployeeDirectoryView() {
                       </div>
                       <div className="rounded-md bg-white/80 dark:bg-gray-900/50 p-3">
                         <p className="text-xs text-muted-foreground">YTD Estimate</p>
-                        <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mt-0.5">
+                        <p className="text-sm font-semibold text-msbm-red dark:text-msbm-red-bright mt-0.5">
                           ${ytdEstimate.toLocaleString()}
                         </p>
                       </div>

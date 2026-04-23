@@ -13,11 +13,20 @@ export async function POST(request: NextRequest) {
       email,
       password,
       phone,
+      employee_id,
     } = body;
 
-    if (!first_name || !last_name || !email || !password) {
+    if (!first_name || !last_name || !email || !password || !employee_id) {
       return NextResponse.json(
-        { error: "first_name, last_name, email, and password are required" },
+        { error: "first_name, last_name, email, password, and employee_id are required" },
+        { status: 400 }
+      );
+    }
+
+    // Validate 9-digit employee ID
+    if (!/^\d{9}$/.test(employee_id)) {
+      return NextResponse.json(
+        { error: "Employee ID must be a 9-digit number" },
         { status: 400 }
       );
     }
@@ -67,7 +76,7 @@ export async function POST(request: NextRequest) {
     const { data: employee, error: empError } = await supabase
       .from("employees")
       .insert({
-        employee_id: "EMP-0001",
+        employee_id,
         first_name,
         last_name,
         email,
